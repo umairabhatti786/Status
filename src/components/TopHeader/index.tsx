@@ -7,13 +7,15 @@ import { images } from "../../assets/images";
 
 type Props = {
   title?: string;
+  onPressSetting?: any;
+  onPressNotification?: any;
 };
 
-const TopHeader = ({ title }: Props) => {
+const TopHeader = ({ title, onPressSetting, onPressNotification }: Props) => {
   return (
     <View style={appStyles.rowjustify}>
       <View style={appStyles.row}>
-        <View>
+        <TouchableOpacity onPress={onPressNotification}>
           <Image
             style={{ width: 30, height: 30 }}
             source={images.bell}
@@ -40,7 +42,7 @@ const TopHeader = ({ title }: Props) => {
               // fontWeight="Poppins-Bold"
             />
           </View>
-        </View>
+        </TouchableOpacity>
         {/* <Spacer width={15} />
 
         <Spacer width={15} />
@@ -70,7 +72,7 @@ const TopHeader = ({ title }: Props) => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPressSetting}>
         <Image
           style={{ width: 25, height: 25 }}
           source={images.setting}

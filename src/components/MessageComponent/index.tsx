@@ -1,0 +1,107 @@
+import { Image, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { images } from "../../assets/images";
+import CustomText from "../CustomText";
+import { colors } from "../../utils/colors";
+import { windowWidth } from "../../utils/Dimensions";
+
+type Props = {
+  name?: string;
+  image?: any;
+  time?: string;
+  message?: string;
+  chatDate?: string;
+};
+
+const MessagesComponent = ({ name, image, time, message, chatDate }: Props) => {
+  return (
+    <View>
+      {chatDate && (
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            alignSelf: "center",
+            marginVertical: 8,
+          }}
+        >
+          <View
+            style={{
+              borderTopWidth: 0.4,
+              width: windowWidth / 3,
+              borderColor: colors.lightgray,
+            }}
+          />
+          <CustomText
+            style={{ marginHorizontal: 12 }}
+            text={chatDate}
+            color={colors.lightgray}
+            size={13}
+            fontFam="Poppins-Bold"
+            fontWeight="700"
+          />
+          <View
+            style={{
+              borderTopWidth: 0.4,
+              width: windowWidth / 3,
+              borderColor: colors.lightgray,
+            }}
+          />
+        </View>
+      )}
+      <View
+        style={{
+          flexDirection: "row",
+          paddingVertical: 5,
+          paddingHorizontal: 10,
+        }}
+      >
+        <View style={{ width: 65, height: 65 }}>
+          <Image
+            style={{ width: "100%", height: "100%", borderRadius: 10 }}
+            source={image}
+          />
+        </View>
+        <View style={{ marginLeft: 15 }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <CustomText
+              text={name}
+              color={colors.white}
+              size={15}
+              fontFam="Poppins-Bold"
+              fontWeight="800"
+            />
+            <CustomText
+              text={"."}
+              color={colors.white}
+              size={24}
+              fontFam="Poppins-Regular"
+              style={{
+                marginTop: -12,
+                marginHorizontal: 8,
+              }}
+            />
+            <CustomText
+              text={time}
+              color={colors.lightgray}
+              size={13}
+              fontFam="Poppins-Regular"
+            />
+          </View>
+          <CustomText
+            text={message}
+            color={colors.white}
+            size={15}
+            style={{ width: windowWidth / 1.5 }}
+            fontFam="Poppins-Medium"
+            fontWeight="500"
+          />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default MessagesComponent;
+
+const styles = StyleSheet.create({});

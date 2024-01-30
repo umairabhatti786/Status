@@ -15,10 +15,11 @@ import TopHeader from "../../../components/TopHeader";
 import TopBar from "../../../components/TopBar";
 import FriendList from "./FriendList";
 import { images } from "../../../assets/images";
+import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
+  const navigation: any = useNavigation();
   const [activeBar, setActiveBar] = useState("Friends");
-
 
   const chatList = [
     {
@@ -27,7 +28,7 @@ const HomeScreen = () => {
       message: "Hey everyone! Statuss is great. Here’s a photo of my view...",
       time: "8:34 AM",
       count: "2",
-      update:true
+      update: true,
     },
     {
       img: images.man2,
@@ -49,7 +50,7 @@ const HomeScreen = () => {
       message:
         "I think that people should be more kind to one another. Just saying...",
       time: "JAN 12",
-    //   count: "2",
+      //   count: "2",
     },
     {
       img: images.man5,
@@ -90,34 +91,31 @@ const HomeScreen = () => {
     },
   ];
 
-  const renderChatList=({item,index})=>{
-    console.log("ckbdk",index)
-
-    return(
-      <FriendList item={item}/>
-    )
-  }
+  const renderChatList = ({ item, index }) => {
+    return <FriendList item={item} />;
+  };
 
   return (
     <SafeAreaView style={appStyles.main}>
       <Spacer height={7} />
       <View style={{ paddingHorizontal: 20 }}>
-        <TopHeader />
+        <TopHeader onPressSetting={() => navigation.navigate("Settings")} />
         <Spacer height={20} />
 
         <TopBar activeBar={activeBar} setActiveBar={setActiveBar} />
       </View>
       <Spacer height={10} />
-      <View >
-
+      <View>
         <FlatList
-          data={activeBar=="My Updates" ?chatList.filter(item=>item.update):chatList}
+          data={
+            activeBar == "My Updates"
+              ? chatList.filter((item) => item.update)
+              : chatList
+          }
           contentContainerStyle={{
-            gap:5,
+            gap: 5,
           }}
-      
           renderItem={renderChatList}
-         
         />
       </View>
     </SafeAreaView>
