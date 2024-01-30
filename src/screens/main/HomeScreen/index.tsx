@@ -19,6 +19,11 @@ import { images } from "../../../assets/images";
 const HomeScreen = () => {
   const [activeBar, setActiveBar] = useState("Friends");
 
+  const topBarData=[
+    "Friends",
+    "My Updates"
+  ]
+
 
   const chatList = [
     {
@@ -105,7 +110,9 @@ const HomeScreen = () => {
         <TopHeader />
         <Spacer height={20} />
 
-        <TopBar activeBar={activeBar} setActiveBar={setActiveBar} />
+        <TopBar 
+        topBarData={topBarData}
+        activeBar={activeBar} setActiveBar={setActiveBar} />
       </View>
       <Spacer height={10} />
       <View >

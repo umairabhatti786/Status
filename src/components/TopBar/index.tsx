@@ -8,15 +8,16 @@ import { Spacer } from "../Spacer";
 const TopBar = ({
   activeBar,
     setActiveBar,
+    topBarData
 }:any) => {
 
   
   
   return (
     <View>
-      <View style={{ flexDirection:"row",alignItems:"center",justifyContent:"center", paddingHorizontal5:0 }}>
+      <View style={{ flexDirection:"row",alignItems:"center",justifyContent:"center", }}>
         {
-          ["Friends","My Updates"].map((item,index)=>{
+          topBarData.map((item,index)=>{
             return(
               <View style={{alignItems:"center",marginHorizontal:20}}>
 
@@ -24,7 +25,7 @@ const TopBar = ({
           <CustomText
             color={activeBar==item?  colors.white:colors.white}
             text={ item}
-            size={16}
+            size={17}
             fontWeight={"600"}
             fontFam="Poppins-Medium"
           />

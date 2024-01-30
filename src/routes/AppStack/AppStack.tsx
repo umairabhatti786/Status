@@ -13,22 +13,12 @@ const AppStack = () => {
   const Stack = createStackNavigator();
   const [splashState,setSplashState]=useState(true)
 
-  // useEffect(() => {
-  //   let timeState = setTimeout(() => {
-  //     // navigation.push('Onboarding01')
-  //     setSplashState(false);
-  //   }, 2000);
-  //   return () => {
-  //     clearTimeout(timeState);
-  //   };
-  // }, []);
-  
+
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
             
 
-            {/* <Stack.Screen name={strings.login} component={Login} /> */}
       <Stack.Screen name={"Tabs"} component={BottomTab} />
       <Stack.Screen name={"HomeScreen"} component={HomeScreen} />
       <Stack.Screen name={"MessageScreen"} component={MessageScreen} />

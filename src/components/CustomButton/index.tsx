@@ -20,6 +20,8 @@ type Props = {
   notRequiredShadow?: boolean;
   disable?: boolean;
   isLoading?: boolean;
+  paddingHorizontal?:any
+  fontWeight?:any
 };
 
 const CustomButton = ({
@@ -38,6 +40,8 @@ const CustomButton = ({
   notRequiredShadow,
   disable,
   isLoading,
+  paddingHorizontal,
+  fontWeight
 }: Props) => {
   return (
     <TouchableOpacity
@@ -46,14 +50,15 @@ const CustomButton = ({
       activeOpacity={0.9}
       style={{
         ...style,
-        width: width || "100%",
+        width: width,
         height: height || 50,
         backgroundColor: bgColor || colors.primary,
         justifyContent: "center",
         alignItems: "center",
+        paddingHorizontal:paddingHorizontal,
         borderRadius: borderRadius || 12,
-        borderWidth: 2,
-        borderColor: borderColor || colors.primary,
+        // borderWidth: 2,
+        // borderColor: borderColor || colors.primary,
       }}
     >
       {isLoading ? (
@@ -65,9 +70,9 @@ const CustomButton = ({
         <CustomText
           text={text}
           color={textColor || colors.white}
-          fontWeight={500}
-          size={size || disable ? 15 : 18}
-          fontFam={fontFam ||"sf-pro-text-semibold"}
+          fontWeight={ fontWeight ||"600"}
+          size={size || 15}
+          fontFam={fontFam ||"Poppins-Bold"}
         />
       )}
     </TouchableOpacity>
