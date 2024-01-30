@@ -4,7 +4,7 @@ export const images = {
     education:require("../icons/education.png"),
     gander:require("../icons/gander.png"),
     straight:require("../icons/straight.png"),
-    cross:require("../icons/cross.png"),
+    // cross:require("../icons/cross.png"),
     location:require("../icons/location.png"),
     users:require("../icons/users.png"),
 
@@ -53,6 +53,19 @@ export const images = {
     appicon:require("../images/app-icon.png"),
     bell:require("../images/bell.png"),
 
+    search1: require("../icons/search1.png"),
+    cross: require("../icons/cross1.png"),
+    star: require("../icons/star.png"),
+    star1: require("../icons/wstar.png"),
+    compose: require("../icons/compose.png"),
+    back: require("../icons/back.png"),
+    verticaldots: require("../icons/verticaldots.png"),
+    send: require("../icons/send.png"),
+    clip: require("../icons/clip.png"),
+    arrowdown: require("../icons/downarrow.png"),
+    youtube: require("../icons/youtube.png"),
+    insta: require("../icons/insta.png"),
+
 
 
 
@@ -65,4 +78,6 @@ export const images = {
 
 
 
-}
+
+ 
+};

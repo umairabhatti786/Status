@@ -8,6 +8,8 @@ grey300:"#B9B9B9",
 lightBlack:"#1A1A1B",
 black100:"#070707",
 green:"#3AD079",
-
-
-}
+lightgray: "#d2d2d4",
+lightgreen: "#3AD079",
+sky: "#48B1FF",
+ 
+};

@@ -7,11 +7,12 @@ import ProfileScreen from "../../screens/main/ProfileScreen";
 import SearchScreen from "../../screens/main/SearchScreen";
 import AddScreen from "../../screens/main/AddScreen";
 import BottomTab from "../BottomTabs";
-
+import Chat from "../../screens/main/MessageScreen/Chat";
+import Settings from "../../screens/main/SettingsScreen";
 
 const AppStack = () => {
   const Stack = createStackNavigator();
-  const [splashState,setSplashState]=useState(true)
+  const [splashState, setSplashState] = useState(true);
 
 
 
@@ -25,24 +26,8 @@ const AppStack = () => {
       <Stack.Screen name={"ProfileScreen"} component={ProfileScreen} />
       <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
       <Stack.Screen name={"AddScreen"} component={AddScreen} />
-
-
-
-      
-
-
-
-      
-      
-
-
-
-
-      
-
-
-
-
+      <Stack.Screen name={"ChatScreen"} component={Chat} />
+      <Stack.Screen name={"Settings"} component={Settings} />
     </Stack.Navigator>
   );
 };

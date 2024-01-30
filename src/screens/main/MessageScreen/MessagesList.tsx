@@ -1,30 +1,24 @@
-import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  LogBox,
-  StyleSheet,
-  View,
-  Text,
-  Platform,
-  Image,
-  Dimensions,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Image, Dimensions, TouchableOpacity } from "react-native";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import { Spacer } from "../../../components/Spacer";
+import { images } from "../../../assets/images";
+import { useNavigation } from "@react-navigation/native";
 export const windowWidth = Dimensions.get("window").width;
 
-const FriendList = ({ item }: any) => {
-  //   console.log("itemList",item)
-  //   img: image.man3,
-  //       name: "Joey D",
-  //       message: "At the laundry mat. Missing my washing machine days...",
-  //       time: "JAN 10",
-  //       count: "3",
-
+const MessagesList = ({ item }: any, List: boolean) => {
+  const navigation: any = useNavigation();
+  const [favorite, setFavorite] = useState(false);
   return (
     <>
-      <View
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("ChatScreen", {
+            item: item,
+          })
+        }
+        activeOpacity={0.7}
         style={{
           width: "100%",
           height: 74,
@@ -40,35 +34,43 @@ const FriendList = ({ item }: any) => {
             style={{ width: "100%", height: "100%", borderRadius: 10 }}
             source={item?.img}
           />
-          {item.update && (
-            <View
-              style={{
-                width: 11,
-                height: 11,
-                backgroundColor: "#3AD079",
-                position: "absolute",
-                bottom: 7,
-                right: 7,
-                borderRadius: 999,
-              }}
-            ></View>
-          )}
         </View>
 
         <View style={{ paddingHorizontal: 10, width: "65%", marginTop: -3 }}>
-          <CustomText
-            text={item.name}
-            color={colors.white}
-            size={15}
-            fontFam="Poppins-Bold"
-            fontWeight="800"
-          />
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <CustomText
+              text={item.name}
+              color={colors.white}
+              size={15}
+              fontFam="Poppins-Bold"
+              fontWeight="800"
+            />
+            <CustomText
+              text={"."}
+              color={colors.white}
+              size={24}
+              fontFam="Poppins-Regular"
+              style={{
+                marginTop: -12,
+                marginHorizontal: 8,
+              }}
+            />
+            <CustomText
+              text={item.time}
+              color={colors.lightgray}
+              size={11}
+              fontFam="Poppins-Regular"
+            />
+          </View>
           <Spacer height={5} />
           <CustomText
             text={item.message}
-            color={colors.white}
+            color={
+              item?.message === "Typing..." ? colors.lightgreen : colors.white
+            }
             size={15}
-            numberOfLines={2}
+            style={{ width: windowWidth / 1.5 }}
+            numberOfLines={0}
             fontFam="Poppins-Medium"
             fontWeight="500"
           />
@@ -83,13 +85,12 @@ const FriendList = ({ item }: any) => {
             paddingBottom: 5,
           }}
         >
-          <CustomText
-            text={item.time}
-            color={colors.white}
-            size={11}
-            fontFam="Poppins-Regular"
-            //   fontWeight="500"
-          />
+          <TouchableOpacity onPress={() => setFavorite(!favorite)}>
+            <Image
+              source={favorite ? images.star1 : images.star}
+              style={{ marginRight: 8 }}
+            />
+          </TouchableOpacity>
           {item.count && (
             <View
               style={{
@@ -99,7 +100,6 @@ const FriendList = ({ item }: any) => {
                 justifyContent: "center",
                 borderRadius: 10,
                 backgroundColor: colors.black,
-                padding: 2,
               }}
             >
               <CustomText
@@ -112,9 +112,9 @@ const FriendList = ({ item }: any) => {
             </View>
           )}
         </View>
-      </View>
+      </TouchableOpacity>
     </>
   );
 };
 
-export default FriendList;
+export default MessagesList;
