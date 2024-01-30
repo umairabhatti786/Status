@@ -7,6 +7,14 @@ export const images = {
     // cross:require("../icons/cross.png"),
     location:require("../icons/location.png"),
     users:require("../icons/users.png"),
+    tick:require("../icons/tick.png"),
+    plusgrey:require("../icons/plus-grey.png"),
+    fillmesssage:require("../icons/fill-message.png"),
+    fillhome:require("../icons/fill-home.png"),
+
+
+
+
 
 
     // heart:require("../icons/heart.png"),
@@ -43,6 +51,8 @@ export const images = {
     defimage21:require("../images/def-image21.png"),
     defimage22:require("../images/def-image22.png"),
     defimage23:require("../images/def-image23.png"),
+    logo:require("../images/logo.png"),
+
     
 
 
@@ -62,6 +72,10 @@ export const images = {
     verticaldots: require("../icons/verticaldots.png"),
     send: require("../icons/send.png"),
     clip: require("../icons/clip.png"),
+    eye: require("../icons/eye.png"),
+    eyeclose: require("../icons/eye-close.png"),
+
+
     arrowdown: require("../icons/downarrow.png"),
     youtube: require("../icons/youtube.png"),
     insta: require("../icons/insta.png"),

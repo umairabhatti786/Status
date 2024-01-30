@@ -9,6 +9,12 @@ import AddScreen from "../../screens/main/AddScreen";
 import BottomTab from "../BottomTabs";
 import Chat from "../../screens/main/MessageScreen/Chat";
 import Settings from "../../screens/main/SettingsScreen";
+import JoinScreen from "../../screens/auth/JoinScreen";
+import Login from "../../screens/auth/Login";
+import Signup from "../../screens/auth/Signup";
+import ProfileSetup from "../../screens/auth/ProfileSetup";
+import LostPassword from "../../screens/auth/LostPassword";
+import ResetPassword from "../../screens/auth/ResetPassword";
 
 const AppStack = () => {
   const Stack = createStackNavigator();
@@ -19,6 +25,15 @@ const AppStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
             
+            <Stack.Screen name={"Join"} component={JoinScreen} />
+            <Stack.Screen name={"Login"} component={Login} />
+            <Stack.Screen name={"Signup"} component={Signup} />
+            <Stack.Screen name={"ProfileSetup"} component={ProfileSetup} />
+            <Stack.Screen name={"LostPassword"} component={LostPassword} />
+            <Stack.Screen name={"ResetPassword"} component={ResetPassword} />
+
+
+
 
       <Stack.Screen name={"Tabs"} component={BottomTab} />
       <Stack.Screen name={"HomeScreen"} component={HomeScreen} />

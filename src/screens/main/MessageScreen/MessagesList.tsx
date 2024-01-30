@@ -36,7 +36,7 @@ const MessagesList = ({ item }: any, List: boolean) => {
           />
         </View>
 
-        <View style={{ paddingHorizontal: 10, width: "65%", marginTop: -3 }}>
+        <View style={{ paddingHorizontal: 10, width: "67%", marginTop: -3 }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <CustomText
               text={item.name}
@@ -58,7 +58,7 @@ const MessagesList = ({ item }: any, List: boolean) => {
             <CustomText
               text={item.time}
               color={colors.lightgray}
-              size={11}
+              size={13}
               fontFam="Poppins-Regular"
             />
           </View>
@@ -83,11 +83,12 @@ const MessagesList = ({ item }: any, List: boolean) => {
             alignItems: "flex-end",
             justifyContent: "space-between",
             paddingBottom: 5,
+            // backgroundColor:"red"
           }}
         >
           <TouchableOpacity onPress={() => setFavorite(!favorite)}>
             <Image
-              source={favorite ? images.star1 : images.star}
+              source={item.favorite ? images.star1 : images.star}
               style={{ marginRight: 8 }}
             />
           </TouchableOpacity>

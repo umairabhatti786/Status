@@ -42,8 +42,8 @@ const BottomTab = ({ navigation }: any) => {
                 }}
               >
                 <Image
-                  source={images.home}
-                  style={{ height: 20, width: 20,}}
+                  source={focused?images.fillhome:images.home}
+                  style={{ height:focused?27: 20, width:focused?27: 20,}}
                 />
              
               </View>
@@ -120,13 +120,30 @@ const BottomTab = ({ navigation }: any) => {
                   paddingTop: 22,
                 }}
               >
-            
+                <View>
                 <Image
                   source={focused ? images.message : images.message}
                   style={{ height: 20, width: 20,}}
 
                 />
+                {
+                  focused&&(
+                    <Image
+                    source={images.fillmesssage}
+                    style={{ height: 15, width: 15,position:"absolute",left:3,top:1,right:1}}
+                    resizeMode="contain"
+  
+                  />
+
+                  )
+                }
+                
+                
               
+
+                </View>
+            
+               
               </View>
             );
           },

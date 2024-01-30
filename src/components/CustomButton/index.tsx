@@ -22,6 +22,7 @@ type Props = {
   isLoading?: boolean;
   paddingHorizontal?:any
   fontWeight?:any
+  borderWidth?:number
 };
 
 const CustomButton = ({
@@ -41,7 +42,8 @@ const CustomButton = ({
   disable,
   isLoading,
   paddingHorizontal,
-  fontWeight
+  fontWeight,
+  borderWidth
 }: Props) => {
   return (
     <TouchableOpacity
@@ -57,8 +59,8 @@ const CustomButton = ({
         alignItems: "center",
         paddingHorizontal:paddingHorizontal,
         borderRadius: borderRadius || 12,
-        // borderWidth: 2,
-        // borderColor: borderColor || colors.primary,
+        borderWidth:borderWidth ,
+        borderColor: borderColor ,
       }}
     >
       {isLoading ? (

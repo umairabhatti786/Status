@@ -67,7 +67,7 @@ const Chat = () => {
         <FlatList
           data={messages}
           contentContainerStyle={{
-            gap: 5,
+            gap: 7,
           }}
           renderItem={renderChatList}
         />
@@ -97,6 +97,7 @@ const Chat = () => {
                   marginLeft: 12,
                   color: colors.white,
                   width: windowWidth / 1.35,
+                  fontSize:17
                 }}
                 placeholderTextColor={colors.gray200}
                 placeholder="Type a message"
@@ -116,7 +117,7 @@ export default Chat;
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: colors.black100,
+    backgroundColor: colors.primary,
     alignItems: "center",
     paddingTop: "18%",
     paddingBottom: "5%",

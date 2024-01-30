@@ -14,6 +14,8 @@ import { images } from "../../../assets/images";
 import { windowWidth } from "../../../utils/Dimensions";
 import MessagesList from "./MessagesList";
 import { messagesList } from "../../../utils/Data";
+import CustomSearch from "../../../components/CustomSearch";
+import { Spacer } from "../../../components/Spacer";
 
 const MessageScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,9 +29,18 @@ const MessageScreen = () => {
   return (
     <View style={appStyles.main}>
       <View style={styles.header}>
-        <CustomText color={colors.white} size={18} text={"Private Messenger"} />
+        <CustomText color={colors.white} size={19} 
+        fontFam={"Poppins-SemiBold"}
+        fontWeight={"600"}
+        text={"Private Messenger"} />
       </View>
-      <View style={styles.inputContainer}>
+      <View style={{paddingHorizontal:10,paddingVertical:15}}>
+      <CustomSearch/>
+
+      </View>
+     
+
+      {/* <View style={styles.inputContainer}>
         <Image source={images.search1} />
         <TextInput
           style={styles.input}
@@ -38,12 +49,12 @@ const MessageScreen = () => {
           placeholder="Search Messages"
         />
         <Image source={images.cross} />
-      </View>
+      </View> */}
       <View style={{ flex: 1 }}>
         <FlatList
           data={filteredList}
           contentContainerStyle={{
-            gap: 5,
+            gap: 7,
           }}
           renderItem={renderChatList}
         />
@@ -59,7 +70,7 @@ export default MessageScreen;
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: colors.black100,
+    backgroundColor: colors.primary,
     alignItems: "center",
     paddingTop: "18%",
     paddingBottom: "5%",

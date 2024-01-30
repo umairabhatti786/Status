@@ -56,7 +56,7 @@ const MessagesComponent = ({ name, image, time, message, chatDate }: Props) => {
           paddingHorizontal: 10,
         }}
       >
-        <View style={{ width: 65, height: 65 }}>
+        <View style={{ width: 62, height: 62 }}>
           <Image
             style={{ width: "100%", height: "100%", borderRadius: 10 }}
             source={image}
@@ -92,7 +92,7 @@ const MessagesComponent = ({ name, image, time, message, chatDate }: Props) => {
             text={message}
             color={colors.white}
             size={15}
-            style={{ width: windowWidth / 1.5 }}
+            style={{ width: windowWidth / 1.5 ,marginTop:6}}
             fontFam="Poppins-Medium"
             fontWeight="500"
           />

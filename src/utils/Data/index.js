@@ -180,6 +180,7 @@ export const messagesList = [
     name: "Ophelia M. Haynes",
     message: "Typing...",
     time: "JAN 12",
+    favorite:true
   },
   {
     img: images.man4,
@@ -198,6 +199,12 @@ export const messagesList = [
 ];
 
 export const messages = [
+  {
+    img: images.man9,
+    name: "Me",
+    message: "Todd you are a very nice person.",
+    time: "11:09 PM",
+  },
   {
     img: images.man5,
     name: "Todd Mason",
