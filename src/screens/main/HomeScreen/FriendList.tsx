@@ -8,23 +8,19 @@ import {
   Platform,
   Image,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import { Spacer } from "../../../components/Spacer";
 export const windowWidth = Dimensions.get("window").width;
 
-const FriendList = ({ item }: any) => {
-  //   console.log("itemList",item)
-  //   img: image.man3,
-  //       name: "Joey D",
-  //       message: "At the laundry mat. Missing my washing machine days...",
-  //       time: "JAN 10",
-  //       count: "3",
-
+const FriendList = ({ item, onPress, disabled }: any) => {
   return (
     <>
-      <View
+      <TouchableOpacity
+        disabled={disabled ? true : false}
+        onPress={onPress}
         style={{
           width: "100%",
           height: 74,
@@ -112,7 +108,7 @@ const FriendList = ({ item }: any) => {
             </View>
           )}
         </View>
-      </View>
+      </TouchableOpacity>
     </>
   );
 };

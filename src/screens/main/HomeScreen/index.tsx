@@ -24,8 +24,12 @@ const HomeScreen = () => {
   const chatList = [
     {
       img: images.man9,
+      imgbg: images.postBg,
+      postimg: images.postCity,
+      address: "Boston, MA United States 245 Friends",
       name: "Lauren Connors",
-      message: "Hey everyone! Statuss is great. Here’s a photo of my view...",
+      message:
+        "Hey everyone! Statuss is great. Here’s a photo of my view right now.",
       time: "8:34 AM",
       count: "2",
       update: true,
@@ -92,14 +96,27 @@ const HomeScreen = () => {
   ];
 
   const renderChatList = ({ item, index }) => {
-    return <FriendList item={item} />;
+    return (
+      <FriendList
+        disabled={false}
+        onPress={() =>
+          navigation.navigate("Post", {
+            item: item,
+          })
+        }
+        item={item}
+      />
+    );
   };
 
   return (
     <SafeAreaView style={appStyles.main}>
       <Spacer height={7} />
       <View style={{ paddingHorizontal: 20 }}>
-        <TopHeader onPressSetting={() => navigation.navigate("Settings")} />
+        <TopHeader
+          onPressNotification={() => navigation.navigate("Notifications")}
+          onPressSetting={() => navigation.navigate("Settings")}
+        />
         <Spacer height={20} />
 
         <TopBar activeBar={activeBar} setActiveBar={setActiveBar} />

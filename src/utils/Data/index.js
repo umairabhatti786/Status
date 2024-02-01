@@ -238,3 +238,60 @@ export const messages = [
     time: "12:05 PM",
   },
 ];
+
+export const activityData = [
+  {
+    image: images.man2,
+    name: "Joe Rogan",
+    time: "2 min ago",
+    comment: "Wrote on your wall",
+  },
+  {
+    image: images.man5,
+    name: "Bob Smith",
+    time: "3 hrs ago",
+    comment: "Commented on your status",
+  },
+  {
+    image: images.man5,
+    name: "Bob Smith",
+    time: "5 hrs ago",
+    comment: "Replied to your comment",
+  },
+];
+
+export const comments = [
+  {
+    img: images.man6,
+    name: "Mike O'Dea",
+    message: "Nice view. Where is that?",
+    time: "7:33 AM",
+    chatDate: "5 Comments",
+  },
+  {
+    img: images.man9,
+    name: "Lauren Connors",
+    message: "Thanks you.it's Rio!",
+    time: "8:09 AM",
+  },
+  {
+    img: images.man5,
+    name: "Todd Mason",
+    message:
+      "Looks great! I always wanted to go to Rio. It’s so beautiful there. Do you live there or vacationing?",
+    time: "9:33 AM",
+    chatDate: "Jan 12,2024",
+  },
+  {
+    img: images.man3,
+    name: "Lexi Reegan",
+    message: "Beautiful",
+    time: "7:55 AM",
+  },
+  {
+    img: images.man7,
+    name: "Laura Jessy",
+    message: "Great. When are good times to call?",
+    time: "11:45 AM",
+  },
+];

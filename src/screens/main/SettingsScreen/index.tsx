@@ -24,8 +24,8 @@ const Settings = () => {
   const [email, setEmail] = useState(true);
   const [items, setItems] = useState([
     { label: "Everyone", value: "Everyone" },
-    { label: "Only Contacts", value: "Only Contacts" },
-    { label: "Only With", value: "Only With" },
+    { label: "Friends", value: "Friends" },
+    { label: "No Body", value: "No Body" },
   ]);
   const CustomArrowIcon = () => (
     <View>
@@ -38,7 +38,12 @@ const Settings = () => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={images.back} />
         </TouchableOpacity>
-        <CustomText color={colors.white} size={18} text={"Settings"} />
+        <CustomText
+          fontWeight="700"
+          color={colors.white}
+          size={18}
+          text={"Settings"}
+        />
         <CustomText color={"transparent"} size={18} text={"sss"} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
