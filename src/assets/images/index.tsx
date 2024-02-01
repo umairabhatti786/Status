@@ -79,19 +79,6 @@ export const images = {
     arrowdown: require("../icons/downarrow.png"),
     youtube: require("../icons/youtube.png"),
     insta: require("../icons/insta.png"),
-
-
-
-
-   
-
-
-
-
-
-
-
-
-
- 
+  postBg: require("../images/postbg.png"),
+  postCity: require("../images/postcity.png"),
 };

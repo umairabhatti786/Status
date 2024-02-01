@@ -1,6 +1,5 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { images } from "../../assets/images";
 import CustomText from "../CustomText";
 import { colors } from "../../utils/colors";
 import { windowWidth } from "../../utils/Dimensions";
@@ -11,9 +10,17 @@ type Props = {
   time?: string;
   message?: string;
   chatDate?: string;
+  comments?: boolean;
 };
 
-const MessagesComponent = ({ name, image, time, message, chatDate }: Props) => {
+const MessagesComponent = ({
+  name,
+  image,
+  time,
+  message,
+  chatDate,
+  comments,
+}: Props) => {
   return (
     <View>
       {chatDate && (
@@ -54,6 +61,8 @@ const MessagesComponent = ({ name, image, time, message, chatDate }: Props) => {
           flexDirection: "row",
           paddingVertical: 5,
           paddingHorizontal: 10,
+          backgroundColor: comments ? colors.black100 : null,
+          borderRadius: 12,
         }}
       >
         <View style={{ width: 62, height: 62 }}>
@@ -63,30 +72,42 @@ const MessagesComponent = ({ name, image, time, message, chatDate }: Props) => {
           />
         </View>
         <View style={{ marginLeft: 15 }}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <CustomText
-              text={name}
-              color={colors.white}
-              size={15}
-              fontFam="Poppins-Bold"
-              fontWeight="800"
-            />
-            <CustomText
-              text={"."}
-              color={colors.white}
-              size={24}
-              fontFam="Poppins-Regular"
-              style={{
-                marginTop: -12,
-                marginHorizontal: 8,
-              }}
-            />
-            <CustomText
-              text={time}
-              color={colors.lightgray}
-              size={13}
-              fontFam="Poppins-Regular"
-            />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: windowWidth / 1.4,
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <CustomText
+                text={name}
+                color={colors.white}
+                size={15}
+                fontFam="Poppins-Bold"
+                fontWeight="800"
+              />
+              <CustomText
+                text={"."}
+                color={colors.white}
+                size={24}
+                fontFam="Poppins-Regular"
+                style={{
+                  marginTop: -12,
+                  marginHorizontal: 8,
+                }}
+              />
+              <CustomText
+                text={time}
+                color={colors.lightgray}
+                size={13}
+                fontFam="Poppins-Regular"
+              />
+            </View>
+            <TouchableOpacity>
+              <CustomText color={colors.lightgray} text={"Reply"} />
+            </TouchableOpacity>
           </View>
           <CustomText
             text={message}
