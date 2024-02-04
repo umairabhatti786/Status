@@ -15,12 +15,19 @@ import CustomText from "../../../components/CustomText";
 import { Spacer } from "../../../components/Spacer";
 import { appStyles } from "../../../utils/AppStyles";
 import { images } from "../../../assets/images";
+import { useNavigation } from "@react-navigation/native";
 export const windowWidth = Dimensions.get("window").width;
 
 const UserList = ({ item }: any) => {
+  const navigation: any = useNavigation();
   return (
     <>
       <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("OthersProfile", {
+            item: item,
+          })
+        }
         activeOpacity={0.6}
         style={{
           width: "32.8%",
@@ -29,7 +36,8 @@ const UserList = ({ item }: any) => {
           marginBottom: 3,
           marginHorizontal: 1.5,
           overflow: "hidden",
-        }}>
+        }}
+      >
         <Image style={{ width: "100%", height: "100%" }} source={item.img} />
         {item.online && (
           <View
@@ -41,7 +49,8 @@ const UserList = ({ item }: any) => {
               position: "absolute",
               top: 10,
               left: 10,
-            }}></View>
+            }}
+          ></View>
         )}
 
         <View
@@ -51,39 +60,35 @@ const UserList = ({ item }: any) => {
             width: "100%",
             padding: 10,
             justifyContent: "flex-end",
-          }}>
-              {
-                  item.nearby&&(
-                    <View style={{...appStyles.row,marginLeft:-5,marginBottom:5}}>
-                    <Image style={{ width: 15, height: 15 }} source={images.location} />
-      
-                    <CustomText text={item.nearby} color={colors.white} 
-                              />
-      
-                    </View>
+          }}
+        >
+          {item.nearby && (
+            <View style={{ ...appStyles.row, marginLeft: -5, marginBottom: 5 }}>
+              <Image
+                style={{ width: 15, height: 15 }}
+                source={images.location}
+              />
 
-                  )
-              }
-               {
-                  item.popular&&(
-                    <View style={{...appStyles.row,marginBottom:5}}>
-                    <Image style={{ width: 15, height: 15 }} 
-                    resizeMode="contain"
-                    source={images.users} />
-      
-                    <CustomText text={item.popular} color={colors.white} 
-                    style={{marginLeft:5}}
-                              />
-      
-                    </View>
+              <CustomText text={item.nearby} color={colors.white} />
+            </View>
+          )}
+          {item.popular && (
+            <View style={{ ...appStyles.row, marginBottom: 5 }}>
+              <Image
+                style={{ width: 15, height: 15 }}
+                resizeMode="contain"
+                source={images.users}
+              />
 
-                  )
-              }
-             
-                       
+              <CustomText
+                text={item.popular}
+                color={colors.white}
+                style={{ marginLeft: 5 }}
+              />
+            </View>
+          )}
 
           <CustomText text={item.name} color={colors.white} />
-
         </View>
       </TouchableOpacity>
     </>

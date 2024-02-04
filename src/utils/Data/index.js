@@ -180,7 +180,7 @@ export const messagesList = [
     name: "Ophelia M. Haynes",
     message: "Typing...",
     time: "JAN 12",
-    favorite:true
+    favorite: true,
   },
   {
     img: images.man4,
@@ -300,5 +300,20 @@ export const comments = [
     name: "Laura Jessy",
     message: "Great. When are good times to call?",
     time: "11:45 AM",
+  },
+];
+
+export const profileComments = [
+  {
+    img: images.defimage18,
+    name: "John Kennedy",
+    message: "Hey.Thanks for add.",
+    time: "7:33 AM",
+  },
+  {
+    img: images.defimage20,
+    name: "Mike O'Dea",
+    message: "Happy New Year!",
+    time: "JAN 13",
   },
 ];

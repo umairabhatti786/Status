@@ -8,6 +8,7 @@ import AddScreen from "../../screens/main/AddScreen";
 import MessageScreen from "../../screens/main/MessageScreen";
 import ProfileScreen from "../../screens/main/ProfileScreen";
 import { colors } from "../../utils/colors";
+import SearchStack from "../SearchStack";
 
 const BottomTab = ({ navigation }: any) => {
   const Bottom = createBottomTabNavigator();
@@ -23,9 +24,9 @@ const BottomTab = ({ navigation }: any) => {
           backgroundColor: "black",
           justifyContent: "center",
           alignItems: "center",
-          borderTopWidth:-1,
-          paddingTop:8,
-          height:55,
+          borderTopWidth: -1,
+          paddingTop: 8,
+          height: 55,
         },
       }}
     >
@@ -45,7 +46,6 @@ const BottomTab = ({ navigation }: any) => {
                   source={focused?images.fillhome:images.home}
                   style={{ height:focused?27: 20, width:focused?27: 20,}}
                 />
-             
               </View>
             );
           },
@@ -53,8 +53,8 @@ const BottomTab = ({ navigation }: any) => {
       />
 
       <Bottom.Screen
-        name="SearchScreen"
-        component={SearchScreen}
+        name="SearchStack"
+        component={SearchStack}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => {
@@ -62,23 +62,20 @@ const BottomTab = ({ navigation }: any) => {
               <View
                 style={{
                   ...style?.itemStyle,
-             
+
                   paddingTop: 22,
                 }}
               >
-            
                 <Image
                   source={focused ? images.searchfill : images.search}
-                  style={{ height: 22, width: 22,}}
-
+                  style={{ height: 22, width: 22 }}
                 />
-               
               </View>
             );
           },
         }}
       />
-       <Bottom.Screen
+      <Bottom.Screen
         name="AddScreen"
         component={AddScreen}
         options={{
@@ -88,25 +85,21 @@ const BottomTab = ({ navigation }: any) => {
               <View
                 style={{
                   ...style?.itemStyle,
-             
+
                   paddingTop: 22,
                 }}
               >
-            
                 <Image
                   source={focused ? images.add : images.add}
-                  style={{ height: 20, width: 20,  }}
-
+                  style={{ height: 20, width: 20 }}
                 />
-              
               </View>
             );
           },
         }}
       />
-    
 
-<Bottom.Screen
+      <Bottom.Screen
         name="MessageScreen"
         component={MessageScreen}
         options={{
@@ -116,7 +109,7 @@ const BottomTab = ({ navigation }: any) => {
               <View
                 style={{
                   ...style?.itemStyle,
-             
+
                   paddingTop: 22,
                 }}
               >
@@ -149,7 +142,7 @@ const BottomTab = ({ navigation }: any) => {
           },
         }}
       />
-       <Bottom.Screen
+      <Bottom.Screen
         name="ProfileScreen"
         component={ProfileScreen}
         options={{
@@ -159,15 +152,13 @@ const BottomTab = ({ navigation }: any) => {
               <View
                 style={{
                   ...style?.itemStyle,
-             
+
                   paddingTop: 22,
                 }}
               >
-            
                 <Image
                   source={focused ? images.man1 : images.man1}
-                  style={{ height: 30, width: 30}}
-
+                  style={{ height: 30, width: 30 }}
                 />
               </View>
             );

@@ -11,6 +11,7 @@ type Props = {
   message?: string;
   chatDate?: string;
   comments?: boolean;
+  profile?: boolean;
 };
 
 const MessagesComponent = ({
@@ -20,6 +21,7 @@ const MessagesComponent = ({
   message,
   chatDate,
   comments,
+  profile,
 }: Props) => {
   return (
     <View>
@@ -61,7 +63,7 @@ const MessagesComponent = ({
           flexDirection: "row",
           paddingVertical: 5,
           paddingHorizontal: 10,
-          backgroundColor: comments ? colors.black100 : null,
+          backgroundColor: comments ? colors.black300 : colors.black,
           borderRadius: 12,
         }}
       >
@@ -111,11 +113,11 @@ const MessagesComponent = ({
           </View>
           <CustomText
             text={message}
-            color={colors.white}
+            color={profile ? colors.gray500 : colors.white}
             size={15}
-            style={{ width: windowWidth / 1.5 ,marginTop:6}}
+            style={{ width: windowWidth / 1.5, marginTop: 6 }}
             fontFam="Poppins-Medium"
-            fontWeight="500"
+            fontWeight={profile ? "600" : "500"}
           />
         </View>
       </View>

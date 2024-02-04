@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -14,13 +15,15 @@ import { appStyles } from "../../../utils/AppStyles";
 import CustomText from "../../../components/CustomText";
 import { colors } from "../../../utils/colors";
 import { images } from "../../../assets/images";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import CustomButton from "../../../components/CustomButton";
 import MessagesComponent from "../../../components/MessageComponent";
 import { profileComments } from "../../../utils/Data";
 
-const ProfileScreen = () => {
+const OthersProfile = () => {
+  const route: any = useRoute();
+  const item = route?.params?.item;
   const navigation: any = useNavigation();
   const renderChatList = ({ item }: any) => {
     return (
@@ -38,86 +41,86 @@ const ProfileScreen = () => {
   return (
     <SafeAreaView style={appStyles.main}>
       <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image source={images.back} />
+          </TouchableOpacity>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: 999,
+                backgroundColor: colors.green,
+                marginRight: 10,
+              }}
+            />
+            <CustomText
+              fontWeight="700"
+              color={colors.white}
+              size={18}
+              text={item?.name}
+            />
+          </View>
+          <CustomText color={"transparent"} size={18} text={"sss"} />
+        </View>
         <ImageBackground
           style={{ width: windowWidth, height: windowHeight / 6.5 }}
-          source={images.defimage7}
+          source={images.plane}
         >
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "space-between",
+              alignItems: "center",
               marginTop: 15,
               marginHorizontal: 20,
             }}
           >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <View
-                style={{
-                  width: windowWidth / 4.5,
-                  height: windowHeight / 10,
-                  borderRadius: 10,
-                  marginBottom: 3,
-                  marginHorizontal: 1.5,
-                  overflow: "hidden",
-                }}
-              >
-                <Image
-                  style={{ width: "100%", height: "100%" }}
-                  source={images.man9}
-                />
-
-                <View
-                  style={{
-                    width: 12,
-                    height: 12,
-                    borderRadius: 999,
-                    backgroundColor: colors.green,
-                    position: "absolute",
-                    top: 10,
-                    left: 10,
-                  }}
-                />
-              </View>
-              <View style={{ marginLeft: 15 }}>
-                <CustomText
-                  fontWeight="700"
-                  size={17}
-                  numberOfLines={1}
-                  color={colors.white}
-                  style={{ width: windowWidth / 2.6 }}
-                  text={"Lauren Connors"}
-                />
-                <CustomText
-                  style={{ width: windowWidth / 3 }}
-                  fontWeight="700"
-                  size={17}
-                  numberOfLines={3}
-                  color={colors.white}
-                  text={"Miami, FL United States 245 Friends"}
-                />
-              </View>
-            </View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("EditProfile")}
-              activeOpacity={0.6}
+            <View
               style={{
-                backgroundColor: colors.black,
-                alignSelf: "flex-start",
-                borderRadius: 16,
-                borderWidth: 1,
-                borderColor: colors.white,
-                paddingHorizontal: 10,
-                paddingVertical: 6,
-                marginTop: 2,
+                width: windowWidth / 4.5,
+                height: windowHeight / 10,
+                borderRadius: 10,
+                marginBottom: 3,
+                marginHorizontal: 1.5,
+                overflow: "hidden",
               }}
             >
-              <CustomText
-                size={13}
-                fontWeight="700"
-                color={colors.white}
-                text={"Edit profile"}
+              <Image
+                style={{ width: "100%", height: "100%" }}
+                source={item.img}
               />
-            </TouchableOpacity>
+
+              <View
+                style={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: 999,
+                  backgroundColor: colors.green,
+                  position: "absolute",
+                  top: 10,
+                  left: 10,
+                }}
+              />
+            </View>
+            <View style={{ marginLeft: 15 }}>
+              <CustomText
+                fontWeight="700"
+                size={17}
+                color={colors.white}
+                numberOfLines={1}
+                style={{ width: windowWidth / 2.6 }}
+                text={item?.name}
+              />
+              <CustomText
+                style={{ width: windowWidth / 3 }}
+                fontWeight="700"
+                size={17}
+                numberOfLines={3}
+                color={colors.white}
+                text={"Boston, MA United States 245 Friends"}
+              />
+            </View>
           </View>
         </ImageBackground>
         <View
@@ -145,17 +148,17 @@ const ProfileScreen = () => {
         <Image
           style={{
             width: windowWidth,
-            height: windowHeight / 2.1,
+            height: windowHeight / 2.7,
             marginTop: 15,
           }}
-          source={images.profiledef}
+          source={item?.img}
         />
         <CustomText
           color={colors.white}
           size={16}
-          style={{ padding: 16, width: windowWidth / 1.02 }}
+          style={{ padding: 15 }}
           text={
-            "Hi. I’m a hard working professional. I love what I do. I’m interested in networking with other professionals. Please friend [more]"
+            "I’m the founder of Status and your first friend here. It’s time to take social networking back to the way it was meant to be."
           }
         />
         <View
@@ -168,19 +171,19 @@ const ProfileScreen = () => {
         >
           <Image
             style={{
-              width: windowWidth / 2.15,
+              width: windowWidth / 2.22,
               height: windowHeight / 5,
               borderRadius: 8,
             }}
-            source={images.defimage2}
+            source={images.oldman}
           />
           <Image
             style={{
-              width: windowWidth / 2.15,
+              width: windowWidth / 2.22,
               height: windowHeight / 5,
               borderRadius: 8,
             }}
-            source={images.defimage4}
+            source={images.walking}
           />
         </View>
         <ImageBackground
@@ -196,61 +199,31 @@ const ProfileScreen = () => {
           <View style={styles.flex}>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.gander} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"Female"}
-              />
+              <CustomText color={colors.white} text={"Male"} />
             </View>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.calander} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"32 years old"}
-              />
+              <CustomText color={colors.white} text={"40 years old"} />
             </View>
           </View>
           <View style={styles.flex}>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.straight} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"Straight"}
-              />
+              <CustomText color={colors.white} text={"Straight"} />
             </View>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.heart} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"Single"}
-              />
+              <CustomText color={colors.white} text={"Single"} />
             </View>
           </View>
           <View style={[styles.flex, { marginBottom: 12 }]}>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.education} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"Bachelor’s Degree"}
-              />
+              <CustomText color={colors.white} text={"GED"} />
             </View>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.bag} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"Software Engineer"}
-              />
+              <CustomText color={colors.white} text={"Status,Founder"} />
             </View>
           </View>
         </ImageBackground>
@@ -287,7 +260,7 @@ const ProfileScreen = () => {
   );
 };
 
-export default ProfileScreen;
+export default OthersProfile;
 
 const styles = StyleSheet.create({
   header: {
@@ -301,7 +274,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
-    width: windowWidth / 2.1,
+    width: windowWidth / 2,
   },
   icon: {
     height: 20,

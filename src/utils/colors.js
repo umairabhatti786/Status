@@ -13,4 +13,7 @@ lightgray: "#d2d2d4",
 lightgreen: "#3AD079",
 sky: "#48B1FF",
 black200: "#2F3541",
+  black300: "#1D2029",
+  gray500: "#B3C7DB",
+  offwhite: "#F5F5F5",
 };
