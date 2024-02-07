@@ -17,6 +17,7 @@ import ReceiveRequestCard from "../../../components/ReceiveRequestCard";
 import { useNavigation } from "@react-navigation/native";
 import ActivityCard from "../../../components/ActivityCard";
 import { activityData } from "../../../utils/Data";
+import CustomLine from "../../../components/CustomLine";
 
 const Notifications = () => {
   const navigation: any = useNavigation();
@@ -68,6 +69,26 @@ const Notifications = () => {
           <CustomText size={18} color={colors.white} text={"Requests"} />
         </TouchableOpacity>
       </View>
+      <View
+          style={{ ...appStyles.row, alignSelf: "center", marginVertical: 20 }}>
+          <Image
+            source={images.gift}
+            resizeMode="contain"
+            style={{ width: 22, height: 22 }}
+          />
+          <Spacer width={15} />
+
+          <CustomText
+            style={{ textAlign: "center" }}
+            size={17}
+            textDecorationLine={"underline"}
+            color={colors.white}
+            text={"Please Visit our GoFundMe Campaign"}
+          />
+
+        </View>
+        <CustomLine backgroundColor={colors.primary} height={1.5} />
+
       {request ? (
         <View style={{ padding: 12 }}>
           <TouchableOpacity

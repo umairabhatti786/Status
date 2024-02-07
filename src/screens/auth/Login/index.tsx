@@ -19,9 +19,13 @@ import CustomButton from "../../../components/CustomButton";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import CustomTextInput from "../../../components/CustomTextInput";
+import CheckBox from "../../../components/CheckBox";
 
 const Login = () => {
   const navigation: any = useNavigation();
+  const [isRemember,setIsRemember]=useState(true)
+  const [showPassword,setShowPAssword]=useState(true)
+
 
   return (
     <SafeAreaView style={appStyles.main}>
@@ -53,29 +57,21 @@ const Login = () => {
         <CustomTextInput
           label="Password"
           placeholder="● ● ● ● ● ● ● ●"
-          source={images.eyeclose}
+          isPassword={showPassword}
+          
+          onShowPassword={()=>setShowPAssword(!showPassword)}
+          source={ showPassword? images.eyeclose:images.eye}
         />
         <Spacer height={25} />
 
         <View style={appStyles.rowjustify}>
           <View style={appStyles.row}>
-            <TouchableOpacity
-              style={{
-                width: 21,
-                height: 21,
-                borderRadius: 5,
-                borderWidth: 2,
-                borderColor: colors.white,
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-              <Image
-                style={{ width: 10, height: 10, alignSelf: "center" }}
-                source={images.tick}
-                resizeMode="contain"
-              />
-             
-            </TouchableOpacity>
+            <CheckBox
+            isRemember={isRemember}
+            setIsRemember={setIsRemember}
+            />
+
+         
             <Spacer width={10}/>
               <CustomText
               text={"Remember Me"}
@@ -100,8 +96,9 @@ const Login = () => {
         <CustomButton
           text="SIGN IN"
           width={"100%"}
+          onPress={()=>navigation.navigate("Tabs")}
           fontWeight={"500"}
-          size={16}
+          size={18}
           textColor={colors.black}
           bgColor={colors.white}
         />
@@ -146,3 +143,19 @@ const Login = () => {
 };
 
 export default Login;
+
+const styles=StyleSheet.create({
+  checkBox:{
+    
+      width: 21,
+      height: 21,
+      borderRadius: 5,
+      borderWidth: 2,
+      borderColor: colors.white,
+      alignItems: "center",
+      justifyContent: "center",
+    
+
+  }
+
+})

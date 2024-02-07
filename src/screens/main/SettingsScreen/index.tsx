@@ -15,6 +15,9 @@ import { useNavigation } from "@react-navigation/native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { windowWidth } from "../../../utils/Dimensions";
 import ToggleSwitch from "toggle-switch-react-native";
+import { Spacer } from "../../../components/Spacer";
+import CustomLine from "../../../components/CustomLine";
+import CustomTextInput from "../../../components/CustomTextInput";
 
 const Settings = () => {
   const navigation = useNavigation();
@@ -47,20 +50,52 @@ const Settings = () => {
         <CustomText color={"transparent"} size={18} text={"sss"} />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
+        <View
+          style={{ ...appStyles.row, alignSelf: "center", marginVertical: 20 }}>
+          <Image
+            source={images.gift}
+            resizeMode="contain"
+            style={{ width: 22, height: 22 }}
+          />
+          <Spacer width={15} />
+
+          <CustomText
+            style={{ textAlign: "center" }}
+            size={17}
+            textDecorationLine={"underline"}
+            color={colors.white}
+            text={"Please Visit our GoFundMe Campaign"}
+          />
+        </View>
+        <CustomLine backgroundColor={colors.primary} height={1.5} />
+
         <CustomText
-          style={{ textAlign: "center", marginTop: 10 }}
-          size={17}
+          style={{ textAlign: "center", marginVertical: 12 }}
+          size={18}
           color={colors.white}
+          fontWeight={"600"}
           text={"Privacy Settings"}
         />
-        <View style={styles.divider} />
-        <CustomText
-          style={{ marginLeft: 10 }}
-          size={17}
-          color={colors.white}
-          text={"Who can message you?"}
-        />
-        <DropDownPicker
+        <CustomLine backgroundColor={colors.primary} height={1.5} />
+
+        <View style={{ marginHorizontal: 10 }}>
+          <CustomTextInput
+            // disabled={active === 1 || active === 2 ? true : false}
+            items={items}
+            // onOpen={() => setActive(3)}
+            // onClose={() => setActive(0)}
+            setItems={setItems}
+            // dropdownValue={dropdownValueEducation}
+            // setDropdownValue={setDropdownValueEducation}
+            label="Who can message you?"
+            dropdown={true}
+            marginTop={"7%"}
+            open={open}
+            setOpen={setOpen}
+          />
+        </View>
+
+        {/* <DropDownPicker
           style={styles.filter}
           dropDownContainerStyle={styles.dropdown}
           open={open}
@@ -71,25 +106,29 @@ const Settings = () => {
           setItems={setItems}
           textStyle={{ color: colors.white }}
           ArrowDownIconComponent={CustomArrowIcon}
-        />
-        <View style={[styles.divider, { marginTop: 20 }]} />
+        /> */}
+        <View style={{ marginTop: 20 }} />
+
+        <CustomLine backgroundColor={colors.primary} height={1.5} />
+
         <CustomText
-          style={{ textAlign: "center" }}
-          size={17}
+          style={{ textAlign: "center", marginVertical: 12 }}
+          size={18}
           color={colors.white}
+          fontWeight={"600"}
           text={"Notification Settings"}
         />
-        <View style={styles.divider} />
+        <CustomLine backgroundColor={colors.primary} height={1.5} />
+
         <View style={{ padding: 20 }}>
           <View
             style={{
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: 20,
-            }}
-          >
-            <CustomText size={15} color={colors.white} text={"In App"} />
+              marginBottom: 25,
+            }}>
+            <CustomText size={17} color={colors.white} text={"In App"} />
             <ToggleSwitch
               isOn={inApp}
               onColor={colors.sky}
@@ -103,54 +142,75 @@ const Settings = () => {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-            }}
-          >
-            <CustomText size={15} color={colors.white} text={"Email"} />
+            }}>
+            <CustomText size={17} color={colors.white} text={"Email"} />
             <ToggleSwitch
               isOn={email}
               onColor={colors.sky}
+
               offColor={colors.gray1}
               size="small"
               onToggle={setEmail}
             />
           </View>
         </View>
-        <View style={styles.divider} />
+        <CustomLine 
+        backgroundColor={colors.primary}
+        height={1.5}
+        
+        />
+     
         <CustomText
-          style={{ textAlign: "center" }}
-          size={17}
+          style={{ textAlign: "center", marginVertical: 12 }}
+          size={18}
           color={colors.white}
+          fontWeight={"600"}
           text={"Follow the Founder"}
         />
-        <View style={styles.divider} />
+  <CustomLine 
+        backgroundColor={colors.primary}
+        height={1.5}
+        
+        />
         <View
           style={{
             flexDirection: "row",
             alignSelf: "center",
-            marginVertical: 10,
-          }}
-        >
-          <Image source={images.insta} />
-          <Image style={{ marginLeft: "8%" }} source={images.youtube} />
+            marginVertical: 15,
+          }}>
+          <Image source={images.insta}
+          style={{width:30,height:30}}
+           />
+          <Image style={{ marginLeft: "8%",width:30,height:30 }} source={images.youtube} />
         </View>
-        <View style={styles.divider} />
+        <CustomLine 
+        backgroundColor={colors.primary}
+        height={1.5}
+        
+        />
+     
         <CustomText
-          style={{ textAlign: "center" }}
-          size={17}
+          style={{ textAlign: "center", marginVertical: 12 }}
+          size={18}
           color={colors.white}
+          fontWeight={"600"}
           text={"Account"}
         />
-        <View style={styles.divider} />
+  <CustomLine 
+        backgroundColor={colors.primary}
+        height={1.5}
+        
+        />
         <CustomText
           style={{ textAlign: "center", marginTop: "7%" }}
-          size={17}
-          color={colors.gray200}
+          size={18}
+          color={colors.grey400}
           text={"Delete Account"}
         />
         <CustomText
           style={{ textAlign: "center", marginTop: "10%" }}
-          size={17}
-          color={colors.gray200}
+          size={18}
+          color={colors.grey400}
           text={"Sign out"}
         />
       </ScrollView>
@@ -162,10 +222,10 @@ export default Settings;
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: colors.black100,
+    backgroundColor: colors.black300,
     alignItems: "center",
     paddingTop: "18%",
-    paddingBottom: "5%",
+    paddingBottom: "7%",
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 18,

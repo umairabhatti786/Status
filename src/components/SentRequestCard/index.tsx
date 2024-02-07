@@ -25,18 +25,20 @@ const SentRequestCard = ({ image, name, time }: any) => {
           />
           <CustomText color={colors.white} size={14} text={time} />
         </View>
-        <Spacer height={10} />
+        <Spacer height={15} />
         <TouchableOpacity
           activeOpacity={0.5}
           style={{
-            backgroundColor: colors.white,
+            backgroundColor: "#CCCCCC",
             alignItems: "center",
-            paddingVertical: 8,
+            paddingVertical: 10,
             borderRadius: 8,
             width: windowWidth / 1.5,
           }}
         >
-          <CustomText text={"Cancel Request"} />
+          <CustomText 
+          size={14}
+          text={"Cancel Request"} />
         </TouchableOpacity>
       </View>
     </View>

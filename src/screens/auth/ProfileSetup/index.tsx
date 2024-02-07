@@ -67,7 +67,7 @@ const ProfileSetup = () => {
           textDecorationLine="underline"
           style={{ textAlign: "center", marginTop: 4 }}
           fontFam="Poppins-Medium"
-          fontWeight="500"
+          fontWeight="400"
         />
         <Spacer height={20} />
         <View>
@@ -155,7 +155,7 @@ const ProfileSetup = () => {
           onPress={()=>navigation.navigate("LostPassword")}
           width={"100%"}
           fontWeight={"500"}
-          size={16}
+          size={18}
           textColor={colors.black}
           bgColor={colors.white}
         />

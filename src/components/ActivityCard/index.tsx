@@ -28,7 +28,7 @@ const ActivityCard = ({ image, name, time, comment }: any) => {
           <CustomText
             color={colors.white}
             fontWeight="800"
-            size={14}
+            size={15}
             text={name}
           />
           <CustomText
@@ -43,7 +43,7 @@ const ActivityCard = ({ image, name, time, comment }: any) => {
           />
           <CustomText color={colors.white} size={14} text={time} />
         </View>
-        <Spacer height={10} />
+        <Spacer height={5} />
         <CustomText
           style={{
             paddingVertical: 5,
@@ -54,8 +54,13 @@ const ActivityCard = ({ image, name, time, comment }: any) => {
           text={comment}
         />
       </View>
-      <TouchableOpacity>
-        <Image style={{ height: 20, width: 20 }} source={images.close} />
+      <TouchableOpacity
+      activeOpacity={0.6}
+      style={{marginBottom:10}}
+      >
+        <Image 
+        resizeMode="contain"
+        style={{ height: 18, width:18 }} source={images.crosscircle} />
       </TouchableOpacity>
     </View>
   );

@@ -30,7 +30,8 @@ const ReceiveRequestCard = ({ name, image }: Props) => {
           }}
         >
           <TouchableOpacity style={styles.button}>
-            <CustomText size={15} text={"Accept"} />
+            <CustomText
+             size={15} text={"Accept"} />
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -54,6 +55,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 8,
     borderRadius: 8,
-    width: windowWidth / 3.5,
+    width: windowWidth / 3,
   },
 });

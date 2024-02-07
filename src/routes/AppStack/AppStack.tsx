@@ -5,7 +5,6 @@ import HomeScreen from "../../screens/main/HomeScreen";
 import MessageScreen from "../../screens/main/MessageScreen";
 import ProfileScreen from "../../screens/main/ProfileScreen";
 import SearchScreen from "../../screens/main/SearchScreen";
-import AddScreen from "../../screens/main/AddScreen";
 import BottomTab from "../BottomTabs";
 import Chat from "../../screens/main/MessageScreen/Chat";
 import Settings from "../../screens/main/SettingsScreen";
@@ -20,6 +19,8 @@ import SentRequest from "../../screens/main/NotificationScreen/SentRequest";
 import Post from "../../screens/main/PostScreen";
 import OthersProfile from "../../screens/main/SearchScreen/OthersProfile";
 import EditProfile from "../../screens/main/ProfileScreen/EditProfile";
+import AddStatus from "../../screens/main/AddStatus";
+import EditGifs from "../../screens/main/EditGifs";
 
 const AppStack = () => {
   const Stack = createStackNavigator();
@@ -46,10 +47,11 @@ const AppStack = () => {
       <Stack.Screen name={"ProfileScreen"} component={ProfileScreen} />
       <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
       <Stack.Screen name={"OthersProfile"} component={OthersProfile} />
-      <Stack.Screen name={"AddScreen"} component={AddScreen} />
+      <Stack.Screen name={"AddStatus"} component={AddStatus} />
       <Stack.Screen name={"ChatScreen"} component={Chat} />
       <Stack.Screen name={"Settings"} component={Settings} />
       <Stack.Screen name={"Notifications"} component={Notifications} />
+      <Stack.Screen name={"EditGifs"} component={EditGifs} />
       <Stack.Screen name={"Sent Request"} component={SentRequest} />
       <Stack.Screen name={"Post"} component={Post} />
       <Stack.Screen name={"EditProfile"} component={EditProfile} />

@@ -11,8 +11,23 @@ export const images = {
   plusgrey: require("../icons/plus-grey.png"),
   fillmesssage: require("../icons/fill-message.png"),
   fillhome: require("../icons/fill-home.png"),
+  delete: require("../icons/delete.png"),
+  check: require("../icons/check.png"),
+  crosswhite: require("../icons/cross-white.png"),
+  backimage10: require("../images/def-image-10.png"),
+
+
+
+
 
   // heart:require("../icons/heart.png"),
+  carback: require("../images/car-back.png"),
+  profiledef: require("../images/profiledef.png"),
+  defimagese: require("../images/def-image-se.png"),
+  defimagese1: require("../images/def-image-se1.png"),
+  defimages2: require("../images/def-image-se2.png"),
+  defimages3: require("../images/def-image-se3.png"),
+
   add: require("../images/add.png"),
   home: require("../icons/home.png"),
   man1: require("../images/man1.png"),
@@ -66,10 +81,14 @@ export const images = {
   clip: require("../icons/clip.png"),
   eye: require("../icons/eye.png"),
   eyeclose: require("../icons/eye-close.png"),
+  gift: require("../icons/gift.png"),
+
 
   arrowdown: require("../icons/downarrow.png"),
   youtube: require("../icons/youtube.png"),
   insta: require("../icons/insta.png"),
+  crosscircle: require("../icons/cross-circle.png"),
+
 
   heart: require("../icons/heart.png"),
 

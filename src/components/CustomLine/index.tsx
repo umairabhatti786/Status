@@ -4,9 +4,9 @@ import { View } from 'react-native'
 
 type Props = {}
 
-const CustomLine = (props: Props) => {
+const CustomLine = ({backgroundColor,height}:any) => {
     return (
-        <View style={{ height: 3, backgroundColor: colors.grey }} />
+        <View style={{ height:height ||3, backgroundColor: backgroundColor ||colors.grey }} />
     )
 }
 

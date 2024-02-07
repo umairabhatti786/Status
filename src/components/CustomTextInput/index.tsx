@@ -138,19 +138,20 @@ const CustomTextInput = ({
             <DropDownPicker
               zIndex={zIndex}
               style={{
-                width: windowWidth / 1,
+                width: windowWidth / 1.1,
                 marginTop: 4,
                 alignSelf: "center",
                 backgroundColor: "transparent",
                 borderColor: "transparent",
               }}
               dropDownContainerStyle={{
-                width: windowWidth / 1,
+                width: windowWidth -15,
                 alignSelf: "center",
                 borderColor: colors.black,
                 backgroundColor: colors.primary,
               }}
               open={open}
+              
               disabled={disabled}
               onOpen={onOpen}
               onClose={onClose}
@@ -159,7 +160,7 @@ const CustomTextInput = ({
               setOpen={setOpen}
               setValue={setDropdownValue}
               setItems={setItems}
-              textStyle={{ color: colors.white }}
+              textStyle={{ color: colors.white,fontSize:15 }}
               ArrowDownIconComponent={CustomArrowIcon}
             />
           ) : (
@@ -170,6 +171,7 @@ const CustomTextInput = ({
                 fontSize: 15,
                 width: windowWidth / 1.2,
                 height: height || 53,
+                fontFamily:"Poppins-Regular",
                 fontWeight: fontWeight,
                 color: color || colors.grey400,
                 ...(isCenter && { alignSelf: "center" }),

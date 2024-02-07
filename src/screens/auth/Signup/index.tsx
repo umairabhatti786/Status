@@ -22,6 +22,9 @@ import CustomTextInput from "../../../components/CustomTextInput";
 
 const Signup = () => {
   const navigation: any = useNavigation();
+  const [showPassword,setShowPAssword]=useState(true)
+
+  console.log("showPassword",showPassword)
 
   return (
     <SafeAreaView style={appStyles.main}>
@@ -31,8 +34,9 @@ const Signup = () => {
         </TouchableOpacity>
         <Spacer height={30} />
         <Image
-          style={{ width: 135, height: 135, alignSelf: "center" }}
+          style={{ width: 130, height: 130, alignSelf: "center" }}
           source={images.logo}
+          resizeMode="contain"
         />
         {/* <Spacer height={10}/> */}
         <CustomText
@@ -57,122 +61,107 @@ const Signup = () => {
         <Spacer height={7} />
         <CustomTextInput
           label="Password"
+          isPassword={showPassword}
+          
+          onShowPassword={()=>setShowPAssword(!showPassword)}
           placeholder="● ● ● ● ● ● ● ●"
-          source={images.eye}
+          source={ showPassword? images.eyeclose:images.eye}
         />
         <Spacer height={15} />
 
-        <View >
+        <View>
           <View style={appStyles.row}>
-           
-              <CustomText
+            <CustomText
               text={"By tapping Continue, you agree to Status’s"}
               color={colors.white}
               size={13}
-              style={{textAlign:"center"}}
+              style={{ textAlign: "center" }}
               fontFam="Poppins-SemiBold"
               fontWeight="500"
             />
-                        <Spacer width={3}/>
-                        <TouchableOpacity>
-                        <CustomText
-              text={"Terms of"}
-              textDecorationLine={"underline"}
-              color={colors.white}
-              size={13}
-              style={{textAlign:"center",marginRight:10}}
-              fontFam="Poppins-SemiBold"
-              fontWeight="500"
-            />
-
-                        </TouchableOpacity>
-
+            <Spacer width={3} />
+            <TouchableOpacity>
+              <CustomText
+                text={"Terms of"}
+                textDecorationLine={"underline"}
+                color={colors.white}
+                size={13}
+                style={{ textAlign: "center", marginRight: 10 }}
+                fontFam="Poppins-SemiBold"
+                fontWeight="500"
+              />
+            </TouchableOpacity>
           </View>
           <View style={appStyles.row}>
-          <TouchableOpacity>
-                        <CustomText
-              text={"Use"}
-              textDecorationLine={"underline"}
-              color={colors.white}
-              size={13}
-            //   style={{textAlign:"center",marginRight:10}}
-              fontFam="Poppins-SemiBold"
-              fontWeight="500"
-            />
-
-                        </TouchableOpacity>
-                        <Spacer width={3}/>
-                        <CustomText
+            <TouchableOpacity>
+              <CustomText
+                text={"Use"}
+                textDecorationLine={"underline"}
+                color={colors.white}
+                size={13}
+                //   style={{textAlign:"center",marginRight:10}}
+                fontFam="Poppins-SemiBold"
+                fontWeight="500"
+              />
+            </TouchableOpacity>
+            <Spacer width={3} />
+            <CustomText
               text={"and"}
               color={colors.white}
               size={13}
               fontFam="Poppins-SemiBold"
               fontWeight="500"
             />
-                                    <Spacer width={3}/>
+            <Spacer width={3} />
 
-             <TouchableOpacity>
-                        <CustomText
-              text={"Privacy Policy."}
-              textDecorationLine={"underline"}
-              color={colors.white}
-              size={13}
-            //   style={{textAlign:"center",marginRight:10}}
-              fontFam="Poppins-SemiBold"
-              fontWeight="500"
-            />
-
-                        </TouchableOpacity>
-
-                        
-                        
-
+            <TouchableOpacity>
+              <CustomText
+                text={"Privacy Policy."}
+                textDecorationLine={"underline"}
+                color={colors.white}
+                size={13}
+                //   style={{textAlign:"center",marginRight:10}}
+                fontFam="Poppins-SemiBold"
+                fontWeight="500"
+              />
+            </TouchableOpacity>
           </View>
-
-         
-          
-         
         </View>
         <Spacer height={25} />
 
         <CustomButton
           text="CONTINUE"
           width={"100%"}
-          onPress={()=>navigation.navigate("ProfileSetup")}
+          onPress={() => navigation.navigate("ProfileSetup")}
           fontWeight={"500"}
-          size={16}
+          size={18}
           textColor={colors.black}
           bgColor={colors.white}
         />
-                <Spacer height={25} />
+        <Spacer height={25} />
 
-                <View style={{height:1,backgroundColor:colors.white}}/>
-                <Spacer height={20} />
-                <View style={{...appStyles.row,justifyContent:"center"}}>
-
-                <CustomText
-              text={"Already a member?"}
-              color={colors.white}
-              size={14}
-              style={{textAlign:"center"}}
-              fontFam="Poppins-SemiBold"
-              fontWeight="500"
-            />
-            <Spacer width={5}/>
-              <CustomText
-              text={"Log In here"}
-              color={colors.white}
-              size={14}
-              textDecorationLine={"underline"}
-              
-              style={{textAlign:"center"}}
-              fontFam="Poppins-SemiBold"
-              fontWeight="500"
-            />
-
-                </View>
-
-
+        <View style={{ height: 1, backgroundColor: colors.white }} />
+        <Spacer height={20} />
+        <View style={{ ...appStyles.row, justifyContent: "center" }}>
+          <CustomText
+            text={"Already a member?"}
+            color={colors.white}
+            size={14}
+            style={{ textAlign: "center" }}
+            fontFam="Poppins-SemiBold"
+            fontWeight="500"
+          />
+          <Spacer width={5} />
+          <CustomText
+            text={"Log In here"}
+            color={colors.white}
+            size={14}
+            textDecorationLine={"underline"}
+            style={{ textAlign: "center" }}
+            fontFam="Poppins-SemiBold"
+            fontWeight="500"
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

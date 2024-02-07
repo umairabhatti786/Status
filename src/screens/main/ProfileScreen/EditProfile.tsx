@@ -154,7 +154,14 @@ const EditProfile = () => {
             size={19}
             text={"Your GIFS"}
           />
+          <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={()=>navigation.navigate("EditGifs")}
+          >
           <CustomText color={colors.white} size={17} text={"Edit"} />
+
+
+          </TouchableOpacity>
         </View>
         <View
           style={{
@@ -188,7 +195,8 @@ const EditProfile = () => {
             marginVertical: "8%",
           }}
         />
-        <View style={{ paddingHorizontal: 15 }}>
+        <View style={{paddingHorizontal:10}}>
+        <View >
           <CustomText
             fontWeight="700"
             color={colors.white}
@@ -198,6 +206,7 @@ const EditProfile = () => {
           <CustomText
             style={{ marginTop: "7%" }}
             color={colors.white}
+            
             size={16}
             text={"Gender"}
           />
@@ -206,7 +215,7 @@ const EditProfile = () => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginLeft: "10%",
+            marginLeft: "7%",
             marginTop: "3%",
           }}
         >
@@ -340,6 +349,9 @@ const EditProfile = () => {
           fontWeight="600"
           marginTop={"7%"}
         />
+
+        </View>
+       
       </ScrollView>
     </SafeAreaView>
   );

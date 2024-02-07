@@ -40,12 +40,12 @@ export default SentRequest;
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: colors.black100,
+    backgroundColor: colors.black300,
     alignItems: "center",
     paddingTop: "18%",
     paddingBottom: "5%",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 18,
+    paddingHorizontal: 20,
   },
 });

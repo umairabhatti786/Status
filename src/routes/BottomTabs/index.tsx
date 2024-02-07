@@ -4,11 +4,11 @@ import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
 import { images } from "../../assets/images";
 import HomeScreen from "../../screens/main/HomeScreen";
 import SearchScreen from "../../screens/main/SearchScreen";
-import AddScreen from "../../screens/main/AddScreen";
 import MessageScreen from "../../screens/main/MessageScreen";
 import ProfileScreen from "../../screens/main/ProfileScreen";
 import { colors } from "../../utils/colors";
 import SearchStack from "../SearchStack";
+import AddStatus from "../../screens/main/AddStatus";
 
 const BottomTab = ({ navigation }: any) => {
   const Bottom = createBottomTabNavigator();
@@ -76,8 +76,8 @@ const BottomTab = ({ navigation }: any) => {
         }}
       />
       <Bottom.Screen
-        name="AddScreen"
-        component={AddScreen}
+        name="AddStatus"
+        component={AddStatus}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => {
@@ -123,7 +123,7 @@ const BottomTab = ({ navigation }: any) => {
                   focused&&(
                     <Image
                     source={images.fillmesssage}
-                    style={{ height: 15, width: 15,position:"absolute",left:3,top:1,right:1}}
+                    style={{ height: 15, width: 15,position:"absolute",right:2.5,top:0.5}}
                     resizeMode="contain"
   
                   />

@@ -31,10 +31,11 @@ const LostPassword = () => {
         </TouchableOpacity>
         <Spacer height={30} />
         <Image
-          style={{ width: 135, height: 135, alignSelf: "center" }}
+          style={{ width: 130, height: 130, alignSelf: "center" }}
           source={images.logo}
+          resizeMode="contain"
         />
-        <Spacer height={20}/>
+        <Spacer height={30}/>
         <CustomText
           text={"Lost your password?"}
           color={colors.white}
@@ -48,13 +49,16 @@ const LostPassword = () => {
         <CustomText
           text={"Enter your registered email below to receive password reset instructions"}
           color={colors.grey400}
-          size={15}
+          lineHeight={25}
+          size={17}
           style={{ textAlign: "center" }}
           fontFam="Poppins-Medium"
           fontWeight="500"
         />
 
         </View>
+        <Spacer height={20} />
+
        
 
         <CustomTextInput
@@ -70,7 +74,7 @@ const LostPassword = () => {
           width={"100%"}
           fontWeight={"500"}
           onPress={()=>navigation.navigate("ResetPassword")}
-          size={16}
+          size={18}
           textColor={colors.black}
           bgColor={colors.white}
         />
@@ -89,7 +93,7 @@ const LostPassword = () => {
             />
 
             <TouchableOpacity
-            onPress={()=>navigation.navigate("Signup")}
+            onPress={()=>navigation.navigate("Login")}
             activeOpacity={0.6}
             >
 

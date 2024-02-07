@@ -186,71 +186,59 @@ const ProfileScreen = () => {
         <ImageBackground
           style={{
             marginTop: 10,
-            marginHorizontal: 10,
-            paddingHorizontal: 15,
+            // marginHorizontal: 10,
+            paddingHorizontal:20,
             overflow: "hidden",
             paddingVertical: 6,
           }}
+          // resizeMode="contain"
           source={images.detailbg}
         >
           <View style={styles.flex}>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.gander} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"Female"}
-              />
+              <CustomText color={colors.white}
+                            size={14}
+
+               text={"Male"} />
             </View>
-            <View style={styles.row}>
+            <View style={{...styles.row,marginLeft:10}}>
               <Image style={styles.icon} source={images.calander} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"32 years old"}
-              />
+              <CustomText color={colors.white} 
+                            size={14}
+
+              text={"40 years old"} />
             </View>
           </View>
           <View style={styles.flex}>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.straight} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"Straight"}
-              />
+              <CustomText color={colors.white} 
+              size={14}
+              text={"Straight"} />
             </View>
-            <View style={styles.row}>
+            <View style={{...styles.row,marginLeft:10}}>
               <Image style={styles.icon} source={images.heart} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"Single"}
-              />
+              <CustomText color={colors.white} 
+                            size={14}
+
+              text={"Single"} />
             </View>
           </View>
           <View style={[styles.flex, { marginBottom: 12 }]}>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.education} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"Bachelor’s Degree"}
-              />
+              <CustomText color={colors.white} 
+                            size={14}
+
+              text={"GED"} />
             </View>
-            <View style={styles.row}>
+            <View style={{...styles.row,marginLeft:10}}>
               <Image style={styles.icon} source={images.bag} />
-              <CustomText
-                size={15}
-                fontWeight="400"
-                color={colors.offwhite}
-                text={"Software Engineer"}
-              />
+              <CustomText color={colors.white} 
+                            size={14}
+
+              text={"Status,Founder"} />
             </View>
           </View>
         </ImageBackground>
@@ -277,6 +265,7 @@ const ProfileScreen = () => {
         </View>
         <FlatList
           data={profileComments}
+          style={{paddingHorizontal:5}}
           contentContainerStyle={{
             gap: 7,
           }}

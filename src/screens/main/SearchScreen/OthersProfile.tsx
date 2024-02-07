@@ -189,41 +189,59 @@ const OthersProfile = () => {
         <ImageBackground
           style={{
             marginTop: 10,
-            marginHorizontal: 10,
-            paddingHorizontal: 15,
+            // marginHorizontal: 10,
+            paddingHorizontal:20,
             overflow: "hidden",
             paddingVertical: 6,
           }}
+          // resizeMode="contain"
           source={images.detailbg}
         >
           <View style={styles.flex}>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.gander} />
-              <CustomText color={colors.white} text={"Male"} />
+              <CustomText color={colors.white}
+                            size={14}
+
+               text={"Male"} />
             </View>
-            <View style={styles.row}>
+            <View style={{...styles.row,marginLeft:10}}>
               <Image style={styles.icon} source={images.calander} />
-              <CustomText color={colors.white} text={"40 years old"} />
+              <CustomText color={colors.white} 
+                            size={14}
+
+              text={"40 years old"} />
             </View>
           </View>
           <View style={styles.flex}>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.straight} />
-              <CustomText color={colors.white} text={"Straight"} />
+              <CustomText color={colors.white} 
+              size={14}
+              text={"Straight"} />
             </View>
-            <View style={styles.row}>
+            <View style={{...styles.row,marginLeft:10}}>
               <Image style={styles.icon} source={images.heart} />
-              <CustomText color={colors.white} text={"Single"} />
+              <CustomText color={colors.white} 
+                            size={14}
+
+              text={"Single"} />
             </View>
           </View>
           <View style={[styles.flex, { marginBottom: 12 }]}>
             <View style={styles.row}>
               <Image style={styles.icon} source={images.education} />
-              <CustomText color={colors.white} text={"GED"} />
+              <CustomText color={colors.white} 
+                            size={14}
+
+              text={"GED"} />
             </View>
-            <View style={styles.row}>
+            <View style={{...styles.row,marginLeft:10}}>
               <Image style={styles.icon} source={images.bag} />
-              <CustomText color={colors.white} text={"Status,Founder"} />
+              <CustomText color={colors.white} 
+                            size={14}
+
+              text={"Status,Founder"} />
             </View>
           </View>
         </ImageBackground>
@@ -250,6 +268,7 @@ const OthersProfile = () => {
         </View>
         <FlatList
           data={profileComments}
+          style={{paddingHorizontal:5}}
           contentContainerStyle={{
             gap: 7,
           }}

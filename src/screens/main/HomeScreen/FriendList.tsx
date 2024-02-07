@@ -51,7 +51,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
           )}
         </View>
 
-        <View style={{ paddingHorizontal: 10, width: "65%", marginTop: -3 }}>
+        <View style={{ paddingHorizontal: 10, width: "65%", marginTop:2 }}>
           <CustomText
             text={item.name}
             color={colors.white}
@@ -59,7 +59,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
             fontFam="Poppins-Bold"
             fontWeight="800"
           />
-          <Spacer height={5} />
+          <Spacer height={3} />
           <CustomText
             text={item.message}
             color={colors.white}
@@ -87,6 +87,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
             //   fontWeight="500"
           />
           {item.count && (
+            
             <View
               style={{
                 width: 32,
@@ -95,7 +96,6 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                 justifyContent: "center",
                 borderRadius: 10,
                 backgroundColor: colors.black,
-                padding: 2,
               }}
             >
               <CustomText

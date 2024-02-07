@@ -280,6 +280,8 @@ export const comments = [
     name: "Lauren Connors",
     message: "Thanks you.it's Rio!",
     time: "8:09 AM",
+    edit:true
+
   },
   {
     img: images.man5,
@@ -301,6 +303,27 @@ export const comments = [
     message: "Great. When are good times to call?",
     time: "11:45 AM",
   },
+];
+
+export const statusComments = [
+  {
+    img: images.man9,
+    name: "Lauren Connors",
+    message: "Thanks you.it's Rio!",
+    time: "8:09 AM",
+    edit:true,
+    chatDate: "2 Comments",
+
+
+  },
+  {
+    img: images.man6,
+    name: "Mike O'Dea",
+    message: "Nice view. Where is that?",
+    time: "7:33 AM",
+  },
+ 
+ 
 ];
 
 export const profileComments = [

@@ -19,9 +19,14 @@ import CustomButton from "../../../components/CustomButton";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import CustomTextInput from "../../../components/CustomTextInput";
+import CheckBox from "../../../components/CheckBox";
 
 const ResetPassword = () => {
   const navigation: any = useNavigation();
+  const [isRemember,setIsRemember]=useState(true)
+  const [showPassword,setShowPAssword]=useState(true)
+
+
 
   return (
     <SafeAreaView style={appStyles.main}>
@@ -35,17 +40,20 @@ const ResetPassword = () => {
         <CustomText
           text={"Reset your password"}
           color={colors.white}
-          size={23}
+          size={25}
           style={{ textAlign: "center" }}
           fontFam="Poppins-Medium"
-          fontWeight="500"
+          fontWeight="600"
         />
-        <Spacer height={10} />
+        <Spacer height={20} />
 
         <CustomTextInput
           label="New passwords"
           placeholder="ADSS@#siya"
-          source={images.eye}
+          isPassword={showPassword}
+          
+          onShowPassword={()=>setShowPAssword(!showPassword)}
+          source={ showPassword? images.eyeclose:images.eye}
         />
         <Spacer height={7} />
         <CustomTextInput
@@ -56,23 +64,11 @@ const ResetPassword = () => {
 
         <View style={appStyles.rowjustify}>
           <View style={appStyles.row}>
-            <TouchableOpacity
-              style={{
-                width: 21,
-                height: 21,
-                borderRadius: 5,
-                borderWidth: 2,
-                borderColor: colors.white,
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-              <Image
-                style={{ width: 10, height: 10, alignSelf: "center" }}
-                source={images.tick}
-                resizeMode="contain"
-              />
-             
-            </TouchableOpacity>
+          <CheckBox
+            isRemember={isRemember}
+            setIsRemember={setIsRemember}
+            />
+            
             <Spacer width={10}/>
               <CustomText
               text={"Sign out of all devices"}
@@ -92,7 +88,7 @@ const ResetPassword = () => {
           onPress={()=>navigation.navigate("Tabs")}
           width={"100%"}
           fontWeight={"500"}
-          size={16}
+          size={18}
           textColor={colors.black}
           bgColor={colors.white}
         />

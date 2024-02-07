@@ -7,7 +7,8 @@ import {
   Text,
   SafeAreaView,
   FlatList,
-  Image
+  Image,
+  ImageBackground,
 } from "react-native";
 import { appStyles } from "../../../utils/AppStyles";
 
@@ -20,43 +21,39 @@ import { colors } from "../../../utils/colors";
 const JoinScreen = () => {
   const navigation: any = useNavigation();
 
-
-
   return (
-      <SafeAreaView style={appStyles.main}>
-          <View style={{flex:1,alignItems:"center",padding:10}}>
-            <Spacer height={"27%"}/>
-              <Image style={{width:167,height:167,}}
-              source={images.logo}
-              />
-                          <Spacer height={"28%"}/>
+    <ImageBackground 
+    source={images.carback}
+    style={appStyles.main}>
+      <View style={{ flex: 1, alignItems: "center", padding: 15 }}>
+        <Spacer height={"18%"} />
+        <Image style={{ width: 167, height: 167 }}
+        resizeMode="contain"
+         source={images.logo} />
+        <Spacer height={"38%"} />
 
-                          <CustomButton
-                          text="JOIN STATUS"
-                          width={"100%"}
-                          fontWeight={"500"}
-                          size={16}
-                          textColor={colors.black}
-                          bgColor={colors.white}
-                          />
-                          <Spacer height={25}/>
-                           <CustomButton
-                          text="SIGN IN >"
-                          width={"100%"}
-                          onPress={()=>navigation.navigate("Login")}
-                          fontWeight={"500"}
-                          size={16}
-                          borderColor={colors.white}
-                          borderWidth={0.7}
-                          textColor={colors.white}
-                          bgColor={colors.black}
-                          />
-
-
-          </View>
-
-      </SafeAreaView>
-    
+        <CustomButton
+          text="JOIN STATUS"
+          width={"100%"}
+          fontWeight={"500"}
+          size={16}
+          textColor={colors.black}
+          bgColor={colors.white}
+        />
+        <Spacer height={25} />
+        <CustomButton
+          text="SIGN IN >"
+          width={"100%"}
+          onPress={() => navigation.navigate("Login")}
+          fontWeight={"500"}
+          size={16}
+          borderColor={colors.white}
+          borderWidth={0.7}
+          textColor={colors.white}
+          bgColor={colors.black}
+        />
+      </View>
+    </ImageBackground>
   );
 };
 

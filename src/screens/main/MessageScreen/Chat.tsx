@@ -61,7 +61,14 @@ const Chat = () => {
             />
           </View>
         </View>
-        <Image source={images.verticaldots} />
+        <TouchableOpacity
+        activeOpacity={0.6}
+        onPress={()=>navigation.navigate("Settings")}
+        >
+                  <Image source={images.verticaldots} />
+
+
+        </TouchableOpacity>
       </View>
       <View style={{ flex: 1 }}>
         <FlatList
