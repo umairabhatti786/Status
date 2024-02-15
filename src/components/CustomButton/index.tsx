@@ -74,7 +74,7 @@ const CustomButton = ({
           color={textColor || colors.white}
           fontWeight={ fontWeight ||"600"}
           size={size || 15}
-          fontFam={fontFam ||"Poppins-Bold"}
+          fontFam={fontFam ||"Poppins-Medium"}
         />
       )}
     </TouchableOpacity>

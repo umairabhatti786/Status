@@ -9,26 +9,51 @@ import ProfileScreen from "../../screens/main/ProfileScreen";
 import { colors } from "../../utils/colors";
 import SearchStack from "../SearchStack";
 import AddStatus from "../../screens/main/AddStatus";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const BottomTab = ({ navigation }: any) => {
   const Bottom = createBottomTabNavigator();
+  const isSrollDa=useSelector(state=>state.auth)?.isScroll
+
+
+  // useEffect()
 
   return (
     <Bottom.Navigator
       initialRouteName="Home"
-      screenOptions={{
+      screenOptions={({ route }) => ({
         tabBarHideOnKeyboard: true,
+             tabBarShowLabel: false,
 
-        tabBarShowLabel: false,
+        // tabBarColor: ({focused, size, color}) => {},
+        // tabBarStyle:()=>{innerHeight:1000},
         tabBarStyle: {
           backgroundColor: "black",
-          justifyContent: "center",
-          alignItems: "center",
-          borderTopWidth: -1,
-          paddingTop: 8,
-          height: 55,
+              justifyContent: "center",
+              alignItems: "center",
+              borderTopWidth: -1,
+              display:"flex",
+              paddingTop: 8,
+              height: 55,
+          // display: route.name === "Home" ? "none" : "flex",
         },
-      }}
+        headerShown: false,
+       
+      })}
+      // screenOptions= {{
+      //   tabBarHideOnKeyboard: true,
+
+      //   tabBarShowLabel: false,
+      //   tabBarStyle: {
+      //     backgroundColor: "black",
+      //     justifyContent: "center",
+      //     alignItems: "center",
+      //     borderTopWidth: -1,
+      //     paddingTop: 8,
+      //     height: 55,
+      //   },
+      // }}
     >
       <Bottom.Screen
         name="HomeScreen"

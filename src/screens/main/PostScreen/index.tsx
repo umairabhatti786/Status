@@ -2,6 +2,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Platform,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -203,7 +204,7 @@ export default Post;
 const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.black300,
-    paddingTop: "18%",
+    paddingTop: Platform.OS=="ios"?"18%":"5%",
     paddingBottom: "5%",
     flexDirection: "row",
     alignItems: "center",

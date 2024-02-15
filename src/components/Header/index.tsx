@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View, Image, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, View, Image, StyleSheet, Platform } from "react-native";
 import { colors } from "../../utils/colors";
 import { appStyles } from "../../utils/AppStyles";
 import CustomText from "../CustomText";
@@ -68,7 +68,7 @@ export default Header;
 const styles=StyleSheet.create({
     main:{  backgroundColor: colors.black300,
         alignItems: "center",
-        paddingTop: "18%",
+        paddingTop: Platform.OS=="ios"?"18%":"5%",
         flexDirection:"row",
         justifyContent:"space-between",
         paddingBottom: "5%",

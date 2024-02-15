@@ -152,7 +152,12 @@ const Signup = () => {
             fontWeight="500"
           />
           <Spacer width={5} />
-          <CustomText
+          <TouchableOpacity
+          activeOpacity={0.6}
+                    onPress={() => navigation.navigate("Login")}
+
+          >
+            <CustomText
             text={"Log In here"}
             color={colors.white}
             size={14}
@@ -161,6 +166,9 @@ const Signup = () => {
             fontFam="Poppins-SemiBold"
             fontWeight="500"
           />
+
+          </TouchableOpacity>
+          
         </View>
       </View>
     </SafeAreaView>

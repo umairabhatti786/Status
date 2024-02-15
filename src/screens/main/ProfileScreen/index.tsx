@@ -54,7 +54,7 @@ const ProfileScreen = () => {
               <View
                 style={{
                   width: windowWidth / 4.5,
-                  height: windowHeight / 10,
+                  height: windowHeight / 9,
                   borderRadius: 10,
                   marginBottom: 3,
                   marginHorizontal: 1.5,
@@ -80,7 +80,7 @@ const ProfileScreen = () => {
               </View>
               <View style={{ marginLeft: 15 }}>
                 <CustomText
-                  fontWeight="700"
+                  fontWeight="600"
                   size={17}
                   numberOfLines={1}
                   color={colors.white}
@@ -89,7 +89,7 @@ const ProfileScreen = () => {
                 />
                 <CustomText
                   style={{ width: windowWidth / 3 }}
-                  fontWeight="700"
+                  fontWeight="600"
                   size={17}
                   numberOfLines={3}
                   color={colors.white}
@@ -185,7 +185,7 @@ const ProfileScreen = () => {
         </View>
         <ImageBackground
           style={{
-            marginTop: 10,
+            margin: 5,
             // marginHorizontal: 10,
             paddingHorizontal:20,
             overflow: "hidden",
@@ -246,13 +246,12 @@ const ProfileScreen = () => {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
+            alignItems:"center",
             paddingHorizontal: 20,
             borderWidth: 1,
+            margin:10,
             borderColor: colors.gray200,
-            paddingVertical: 7,
-            marginBottom: 14,
             marginTop: 5,
-            marginHorizontal: 10,
             borderRadius: 10,
           }}
         >

@@ -37,6 +37,7 @@ const Login = () => {
         <Image
           style={{ width: 135, height: 135, alignSelf: "center" }}
           source={images.logo}
+          resizeMode="contain"
         />
         {/* <Spacer height={10}/> */}
         <CustomText

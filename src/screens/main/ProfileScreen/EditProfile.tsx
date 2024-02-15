@@ -16,6 +16,7 @@ import CustomButton from "../../../components/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import CustomTextInput from "../../../components/CustomTextInput";
+import { Spacer } from "../../../components/Spacer";
 
 const EditProfile = () => {
   const navigation: any = useNavigation();
@@ -53,7 +54,8 @@ const EditProfile = () => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          paddingHorizontal: 12,
+          padding:10
+     
         }}
       >
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -259,7 +261,7 @@ const EditProfile = () => {
         />
         <CustomTextInput
           label="Password"
-          value={"*********"}
+          value={"*****"}
           placeholder="Password"
           color={colors.white}
           fontWeight="600"
@@ -290,7 +292,7 @@ const EditProfile = () => {
           color={colors.white}
           fontWeight="600"
           multiline={true}
-          height={65}
+          height={75}
           marginTop={"7%"}
         />
         <View style={{ zIndex: active === 1 ? 1 : 0 }}>
@@ -349,6 +351,7 @@ const EditProfile = () => {
           fontWeight="600"
           marginTop={"7%"}
         />
+        <Spacer height={20}/>
 
         </View>
        

@@ -4,6 +4,9 @@ import { appStyles } from "../../utils/AppStyles";
 import CustomText from "../CustomText";
 import { Spacer } from "../Spacer";
 import { images } from "../../assets/images";
+import sizeHelper from "../../utils/helpers/sizeHelper";
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+
 
 type Props = {
   title?: string;
@@ -13,23 +16,22 @@ type Props = {
 
 const TopHeader = ({ title, onPressSetting, onPressNotification }: Props) => {
   return (
-    <View style={appStyles.rowjustify}>
+    <View style={{...appStyles.rowjustify,height:verticalScale(40),}}>
       <View style={appStyles.row}>
         <TouchableOpacity onPress={onPressNotification}>
           <Image
-            style={{ width: 30, height: 30 }}
+            style={{ width: sizeHelper.calWp(50), height: sizeHelper.calHp(50) }}
             source={images.bell}
             // resizeMode="contain"
           />
           <View
             style={{
               position: "absolute",
-              width: 22,
-              height: 22,
-              borderRadius: 999,
+              width:verticalScale(20) ,height: verticalScale(20),
+              borderRadius: verticalScale(18),
               backgroundColor: colors.white,
-              right: -12,
-              bottom: 10,
+              right: scale(-8),
+              bottom: verticalScale(8),
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -37,7 +39,7 @@ const TopHeader = ({ title, onPressSetting, onPressNotification }: Props) => {
             <CustomText
               text={"8"}
               color={colors.black}
-              size={14}
+              size={sizeHelper.calHp(25)}
               fontFam="Poppins-Medium"
               // fontWeight="Poppins-Bold"
             />
@@ -66,16 +68,16 @@ const TopHeader = ({ title, onPressSetting, onPressNotification }: Props) => {
 
       <TouchableOpacity>
         <Image
-          style={{ width: 27, height: 27 }}
-          source={images.appicon}
+            style={{ width: sizeHelper.calWp(50), height: sizeHelper.calHp(50) }}
+            source={images.appicon}
           resizeMode="contain"
         />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={onPressSetting}>
         <Image
-          style={{ width: 25, height: 25 }}
-          source={images.setting}
+            style={{ width: sizeHelper.calWp(45), height: sizeHelper.calHp(45) }}
+            source={images.setting}
           resizeMode="contain"
         />
       </TouchableOpacity>

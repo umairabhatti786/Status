@@ -17,6 +17,8 @@ import { images } from "../../../assets/images";
 import { Spacer } from "../../../components/Spacer";
 import CustomButton from "../../../components/CustomButton";
 import { colors } from "../../../utils/colors";
+import { windowHeight } from "../../../utils/Dimensions";
+import { windowWidth } from "../../main/HomeScreen/FriendList";
 
 const JoinScreen = () => {
   const navigation: any = useNavigation();
@@ -26,31 +28,35 @@ const JoinScreen = () => {
     source={images.carback}
     style={appStyles.main}>
       <View style={{ flex: 1, alignItems: "center", padding: 15 }}>
-        <Spacer height={"18%"} />
-        <Image style={{ width: 167, height: 167 }}
+        <Spacer height={windowHeight/8} />
+        <Image style={{ width: windowWidth/2.5, height: windowHeight/3.5 }}
         resizeMode="contain"
          source={images.logo} />
-        <Spacer height={"38%"} />
+        <Spacer height={windowHeight/4} />
 
         <CustomButton
           text="JOIN STATUS"
           width={"100%"}
-          fontWeight={"500"}
+          onPress={() => navigation.navigate("Tabs")}
+
+          // fontWeight={"500"}
           size={16}
           textColor={colors.black}
           bgColor={colors.white}
         />
         <Spacer height={25} />
         <CustomButton
-          text="SIGN IN >"
+          text="SIGN IN"
           width={"100%"}
           onPress={() => navigation.navigate("Login")}
-          fontWeight={"500"}
+          // fontWeight={"500"}
+          fontFam={"Poppins-Regular"}
           size={16}
           borderColor={colors.white}
           borderWidth={0.7}
+          // borderRadius={7}
           textColor={colors.white}
-          bgColor={colors.black}
+          bgColor={"black"}
         />
       </View>
     </ImageBackground>

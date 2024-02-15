@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { appStyles } from "../../../utils/AppStyles";
 import { images } from "../../../assets/images";
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.black300,
     alignItems: "center",
-    paddingTop: "18%",
+    paddingTop: Platform.OS=="ios"?"18%":"5%",
     paddingBottom: "5%",
     flexDirection: "row",
     justifyContent: "space-between",

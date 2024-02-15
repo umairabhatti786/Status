@@ -27,6 +27,9 @@ export const images = {
   defimagese1: require("../images/def-image-se1.png"),
   defimages2: require("../images/def-image-se2.png"),
   defimages3: require("../images/def-image-se3.png"),
+  defimg: require("../images/defimg.png"),
+  defimg1: require("../images/defimg1.png"),
+  defimg2: require("../images/defimg2.png"),
 
   add: require("../images/add.png"),
   home: require("../icons/home.png"),

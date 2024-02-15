@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { colors } from "../../../utils/colors";
 import { appStyles } from "../../../utils/AppStyles";
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.primary,
     alignItems: "center",
-    paddingTop: "18%",
+    paddingTop: Platform.OS=="ios"?"18%":"5%",
     paddingBottom: "5%",
   },
   inputContainer: {

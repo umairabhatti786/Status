@@ -45,22 +45,19 @@ const SearchScreen = () => {
     {
       name: "MIke O’Dea",
       img: images.defimage23,
-      online: true,
       nearby: "10mi",
     },
     {
       name: "Lexi Reegan",
       img: images.defimage22,
-      online: true,
       nearby: "10mi",
     },
     {
       name: "Lexi Reegan",
       img: images.defimage21,
-      online: true,
       nearby: "10mi",
     },
-    { name: "MIke O’Dea", img: images.defimage9, online: true, nearby: "10mi" },
+    { name: "MIke O’Dea", img: images.defimage9,  nearby: "10mi" },
     { name: "MIke O’Dea", img: images.defimage10, nearby: "10mi" },
     { name: "Lexi Reegan", img: images.defimage11, nearby: "10mi" },
     { name: "T Smith", img: images.defimage12, nearby: "10mi" },

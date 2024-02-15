@@ -7,6 +7,7 @@ const initialState = {
   isBioVerified: false,
   isFirstLogin: false,
   notificationAlert: false,
+  isScroll:0,
   createPostLocation: "",
   userToken:"",
   currentLocation: "",
@@ -33,6 +34,9 @@ const authSlice = createSlice({
     },
     setIsFirstLogin: (state, action) => {
       state.isFirstLogin = action.payload;
+    },
+    setIsScroll: (state, action) => {
+      state.isScroll = action.payload;
     },
     setCreatePostLocation: (state, action) => {
       state.createPostLocation = action.payload;
@@ -68,5 +72,6 @@ export const {
   setAllViewIds,
   setIsFirstLogin,
   setUserToken,
+  setIsScroll,
 } = authSlice.actions;
 export default authSlice.reducer;

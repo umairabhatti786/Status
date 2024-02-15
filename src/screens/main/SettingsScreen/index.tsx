@@ -1,5 +1,6 @@
 import {
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -224,7 +225,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.black300,
     alignItems: "center",
-    paddingTop: "18%",
+    paddingTop: Platform.OS=="ios"?"18%":"5%",
     paddingBottom: "7%",
     flexDirection: "row",
     justifyContent: "space-between",

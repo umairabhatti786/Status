@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, version } from "react";
 import {
   Alert,
   LogBox,
@@ -7,6 +7,7 @@ import {
   Text,
   SafeAreaView,
   FlatList,
+  Platform,
 } from "react-native";
 import { colors } from "../../../utils/colors";
 import { appStyles } from "../../../utils/AppStyles";
@@ -16,20 +17,27 @@ import TopBar from "../../../components/TopBar";
 import FriendList from "./FriendList";
 import { images } from "../../../assets/images";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { setIsScroll } from "../../../redux/reducers/authReducer";
+import { scale, verticalScale } from "react-native-size-matters";
 
 const HomeScreen = () => {
   const navigation: any = useNavigation();
   const [activeBar, setActiveBar] = useState("Friends");
+     const dispatch=useDispatch()
+     const isSroll=useSelector(state=>state.auth)?.isScroll
+
 
   const topBarData=[
     "Friends",
     "My Updates"
   ]
 
-
+ 
   const chatList = [
     {
-      img: images.man9,
+      img: images.defimg2,
       imgbg: images.postBg,
       postimg: images.postCity,
       address: "Boston, MA United States 245 Friends",
@@ -42,7 +50,7 @@ const HomeScreen = () => {
       update: true,
     },
     {
-      img: images.man2,
+      img: images.defimg1,
       imgbg: images.postBg,
       name: "Joe Rogan",
       message: "I’m doing stand-up tonight at the Comedy Club. Come on...",
@@ -51,7 +59,7 @@ const HomeScreen = () => {
       count: "10",
     },
     {
-      img: images.man3,
+      img: images.defimg,
       imgbg: images.backimage10,
       status:false,
       commentLength:2,
@@ -62,17 +70,17 @@ const HomeScreen = () => {
       count: "14",
     },
     {
-      img: images.man4,
+      img: images.defimg2,
       imgbg: images.postBg,
       name: "Jenny",
       message:
-        "I think that people should be more kind to one another. Just saying...",
+        "When there is no comment count on a status update the text goes further.",
       time: "JAN 12",
       address: "Boston, MA United States 245 Friends",
       //   count: "2",
     },
     {
-      img: images.man5,
+      img: images.defimg1,
       imgbg: images.postBg,
       name: "Todd Mason",
       message: "Who wants to meet up and grab a drink? On me!",
@@ -81,7 +89,7 @@ const HomeScreen = () => {
       count: "7",
     },
     {
-      img: images.man6,
+      img: images.defimg,
       imgbg: images.postBg,
       name: "Lucas",
       message:
@@ -91,7 +99,7 @@ const HomeScreen = () => {
       count: "453",
     },
     {
-      img: images.man7,
+      img: images.defimg2,
       imgbg: images.postBg,
       name: "Holly",
       address: "Boston, MA United States 245 Friends",
@@ -101,7 +109,7 @@ const HomeScreen = () => {
       count: "10",
     },
     {
-      img: images.man8,
+      img: images.defimg1,
       imgbg: images.postBg,
       name: "Joey D",
       address: "Boston, MA United States 245 Friends",
@@ -110,7 +118,32 @@ const HomeScreen = () => {
       count: "3",
     },
     {
-      img: images.man8,
+      img: images.defimg2,
+      imgbg: images.postBg,
+      name: "Joey D",
+      address: "Boston, MA United States 245 Friends",
+      message: "At the laundry mat. Missing my washing machine days...",
+      time: "JAN 10",
+      count: "3",
+    },
+    {
+      img: images.defimg2,
+      imgbg: images.postBg,
+      name: "Joey D",
+      address: "Boston, MA United States 245 Friends",
+      message: "At the laundry mat. Missing my washing machine days...",
+      time: "JAN 10",
+      count: "3",
+    }, {
+      img: images.defimg1,
+      imgbg: images.postBg,
+      name: "Joey D",
+      address: "Boston, MA United States 245 Friends",
+      message: "At the laundry mat. Missing my washing machine days...",
+      time: "JAN 10",
+      count: "3",
+    }, {
+      img: images.defimg,
       imgbg: images.postBg,
       name: "Joey D",
       address: "Boston, MA United States 245 Friends",
@@ -133,35 +166,52 @@ const HomeScreen = () => {
       />
     );
   };
+  const onScroll = async  (x: any) => {
+    const xPos =
+      x.nativeEvent?.contentOffset?.y < 0 ? 0 : x.nativeEvent?.contentOffset?.y;
+    const current = Math.floor(xPos / 60);
+    console.log("cdlncldc",current)
+
+    dispatch(setIsScroll(current))
+ 
+  };
 
   return (
     <SafeAreaView style={appStyles.main}>
       <Spacer height={7} />
-      <View style={{ paddingHorizontal: 20 }}>
-        <TopHeader
-          onPressNotification={() => navigation.navigate("Notifications")}
-          onPressSetting={() => navigation.navigate("Settings")}
-        />
-        <Spacer height={20} />
+     
+          <View >
+            <View style={{paddingHorizontal:scale(15)}}>
+            <TopHeader
+            onPressNotification={() => navigation.navigate("Notifications")}
+            onPressSetting={() => navigation.navigate("Settings")}
+          />
 
-        <TopBar 
-        topBarData={topBarData}
-        activeBar={activeBar} setActiveBar={setActiveBar} />
-      </View>
+            </View>
+         
+          <Spacer height={verticalScale(15)} />
+  
+          <TopBar 
+          topBarData={topBarData}
+          activeBar={activeBar} setActiveBar={setActiveBar} />
+        </View>
+     
       <Spacer height={10} />
-      <View>
+      {/* <View > */}
         <FlatList
+        // style={{paddingHorizontal:10}}
+        onScroll={onScroll}
           data={
             activeBar == "My Updates"
               ? chatList.filter((item) => item.update)
               : chatList
           }
           contentContainerStyle={{
-            gap: 5,
+            gap: 7,
           }}
           renderItem={renderChatList}
         />
-      </View>
+      {/* </View> */}
     </SafeAreaView>
   );
 };

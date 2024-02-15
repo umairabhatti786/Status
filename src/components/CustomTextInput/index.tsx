@@ -171,6 +171,8 @@ const CustomTextInput = ({
                 fontSize: 15,
                 width: windowWidth / 1.2,
                 height: height || 53,
+                alignItems:"center",
+                paddingTop:20,
                 fontFamily:"Poppins-Regular",
                 fontWeight: fontWeight,
                 color: color || colors.grey400,
