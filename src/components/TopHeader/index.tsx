@@ -5,45 +5,52 @@ import CustomText from "../CustomText";
 import { Spacer } from "../Spacer";
 import { images } from "../../assets/images";
 import sizeHelper from "../../utils/helpers/sizeHelper";
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
-
+import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 
 type Props = {
   title?: string;
   onPressSetting?: any;
   onPressNotification?: any;
+  isSearch?: any;
 };
 
-const TopHeader = ({ title, onPressSetting, onPressNotification }: Props) => {
+const TopHeader = ({
+  title,
+  onPressSetting,
+  onPressNotification,
+  isSearch,
+}: Props) => {
   return (
-    <View style={{...appStyles.rowjustify,height:verticalScale(40),}}>
+    <View style={{ ...appStyles.rowjustify, height: verticalScale(40) }}>
       <View style={appStyles.row}>
         <TouchableOpacity onPress={onPressNotification}>
           <Image
-            style={{ width: sizeHelper.calWp(50), height: sizeHelper.calHp(50) }}
+            style={{
+              width: sizeHelper.calWp(52),
+              height: sizeHelper.calHp(52),
+            }}
             source={images.bell}
             // resizeMode="contain"
           />
           <View
             style={{
+              width: scale(7.5),
+              height: scale(7.5),
+              borderRadius: 999,
+              backgroundColor: colors.green100,
+              marginBottom: verticalScale(3),
+              right: scale(-3),
+              top: 0,
+              bottom: verticalScale(9),
               position: "absolute",
-              width:verticalScale(20) ,height: verticalScale(20),
-              borderRadius: verticalScale(18),
-              backgroundColor: colors.white,
-              right: scale(-8),
-              bottom: verticalScale(8),
-              alignItems: "center",
-              justifyContent: "center",
+
+
+
+
             }}
-          >
-            <CustomText
-              text={"8"}
-              color={colors.black}
-              size={sizeHelper.calHp(25)}
-              fontFam="Poppins-Medium"
-              // fontWeight="Poppins-Bold"
-            />
-          </View>
+          />
+
+          
         </TouchableOpacity>
         {/* <Spacer width={15} />
 
@@ -68,16 +75,16 @@ const TopHeader = ({ title, onPressSetting, onPressNotification }: Props) => {
 
       <TouchableOpacity>
         <Image
-            style={{ width: sizeHelper.calWp(50), height: sizeHelper.calHp(50) }}
-            source={images.appicon}
+          style={{ width: sizeHelper.calWp(50), height: sizeHelper.calHp(50) }}
+          source={images.appicon}
           resizeMode="contain"
         />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={onPressSetting}>
         <Image
-            style={{ width: sizeHelper.calWp(45), height: sizeHelper.calHp(45) }}
-            source={images.setting}
+          style={{ width: sizeHelper.calWp(42), height: sizeHelper.calHp(42) }}
+          source={isSearch ? images.search100 : images.setting}
           resizeMode="contain"
         />
       </TouchableOpacity>

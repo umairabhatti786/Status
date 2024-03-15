@@ -28,14 +28,13 @@ const FriendList = ({ item, onPress, disabled }: any) => {
           // height: verticalScale(85),
           borderRadius: scale(10),
           backgroundColor: "#1D2029",
-          padding: 5,
+          padding: scale(6),
           flexDirection: "row",
-          alignItems: "center",
           justifyContent:"space-between"
         }}
       >
-        <View style={appStyles.row}>
-        <View style={{ width: 63, height:65,marginLeft:scale(3)}}>
+        <View style={{flexDirection:"row"}}>
+        <View style={{ width: verticalScale(75), height:verticalScale(90),marginLeft:scale(3)}}>
           <Image
             style={{ width: "100%", height: "100%",borderRadius:scale(5),overflow:'hidden' }}
             source={item?.img}
@@ -54,8 +53,9 @@ const FriendList = ({ item, onPress, disabled }: any) => {
             ></View>
           )} */}
         </View>
+        
 
-       <View style={{ paddingLeft: 15, width:item.count ?windowWidth/1.6:windowWidth/1.3,}}>
+       <View style={{ paddingLeft: scale(15), width:item.postimg ?scale(187):scale(250),}}>
 
        {/* size={15}
                 fontFam="Poppins-Bold"
@@ -63,71 +63,110 @@ const FriendList = ({ item, onPress, disabled }: any) => {
           <CustomText
             text={item.name}
             color={colors.white}
-            size={15}
-            fontFam="Roboto-Medium"
+            size={16}
+            fontFam="Poppins-SemiBold"
             fontWeight="800"
           />
-          <Spacer height={verticalScale(6)} />
+          {/* <Spacer height={verticalScale(6)} /> */}
           <CustomText
             text={item.message}
-            color={colors.gray500}
-            size={15}
+            color={"#FFFFFF"}
+            size={14}
             numberOfLines={2}
-            fontFam="Poppins-Medium"
-            fontWeight="600"
+            style={{marginVertical:verticalScale(5)}}
+            // fontFam="Poppins-Medium"
+            fontWeight="500"
           />
-        </View>
-        </View>
-        
-        <View
-          style={{
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            paddingRight:scale(7),
-            paddingTop:verticalScale(5),
-            paddingBottom: verticalScale(5),
-            position:"absolute",
-            right:scale(10),
-            top:verticalScale(0),
-            
-            // backgroundColor:"red"
-          }}
-        >
+                    {/* <Spacer height={verticalScale(6)} /> */}
+
+
+
+          <View style={{...appStyles.row}}>
+            <View style={{width:scale(7),height:scale(7),borderRadius:999,backgroundColor:colors.green100,marginBottom:verticalScale(3)}}/>
+            <CustomText
+            text={`${item.unread} unread`}
+            color={colors.green100}
+            size={10}
+            style={{marginHorizontal:scale(5)}}
+            // fontFam="Poppins-Medium"
+            fontWeight="400"
+          />
+                      <View style={{width:scale(4.5),height:scale(4.5),borderRadius:999,backgroundColor:colors.white,marginRight:scale(5),marginBottom:verticalScale(3)}}/>
+
           <CustomText
             text={item.time}
-            color={colors.gray500}
-            size={verticalScale(12)}
-            fontFam="Poppins-Regular"
-            //   fontWeight="500"
+            color={"#FFFFFF"}
+            size={10}
+            // fontFam="Poppins-Medium"
+            fontWeight="400"
           />
-          {item.count && (
-            <>
-            <Spacer  height={verticalScale(10)}/>
-             <View
-              style={{
-                width: scale(25),
-                height:scale(25),
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius:scale(25),
-                padding:scale(2),
-                backgroundColor: colors.black,
-              }}
-            >
-              <CustomText
-                text={item.count}
-                color={colors.white}
-                // size={verticalScale(10)}
-                fontFam="Poppins-Regular"
-                //   fontWeight="500"
-              />
-            </View>
-            </>
 
-            
-           
-          )}
+          </View>
         </View>
+        </View>
+        {
+          item.postimg&&(
+            <View
+            style={{
+              alignItems: "flex-end",
+              justifyContent: "space-between",
+              paddingRight:scale(7),
+              paddingTop:verticalScale(5),
+              paddingBottom: verticalScale(5),
+              position:"absolute",
+              alignSelf:"center",
+              right:scale(5),
+              top:"20%",
+              
+              // backgroundColor:"red"
+            }}
+          >
+             <View style={{ width: verticalScale(55), height:verticalScale(55),}}>
+            <Image
+              style={{ width: "100%", height: "100%",borderRadius:scale(5),overflow:'hidden' }}
+              source={item?.postimg}
+            />
+            </View>
+            {/* <CustomText
+              text={item.time}
+              color={colors.gray500}
+              size={verticalScale(12)}
+              fontFam="Poppins-Regular"
+              //   fontWeight="500"
+            />
+            {item.count && (
+              <>
+              <Spacer  height={verticalScale(10)}/>
+               <View
+                style={{
+                  width: scale(25),
+                  height:scale(25),
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius:scale(25),
+                  padding:scale(2),
+                  backgroundColor: colors.black,
+                }}
+              >
+                <CustomText
+                  text={item.count}
+                  color={colors.white}
+                  // size={verticalScale(10)}
+                  fontFam="Poppins-Regular"
+                  //   fontWeight="500"
+                />
+              </View>
+              </>
+  
+              
+             
+            )} */}
+          </View>
+            
+          )
+        }
+        
+       
       </TouchableOpacity>
     </>
   );

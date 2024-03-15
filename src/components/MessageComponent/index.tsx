@@ -4,6 +4,7 @@ import CustomText from "../CustomText";
 import { colors } from "../../utils/colors";
 import { windowWidth } from "../../utils/Dimensions";
 import { appStyles } from "../../utils/AppStyles";
+import { scale, verticalScale } from "react-native-size-matters";
 
 type Props = {
   name?: string;
@@ -36,17 +37,19 @@ const MessagesComponent = ({
             flexDirection: "row",
             alignItems: "center",
             alignSelf: "center",
-            marginVertical: 8,
+            marginBottom: verticalScale(10),
+
           }}>
           <View
             style={{
-              borderTopWidth: 0.4,
-              width: windowWidth / 3,
-              borderColor: colors.lightgray,
+              width: "35%",
+              backgroundColor: "#2F3541",
+              height:1,
+
             }}
           />
           <CustomText
-            style={{ marginHorizontal: 12 }}
+            style={{ marginHorizontal: scale(10) }}
             text={chatDate}
             color={colors.lightgray}
             size={13}
@@ -55,9 +58,9 @@ const MessagesComponent = ({
           />
           <View
             style={{
-              borderTopWidth: 0.4,
-              width: windowWidth / 3,
-              borderColor: colors.lightgray,
+              width: "35%",
+              height:1,
+              backgroundColor: "#2F3541",
             }}
           />
         </View>
@@ -65,74 +68,81 @@ const MessagesComponent = ({
       <View
         style={{
           flexDirection: "row",
-          paddingVertical: 5,
+          // paddingVertical: verticalScale(8),
           paddingHorizontal: 10,
           backgroundColor: comments ? colors.black300 : colors.black,
           borderRadius: 12,
+          paddingVertical:verticalScale(8)
+          
         }}>
         <View style={{ width: 62, height: 62 }}>
           <Image
-            style={{ width: "100%", height: "100%", borderRadius: 10 }}
+            style={{ width: "100%", height: "100%", borderRadius: scale(5) }}
             source={image}
           />
         </View>
-        <View style={{ marginLeft: 10 }}>
+        <View style={{ marginLeft: scale(12) }}>
           <View
             style={{
               flexDirection: "row",
-              alignItems: "center",
+              // alignItems: "center",
               justifyContent: "space-between",
-              width: windowWidth / 1.4,
+              width: scale(190),              // backgroundColor:"red"
             }}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{...appStyles.row,marginTop:verticalScale(-3)}}>
               <CustomText
                 text={name}
                 color={colors.white}
-                size={15}
-                fontFam="Poppins-Bold"
-                fontWeight="800"
+                size={16}
+                fontFam="Poppins-SemiBold"
+                fontWeight="700"
               />
-              <CustomText
-                text={"."}
-                color={colors.grey400}
-                size={24}
-                fontFam="Poppins-Regular"
-                style={{
-                  marginTop: -12,
-                  marginHorizontal: 8,
-                }}
-              />
+              <View style={{width:scale(3.5),height:scale(3.5),backgroundColor:colors.white,borderRadius:999,marginHorizontal: scale(8),marginTop:verticalScale(2)}}/>
+             
               <CustomText
                 text={time}
                 color={colors.lightgray}
                 size={13}
+                style={{marginTop:verticalScale(4)}}
                 fontFam="Poppins-Regular"
               />
             </View>
-            {!profile && (
-              <TouchableOpacity style={appStyles.row}>
-                {edit && (
-                  <TouchableOpacity
-                    style={{ marginRight: 7 }}
-                    activeOpacity={0.6}
-                    onPress={onEdit}>
-                    <CustomText color={colors.lightgray} text={"Edit"} />
-                  </TouchableOpacity>
-                )}
-
-                <CustomText color={colors.lightgray} text={"Reply"} />
-              </TouchableOpacity>
-            )}
+           
           </View>
           <CustomText
             text={message}
             color={profile ? colors.gray500 : colors.white}
-            size={15}
-            style={{ width: windowWidth / 1.5, marginTop: 3 }}
+            size={16}
+            lineHeight={20}
+            style={{               width: scale(190),              // backgroundColor:"red"
+            marginTop:verticalScale(2) }}
             fontFam="Poppins-Medium"
             fontWeight={profile ? "600" : "500"}
           />
         </View>
+
+        <View
+          style={{
+            width: 60,
+            height: 60,
+            paddingTop: -2,
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            // paddingBottom: 5,
+            // backgroundColor:"red"
+          }}
+        >
+            <CustomText
+              text={"Delete"}
+              color={colors.grey300}
+              size={14}
+              fontFam="Poppins-Regular"
+            />
+        
+          
+        </View>
+
+
       </View>
     </View>
   );

@@ -19,6 +19,9 @@ import CustomButton from "../../../components/CustomButton";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import CustomTextInput from "../../../components/CustomTextInput";
+import { scale, verticalScale } from "react-native-size-matters";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 
 const Signup = () => {
   const navigation: any = useNavigation();
@@ -27,20 +30,25 @@ const Signup = () => {
   console.log("showPassword",showPassword)
 
   return (
-    <SafeAreaView style={appStyles.main}>
-      <View style={{ flex: 1, padding: 15 }}>
+    <KeyboardAwareScrollView
+    showsVerticalScrollIndicator={false}
+    style={{ flex: 1 }}
+    // extraScrollHeight={-100}
+  >
+      <SafeAreaView style={appStyles.main}>
+      <View style={{ flex: 1, padding: scale(20) }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={images.back} />
         </TouchableOpacity>
-        <Spacer height={30} />
+        <Spacer height={verticalScale(10)} />
         <Image
-          style={{ width: 130, height: 130, alignSelf: "center" }}
+          style={{ width: windowWidth/3.5, height: windowHeight/5.7,alignSelf: "center"}}
           source={images.logo}
           resizeMode="contain"
         />
         {/* <Spacer height={10}/> */}
         <CustomText
-          text={"Let’s get you signed up."}
+          text={"Create Account"}
           color={colors.white}
           size={21}
           style={{ textAlign: "center" }}
@@ -51,7 +59,7 @@ const Signup = () => {
 
         <CustomTextInput
           label="Email"
-          placeholder="Enter your login email address"
+          placeholder="Enter your email address"
         />
         <Spacer height={7} />
         <CustomTextInput
@@ -74,9 +82,9 @@ const Signup = () => {
             <CustomText
               text={"By tapping Continue, you agree to Status’s"}
               color={colors.white}
-              size={13}
+              size={11}
               style={{ textAlign: "center" }}
-              fontFam="Poppins-SemiBold"
+              fontFam="Poppins-Medium"
               fontWeight="500"
             />
             <Spacer width={3} />
@@ -85,9 +93,9 @@ const Signup = () => {
                 text={"Terms of"}
                 textDecorationLine={"underline"}
                 color={colors.white}
-                size={13}
+                size={11}
                 style={{ textAlign: "center", marginRight: 10 }}
-                fontFam="Poppins-SemiBold"
+                fontFam="Poppins-Medium"
                 fontWeight="500"
               />
             </TouchableOpacity>
@@ -98,9 +106,9 @@ const Signup = () => {
                 text={"Use"}
                 textDecorationLine={"underline"}
                 color={colors.white}
-                size={13}
+                size={11}
                 //   style={{textAlign:"center",marginRight:10}}
-                fontFam="Poppins-SemiBold"
+                fontFam="Poppins-Medium"
                 fontWeight="500"
               />
             </TouchableOpacity>
@@ -108,8 +116,8 @@ const Signup = () => {
             <CustomText
               text={"and"}
               color={colors.white}
-              size={13}
-              fontFam="Poppins-SemiBold"
+              size={11}
+              fontFam="Poppins-Medium"
               fontWeight="500"
             />
             <Spacer width={3} />
@@ -119,9 +127,9 @@ const Signup = () => {
                 text={"Privacy Policy."}
                 textDecorationLine={"underline"}
                 color={colors.white}
-                size={13}
-                //   style={{textAlign:"center",marginRight:10}}
-                fontFam="Poppins-SemiBold"
+                size={11}
+                style={{marginLeft:3}}
+                fontFam="Poppins-Medium"
                 fontWeight="500"
               />
             </TouchableOpacity>
@@ -132,9 +140,9 @@ const Signup = () => {
         <CustomButton
           text="CONTINUE"
           width={"100%"}
-          onPress={() => navigation.navigate("ProfileSetup")}
+          onPress={() => navigation.navigate("ConfirmationCode")}
           fontWeight={"500"}
-          size={18}
+          // size={18}
           textColor={colors.black}
           bgColor={colors.white}
         />
@@ -146,9 +154,9 @@ const Signup = () => {
           <CustomText
             text={"Already a member?"}
             color={colors.white}
-            size={14}
+            size={11}
             style={{ textAlign: "center" }}
-            fontFam="Poppins-SemiBold"
+            fontFam="Poppins-Medium"
             fontWeight="500"
           />
           <Spacer width={5} />
@@ -160,10 +168,10 @@ const Signup = () => {
             <CustomText
             text={"Log In here"}
             color={colors.white}
-            size={14}
+            size={11}
             textDecorationLine={"underline"}
             style={{ textAlign: "center" }}
-            fontFam="Poppins-SemiBold"
+            fontFam="Poppins-Medium"
             fontWeight="500"
           />
 
@@ -172,6 +180,8 @@ const Signup = () => {
         </View>
       </View>
     </SafeAreaView>
+    </KeyboardAwareScrollView>
+  
   );
 };
 

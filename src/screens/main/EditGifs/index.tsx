@@ -20,6 +20,13 @@ import { colors } from "../../../utils/colors";
 import { windowHeight } from "../../../utils/Dimensions";
 import { windowWidth } from "../HomeScreen/FriendList";
 import GifContainer from "./GifContainer";
+import AbsoluteHeader from "../../../components/AbsoluteHeader";
+
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
+import { scale, verticalScale } from "react-native-size-matters";
 
 const EditGifs = ({ navigation }: any) => {
   const yourGifs = [{ gif: images.defimage2 }, { gif: images.defimage4 }];
@@ -39,7 +46,75 @@ const EditGifs = ({ navigation }: any) => {
 
   return (
     <View style={appStyles.main}>
-      <View
+       <AbsoluteHeader
+
+       paddingBottom={"2%"}
+       paddingTop={"2%"}
+       >
+          <TouchableOpacity 
+                    style={{width:"8%"}}
+
+          onPress={() => navigation.goBack()}>
+            <Image
+              style={{ width: wp(4.5), height: hp(2.3) }}
+              resizeMode="contain"
+              source={images.back}
+            />
+          </TouchableOpacity>
+
+          <View
+          style={{
+            width: "62%",
+            borderRadius: 5,
+            backgroundColor: colors.black,
+            marginVertical:verticalScale(7),
+
+            // marginLeft: 5,
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: 10,
+          }}>
+          <Image
+            style={{ width:scale(22), height: scale(22), tintColor: colors.white }}
+            source={images.search}
+            resizeMode="contain"
+          />
+          <TextInput
+            placeholder="Search GIPHY"
+            
+            style={{
+              fontSize: verticalScale(18),
+              fontFamily: "Poppins-Regular",
+              color:colors.white,
+              paddingLeft: 10,
+              paddingVertical:verticalScale(9),
+              marginTop:4,
+              // backgroundColor:"red",
+              alignItems:"center",
+              justifyContent:"center",
+              // backgroundColor:"red"
+            }}
+            placeholderTextColor={colors.grey400}
+          />
+        </View>
+
+        <CustomButton
+          text="Save"
+          width={scale(60)}
+          height={35}
+          borderRadius={5}
+          bgColor={colors.white}
+          textColor={colors.black}
+        />
+
+       
+
+         
+
+
+        
+        </AbsoluteHeader>
+      {/* <View
         style={{
           backgroundColor: colors.black300,
           alignItems: "center",
@@ -91,30 +166,34 @@ const EditGifs = ({ navigation }: any) => {
           bgColor={colors.white}
           textColor={colors.black}
         />
-      </View>
+      </View> */}
 
       <ScrollView style={{ flex: 1 }}>
+        <View style={{marginHorizontal:scale(10)}}>
+
         <CustomText
           color={colors.white}
-          size={20}
+          size={18}
           text={"Active GIFS"}
-          style={{ marginLeft: 20, marginTop: 15, marginBottom: 5 }}
+          style={{ marginTop: verticalScale(20), marginBottom: 5 }}
         />
         <View>
           <FlatList
             scrollEnabled={false}
             data={yourGifs}
             numColumns={2}
-            style={{ flexWrap: "nowrap" }}
+            style={{ flexWrap: "nowrap",                   
+          }}
             renderItem={({ item, index }) => {
               return (
                 <View
                   style={{
-                    width: windowWidth - 215,
+                    width: "47%",
                     height: 180,
                     borderWidth: 1,
                     borderColor: colors.white,
-                    margin: 10,
+                    marginRight:scale(15),
+                    // margin: 10,
                   }}>
                   <Image
                     style={{ width: "100%", height: "100%" }}
@@ -128,9 +207,9 @@ const EditGifs = ({ navigation }: any) => {
 
         <CustomText
           color={colors.white}
-          size={20}
+          size={18}
           text={"Search Results"}
-          style={{ marginLeft: 20, marginTop: 15, marginBottom: 5 }}
+          style={{  marginTop: verticalScale(30), marginBottom: 5 }}
         />
 
         <FlatList
@@ -147,6 +226,9 @@ const EditGifs = ({ navigation }: any) => {
             );
           }}
         />
+
+        </View>
+      
       </ScrollView>
     </View>
   );

@@ -19,6 +19,7 @@ import CustomButton from "../../../components/CustomButton";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import CustomTextInput from "../../../components/CustomTextInput";
+import { scale, verticalScale } from "react-native-size-matters";
 
 const ProfileSetup = () => {
   const navigation: any = useNavigation();
@@ -26,8 +27,8 @@ const ProfileSetup = () => {
 
   return (
     <SafeAreaView style={appStyles.main}>
-      <View style={{ flex: 1, padding: 15 }}>
-        <View style={appStyles.row}>
+      <View style={{ flex: 1, padding: scale(20) }}>
+        {/* <View style={appStyles.row}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image source={images.back} />
           </TouchableOpacity>
@@ -40,23 +41,35 @@ const ProfileSetup = () => {
             fontFam="Poppins-Medium"
             fontWeight="500"
           />
-        </View>
-        <Spacer height={35} />
+        </View> */}
+                <Spacer height={verticalScale(30)} />
+
+        <CustomText
+            text={"Profile Setup"}
+            color={colors.white}
+            size={21}
+            style={{ textAlign: "center" }}
+            fontFam="Poppins-Medium"
+            fontWeight="500"
+          />
+        {/* <Spacer height={35} /> */}
         <TouchableOpacity
           activeOpacity={0.6}
           style={{
-            width: 90,
-            height: 90,
-            borderRadius: 5,
-            borderColor: colors.white,
-            borderStyle: "dotted",
+            width: scale(72),
+            height: scale(72),
+            borderRadius:scale(5),
+            backgroundColor:colors.grey600,
             alignSelf: "center",
+            marginVertical:verticalScale(10),
             alignItems: "center",
             justifyContent: "center",
             borderWidth: 1,
           }}>
           <TouchableOpacity>
-            <Image style={{ width: 16, height: 16 }} source={images.plusgrey} />
+            <Image style={{ width: scale(58), height: scale(58) }} source={images.defuser} 
+            resizeMode="contain"
+            />
           </TouchableOpacity>
         </TouchableOpacity>
 
@@ -65,12 +78,12 @@ const ProfileSetup = () => {
           color={colors.white}
           size={15}
           textDecorationLine="underline"
-          style={{ textAlign: "center", marginTop: 4 }}
-          fontFam="Poppins-Medium"
+          style={{ textAlign: "center", }}
+          // fontFam="Poppins-Medium"
           fontWeight="400"
         />
-        <Spacer height={20} />
-        <View>
+        {/* <Spacer height={verticalScale(10)} /> */}
+        {/* <View>
           <CustomText
             fontWeight={"600"}
             fontFam="Poppins-Medium"
@@ -130,7 +143,7 @@ const ProfileSetup = () => {
               color={colors.white}
             />
           </View>
-        </View>
+        </View> */}
         <Spacer height={15}/>
 
 
@@ -139,8 +152,6 @@ const ProfileSetup = () => {
           placeholder="Enter your name or handle"
         />
         <Spacer height={7} />
-        <CustomTextInput label="Your Birthday" placeholder="8/24/1989" />
-        <Spacer height={7} />
 
         <CustomTextInput
           label="Your Location"
@@ -148,17 +159,77 @@ const ProfileSetup = () => {
           placeholder="Enter where you live for your profile"
         />
 
-        <Spacer height={30} />
+        <Spacer height={verticalScale(30)} />
 
         <CustomButton
           text="LET ME IN"
           onPress={()=>navigation.navigate("LostPassword")}
           width={"100%"}
           fontWeight={"500"}
-          size={18}
+          // size={18}
           textColor={colors.black}
           bgColor={colors.white}
         />
+
+
+<View style={{marginVertical:verticalScale(15)}}>
+          <View style={appStyles.row}>
+            <CustomText
+              text={"By tapping “Let me In,” you agree to Status’s"}
+              color={colors.white}
+              size={11}
+              style={{ textAlign: "center" }}
+              fontFam="Poppins-Medium"
+              fontWeight="500"
+            />
+            <Spacer width={3} />
+            <TouchableOpacity>
+              <CustomText
+                text={"Terms of"}
+                textDecorationLine={"underline"}
+                color={colors.white}
+                size={11}
+                style={{ textAlign: "center", marginRight: 10 }}
+                fontFam="Poppins-Medium"
+                fontWeight="500"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={appStyles.row}>
+            <TouchableOpacity>
+              <CustomText
+                text={"Use"}
+                textDecorationLine={"underline"}
+                color={colors.white}
+                size={11}
+                //   style={{textAlign:"center",marginRight:10}}
+                fontFam="Poppins-Medium"
+                fontWeight="500"
+              />
+            </TouchableOpacity>
+            <Spacer width={3} />
+            <CustomText
+              text={"and"}
+              color={colors.white}
+              size={11}
+              fontFam="Poppins-Medium"
+              fontWeight="500"
+            />
+            <Spacer width={3} />
+
+            <TouchableOpacity>
+              <CustomText
+                text={"Privacy Policy."}
+                textDecorationLine={"underline"}
+                color={colors.white}
+                size={11}
+                style={{marginLeft:3}}
+                fontFam="Poppins-Medium"
+                fontWeight="500"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   );

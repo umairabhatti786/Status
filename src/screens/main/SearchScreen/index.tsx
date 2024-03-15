@@ -7,6 +7,7 @@ import {
   Text,
   SafeAreaView,
   FlatList,
+  StatusBar,
 } from "react-native";
 import { images } from "../../../assets/images";
 import CustomButton from "../../../components/CustomButton";
@@ -17,9 +18,10 @@ import TopHeader from "../../../components/TopHeader";
 import { appStyles } from "../../../utils/AppStyles";
 import { colors } from "../../../utils/colors";
 import UserList from "./UserList";
+import { scale, verticalScale } from "react-native-size-matters";
 
-const SearchScreen = () => {
-  const [activeBar, setActiveBar] = useState("Friends");
+const SearchScreen = ({navigation}) => {
+  const [activeBar, setActiveBar] = useState("All");
   const [activeFilter, setActiveFilter] = useState(0);
 
   const topBarData = ["All", "Friends"];
@@ -28,59 +30,62 @@ const SearchScreen = () => {
 
   const userData = [
     // online
-    { name: "MIke O’Dea", img: images.defimage9, online: true },
-    { name: "Lexi Reegan", img: images.defimage10, online: true },
-    { name: "Eric Broadway", img: images.defimage11, online: true },
-    { name: "Lexi Reegan", img: images.defimage12, online: true },
-    { name: "MIke O’Dea", img: images.defimage13, online: true },
-    { name: "T Smith", img: images.defimage14, online: true },
-    { name: "Lexi Reegan", img: images.defimage15, online: true },
-    { name: "Eric Broadway", img: images.defimage16, online: true },
-    { name: "Lexi Reegan", img: images.defimage17, online: true },
-    { name: "T Smith", img: images.defimage18, online: true },
-    { name: "Lexi Reegan", img: images.defimage19, online: true },
-    { name: "T Smith", img: images.defimage20, online: true },
+    { name: "MIke O’Dea", img: images.defimage9, online: true,isFollow:true, },
+    { name: "Lexi Reegan", img: images.defimage10, online: true,isFollow:false, },
+    { name: "Eric Broadway", img: images.defimage11, online: true ,isFollow:true,},
+    { name: "Lexi Reegan", img: images.defimage12, online: true ,isFollow:false,},
+    { name: "MIke O’Dea", img: images.defimage13, online: true,isFollow:true, },
+    { name: "T Smith", img: images.defimage14, online: true ,isFollow:false,},
+    { name: "Lexi Reegan", img: images.defimage15, online: true ,isFollow:true,},
+    { name: "Eric Broadway", img: images.defimage16, online: true ,isFollow:false,},
+    { name: "Lexi Reegan", img: images.defimage17, online: true ,isFollow:true,},
+    { name: "T Smith", img: images.defimage18, online: true,isFollow:false, },
+    { name: "Lexi Reegan", img: images.defimage19, online: true,isFollow:true, },
+    { name: "T Smith", img: images.defimage20, online: true ,isFollow:false,},
 
     /// nearby
     {
       name: "MIke O’Dea",
       img: images.defimage23,
       nearby: "10mi",
+      isFollow:true,
     },
     {
       name: "Lexi Reegan",
       img: images.defimage22,
       nearby: "10mi",
+      isFollow:false,
     },
     {
       name: "Lexi Reegan",
       img: images.defimage21,
       nearby: "10mi",
+      isFollow:true,
     },
-    { name: "MIke O’Dea", img: images.defimage9,  nearby: "10mi" },
-    { name: "MIke O’Dea", img: images.defimage10, nearby: "10mi" },
-    { name: "Lexi Reegan", img: images.defimage11, nearby: "10mi" },
-    { name: "T Smith", img: images.defimage12, nearby: "10mi" },
-    { name: "MIke O’Dea", img: images.defimage13, nearby: "10mi" },
-    { name: "Lexi Reegan", img: images.defimage14, nearby: "10mi" },
-    { name: "MIke O’Dea", img: images.defimage15, nearby: "10mi" },
-    { name: "T Smith", img: images.defimage16, nearby: "10mi" },
-    { name: "Lexi Reegan", img: images.defimage17, nearby: "10mi" },
+    { name: "MIke O’Dea", img: images.defimage9,  nearby: "10mi" ,isFollow:false,},
+    { name: "MIke O’Dea", img: images.defimage10, nearby: "10mi",isFollow:true, },
+    { name: "Lexi Reegan", img: images.defimage11, nearby: "10mi",isFollow:false, },
+    { name: "T Smith", img: images.defimage12, nearby: "10mi",isFollow:true, },
+    { name: "MIke O’Dea", img: images.defimage13, nearby: "10mi",isFollow:false, },
+    { name: "Lexi Reegan", img: images.defimage14, nearby: "10mi",isFollow:true, },
+    { name: "MIke O’Dea", img: images.defimage15, nearby: "10mi",isFollow:false, },
+    { name: "T Smith", img: images.defimage16, nearby: "10mi",isFollow:true, },
+    { name: "Lexi Reegan", img: images.defimage17, nearby: "10mi",isFollow:false, },
 
     // new
-    { name: "T Smith", img: images.defimage18, new: true, online: true },
-    { name: "T Smith", img: images.defimage19, new: true, online: true },
-    { name: "Eric Broadway", img: images.defimage20, new: true, online: true },
-    { name: "MIke O’Dea", img: images.defimage21, new: true, online: true },
-    { name: "Lexi Reegan", img: images.defimage22, new: true, online: true },
-    { name: "MIke O’Dea", img: images.defimage23, new: true },
-    { name: "MIke O’Dea", img: images.defimage9, new: true },
-    { name: "Lexi Reegan", img: images.defimage10, new: true },
-    { name: "MIke O’Dea", img: images.defimage11, new: true },
-    { name: "Lexi Reegan", img: images.defimage12, new: true },
-    { name: "Eric Broadway", img: images.defimage13, new: true },
-    { name: "Lexi Reegan", img: images.defimage14, new: true },
-    { name: "MIke O’Dea", img: images.defimage15, new: true },
+    { name: "T Smith", img: images.defimage18, new: true, online: true,isFollow:true, },
+    { name: "T Smith", img: images.defimage19, new: true, online: true,isFollow:false, },
+    { name: "Eric Broadway", img: images.defimage20, new: true, online: true,isFollow:true, },
+    { name: "MIke O’Dea", img: images.defimage21, new: true, online: true,isFollow:false, },
+    { name: "Lexi Reegan", img: images.defimage22, new: true, online: true,isFollow:true, },
+    { name: "MIke O’Dea", img: images.defimage23, new: true ,isFollow:false,},
+    { name: "MIke O’Dea", img: images.defimage9, new: true,isFollow:true, },
+    { name: "Lexi Reegan", img: images.defimage10, new: true,isFollow:false, },
+    { name: "MIke O’Dea", img: images.defimage11, new: true,isFollow:true, },
+    { name: "Lexi Reegan", img: images.defimage12, new: true,isFollow:false, },
+    { name: "Eric Broadway", img: images.defimage13, new: true ,isFollow:true,},
+    { name: "Lexi Reegan", img: images.defimage14, new: true,isFollow:false, },
+    { name: "MIke O’Dea", img: images.defimage15, new: true,isFollow:true, },
 
     // popular
 
@@ -89,33 +94,37 @@ const SearchScreen = () => {
       img: images.defimage16,
       online: true,
       popular: "205k",
+      isFollow:true,
     },
     {
       name: "Lexi Reegan",
       img: images.defimage17,
       online: true,
       popular: "205k",
+      isFollow:false,
     },
     {
       name: "Eric Broadway",
       img: images.defimage18,
       online: true,
       popular: "205k",
+      isFollow:true,
     },
     {
       name: "Lexi Reegan",
       img: images.defimage19,
       online: true,
       popular: "205k",
+      isFollow:false,
     },
-    { name: "MIke O’Dea", img: images.defimage20, popular: "205k" },
-    { name: "Eric Broadway", img: images.defimage21, popular: "205k" },
-    { name: "MIke O’Dea", img: images.defimage22, popular: "205k" },
-    { name: "Eric Broadway", img: images.defimage23, popular: "205k" },
-    { name: "MIke O’Dea", img: images.defimage9, popular: "205k" },
-    { name: "Lexi Reegana", img: images.defimage10, popular: "205k" },
-    { name: "Eric Broadway", img: images.defimage11, popular: "205k" },
-    { name: "Lexi Reegan", img: images.defimage12, popular: "205k" },
+    { name: "MIke O’Dea", img: images.defimage20, popular: "205k",isFollow:true, },
+    { name: "Eric Broadway", img: images.defimage21, popular: "205k",isFollow:false, },
+    { name: "MIke O’Dea", img: images.defimage22, popular: "205k" ,isFollow:true,},
+    { name: "Eric Broadway", img: images.defimage23, popular: "205k",isFollow:true, },
+    { name: "MIke O’Dea", img: images.defimage9, popular: "205k" ,isFollow:false,},
+    { name: "Lexi Reegana", img: images.defimage10, popular: "205k",isFollow:true, },
+    { name: "Eric Broadway", img: images.defimage11, popular: "205k",isFollow:false, },
+    { name: "Lexi Reegan", img: images.defimage12, popular: "205k",isFollow:true, },
   ];
 
   console.log("UserLoeng", userData.length);
@@ -130,28 +139,41 @@ const SearchScreen = () => {
   };
 
   return (
-    <SafeAreaView style={appStyles.main}>
-      <Spacer height={7} />
-      <View style={{ paddingHorizontal: 20 }}>
-        <TopHeader />
-        <Spacer height={20} />
 
-        <TopBar
-          topBarData={topBarData}
-          activeBar={activeBar}
-          setActiveBar={setActiveBar}
+    <SafeAreaView style={appStyles.main}>
+    <StatusBar barStyle={"light-content"} backgroundColor={colors.black} />
+
+    <Spacer height={7} />
+   
+        <View >
+          <View style={{paddingHorizontal:scale(15)}}>
+          <TopHeader
+          isSearch={true}
+          onPressNotification={() => navigation.navigate("Notifications")}
+          onPressSetting={() => navigation.replace("SearchMember")}
         />
+
+          </View>
+       
+        <Spacer height={verticalScale(15)} />
+
+        <TopBar 
+        topBarData={topBarData}
+        activeBar={activeBar} setActiveBar={setActiveBar} />
       </View>
-      <Spacer height={10} />
-      <CustomSearch />
-      <View style={{ ...appStyles.row, marginVertical: 17 }}>
+   
+    <Spacer height={10} />
+
+    <View style={{ ...appStyles.row, marginVertical: verticalScale(13),marginLeft:scale(10) }}>
         {filterData.map((item, index) => {
           return (
             <View style={{ marginRight: 7 }}>
               <CustomButton
                 onPress={() => setActiveFilter(index)}
-                height={33}
-                paddingHorizontal={10}
+                height={29}
+                fontFam={"Inter-Regular"}
+                fontWeight={"400"}
+                paddingHorizontal={8}
                 size={15}
                 textColor={
                   activeFilter == index ? colors.black100 : colors.white
@@ -179,11 +201,13 @@ const SearchScreen = () => {
               : userData
           }
           numColumns={3}
-          style={{ marginBottom: 210 }}
+          style={{ marginBottom: verticalScale(155) }}
           renderItem={renderUsers}
         />
       </View>
-    </SafeAreaView>
+   
+  </SafeAreaView>
+  
   );
 };
 

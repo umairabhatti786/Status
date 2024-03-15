@@ -16,6 +16,7 @@ import { Spacer } from "../../../components/Spacer";
 import { appStyles } from "../../../utils/AppStyles";
 import { images } from "../../../assets/images";
 import { useNavigation } from "@react-navigation/native";
+import { scale, verticalScale } from "react-native-size-matters";
 export const windowWidth = Dimensions.get("window").width;
 
 const UserList = ({ item }: any) => {
@@ -31,7 +32,7 @@ const UserList = ({ item }: any) => {
         activeOpacity={0.6}
         style={{
           width: "32.8%",
-          height: 140,
+          height:verticalScale(120),
           borderRadius: 10,
           marginBottom: 3,
           marginHorizontal: 1.5,
@@ -42,8 +43,8 @@ const UserList = ({ item }: any) => {
         {item.online && (
           <View
             style={{
-              width: 12,
-              height: 12,
+              width: scale(8),
+              height: scale(8),
               borderRadius: 999,
               backgroundColor: colors.green,
               position: "absolute",
@@ -58,12 +59,13 @@ const UserList = ({ item }: any) => {
             position: "absolute",
             bottom: 0,
             width: "100%",
-            padding: 10,
+            paddingHorizontal:scale(10),
+            paddingBottom:verticalScale(2),
             justifyContent: "flex-end",
           }}
         >
           {item.nearby && (
-            <View style={{ ...appStyles.row, marginLeft: -5, marginBottom: 5 }}>
+            <View style={{ ...appStyles.row, marginLeft: -5, marginBottom: verticalScale(-1) }}>
               <Image
                 style={{ width: 15, height: 15 }}
                 source={images.location}
@@ -73,7 +75,7 @@ const UserList = ({ item }: any) => {
             </View>
           )}
           {item.popular && (
-            <View style={{ ...appStyles.row, marginBottom: 5 }}>
+            <View style={{ flexDirection:"row", marginBottom: verticalScale(-1)  }}>
               <Image
                 style={{ width: 15, height: 15 }}
                 resizeMode="contain"
@@ -82,13 +84,18 @@ const UserList = ({ item }: any) => {
 
               <CustomText
                 text={item.popular}
+                fontFam="Poppins-Medium"
+
                 color={colors.white}
                 style={{ marginLeft: 5 }}
               />
             </View>
           )}
 
-          <CustomText text={item.name} color={colors.white} />
+          <CustomText 
+          fontFam="Inter-SemiBold"
+          fontWeight="600"
+          text={item.name} color={colors.white} />
         </View>
       </TouchableOpacity>
     </>

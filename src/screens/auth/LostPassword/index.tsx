@@ -19,40 +19,46 @@ import CustomButton from "../../../components/CustomButton";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import CustomTextInput from "../../../components/CustomTextInput";
+import { scale, verticalScale } from "react-native-size-matters";
+import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 
 const LostPassword = () => {
   const navigation: any = useNavigation();
 
   return (
     <SafeAreaView style={appStyles.main}>
-      <View style={{ flex: 1, padding: 15 }}>
+      <View style={{ flex: 1, padding: scale(20) }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={images.back} />
         </TouchableOpacity>
-        <Spacer height={30} />
+        <Spacer height={verticalScale(10)} />
         <Image
-          style={{ width: 130, height: 130, alignSelf: "center" }}
+          style={{
+            width: windowWidth / 3.5,
+            height: windowHeight / 5.7,
+            alignSelf: "center",
+          }}
           source={images.logo}
           resizeMode="contain"
         />
-        <Spacer height={30}/>
+        <Spacer height={verticalScale(20)}/>
         <CustomText
           text={"Lost your password?"}
           color={colors.white}
-          size={24}
+          size={21}
           style={{ textAlign: "center" }}
           fontFam="Poppins-Medium"
           fontWeight="500"
         />
-        <Spacer height={20} />
+        <Spacer height={verticalScale(15)} />
         <View style={{marginHorizontal:30}}>
         <CustomText
           text={"Enter your registered email below to receive password reset instructions"}
-          color={colors.grey400}
+          color={colors.white}
           lineHeight={25}
-          size={17}
+          size={14}
           style={{ textAlign: "center" }}
-          fontFam="Poppins-Medium"
+          fontFam="Poppins-Regular"
           fontWeight="500"
         />
 
@@ -67,18 +73,18 @@ const LostPassword = () => {
         />
       
 
-        <Spacer height={25} />
+        <Spacer height={verticalScale(25)} />
 
         <CustomButton
           text="Send"
           width={"100%"}
           fontWeight={"500"}
           onPress={()=>navigation.navigate("ResetPassword")}
-          size={18}
+          // size={18}
           textColor={colors.black}
           bgColor={colors.white}
         />
-                <Spacer height={25} />
+                <Spacer height={verticalScale(20)} />
 
             
                 <View style={{...appStyles.row,justifyContent:"center"}}>
@@ -87,8 +93,8 @@ const LostPassword = () => {
               text={"Remember Password? "}
               color={colors.white}
               size={14}
-              style={{textAlign:"center",marginRight:3}}
-              fontFam="Poppins-SemiBold"
+              style={{textAlign:"center",marginRight:2}}
+              fontFam="Roboto-Medium"
               fontWeight="500"
             />
 
@@ -104,7 +110,7 @@ const LostPassword = () => {
               textDecorationLine={"underline"}
               
               style={{textAlign:"center"}}
-              fontFam="Poppins-SemiBold"
+              fontFam="Roboto-Medium"
               fontWeight="500"
             />
                         </TouchableOpacity>

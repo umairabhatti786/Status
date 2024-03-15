@@ -17,29 +17,76 @@ import MessagesList from "./MessagesList";
 import { messagesList } from "../../../utils/Data";
 import CustomSearch from "../../../components/CustomSearch";
 import { Spacer } from "../../../components/Spacer";
+import AbsoluteHeader from "../../../components/AbsoluteHeader";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
+import { scale, verticalScale } from "react-native-size-matters";
 
-const MessageScreen = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+const MessageScreen = ({ navigation }: any) => {
+  const [isArchived, setIsArchived] = useState(false);
   const renderChatList = ({ item }: any) => {
     return <MessagesList item={item} />;
   };
 
-  const filteredList = messagesList.filter((item) =>
-    item?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-  );
+  // const filteredList = messagesList.filter((item) =>
+  //   item?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  // );
+
+//   const filteredList = messagesList.filter((item) =>
+//   item?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+// );
   return (
     <View style={appStyles.main}>
-      <View style={styles.header}>
-        <CustomText color={colors.white} size={19} 
-        fontFam={"Poppins-SemiBold"}
-        fontWeight={"600"}
-        text={"Private Messenger"} />
-      </View>
-      <View style={{paddingHorizontal:10,paddingVertical:15}}>
-      <CustomSearch/>
+      <AbsoluteHeader>
+        <View style={{ width: "30%" }} />
 
-      </View>
-     
+        <View
+        style={{ width: "40%" }}
+        >
+        <CustomText
+          fontWeight="600"
+          color={colors.white}
+          fontFam="Poppins-Medium"
+          size={18}
+          text={ !isArchived ?"Status Inbox":"Archived Chats"}
+        />
+
+        </View>
+
+       
+        <TouchableOpacity
+          style={{width:"30%",alignItems:"flex-end",paddingRight:scale(10)}}
+
+          onPress={() => navigation.navigate("NewMessage")}
+        >
+          <Image
+            style={{ width: wp(5), height: hp(3) }}
+            resizeMode="contain"
+            source={images.newchat}
+          />
+        </TouchableOpacity>
+      
+      </AbsoluteHeader>
+
+      <TouchableOpacity
+      activeOpacity={0.6}
+      onPress={()=>setIsArchived(!isArchived)}
+       style={{ paddingHorizontal:scale(15),paddingVertical:verticalScale(5) }}>
+
+
+
+      <CustomText
+          fontWeight="600"
+          color={colors.white}
+          fontFam="Poppins-Medium"
+          textDecorationLine={"underline"}
+          size={17}
+          text={!isArchived?"Archived chats":"Back to Inbox"}
+        />
+
+      </TouchableOpacity>
 
       {/* <View style={styles.inputContainer}>
         <Image source={images.search1} />
@@ -53,16 +100,16 @@ const MessageScreen = () => {
       </View> */}
       <View style={{ flex: 1 }}>
         <FlatList
-          data={filteredList}
+          data={ isArchived? messagesList.filter(it=>!it.isOnline):messagesList}
           contentContainerStyle={{
-            gap: 7,
+            gap: 5,
           }}
           renderItem={renderChatList}
         />
       </View>
-      <TouchableOpacity style={{ position: "absolute", bottom: 25, right: 10 }}>
+      {/* <TouchableOpacity style={{ position: "absolute", bottom: 25, right: 10 }}>
         <Image source={images.compose} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -73,7 +120,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.primary,
     alignItems: "center",
-    paddingTop: Platform.OS=="ios"?"18%":"5%",
+    paddingTop: Platform.OS == "ios" ? "18%" : "5%",
     paddingBottom: "5%",
   },
   inputContainer: {

@@ -5,6 +5,7 @@ import CustomText from "../../../components/CustomText";
 import { Spacer } from "../../../components/Spacer";
 import { images } from "../../../assets/images";
 import { useNavigation } from "@react-navigation/native";
+import { scale, verticalScale } from "react-native-size-matters";
 export const windowWidth = Dimensions.get("window").width;
 
 const MessagesList = ({ item }: any, List: boolean) => {
@@ -21,23 +22,38 @@ const MessagesList = ({ item }: any, List: boolean) => {
         activeOpacity={0.7}
         style={{
           width: "100%",
-          height: 74,
+          // height: 74,
           borderRadius: 12,
           backgroundColor: "#1D2029",
-          padding: 5,
+          paddingHorizontal: scale(10),
+          paddingVertical:verticalScale(8),
           flexDirection: "row",
-          alignItems: "center",
+          // alignItems: "center",
         }}
       >
-        <View style={{ width: 65, height: 65 }}>
+          <View
+            style={{
+              width: scale(7.5),
+              height: scale(7.5),
+              borderRadius: 999,
+              backgroundColor: item?.isOnline?  colors.sky:"transparent",
+              marginRight: verticalScale(15),
+              alignSelf:"center"
+
+
+
+
+            }}
+          />
+        <View style={{ width: scale(65), height: scale(65) }}>
           <Image
-            style={{ width: "100%", height: "100%", borderRadius: 10 }}
+            style={{ width: "100%", height: "100%", borderRadius: scale(8) }}
             source={item?.img}
           />
         </View>
 
-        <View style={{ paddingHorizontal: 10, width: "67%", marginTop: -3 }}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ paddingHorizontal: 10, width: scale(180), }}>
+          <View style={{ flexDirection: "row",  }}>
             <CustomText
               text={item.name}
               color={colors.white}
@@ -45,73 +61,53 @@ const MessagesList = ({ item }: any, List: boolean) => {
               fontFam="Poppins-Bold"
               fontWeight="800"
             />
-            <CustomText
-              text={"."}
-              color={colors.white}
-              size={24}
-              fontFam="Poppins-Regular"
-              style={{
-                marginTop: -12,
-                marginHorizontal: 8,
-              }}
-            />
-            <CustomText
-              text={item.time}
-              color={colors.lightgray}
-              size={13}
-              fontFam="Poppins-Regular"
-            />
+           
+          
           </View>
-          <Spacer height={5} />
+          {/* <Spacer height={5} /> */}
           <CustomText
             text={item.message}
             color={
-              item?.message === "Typing..." ? colors.lightgreen : colors.white
+              item?.message === "Typing..." ? colors.lightgreen : colors.gray500
             }
             size={15}
-            style={{ width: windowWidth / 1.5 }}
-            numberOfLines={0}
+            style={{ width: windowWidth / 1.8, }}
+            numberOfLines={2}
             fontFam="Poppins-Medium"
             fontWeight="500"
           />
         </View>
         <View
           style={{
-            width: 60,
-            height: 60,
+            width: scale(70),
+            height: verticalScale(60),
             paddingTop: 3,
             alignItems: "flex-end",
             justifyContent: "space-between",
-            paddingBottom: 5,
+            marginRight:scale(5),
+            position:"absolute",
+            // backgroundColor:"red",
+            right:scale(10),
+            top:verticalScale(5)
+            // backgroundColor:"red"
+            // paddingBottom: 5,
             // backgroundColor:"red"
           }}
         >
+            <CustomText
+              text={item.time}
+              color={colors.gray500}
+              size={14}
+              fontFam="Poppins-Regular"
+            />
           <TouchableOpacity onPress={() => setFavorite(!favorite)}>
             <Image
               source={item.favorite ? images.star1 : images.star}
-              style={{ marginRight: 8 }}
+              style={{ marginRight:scale(5),width:scale(18),height:scale(18)}}
+              resizeMode="contain"
             />
           </TouchableOpacity>
-          {item.count && (
-            <View
-              style={{
-                width: 32,
-                height: 20,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 10,
-                backgroundColor: colors.black,
-              }}
-            >
-              <CustomText
-                text={item.count}
-                color={colors.white}
-                size={15}
-                fontFam="Poppins-Regular"
-                //   fontWeight="500"
-              />
-            </View>
-          )}
+          
         </View>
       </TouchableOpacity>
     </>

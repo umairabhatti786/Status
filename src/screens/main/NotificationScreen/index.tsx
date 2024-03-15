@@ -18,10 +18,19 @@ import { useNavigation } from "@react-navigation/native";
 import ActivityCard from "../../../components/ActivityCard";
 import { activityData } from "../../../utils/Data";
 import CustomLine from "../../../components/CustomLine";
-
+import AbsoluteHeader from "../../../components/AbsoluteHeader";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
+import CustomButton from "../../../components/CustomButton";
+import { scale, verticalScale } from "react-native-size-matters";
 const Notifications = () => {
   const navigation: any = useNavigation();
   const [request, setRequest] = useState(false);
+  const [activeFilter, setActiveFilter] = useState(0);
+
+  const filterData = ["All", "Follows", "Comments"];
 
   const renderItem = ({ item }: any) => {
     return (
@@ -30,6 +39,7 @@ const Notifications = () => {
           image={item?.image}
           time={item?.time}
           name={item?.name}
+          isShowFollow={item.isShowFollow}
           comment={item?.comment}
         />
       </View>
@@ -37,105 +47,71 @@ const Notifications = () => {
   };
 
   return (
-    <SafeAreaView style={appStyles.main}>
-      <Image
-        style={{ width: 30, height: 30, alignSelf: "center" }}
-        source={images.appicon}
-      />
-      <Spacer height={20} />
+    <View style={appStyles.main}>
+      <AbsoluteHeader>
+        <TouchableOpacity
+          style={{ width: "10%" }}
+          onPress={() => navigation.goBack()}
+        >
+          <Image
+            style={{ width: wp(4.6), height: hp(2.6) }}
+            resizeMode="contain"
+            source={images.back}
+          />
+        </TouchableOpacity>
+        <CustomText
+          fontWeight="600"
+          color={colors.white}
+          fontFam="Poppins-Medium"
+          size={18}
+          text={"Notifications"}
+        />
+        <CustomText color={"transparent"} size={18} text={"sss"} />
+      </AbsoluteHeader>
+
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
+          ...appStyles.row,
+          marginVertical: verticalScale(13),
+          marginLeft: scale(10),
         }}
       >
-        <TouchableOpacity
-          onPress={() => setRequest(false)}
-          style={[
-            styles.tab,
-            { borderBottomColor: request ? colors.black200 : colors.white },
-          ]}
-        >
-          <CustomText size={18} color={colors.white} text={"Activity"} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setRequest(true)}
-          style={[
-            styles.tab,
-            { borderBottomColor: request ? colors.white : colors.black200 },
-          ]}
-        >
-          <CustomText size={18} color={colors.white} text={"Requests"} />
-        </TouchableOpacity>
+        {filterData.map((item, index) => {
+          return (
+            <View style={{ marginRight: 7 }}>
+              <CustomButton
+                onPress={() => setActiveFilter(index)}
+                height={32}
+                fontFam={"Inter-Regular"}
+                fontWeight={"400"}
+                borderRadius={9}
+                paddingHorizontal={18}
+                size={17}
+                textColor={
+                  activeFilter == index ? colors.black100 : colors.white
+                }
+                bgColor={activeFilter == index ? colors.white : colors.primary}
+                text={item}
+              />
+            </View>
+          );
+        })}
       </View>
-      <View
-          style={{ ...appStyles.row, alignSelf: "center", marginVertical: 20 }}>
-          <Image
-            source={images.gift}
-            resizeMode="contain"
-            style={{ width: 22, height: 22 }}
-          />
-          <Spacer width={15} />
 
-          <CustomText
-            style={{ textAlign: "center" }}
-            size={17}
-            textDecorationLine={"underline"}
-            color={colors.white}
-            text={"Please Visit our GoFundMe Campaign"}
-          />
-
-        </View>
-        <CustomLine backgroundColor={colors.primary} height={1.5} />
-
-      {request ? (
-        <View style={{ padding: 12 }}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Sent Request")}
-            activeOpacity={0.5}
-            style={{ marginTop: 4 }}
-          >
-            <CustomText
-              color={colors.white}
-              size={16}
-              style={styles.sentRequest}
-              text={"View Sent Request"}
-            />
-          </TouchableOpacity>
-          <Spacer height={25} />
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <CustomText
-              color={colors.white}
-              size={16}
-              text={"Friend Requests"}
-            />
-            <CustomText
-              style={{ marginLeft: 10 }}
-              color={colors.white}
-              size={16}
-              text={"1"}
-              fontWeight="600"
-            />
-          </View>
-          <Spacer height={22} />
-          <ReceiveRequestCard image={images.man5} name="William Jhonson" />
-        </View>
-      ) : (
-        <View style={{ padding: 12 }}>
-          <TouchableOpacity activeOpacity={0.5} style={{ marginTop: 4 }}>
-            <CustomText
-              color={colors.white}
-              size={16}
-              style={styles.sentRequest}
-              text={"Clear All Activity"}
-            />
-          </TouchableOpacity>
-          <Spacer height={25} />
-          <FlatList data={activityData} renderItem={renderItem} />
-        </View>
-      )}
-    </SafeAreaView>
+      <View style={{ padding: scale(15) }}>
+        {/* <Spacer height={25} /> */}
+        <FlatList
+          data={
+            activeFilter == 0
+              ? activityData
+              : activeFilter == 1
+              ? activityData.filter((item) => item.isShowFollow)
+              : activityData.filter((item) => !item.isShowFollow)
+          }
+          renderItem={renderItem}
+        />
+      </View>
+    </View>
   );
 };
 

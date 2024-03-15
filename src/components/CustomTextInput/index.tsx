@@ -4,6 +4,7 @@ import CustomText from "../CustomText";
 import { windowWidth } from "../../utils/Dimensions";
 import DropDownPicker from "react-native-dropdown-picker";
 import { images } from "../../assets/images";
+import { verticalScale } from "react-native-size-matters";
 type Props = {
   label?: string;
   placeholder?: string;
@@ -44,6 +45,7 @@ type Props = {
   onOpen?: any;
   onClose?: any;
   disabled?: boolean;
+  labelSize?:any
 };
 
 const CustomTextInput = ({
@@ -86,6 +88,7 @@ const CustomTextInput = ({
   onOpen,
   onClose,
   disabled,
+  labelSize,
 }: Props) => {
   const CustomArrowIcon = () => (
     <View>
@@ -96,10 +99,10 @@ const CustomTextInput = ({
     <View style={{ ...props, marginTop: marginTop || 15 }}>
       <View style={{ flexDirection: "row" }}>
         <CustomText
-          fontWeight={"600"}
+          fontWeight={"500"}
           fontFam="Poppins-Medium"
-          size={15}
-          style={{ marginBottom: 10 }}
+          size={labelSize|| 13}
+          style={{ marginBottom: verticalScale(5) }}
           text={label}
           color={colors.white}
         />
@@ -110,6 +113,9 @@ const CustomTextInput = ({
           flexDirection: "row",
           justifyContent: "space-between",
           paddingHorizontal: 10,
+         height: verticalScale(height || 49),
+
+          alignItems:"center",
           borderRadius: 10,
           backgroundColor: colors.primary,
         }}
@@ -145,9 +151,10 @@ const CustomTextInput = ({
                 borderColor: "transparent",
               }}
               dropDownContainerStyle={{
-                width: windowWidth -15,
+                width: windowWidth / 1.1,
                 alignSelf: "center",
                 borderColor: colors.black,
+                opacity:1,
                 backgroundColor: colors.primary,
               }}
               open={open}
@@ -168,11 +175,10 @@ const CustomTextInput = ({
               value={value}
               editable={editable}
               style={{
-                fontSize: 15,
+                fontSize: verticalScale(14),
                 width: windowWidth / 1.2,
-                height: height || 53,
                 alignItems:"center",
-                paddingTop:20,
+                // paddingTop:20,
                 fontFamily:"Poppins-Regular",
                 fontWeight: fontWeight,
                 color: color || colors.grey400,

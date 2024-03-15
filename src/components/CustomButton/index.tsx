@@ -3,6 +3,7 @@ import { colors } from "../../utils/colors";
 import CustomText from "../CustomText";
 import { font } from "../../utils/font";
 import { appStyles } from "../../utils/AppStyles";
+import { scale, verticalScale } from "react-native-size-matters";
 
 type Props = {
   text?: string;
@@ -53,14 +54,15 @@ const CustomButton = ({
       style={{
         ...style,
         width: width,
-        height: height || 50,
+        height: verticalScale(height||48),
         backgroundColor: bgColor || colors.primary,
         justifyContent: "center",
         alignItems: "center",
         paddingHorizontal:paddingHorizontal,
-        borderRadius: borderRadius || 12,
+        borderRadius: scale(borderRadius || 8),
         borderWidth:borderWidth ,
         borderColor: borderColor ,
+        // paddingTop:5
       }}
     >
       {isLoading ? (

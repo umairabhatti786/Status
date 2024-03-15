@@ -13,8 +13,25 @@ export const images = {
   fillhome: require("../icons/fill-home.png"),
   delete: require("../icons/delete.png"),
   check: require("../icons/check.png"),
+  cross3x: require("../icons/cross3x.png"),
+  crossicon: require("../icons/cross-icon.png"),
+  closeicon: require("../icons/close-icon.png"),
+
+
+
   crosswhite: require("../icons/cross-white.png"),
+  copy: require("../icons/copy.png"),
+
   backimage10: require("../images/def-image-10.png"),
+  defimage100: require("../images/def-image100.png"),
+  defimage200: require("../images/def-image200.png"),
+  defimage300: require("../images/def-image300.png"),
+
+  sad: require("../images/sad.png"),
+  verify: require("../images/verify.png"),
+
+
+
 
 
 
@@ -30,6 +47,8 @@ export const images = {
   defimg: require("../images/defimg.png"),
   defimg1: require("../images/defimg1.png"),
   defimg2: require("../images/defimg2.png"),
+  defuser: require("../images/def-user.png"),
+
 
   add: require("../images/add.png"),
   home: require("../icons/home.png"),
@@ -64,6 +83,8 @@ export const images = {
   defimage21: require("../images/def-image21.png"),
   defimage22: require("../images/def-image22.png"),
   defimage23: require("../images/def-image23.png"),
+  defimg400: require("../images/defimg400.png"),
+
   logo: require("../images/logo.png"),
 
   message: require("../images/message.png"),
@@ -74,6 +95,22 @@ export const images = {
   bell: require("../images/bell.png"),
 
   search1: require("../icons/search1.png"),
+  search100: require("../icons/search.png"),
+back100: require("../icons/back100.png"),
+recent: require("../icons/recent.png"),
+back200: require("../icons/back200.png"),
+dot: require("../icons/dot.png"),
+link: require("../icons/link.png"),
+
+
+
+
+locationicon: require("../icons/location-icon.png"),
+messageicon: require("../icons/message.png"),
+bagicon: require("../icons/bag-icon.png"),
+
+
+
   cross: require("../icons/cross1.png"),
   star: require("../icons/star.png"),
   star1: require("../icons/wstar.png"),
@@ -91,6 +128,19 @@ export const images = {
   youtube: require("../icons/youtube.png"),
   insta: require("../icons/insta.png"),
   crosscircle: require("../icons/cross-circle.png"),
+  next: require("../icons/next.png"),
+  attach: require("../icons/attach.png"),
+  camera: require("../icons/camera.png"),
+  newchat: require("../icons/new-chat.png"),
+
+  trash: require("../icons/trash.png"),
+  download: require("../icons/download.png"),
+  block: require("../icons/block.png"),
+
+
+
+
+
 
 
   heart: require("../icons/heart.png"),
@@ -101,4 +151,6 @@ export const images = {
   detailbg: require("../images/detailbg.png"),
   postBg: require("../images/postbg.png"),
   postCity: require("../images/postcity.png"),
+  channelbackground: require("../images/channel-background.png"),
+
 };

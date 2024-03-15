@@ -24,10 +24,10 @@ const TopBar = ({ activeBar, setActiveBar, topBarData }: any) => {
                 onPress={() => setActiveBar(item)}
               >
                 <CustomText
-                  color={activeBar == item ? colors.white : colors.white}
+                  color={ colors.white}
                   text={item}
                   size={verticalScale(15)}
-                  fontWeight={"600"}
+                  fontWeight={"500"}
                   fontFam="Poppins-Regular"
                 />
               </TouchableOpacity>
@@ -36,7 +36,7 @@ const TopBar = ({ activeBar, setActiveBar, topBarData }: any) => {
               <View
                 style={{
                   width: windowWidth/2,
-                  height: 2,
+                  height: verticalScale(3),
                   backgroundColor:
                     activeBar == item ? colors.white : colors.black200,
                 }}

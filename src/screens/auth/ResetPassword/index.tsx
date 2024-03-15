@@ -20,6 +20,7 @@ import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import CustomTextInput from "../../../components/CustomTextInput";
 import CheckBox from "../../../components/CheckBox";
+import { scale, verticalScale } from "react-native-size-matters";
 
 const ResetPassword = () => {
   const navigation: any = useNavigation();
@@ -30,22 +31,22 @@ const ResetPassword = () => {
 
   return (
     <SafeAreaView style={appStyles.main}>
-      <View style={{ flex: 1, padding: 15 }}>
+      <View style={{ flex: 1, padding: scale(20) }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={images.back} />
         </TouchableOpacity>
-        <Spacer height={30} />
+        <Spacer height={verticalScale(20)} />
      
         {/* <Spacer height={10}/> */}
         <CustomText
           text={"Reset your password"}
           color={colors.white}
-          size={25}
+          size={22}
           style={{ textAlign: "center" }}
           fontFam="Poppins-Medium"
           fontWeight="600"
         />
-        <Spacer height={20} />
+        <Spacer height={verticalScale(20)} />
 
         <CustomTextInput
           label="New passwords"
@@ -73,9 +74,9 @@ const ResetPassword = () => {
               <CustomText
               text={"Sign out of all devices"}
               color={colors.white}
-              size={15}
+              size={13}
               style={{textAlign:"center"}}
-              fontFam="Poppins-SemiBold"
+              fontFam="Poppins-Regular"
               fontWeight="500"
             />
           </View>
@@ -88,7 +89,7 @@ const ResetPassword = () => {
           onPress={()=>navigation.navigate("Tabs")}
           width={"100%"}
           fontWeight={"500"}
-          size={18}
+          // size={18}
           textColor={colors.black}
           bgColor={colors.white}
         />

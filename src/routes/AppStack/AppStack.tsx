@@ -21,6 +21,13 @@ import OthersProfile from "../../screens/main/SearchScreen/OthersProfile";
 import EditProfile from "../../screens/main/ProfileScreen/EditProfile";
 import AddStatus from "../../screens/main/AddStatus";
 import EditGifs from "../../screens/main/EditGifs";
+import ConfirmationCode from "../../screens/auth/ConfirmationCode";
+import BlockedAccount from "../../screens/main/BlockedAccount";
+import ChangeEmail from "../../screens/main/ChangeEmail";
+import ChangePassword from "../../screens/main/ChangePassword";
+import AccountDeletion from "../../screens/main/AccountDeletion";
+import SearchMember from "../../screens/main/SearchMember";
+import NewMessage from "../../screens/main/NewMessage";
 
 const AppStack = () => {
   const Stack = createStackNavigator();
@@ -37,6 +44,8 @@ const AppStack = () => {
             <Stack.Screen name={"ProfileSetup"} component={ProfileSetup} />
             <Stack.Screen name={"LostPassword"} component={LostPassword} />
             <Stack.Screen name={"ResetPassword"} component={ResetPassword} />
+            <Stack.Screen name={"ConfirmationCode"} component={ConfirmationCode} />
+
 
 
 
@@ -55,6 +64,18 @@ const AppStack = () => {
       <Stack.Screen name={"Sent Request"} component={SentRequest} />
       <Stack.Screen name={"Post"} component={Post} />
       <Stack.Screen name={"EditProfile"} component={EditProfile} />
+      <Stack.Screen name={"BlockedAccount"} component={BlockedAccount} />
+      <Stack.Screen name={"ChangeEmail"} component={ChangeEmail} />
+      <Stack.Screen name={"ChangePassword"} component={ChangePassword} />
+      <Stack.Screen name={"AccountDeletion"} component={AccountDeletion} />
+      <Stack.Screen name={"SearchMember"} component={SearchMember} />
+      <Stack.Screen name={"NewMessage"} component={NewMessage} />
+
+
+
+
+
+
     </Stack.Navigator>
   );
 };

@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   FlatList,
   Platform,
+  StatusBar,
 } from "react-native";
 import { colors } from "../../../utils/colors";
 import { appStyles } from "../../../utils/AppStyles";
@@ -24,39 +25,39 @@ import { scale, verticalScale } from "react-native-size-matters";
 
 const HomeScreen = () => {
   const navigation: any = useNavigation();
-  const [activeBar, setActiveBar] = useState("Friends");
+  const [activeBar, setActiveBar] = useState("Following");
      const dispatch=useDispatch()
      const isSroll=useSelector(state=>state.auth)?.isScroll
 
 
   const topBarData=[
-    "Friends",
-    "My Updates"
+    "Following",
+    "Favorites"
   ]
 
  
   const chatList = [
     {
-      img: images.defimg2,
+      img: images.defimage100,
       imgbg: images.postBg,
-      postimg: images.postCity,
+      postimg: images.defimage200,
       address: "Boston, MA United States 245 Friends",
-      name: "Lauren Connors",
+      name: "Carmen Electra",
       message:
-        "Hey everyone! Statuss is great. Here’s a photo of my view right now.",
-      time: "8:34 AM",
-      count: "2",
+        "What a wonderful night I had at the Grammy Awards.",
+      time: "2 minutes ago",
+      unread: "24",
       
       update: true,
     },
     {
       img: images.defimg1,
       imgbg: images.postBg,
-      name: "Joe Rogan",
-      message: "I’m doing stand-up tonight at the Comedy Club. Come on...",
+      name: "Mike O’Dea",
+      message: "I will be adding more emoji reactions to updates for you. I am updating as fa",
       address: "Boston, MA United States 245 Friends",
-      time: "7:01 AM",
-      count: "10",
+      time: "Yesterday",
+      unread: "5",
     },
     {
       img: images.defimg,
@@ -64,92 +65,34 @@ const HomeScreen = () => {
       status:false,
       commentLength:2,
       name: "Lexi Reegan",
-      message: "Any good movies on Netflix or Amazon Prime?",
+      message: "Wolf of Wall Street ranks #1 movie in USA for the 6th week in a row.",
       address: "Boston, MA United States 245 Friends",
-      time: "JAN 12",
-      count: "14",
+      time: "Yesterday",
+      unread: "5",
     },
-    {
-      img: images.defimg2,
-      imgbg: images.postBg,
-      name: "Jenny",
-      message:
-        "When there is no comment count on a status update the text goes further.",
-      time: "JAN 12",
-      address: "Boston, MA United States 245 Friends",
-      //   count: "2",
-    },
-    {
+  
+   
+
+
+{
       img: images.defimg1,
       imgbg: images.postBg,
-      name: "Todd Mason",
-      message: "Who wants to meet up and grab a drink? On me!",
+      name: "Lex Reynolds",
       address: "Boston, MA United States 245 Friends",
-      time: "JAN 11",
-      count: "7",
+      message: "Wolf of Wall Street ranks #1 movie in USA for the ",
+      time: "Yesterday",
+      postimg: images.defimage300,
+
+      unread: "5",
     },
-    {
-      img: images.defimg,
-      imgbg: images.postBg,
-      name: "Lucas",
-      message:
-        "Finished my latest track. I’ll post it here when it’s up. Peace!",
-        address: "Boston, MA United States 245 Friends",
-      time: "JAN 11",
-      count: "453",
-    },
-    {
-      img: images.defimg2,
-      imgbg: images.postBg,
-      name: "Holly",
-      address: "Boston, MA United States 245 Friends",
-      message:
-        "I’m learning to speak Spanish at home on my spare time. So far so...",
-      time: "JAN 10",
-      count: "10",
-    },
-    {
-      img: images.defimg1,
-      imgbg: images.postBg,
-      name: "Joey D",
-      address: "Boston, MA United States 245 Friends",
-      message: "At the laundry mat. Missing my washing machine days...",
-      time: "JAN 10",
-      count: "3",
-    },
-    {
-      img: images.defimg2,
-      imgbg: images.postBg,
-      name: "Joey D",
-      address: "Boston, MA United States 245 Friends",
-      message: "At the laundry mat. Missing my washing machine days...",
-      time: "JAN 10",
-      count: "3",
-    },
-    {
-      img: images.defimg2,
-      imgbg: images.postBg,
-      name: "Joey D",
-      address: "Boston, MA United States 245 Friends",
-      message: "At the laundry mat. Missing my washing machine days...",
-      time: "JAN 10",
-      count: "3",
-    }, {
-      img: images.defimg1,
-      imgbg: images.postBg,
-      name: "Joey D",
-      address: "Boston, MA United States 245 Friends",
-      message: "At the laundry mat. Missing my washing machine days...",
-      time: "JAN 10",
-      count: "3",
-    }, {
+     {
       img: images.defimg,
       imgbg: images.postBg,
       name: "Joey D",
       address: "Boston, MA United States 245 Friends",
-      message: "At the laundry mat. Missing my washing machine days...",
-      time: "JAN 10",
-      count: "3",
+      message: "Wolf of Wall Street ranks #1 movie in USA for the 6th week in a row.",
+      time: "Yesterday",
+      unread: "5",
     },
   ];
 
@@ -166,25 +109,27 @@ const HomeScreen = () => {
       />
     );
   };
-  const onScroll = async  (x: any) => {
-    const xPos =
-      x.nativeEvent?.contentOffset?.y < 0 ? 0 : x.nativeEvent?.contentOffset?.y;
-    const current = Math.floor(xPos / 60);
-    console.log("cdlncldc",current)
+  // const onScroll = async  (x: any) => {
+  //   const xPos =
+  //     x.nativeEvent?.contentOffset?.y < 0 ? 0 : x.nativeEvent?.contentOffset?.y;
+  //   const current = Math.floor(xPos / 60);
+  //   console.log("cdlncldc",current)
 
-    dispatch(setIsScroll(current))
+  //   dispatch(setIsScroll(current))
  
-  };
+  // };
 
   return (
     <SafeAreaView style={appStyles.main}>
+      <StatusBar barStyle={"light-content"} backgroundColor={colors.black} />
+
       <Spacer height={7} />
      
           <View >
             <View style={{paddingHorizontal:scale(15)}}>
             <TopHeader
             onPressNotification={() => navigation.navigate("Notifications")}
-            onPressSetting={() => navigation.navigate("Settings")}
+            onPressSetting={() => navigation.replace("Settings")}
           />
 
             </View>
@@ -200,9 +145,10 @@ const HomeScreen = () => {
       {/* <View > */}
         <FlatList
         // style={{paddingHorizontal:10}}
-        onScroll={onScroll}
+        // onScroll={onScroll}
+        showsVerticalScrollIndicator={false}
           data={
-            activeBar == "My Updates"
+            activeBar == "Favorites"
               ? chatList.filter((item) => item.update)
               : chatList
           }

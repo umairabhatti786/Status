@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { windowWidth } from '../HomeScreen/FriendList'
 import { colors } from '../../../utils/colors'
 import { images } from '../../../assets/images'
+import { verticalScale } from 'react-native-size-matters'
 
 const GifContainer = ({item}) => {
     const [isSelectGif,setSelectGif]=useState(false)
@@ -11,8 +12,8 @@ const GifContainer = ({item}) => {
     activeOpacity={0.6}
     onPress={() => setSelectGif(!isSelectGif)}
     style={{
-      width: windowWidth - 270,
-      height: 130,
+      width: "33%",
+      height: verticalScale(130),
       margin: 3,
     }}>
     <Image

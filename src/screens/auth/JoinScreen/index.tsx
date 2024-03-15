@@ -19,6 +19,7 @@ import CustomButton from "../../../components/CustomButton";
 import { colors } from "../../../utils/colors";
 import { windowHeight } from "../../../utils/Dimensions";
 import { windowWidth } from "../../main/HomeScreen/FriendList";
+import { scale, verticalScale } from "react-native-size-matters";
 
 const JoinScreen = () => {
   const navigation: any = useNavigation();
@@ -27,7 +28,7 @@ const JoinScreen = () => {
     <ImageBackground 
     source={images.carback}
     style={appStyles.main}>
-      <View style={{ flex: 1, alignItems: "center", padding: 15 }}>
+      <View style={{ flex: 1, alignItems: "center", padding: scale(15) }}>
         <Spacer height={windowHeight/8} />
         <Image style={{ width: windowWidth/2.5, height: windowHeight/3.5 }}
         resizeMode="contain"
@@ -37,14 +38,14 @@ const JoinScreen = () => {
         <CustomButton
           text="JOIN STATUS"
           width={"100%"}
-          onPress={() => navigation.navigate("Tabs")}
+          onPress={() => navigation.navigate("Signup")}
 
           // fontWeight={"500"}
           size={16}
           textColor={colors.black}
           bgColor={colors.white}
         />
-        <Spacer height={25} />
+        <Spacer height={verticalScale(15)} />
         <CustomButton
           text="SIGN IN"
           width={"100%"}
@@ -53,10 +54,10 @@ const JoinScreen = () => {
           fontFam={"Poppins-Regular"}
           size={16}
           borderColor={colors.white}
-          borderWidth={0.7}
+          borderWidth={1}
           // borderRadius={7}
           textColor={colors.white}
-          bgColor={"black"}
+          bgColor={"transparent"}
         />
       </View>
     </ImageBackground>

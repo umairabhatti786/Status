@@ -141,14 +141,14 @@ const BottomTab = ({ navigation }: any) => {
                 <View>
                 <Image
                   source={focused ? images.message : images.message}
-                  style={{ height: 20, width: 20,}}
+                  style={{ height: 20, width: 20,tintColor:colors.white}}
 
                 />
                 {
                   focused&&(
                     <Image
                     source={images.fillmesssage}
-                    style={{ height: 15, width: 15,position:"absolute",right:2.5,top:0.5}}
+                    style={{ height: 14, width: 14,position:"absolute",left:3,top:1,tintColor:colors.white}}
                     resizeMode="contain"
   
                   />

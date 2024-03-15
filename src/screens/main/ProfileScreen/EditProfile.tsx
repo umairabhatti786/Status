@@ -2,6 +2,7 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -17,11 +18,17 @@ import { useNavigation } from "@react-navigation/native";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import CustomTextInput from "../../../components/CustomTextInput";
 import { Spacer } from "../../../components/Spacer";
+import { scale, verticalScale } from "react-native-size-matters";
+import ToggleSwitch from "toggle-switch-react-native";
 
 const EditProfile = () => {
   const navigation: any = useNavigation();
   const [male, setMale] = useState(false);
+  const [doesApply, setDoesApply] = useState(false);
+  const [selectedGender,setSelectedGender]=useState(0)
+
   const [active, setActive] = React.useState(0);
+  const [isToggle,setIsToggle]=useState(true)
   const [itemsGender, setItemsGender] = useState([
     { label: "Straight", value: "Straight" },
     { label: "Male", value: "Male" },
@@ -49,22 +56,29 @@ const EditProfile = () => {
   };
   return (
     <SafeAreaView style={appStyles.main}>
+            <StatusBar backgroundColor="#000" barStyle="light-content" />
+
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          padding:10
+          paddingLeft:scale(20),
+          paddingRight:scale(10),
+          paddingTop:verticalScale(10)
+          // padding:10
      
         }}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+        style={{width:"10%"}}
+         onPress={() => navigation.goBack()}>
           <Image source={images.back} />
         </TouchableOpacity>
         <CustomText
           fontWeight="700"
           color={colors.white}
-          size={19}
+          size={18}
           text={"Edit Your Profile"}
         />
         <CustomButton
@@ -77,45 +91,66 @@ const EditProfile = () => {
         />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{paddingHorizontal:scale(20),            marginTop: "10%",
+}}>
+
+      <View
+              style={appStyles.rowjustify}
+            >
+              <CustomText
+                size={16}
+                fontWeight="600"
+                fontFam="Poppins-Medium"
+                color={colors.white}
+                text={"Enable Wall Comments?"}
+              />
+              <ToggleSwitch
+                isOn={isToggle}
+                onColor={colors.sky}
+                offColor={colors.grey300}
+                size="small"
+                onToggle={setIsToggle}
+                thumbOnStyle={{ width: 17, height: 17, borderRadius: 9999 }}
+                thumbOffStyle={{ width: 17, height: 17, borderRadius: 9999 }}
+                trackOffStyle={{width: 46, height:25,}}
+                trackOnStyle={{ width:46, height: 25 }}
+              />
+            </View>
+
+
         <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginTop: "7%",
-            padding: 12,
-          }}
+          style={{...appStyles.rowjustify,            marginTop: "9%",
+          marginBottom:verticalScale(10)
+        }}
         >
           <CustomText
-            fontWeight="700"
+            fontWeight="600"
             color={colors.white}
             size={19}
-            text={"Cover Photo"}
+            fontFam="Poppins-Medium"
+            text={"Channel Wallpaper"}
           />
           <CustomText color={colors.white} size={17} text={"Add"} />
         </View>
+
         <View
           style={{
             borderWidth: 1,
-            borderRadius: 16,
+            borderRadius: scale(7),
             borderColor: colors.white,
             alignItems: "center",
             borderStyle: "dashed",
-            marginHorizontal: 18,
-            height: windowHeight / 5.6,
+            height: windowHeight / 4,
             justifyContent: "center",
           }}
         >
           <Image style={{ width: 16, height: 16 }} source={images.add} />
         </View>
+
+
         <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginTop: "7%",
-            padding: 12,
-          }}
+          style={{...appStyles.rowjustify,            marginTop: "10%",
+        }}
         >
           <CustomText
             fontWeight="700"
@@ -125,29 +160,29 @@ const EditProfile = () => {
           />
           <CustomText color={colors.white} size={17} text={"Add"} />
         </View>
+
         <View
           style={{
             borderWidth: 1,
-            borderRadius: 6,
+            borderRadius: scale(5),
             borderColor: colors.white,
             alignItems: "center",
             borderStyle: "dashed",
-            marginHorizontal: 18,
-            height: 99,
-            width: 99,
+            // marginHorizontal: 18,
+            height: scale(99),
+            width: scale(99),
             justifyContent: "center",
-            marginTop: 8,
+            marginTop: verticalScale(10),
           }}
         >
           <Image style={{ width: 14, height: 14 }} source={images.add} />
         </View>
+
+
         <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginTop: "4%",
-            padding: 12,
+          style={{...appStyles.rowjustify,
+            marginTop: "7%",
+            marginBottom:verticalScale(15)
           }}
         >
           <CustomText
@@ -166,30 +201,28 @@ const EditProfile = () => {
           </TouchableOpacity>
         </View>
         <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingHorizontal: 10,
-          }}
+          style={appStyles.rowjustify}
         >
           <Image
             style={{
-              width: windowWidth / 2.15,
-              height: windowHeight / 5,
+              width: "48.5%",
+              height: windowHeight / 4,
               borderRadius: 8,
             }}
             source={images.defimage2}
           />
           <Image
             style={{
-              width: windowWidth / 2.15,
-              height: windowHeight / 5,
+              width: "48.5%",
+              height: windowHeight / 4,
               borderRadius: 8,
             }}
             source={images.defimage4}
           />
         </View>
+
+        </View>
+
         <View
           style={{
             borderBottomWidth: 1,
@@ -197,52 +230,14 @@ const EditProfile = () => {
             marginVertical: "8%",
           }}
         />
-        <View style={{paddingHorizontal:10}}>
-        <View >
+        <View style={{paddingHorizontal:scale(20)}}>
           <CustomText
             fontWeight="700"
             color={colors.white}
             size={19}
             text={"Your Info"}
           />
-          <CustomText
-            style={{ marginTop: "7%" }}
-            color={colors.white}
-            
-            size={16}
-            text={"Gender"}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginLeft: "7%",
-            marginTop: "3%",
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <TouchableOpacity onPress={handlePress} style={styles.radioButton}>
-              <View>{!male && <View style={styles.radioButtonInner} />}</View>
-            </TouchableOpacity>
-            <CustomText color={colors.white} size={17} text={"Female"} />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginLeft: "7%",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => setMale(true)}
-              style={styles.radioButton}
-            >
-              <View>{male && <View style={styles.radioButtonInner} />}</View>
-            </TouchableOpacity>
-            <CustomText color={colors.white} size={17} text={"Male"} />
-          </View>
-        </View>
+        
         <CustomTextInput
           label="Display Name"
           value={"Lauren Connors"}
@@ -251,106 +246,99 @@ const EditProfile = () => {
           fontWeight="600"
           marginTop={"8%"}
         />
+
+<CustomText
+            style={{ marginTop: "7%" }}
+            color={colors.white}
+            
+            size={15}
+            text={"Gender"}
+          />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginLeft: "5%",
+            marginTop: "3%",
+          }}
+        >
+          {
+            ["Female","Male","Does not apply "].map((item,index)=>{
+              return(
+                <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={()=>setSelectedGender(index)} 
+                 style={{ flexDirection: "row", alignItems: "center",marginRight:"5%" }}>
+            <TouchableOpacity
+            activeOpacity={0.6}
+             onPress={()=>setSelectedGender(index)} style={styles.radioButton}>
+              <View>{selectedGender==index && <View style={styles.radioButtonInner} />}</View>
+            </TouchableOpacity>
+            <CustomText color={colors.white} size={13} text={item} />
+          </TouchableOpacity>
+
+              )
+            })
+          }
+          
+         
+        </View>
         <CustomTextInput
-          label="Email"
-          value={"Lauren242@gmail.com"}
+          label="Your Birthday"
+          value={"05/24/77"}
+          labelSize={15}
           placeholder="Email"
           color={colors.white}
           fontWeight="600"
           marginTop={"7%"}
         />
         <CustomTextInput
-          label="Password"
-          value={"*****"}
-          placeholder="Password"
-          color={colors.white}
-          fontWeight="600"
-          marginTop={"7%"}
-        />
-        <CustomTextInput
           label="Your Location"
-          value={"Boston, MA USA"}
-          placeholder="Your Location"
+          labelSize={15}
+
+          value={"Los Angeles, CA"}
+          placeholder="Email"
           color={colors.white}
           fontWeight="600"
           marginTop={"7%"}
         />
         <CustomTextInput
-          label="Your Birthday"
-          value={"8/24/1989"}
-          placeholder="Your Birthday"
-          color={colors.white}
-          fontWeight="600"
-          marginTop={"7%"}
-        />
-        <CustomTextInput
-          label="Bio"
-          value={
-            "Hi. I’m a hard working professional. I love what I do. I’m interested in networking with other professionals."
-          }
-          placeholder="Bio"
-          color={colors.white}
-          fontWeight="600"
-          multiline={true}
-          height={75}
-          marginTop={"7%"}
-        />
-        <View style={{ zIndex: active === 1 ? 1 : 0 }}>
-          <CustomTextInput
-            disabled={active === 2 || active === 3 ? true : false}
-            onOpen={() => setActive(1)}
-            onClose={() => setActive(0)}
-            items={itemsGender}
-            setItems={setItemsGender}
-            dropdownValue={dropdownValueGender}
-            setDropdownValue={setDropdownValueGender}
-            label="Sexual Orientation"
-            dropdown={true}
-            marginTop={"7%"}
-            open={openGender}
-            setOpen={setOpenGender}
-          />
-        </View>
-        <View style={{ zIndex: active === 2 ? 1 : 0 }}>
-          <CustomTextInput
-            disabled={active === 1 || active === 3 ? true : false}
-            items={items}
-            onOpen={() => setActive(2)}
-            onClose={() => setActive(0)}
-            setItems={setItems}
-            dropdownValue={dropdownValue}
-            setDropdownValue={setDropdownValue}
-            label="Relationship Status"
-            dropdown={true}
-            marginTop={"7%"}
-            open={open}
-            setOpen={setOpen}
-          />
-        </View>
-        <View style={{ zIndex: active === 3 ? 1 : 0 }}>
-          <CustomTextInput
-            disabled={active === 1 || active === 2 ? true : false}
-            items={itemsEducation}
-            onOpen={() => setActive(3)}
-            onClose={() => setActive(0)}
-            setItems={setItems}
-            dropdownValue={dropdownValueEducation}
-            setDropdownValue={setDropdownValueEducation}
-            label="Education Level"
-            dropdown={true}
-            marginTop={"7%"}
-            open={openEducation}
-            setOpen={setOpenEducation}
-          />
-        </View>
-        <CustomTextInput
+                  labelSize={15}
+
           label="Occupation"
-          value={"Software Engineer"}
+          value={"Model, Actress"}
           placeholder="Occupation"
           color={colors.white}
           fontWeight="600"
           marginTop={"7%"}
         />
+      
+        <CustomTextInput
+                  labelSize={15}
+
+          label="Bio"
+          value={
+            "see my latest content using the link below ⚡️ bookings & inquiries email thaer@princemarketinggroup.com"
+          }
+          placeholder="Bio"
+          color={colors.white}
+          fontWeight="600"
+          multiline={true}
+          height={85}
+          marginTop={"7%"}
+        />
+           <CustomTextInput
+                  labelSize={15}
+
+          label="Your Link"
+          value={"link.me/carmenelectra"}
+          placeholder="Your Link"
+          color={colors.white}
+          fontWeight="600"
+          marginTop={"7%"}
+        />
+     
+      
         <Spacer height={20}/>
 
         </View>
@@ -364,9 +352,9 @@ export default EditProfile;
 
 const styles = StyleSheet.create({
   radioButton: {
-    width: 22,
-    height: 22,
-    borderRadius: 12,
+    width: scale(18),
+    height: scale(18),
+    borderRadius: scale(18),
     borderWidth: 2,
     borderColor: colors.white,
     justifyContent: "center",
@@ -374,9 +362,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   radioButtonInner: {
-    width: 14,
-    height: 14,
-    borderRadius: 99,
+    width: scale(10),
+    height: scale(10),
+    borderRadius: scale(12),
     backgroundColor: "white",
   },
 });

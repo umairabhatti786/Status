@@ -170,37 +170,57 @@ export const data = [
 
 export const messagesList = [
   {
-    img: images.man5,
+    img: images.defimage12,
     name: "Todd Mason",
     message: "I will be free to talk in a few hours.",
-    time: "11:45 AM",
+    time: "8:34 AM",
+    isOnline:true,
+
+    inBox:true
   },
   {
-    img: images.man3,
-    name: "Ophelia M. Haynes",
+    img: images.defimage13,
+    name: "Lauren Connors",
     message: "Typing...",
-    time: "JAN 12",
+    time: "8:34 AM",
     favorite: true,
+    isOnline:true,
+
+
   },
   {
-    img: images.man4,
-    name: "Alan Dodson",
-    message: "That’s really awesome to hear...",
-    time: "JAN 11",
+    img: images.defimage14,
+    name: "Lauren Connors",
+    message: "Hey everyone. Status is great. Here is my view right now.",
+    time: "8:34 AM",
     count: "10",
   },
   {
-    img: images.man6,
-    name: "Marcella Beltran",
-    message: "Is tomorrow at six okay for you?",
-    time: "JAN 10",
+    img: images.defimage15,
+    name: "Lauren Connors",
+    message: "Hey everyone. Status is great. Here is my view right now.",
+    time: "8:34 AM",
+    count: "5",
+  },
+  {
+    img: images.defimage14,
+    name: "Lauren Connors",
+    message: "Hey everyone. Status is great. Here is my view right now.",
+    time: "8:34 AM",
+    count: "10",
+  },
+  {
+    img: images.defimage15,
+    name: "Lauren Connors",
+    message: "Hey everyone. Status is great. Here is my view right now.",
+    time: "8:34 AM",
     count: "5",
   },
 ];
 
 export const messages = [
   {
-    img: images.man9,
+    img: images.defimage100,
     name: "Me",
     message: "Todd you are a very nice person.",
     time: "11:09 PM",
@@ -214,7 +234,7 @@ export const messages = [
     chatDate: "Jan 12,2024",
   },
   {
-    img: images.man9,
+    img: images.defimage100,
     name: "Me",
     message: "Todd, I am very busy tonight. Sorry.",
     time: "2:09 PM",
@@ -227,7 +247,7 @@ export const messages = [
     chatDate: "    Today    ",
   },
   {
-    img: images.man9,
+    img: images.defimage100,
     name: "Me",
     message: "We should talk on the phone first.\n 344-554-4432",
     time: "9:55 AM",
@@ -239,7 +259,7 @@ export const messages = [
     time: "11:45 AM",
   },
   {
-    img: images.man9,
+    img: images.defimage100,
     name: "Me",
     message: "I will be free to talk in a few hours.",
     time: "12:05 PM",
@@ -250,20 +270,30 @@ export const activityData = [
   {
     image: images.man2,
     name: "Joe Rogan",
-    time: "2 min ago",
-    comment: "Wrote on your wall",
+    time: "2d ago",
+    comment: "Started following you.",
+    isShowFollow:true
+  },
+  {
+    image: images.man2,
+    name: "Joe Rogan",
+    time: "2d ago",
+    comment: "Wrote on your wall.",
+    isShowFollow:false
   },
   {
     image: images.man5,
-    name: "Bob Smith",
-    time: "3 hrs ago",
-    comment: "Commented on your status",
+    name: "Bobby D",
+    time: "3d ago",
+    comment: "Started following you.",
+    isShowFollow:true
   },
   {
     image: images.man5,
-    name: "Bob Smith",
-    time: "5 hrs ago",
-    comment: "Replied to your comment",
+    name: "Kimmy",
+    time: "3d ago",
+    comment: "Wrote on your wall.",
+    isShowFollow:false
   },
 ];
 

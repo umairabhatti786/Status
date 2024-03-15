@@ -8,6 +8,12 @@ const initialState = {
   isFirstLogin: false,
   notificationAlert: false,
   isScroll:0,
+  isVerify:false,
+  verifyData:{
+    lable:"",
+    text:""
+  },
+
   createPostLocation: "",
   userToken:"",
   currentLocation: "",
@@ -37,6 +43,14 @@ const authSlice = createSlice({
     },
     setIsScroll: (state, action) => {
       state.isScroll = action.payload;
+    },
+    setVerifyData: (state, action) => {
+      state.verifyData.lable = action.payload.label;
+      state.verifyData.text = action.payload.text;
+
+    },
+    setIsVerify: (state, action) => {
+      state.isVerify = action.payload;
     },
     setCreatePostLocation: (state, action) => {
       state.createPostLocation = action.payload;
@@ -73,5 +87,7 @@ export const {
   setIsFirstLogin,
   setUserToken,
   setIsScroll,
+  setVerifyData,
+  setIsVerify
 } = authSlice.actions;
 export default authSlice.reducer;
