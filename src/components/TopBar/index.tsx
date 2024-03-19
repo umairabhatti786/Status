@@ -26,7 +26,7 @@ const TopBar = ({ activeBar, setActiveBar, topBarData }: any) => {
                 <CustomText
                   color={ colors.white}
                   text={item}
-                  size={verticalScale(15)}
+                  size={verticalScale(18)}
                   fontWeight={"500"}
                   fontFam="Poppins-Regular"
                 />
@@ -35,7 +35,7 @@ const TopBar = ({ activeBar, setActiveBar, topBarData }: any) => {
 
               <View
                 style={{
-                  width: windowWidth/2,
+                  width: windowWidth/2.2,
                   height: verticalScale(3),
                   backgroundColor:
                     activeBar == item ? colors.white : colors.black200,

@@ -22,7 +22,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 import { Spacer } from "../../../components/Spacer";
 import MessageSender from "../../../components/MessageSender";
 
-const Channel = () => {
+const Channel = ({hideSendMessage}:any) => {
   const route: any = useRoute();
   const item = route?.params?.item;
   const navigation: any = useNavigation();
@@ -41,16 +41,16 @@ const Channel = () => {
           style={{ width: "100%", height: windowHeight }}
           source={images.channelbackground}
         >
-          <View style={{ height: windowHeight / 1.3 }}>
+          <View style={{ height: windowHeight / 1 }}>
             <FlatList
               data={[1]}
-              style={{ marginBottom: verticalScale(60) }}
+              // style={{ marginBottom: verticalScale(30) }}
               //  contentContainerStyle={{
               //    gap: 100,
               //  }}
               renderItem={({ item, index }) => {
                 return (
-                  <View style={{paddingBottom:verticalScale(20)}}>
+                  <View  style={{paddingBottom:verticalScale(10)}}>
                     <Spacer height={verticalScale(30)} />
                     <View style={styles.timeContainer}>
                       <CustomText
@@ -66,6 +66,7 @@ const Channel = () => {
                         // marginHorizontal: scale(15),
                         marginVertical: verticalScale(10),
                         // height:windowHeight/1.5,
+                        // height:"50%",
                         backgroundColor: colors.black300,
                         borderRadius: scale(8),
                         width: "95%",
@@ -82,7 +83,7 @@ const Channel = () => {
                         text={"Carmen Electra"}
                       />
                       <Image
-                        style={{ width: "100%", height: verticalScale(350) }}
+                        style={{ width: "100%", height: verticalScale(300) }}
                         source={images.defimage200}
                       />
                       <CustomText
@@ -135,7 +136,18 @@ const Channel = () => {
                 );
               }}
             />
-                      <MessageSender/>
+            {
+              hideSendMessage?(
+                <></>
+
+
+              ):(
+                                <MessageSender
+                                bottom={verticalScale(9)}
+                                />
+
+              )
+            }
 
           </View>
 

@@ -43,7 +43,7 @@ const MessageScreen = ({ navigation }: any) => {
         <View style={{ width: "30%" }} />
 
         <View
-        style={{ width: "40%" }}
+        // style={{ width: "40%" }}
         >
         <CustomText
           fontWeight="600"

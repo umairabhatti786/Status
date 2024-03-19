@@ -102,7 +102,9 @@ const BottomTab = ({ navigation }: any) => {
       />
       <Bottom.Screen
         name="AddStatus"
-        component={AddStatus}
+        // component={AddStatus}
+        component={ProfileScreen}
+
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => {

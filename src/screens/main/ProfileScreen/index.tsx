@@ -53,10 +53,7 @@ const ProfileScreen = () => {
       <SafeAreaView style={appStyles.main}>
       <StatusBar backgroundColor="#000" barStyle="light-content" />
 
-        <ScrollView 
-        scrollEnabled={isActiveProfile==1?false:true}
-        showsVerticalScrollIndicator={false}
-        >
+      
           <View style={appStyles.rowjustify}>
             <View
               style={{
@@ -121,7 +118,7 @@ const ProfileScreen = () => {
           </View>
           
           <View
-            style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10) }}
+            style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10),marginBottom:verticalScale(10) }}
           >
             {
               ["Profile","Channel"].map((item,index)=>{
@@ -148,6 +145,9 @@ const ProfileScreen = () => {
               height={35}
             /> */}
           </View>
+          <ScrollView 
+        showsVerticalScrollIndicator={false}
+        >
           {isActiveProfile==0?(
                <View>
            
@@ -271,56 +271,7 @@ const ProfileScreen = () => {
                    />
                  </View>
      
-                 {/* <ImageBackground
-               style={{
-                 marginTop: 10,
-                 // marginHorizontal: 10,
-                 paddingHorizontal: 20,
-                 overflow: "hidden",
-                 paddingVertical: 6,
-               }}
-               // resizeMode="contain"
-               source={images.detailbg}
-             >
-               <View style={styles.flex}>
-                 <View style={styles.row}>
-                   <Image style={styles.icon} source={images.gander} />
-                   <CustomText color={colors.white} size={14} text={"Male"} />
-                 </View>
-                 <View style={{ ...styles.row, marginLeft: 10 }}>
-                   <Image style={styles.icon} source={images.calander} />
-                   <CustomText
-                     color={colors.white}
-                     size={14}
-                     text={"40 years old"}
-                   />
-                 </View>
-               </View>
-               <View style={styles.flex}>
-                 <View style={styles.row}>
-                   <Image style={styles.icon} source={images.straight} />
-                   <CustomText color={colors.white} size={14} text={"Straight"} />
-                 </View>
-                 <View style={{ ...styles.row, marginLeft: 10 }}>
-                   <Image style={styles.icon} source={images.heart} />
-                   <CustomText color={colors.white} size={14} text={"Single"} />
-                 </View>
-               </View>
-               <View style={[styles.flex, { marginBottom: 12 }]}>
-                 <View style={styles.row}>
-                   <Image style={styles.icon} source={images.education} />
-                   <CustomText color={colors.white} size={14} text={"GED"} />
-                 </View>
-                 <View style={{ ...styles.row, marginLeft: 10 }}>
-                   <Image style={styles.icon} source={images.bag} />
-                   <CustomText
-                     color={colors.white}
-                     size={14}
-                     text={"Status,Founder"}
-                   />
-                 </View>
-               </View>
-             </ImageBackground> */}
+                 
                  <View
                    style={{
                      flexDirection: "row",
@@ -337,7 +288,7 @@ const ProfileScreen = () => {
                    <TextInput
                      style={{
                        color: colors.gray200,
-                       width:scale(190),
+                       width:"90%",
                        fontSize: verticalScale(15),
                      }}
                      placeholderTextColor={colors.gray200}

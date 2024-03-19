@@ -101,7 +101,8 @@ const HomeScreen = () => {
       <FriendList
         disabled={false}
         onPress={() =>
-          navigation.navigate("Post", {
+         
+          navigation.navigate("OthersProfile", {
             item: item,
           })
         }

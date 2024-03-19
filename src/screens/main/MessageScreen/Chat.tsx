@@ -174,7 +174,9 @@ const Chat = () => {
           renderItem={renderChatList}
         />
         <View>
-        <MessageSender/>
+        <MessageSender
+        placeholder="write a message"
+        />
 
         </View>
       </View>

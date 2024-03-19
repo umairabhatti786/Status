@@ -89,7 +89,7 @@ const MessagesComponent = ({
               justifyContent: "space-between",
               width: scale(190),              // backgroundColor:"red"
             }}>
-            <View style={{...appStyles.row,marginTop:verticalScale(-3)}}>
+            <View style={{...appStyles.row,marginTop:verticalScale(-3),width: scale(180),}}>
               <CustomText
                 text={name}
                 color={colors.white}
@@ -114,8 +114,10 @@ const MessagesComponent = ({
             color={profile ? colors.gray500 : colors.white}
             size={16}
             lineHeight={20}
-            style={{               width: scale(190),              // backgroundColor:"red"
-            marginTop:verticalScale(2) }}
+            style={{ width: windowWidth / 1.8, marginTop:verticalScale(2) }}
+
+            // style={{               width: scale(190),              // backgroundColor:"red"
+            // marginTop:verticalScale(2) }}
             fontFam="Poppins-Medium"
             fontWeight={profile ? "600" : "500"}
           />
@@ -123,11 +125,17 @@ const MessagesComponent = ({
 
         <View
           style={{
-            width: 60,
-            height: 60,
-            paddingTop: -2,
+            width: scale(70),
+            height: verticalScale(60),
+            paddingTop: 3,
             alignItems: "flex-end",
             justifyContent: "space-between",
+            marginRight:scale(5),
+            position:"absolute",
+            // backgroundColor:"red",
+            right:scale(10),
+            top:verticalScale(5)
+          
             // paddingBottom: 5,
             // backgroundColor:"red"
           }}

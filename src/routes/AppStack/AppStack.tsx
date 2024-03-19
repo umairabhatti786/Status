@@ -36,7 +36,19 @@ const AppStack = () => {
 
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+    //  screenOptions={{ headerShown: false }
+      screenOptions={{
+        headerShown: false,
+        cardStyleInterpolator: ({ current: { progress } }) => {
+          return {
+            cardStyle: {
+              opacity: progress,
+            },
+          };
+        },
+      }}
+    >
             
             <Stack.Screen name={"Join"} component={JoinScreen} />
             <Stack.Screen name={"Login"} component={Login} />

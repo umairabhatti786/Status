@@ -25,6 +25,7 @@ import { Spacer } from "../../../components/Spacer";
 import SizeBar from "../../../components/SizeBar";
 import CustomModal from "../../../components/CustomModal";
 import BlockModal from "./BlockModal";
+import Channel from "../Channel";
 
 const OthersProfile = () => {
   const route: any = useRoute();
@@ -35,6 +36,7 @@ const OthersProfile = () => {
   const [isFollow,setIsFollow]=useState(false)
   const [isBlockModal,setIsBlockModal]=useState(false)
   const [isReportModal,setIsReportModal]=useState(false)
+  const [isActiveProfile,setIsActiveProfile]=useState(0)
 
   const [isUnfollowModal,setIsUnfollowModal]=useState(false)
 
@@ -54,7 +56,6 @@ const OthersProfile = () => {
   return (
     <>
       <SafeAreaView style={appStyles.main}>
-        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={appStyles.rowjustify}>
             <View
               style={{
@@ -131,8 +132,8 @@ const OthersProfile = () => {
                   </TouchableOpacity>
                   <Spacer width={scale(10)} />
                   <TouchableOpacity
-                    activeOpacity={0.6}
-                    onPress={() => navigation.goBack()}
+                    activeOpacity={1}
+                    // onPress={() => navigation.goBack()}
                   >
                     <Image
                       style={{
@@ -242,7 +243,35 @@ const OthersProfile = () => {
             </View>
           </View>
         </ImageBackground> */}
-          <View
+           <View
+            style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10) ,marginBottom:verticalScale(10)}}
+          >
+            {
+              ["Profile","Channel"].map((item,index)=>{
+                return(
+                  <CustomButton
+                  width={"48.5%"}
+                  onPress={()=>setIsActiveProfile(index)}
+                  
+                  text={item}
+                  textColor={ isActiveProfile==index?  colors.black:colors.white}
+                  height={35}
+                  bgColor={ isActiveProfile==index?  colors.grey400:colors.primary}
+                  borderRadius={8}
+                />
+
+                )
+              })
+            }
+        
+            {/* <CustomButton
+              width={"48.5%"}
+              borderRadius={8}
+              text="Channel"
+              height={35}
+            /> */}
+          </View>
+          {/* <View
             style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10) }}
           >
             <CustomButton
@@ -259,215 +288,235 @@ const OthersProfile = () => {
               text="Channel"
               height={35}
             />
-          </View>
-          <View
-            style={{
-              ...appStyles.row,
-              paddingVertical: verticalScale(8),
-              paddingHorizontal: scale(20),
-            }}
-          >
-            <View style={appStyles.row}>
-              <Image
-                style={{
-                  width: scale(16),
-                  height: scale(16),
-                }}
-                source={images.locationicon}
-              />
-              <CustomText
-                color={colors.grey300}
-                size={15}
-                fontFam="Inter-Medium"
-                style={{ marginLeft: scale(8) }}
-                text={"Los Angeles, CA"}
-              />
-            </View>
-            <Spacer width={scale(22)} />
+          </View> */}
 
-            <View style={appStyles.row}>
-              <Image
-                style={{
-                  width: scale(20),
-                  height: scale(20),
-                }}
-                source={images.bagicon}
-              />
-              <CustomText
-                color={colors.grey300}
-                size={15}
-                fontFam="Inter-Medium"
-                style={{ marginLeft: scale(8) }}
-                text={"Actress, Model"}
-              />
-            </View>
-          </View>
-          <Image
-            style={{
-              width: "94%",
-              height: verticalScale(350),
-              // height: 362,
-              alignSelf: "center",
-              // marginTop: 15,
-            }}
-            resizeMode="cover"
-            source={item?.img}
-          />
-          <View style={{ paddingHorizontal: scale(10) }}>
-            <View
-              style={{
-                backgroundColor: colors.primary,
-                borderBottomRightRadius: scale(5),
-                borderBottomLeftRadius: scale(5),
-                paddingLeft: scale(10),
-                paddingVertical: verticalScale(10),
-              }}
-            >
-              <CustomText
-                color={colors.white}
-                lineHeight={20}
-                size={15}
-                text={
-                  "see my latest content using the link below ⚡ bookings & inquiries email"
-                }
-              />
-              <CustomText
-                color={colors.white}
-                size={15}
-                lineHeight={20}
-                text={"thaer@princemarketinggroup.com"}
-              />
-              <View style={{ ...appStyles.row, marginTop: verticalScale(3) }}>
-                <Image
-                  style={{
-                    width: scale(18),
-                    height: scale(18),
-                  }}
-                  resizeMode="contain"
-                  source={images.link}
-                />
-                <CustomText
-                  color={colors.grey300}
-                  size={14}
-                  fontFam="Inter-Medium"
-                  style={{ marginLeft: scale(8) }}
-                  text={"link.me/carmenelectra"}
-                />
-              </View>
-            </View>
+{isActiveProfile==0?(
+               <View>
+                        <ScrollView showsVerticalScrollIndicator={false}>
 
-            <View
-              style={{
-                ...appStyles.rowjustify,
-                marginVertical: verticalScale(10),
-              }}
-            >
-              <Image
-                style={{
-                  width: "48.5%",
-                  height: windowHeight / 4.2,
-                  borderRadius: 8,
-                }}
-                source={images.defimg400}
-              />
-              <Image
-                style={{
-                  width: "48.5%",
-                  height: windowHeight / 4.2,
-                  borderRadius: 8,
-                }}
-                source={images.defimage4}
-              />
-            </View>
+           
+               <View
+                 style={{
+                   ...appStyles.row,
+                   paddingVertical: verticalScale(8),
+                   paddingHorizontal: scale(20),
+                 }}
+               >
+                 <View style={appStyles.row}>
+                   <Image
+                     style={{
+                       width: scale(16),
+                       height: scale(16),
+                     }}
+                     source={images.locationicon}
+                   />
+                   <CustomText
+                     color={colors.grey300}
+                     size={15}
+                     fontFam="Inter-Medium"
+                     style={{ marginLeft: scale(8) }}
+                     text={"Los Angeles, CA"}
+                   />
+                 </View>
+                 <Spacer width={scale(22)} />
+     
+                 <View style={appStyles.row}>
+                   <Image
+                     style={{
+                       width: scale(20),
+                       height: scale(20),
+                     }}
+                     source={images.bagicon}
+                   />
+                   <CustomText
+                     color={colors.grey300}
+                     size={15}
+                     fontFam="Inter-Medium"
+                     style={{ marginLeft: scale(8) }}
+                     text={"Actress, Model"}
+                   />
+                 </View>
+               </View>
+               <Image
+                 style={{
+                   width: "94%",
+                   height: verticalScale(350),
+                   // height: 362,
+                   alignSelf: "center",
+                   // marginTop: 15,
+                 }}
+                 resizeMode="cover"
+                 source={images.defimage12}
+               />
+               <View style={{ paddingHorizontal: scale(10) }}>
+                 <View
+                   style={{
+                     backgroundColor: colors.primary,
+                     borderBottomRightRadius: scale(5),
+                     borderBottomLeftRadius: scale(5),
+                     paddingLeft: scale(10),
+                     paddingVertical: verticalScale(10),
+                   }}
+                 >
+                   <CustomText
+                     color={colors.white}
+                     lineHeight={20}
+                     size={15}
+                     text={
+                       "see my latest content using the link below ⚡ bookings & inquiries email"
+                     }
+                   />
+                   <CustomText
+                     color={colors.white}
+                     size={15}
+                     lineHeight={20}
+                     text={"thaer@princemarketinggroup.com"}
+                   />
+                   <View style={{ ...appStyles.row, marginTop: verticalScale(3) }}>
+                     <Image
+                       style={{
+                         width: scale(18),
+                         height: scale(18),
+                       }}
+                       resizeMode="contain"
+                       source={images.link}
+                     />
+                     <CustomText
+                       color={colors.grey300}
+                       size={14}
+                       fontFam="Inter-Medium"
+                       style={{ marginLeft: scale(8) }}
+                       text={"link.me/carmenelectra"}
+                     />
+                   </View>
+                 </View>
+     
+                 <View
+                   style={{
+                     ...appStyles.rowjustify,
+                     marginVertical: verticalScale(10),
+                   }}
+                 >
+                   <Image
+                     style={{
+                       width: "48.5%",
+                       height: windowHeight / 4.2,
+                       borderRadius: 8,
+                     }}
+                     source={images.defimg400}
+                   />
+                   <Image
+                     style={{
+                       width: "48.5%",
+                       height: windowHeight / 4.2,
+                       borderRadius: 8,
+                     }}
+                     source={images.defimage4}
+                   />
+                 </View>
+     
+                 {/* <ImageBackground
+               style={{
+                 marginTop: 10,
+                 // marginHorizontal: 10,
+                 paddingHorizontal: 20,
+                 overflow: "hidden",
+                 paddingVertical: 6,
+               }}
+               // resizeMode="contain"
+               source={images.detailbg}
+             >
+               <View style={styles.flex}>
+                 <View style={styles.row}>
+                   <Image style={styles.icon} source={images.gander} />
+                   <CustomText color={colors.white} size={14} text={"Male"} />
+                 </View>
+                 <View style={{ ...styles.row, marginLeft: 10 }}>
+                   <Image style={styles.icon} source={images.calander} />
+                   <CustomText
+                     color={colors.white}
+                     size={14}
+                     text={"40 years old"}
+                   />
+                 </View>
+               </View>
+               <View style={styles.flex}>
+                 <View style={styles.row}>
+                   <Image style={styles.icon} source={images.straight} />
+                   <CustomText color={colors.white} size={14} text={"Straight"} />
+                 </View>
+                 <View style={{ ...styles.row, marginLeft: 10 }}>
+                   <Image style={styles.icon} source={images.heart} />
+                   <CustomText color={colors.white} size={14} text={"Single"} />
+                 </View>
+               </View>
+               <View style={[styles.flex, { marginBottom: 12 }]}>
+                 <View style={styles.row}>
+                   <Image style={styles.icon} source={images.education} />
+                   <CustomText color={colors.white} size={14} text={"GED"} />
+                 </View>
+                 <View style={{ ...styles.row, marginLeft: 10 }}>
+                   <Image style={styles.icon} source={images.bag} />
+                   <CustomText
+                     color={colors.white}
+                     size={14}
+                     text={"Status,Founder"}
+                   />
+                 </View>
+               </View>
+             </ImageBackground> */}
+                 <View
+                   style={{
+                     flexDirection: "row",
+                     justifyContent: "space-between",
+                     alignItems: "center",
+                     paddingHorizontal: 20,
+                     borderWidth: 1,
+                     borderColor: colors.gray200,
+                     // paddingVertical:verticalScale(5),
+                     borderRadius: 10,
+                     marginBottom: verticalScale(10),
+                   }}
+                 >
+                   <TextInput
+                     style={{
+                       color: colors.gray200,
+                       width:"70%",
+                       fontSize: verticalScale(15),
+                     }}
+                     placeholderTextColor={colors.gray200}
+                     placeholder="Write on my wall"
+                   />
+                   <Image
+                     style={{ tintColor: colors.gray200 }}
+                     source={images.send}
+                   />
+                 </View>
+     
+                 <FlatList
+                   data={profileComments}
+                   style={{ marginBottom: verticalScale(130) }}
+                   contentContainerStyle={{
+                     gap: 7,
+                   }}
+                   renderItem={renderChatList}
+                 />
+               </View>
 
-            {/* <ImageBackground
-          style={{
-            marginTop: 10,
-            // marginHorizontal: 10,
-            paddingHorizontal: 20,
-            overflow: "hidden",
-            paddingVertical: 6,
-          }}
-          // resizeMode="contain"
-          source={images.detailbg}
-        >
-          <View style={styles.flex}>
-            <View style={styles.row}>
-              <Image style={styles.icon} source={images.gander} />
-              <CustomText color={colors.white} size={14} text={"Male"} />
-            </View>
-            <View style={{ ...styles.row, marginLeft: 10 }}>
-              <Image style={styles.icon} source={images.calander} />
-              <CustomText
-                color={colors.white}
-                size={14}
-                text={"40 years old"}
-              />
-            </View>
-          </View>
-          <View style={styles.flex}>
-            <View style={styles.row}>
-              <Image style={styles.icon} source={images.straight} />
-              <CustomText color={colors.white} size={14} text={"Straight"} />
-            </View>
-            <View style={{ ...styles.row, marginLeft: 10 }}>
-              <Image style={styles.icon} source={images.heart} />
-              <CustomText color={colors.white} size={14} text={"Single"} />
-            </View>
-          </View>
-          <View style={[styles.flex, { marginBottom: 12 }]}>
-            <View style={styles.row}>
-              <Image style={styles.icon} source={images.education} />
-              <CustomText color={colors.white} size={14} text={"GED"} />
-            </View>
-            <View style={{ ...styles.row, marginLeft: 10 }}>
-              <Image style={styles.icon} source={images.bag} />
-              <CustomText
-                color={colors.white}
-                size={14}
-                text={"Status,Founder"}
-              />
-            </View>
-          </View>
-        </ImageBackground> */}
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingHorizontal: 20,
-                borderWidth: 1,
-                borderColor: colors.gray200,
-                // paddingVertical:verticalScale(5),
-                borderRadius: 10,
-                marginBottom: verticalScale(10),
-              }}
-            >
-              <TextInput
-                style={{
-                  color: colors.gray200,
-                  width: windowWidth / 1.25,
-                  fontSize: verticalScale(15),
-                }}
-                placeholderTextColor={colors.gray200}
-                placeholder="Write on my wall"
-              />
-              <Image
-                style={{ tintColor: colors.gray200 }}
-                source={images.send}
-              />
-            </View>
+               </ScrollView>
 
-            <FlatList
-              data={profileComments}
-              // style={{ paddingHorizontal: 5 }}
-              contentContainerStyle={{
-                gap: 7,
-              }}
-              renderItem={renderChatList}
-            />
-          </View>
-        </ScrollView>
+               </View>
+              
+              ):(
+                <>
+               <View style={{width:"100%",height:windowHeight,paddingTop:verticalScale(10)}}>
+                <Channel/>
+
+
+                </View>
+                </>
+              )}
+          
       </SafeAreaView>
       <SizeBar
         setIsModalVisible={setIsBar}
@@ -594,7 +643,7 @@ const OthersProfile = () => {
       setModalVisible={setIsReportModal}
       isBlock={"REPORT"}
       title={"Report Carmen Electra?"}
-      des={"If you feel this user has violated our terms of service select BLOCK and we will review your anonymous submission."}
+      des={"If you feel this user has violated our terms of service select REPORT and we will review your anonymous submission."}
 
       />
 {/* 

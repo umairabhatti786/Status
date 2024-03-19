@@ -25,26 +25,29 @@ type Props = {
   profile?: boolean;
   edit?: boolean;
   onEdit?: () => void;
+  placeholder?:string
+  bottom?:any
 };
 
-const MessageSender = () => {
+const MessageSender = ({placeholder,bottom}:Props) => {
   return (
     <View
       style={{
         flexDirection: "row",
         alignItems: "center",
+        justifyContent:"space-between",
         borderTopWidth: 1,
         borderBottomWidth:1,
         borderColor: "#8A8A8A",
-        justifyContent: "center",
         //   paddingVertical: 10,
         //   paddingHorizontal: 12,
         width: windowWidth,
         position: "absolute",
-        bottom: 0,
+        bottom:bottom || 0,
         //   paddingBottom: 30,
         backgroundColor: colors.primary,
-        paddingVertical:verticalScale(10)
+        paddingVertical:verticalScale(10),
+        paddingHorizontal:scale(10)
         // height: verticalScale(100),
         //   paddingHorizontal:scale(20)
       }}
@@ -57,9 +60,10 @@ const MessageSender = () => {
           backgroundColor: colors.black,
           paddingHorizontal:scale(5),
           paddingVertical:verticalScale(3),
+          
           // padding:scale(10),
         //   height: verticalScale(60),
-          width: "95%",
+          width: "82%",
           alignSelf: "center",
           // marginBottom:verticalScale(30)
         }}
@@ -68,12 +72,12 @@ const MessageSender = () => {
           style={{
             marginLeft: 12,
             color: colors.white,
-            width: windowWidth / 1.5,
+            width: "70%",
             fontSize: verticalScale(16),
             // backgroundColor:"red"
           }}
           placeholderTextColor={colors.gray200}
-          placeholder="Write a status update"
+          placeholder={placeholder ||"Write a status update"}
         />
         <TouchableOpacity
         activeOpacity={0.6}
@@ -96,6 +100,21 @@ const MessageSender = () => {
           />
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity
+      activeOpacity={0.6}
+      style={{width:scale(45),height:scale(45),borderRadius:scale(45),backgroundColor:colors.sky,alignItems:"center",justifyContent:"center"}}
+      >
+
+<Image
+            source={images.sendmessage}
+            style={{ width: scale(25), height: scale(25) }}
+            // resizeMode="contain"
+          />
+
+
+
+      </TouchableOpacity>
     </View>
   );
 };

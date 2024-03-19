@@ -93,6 +93,8 @@ export const images = {
   searchfill: require("../images/search-fill.png"),
   appicon: require("../images/app-icon.png"),
   bell: require("../images/bell.png"),
+  sendmessage: require("../images/send.png"),
+
 
   search1: require("../icons/search1.png"),
   search100: require("../icons/search.png"),

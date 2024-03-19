@@ -16,9 +16,9 @@ const App = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Provider store={store}>
-        {/* <BottomSheetModalProvider> */}
+        <BottomSheetModalProvider>
           <RootNavigator />
-        {/* </BottomSheetModalProvider> */}
+        </BottomSheetModalProvider>
       </Provider>
     </GestureHandlerRootView>
   );

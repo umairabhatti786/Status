@@ -7,7 +7,18 @@ import OthersProfile from "../../screens/main/SearchScreen/OthersProfile";
 const SearchStack = () => {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator 
+      screenOptions={{
+        headerShown: false,
+        cardStyleInterpolator: ({ current: { progress } }) => {
+          return {
+            cardStyle: {
+              opacity: progress,
+            },
+          };
+        },
+      }}
+    >
       <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
       <Stack.Screen name={"OthersProfile"} component={OthersProfile} />
     </Stack.Navigator>
