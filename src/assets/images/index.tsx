@@ -95,6 +95,7 @@ export const images = {
   bell: require("../images/bell.png"),
   sendmessage: require("../images/send.png"),
 
+  messageincon: require("../icons/message-inbox.png"),
 
   search1: require("../icons/search1.png"),
   search100: require("../icons/search.png"),
