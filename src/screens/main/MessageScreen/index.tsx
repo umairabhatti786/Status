@@ -23,9 +23,13 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import { scale, verticalScale } from "react-native-size-matters";
+import CustomDrawer from "../../../components/CustomDrawer";
 
 const MessageScreen = ({ navigation }: any) => {
   const [isArchived, setIsArchived] = useState(false);
+  const [activeChat,setActiveChat]=useState("Inbox")
+
+  const [isOpenDrawer,setIsOpenDrawer]=useState(false)
   const renderChatList = ({ item }: any) => {
     return <MessagesList item={item} />;
   };
@@ -38,79 +42,109 @@ const MessageScreen = ({ navigation }: any) => {
 //   item?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
 // );
   return (
-    <View style={appStyles.main}>
-      <AbsoluteHeader>
-        <View style={{ width: "30%" }} />
+    <>
+      <View style={appStyles.main}>
+      <View style={{marginHorizontal:scale(15),marginTop:verticalScale(15),}} >
+      <View
+                   style={{
+                     flexDirection: "row",
+                     justifyContent: "space-between",
+                     alignItems: "center",
+                     paddingHorizontal: scale(15),
+                     backgroundColor:colors.black300,
+                     // paddingVertical:verticalScale(5),
+                     borderRadius: scale(30),
+                     marginBottom: verticalScale(10),
+                     paddingVertical:verticalScale(2)
+                   }}
+                 >
+                  <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={()=>setIsOpenDrawer(!isOpenDrawer)}
+                  // style={{backgroundColor:'red'}}
+                  >
+                      <Image
+                     style={{ tintColor: colors.gray500,width:scale(25),height:scale(25) }}
+                     
+                     source={images.drawer}
+                   />
 
-        <View
-        // style={{ width: "40%" }}
-        >
-        <CustomText
-          fontWeight="600"
-          color={colors.white}
-          fontFam="Poppins-Medium"
-          size={18}
-          text={ !isArchived ?"Status Inbox":"Archived Chats"}
-        />
+                  </TouchableOpacity>
+                   
+                   <TextInput
+                     style={{
+                       color: colors.gray500,
+                       width:"90%",
+                       fontSize: verticalScale(16),
+                       paddingLeft:scale(10)
+                     }}
+                     placeholderTextColor={colors.gray500}
+                     placeholder="Search Messages"
+                   />
+                
+                 </View>
 
-        </View>
+      </View>
 
+
+     
+
+      <View
+   
+       style={{ paddingHorizontal:scale(20),marginBottom:verticalScale(10),flexDirection:"row",alignItems:"center",justifyContent:"space-between" }}
+       >
        
-        <TouchableOpacity
-          style={{width:"30%",alignItems:"flex-end",paddingRight:scale(10)}}
-
-          onPress={() => navigation.navigate("NewMessage")}
-        >
-          <Image
-            style={{ width: wp(5), height: hp(3) }}
-            resizeMode="contain"
-            source={images.newchat}
-          />
-        </TouchableOpacity>
-      
-      </AbsoluteHeader>
-
-      <TouchableOpacity
-      activeOpacity={0.6}
-      onPress={()=>setIsArchived(!isArchived)}
-       style={{ paddingHorizontal:scale(15),paddingVertical:verticalScale(5) }}>
 
 
 
       <CustomText
-          fontWeight="600"
-          color={colors.white}
-          fontFam="Poppins-Medium"
-          textDecorationLine={"underline"}
-          size={17}
-          text={!isArchived?"Archived chats":"Back to Inbox"}
+          // fontWeight="600"
+          color={colors.gray500}
+          // fontFam="Poppins-Medium"
+          // textDecorationLine={"underline"}
+          size={15}
+          text={activeChat=="Inbox"?"All Messages":activeChat=="Starred"?"Starred Messages":activeChat=="Archive"?"Archived Messages":activeChat=="Trash"?"All Trash":""}
         />
 
-      </TouchableOpacity>
+{
+          activeChat=="Trash"&&(
+            <CustomText
+            // fontWeight="600"
+            color={colors.white}
+            // fontFam="Poppins-Medium"
+            // textDecorationLine={"underline"}
+            size={15}
+            text={"Empty Trash"}
+          />
+            
+          )
+        }
+         
 
-      {/* <View style={styles.inputContainer}>
-        <Image source={images.search1} />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor={colors.white}
-          onChangeText={(text: string) => setSearchTerm(text)}
-          placeholder="Search Messages"
-        />
-        <Image source={images.cross} />
-      </View> */}
+
+      </View>
+
+      
       <View style={{ flex: 1 }}>
         <FlatList
-          data={ isArchived? messagesList.filter(it=>!it.isOnline):messagesList}
+        data={ activeChat=="Starred"? messagesList.filter(it=>it.favorite):messagesList}
+          // data={ isArchived? messagesList.filter(it=>!it.isOnline):messagesList}
           contentContainerStyle={{
             gap: 5,
           }}
           renderItem={renderChatList}
         />
       </View>
-      {/* <TouchableOpacity style={{ position: "absolute", bottom: 25, right: 10 }}>
-        <Image source={images.compose} />
-      </TouchableOpacity> */}
+    
     </View>
+
+    <CustomDrawer
+    isModalVisible={isOpenDrawer}
+    setActiveChat={setActiveChat}
+    setModalVisible={setIsOpenDrawer}
+    />
+    </>
+  
   );
 };
 

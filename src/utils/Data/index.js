@@ -175,13 +175,22 @@ export const messagesList = [
     message: "I will be free to talk in a few hours.",
     time: "8:34 AM",
     isOnline:true,
-
     inBox:true
   },
   {
     img: images.defimage13,
     name: "Lauren Connors",
     message: "Typing...",
+    time: "8:34 AM",
+    favorite: true,
+    isOnline:true,
+
+
+  },
+  {
+    img: images.defimage17,
+    name: "Lauren Connors",
+    message: "Hey everyone. Status is great. Here is my view right now.",
     time: "8:34 AM",
     favorite: true,
     isOnline:true,
@@ -216,6 +225,7 @@ export const messagesList = [
     time: "8:34 AM",
     count: "5",
   },
+  
 ];
 
 export const messages = [
