@@ -244,7 +244,7 @@ const OthersProfile = () => {
           </View>
         </ImageBackground> */}
            <View
-            style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10) ,marginBottom:verticalScale(10)}}
+            style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10) ,marginBottom:verticalScale(5)}}
           >
             {
               ["Profile","Channel"].map((item,index)=>{
@@ -298,7 +298,7 @@ const OthersProfile = () => {
                <View
                  style={{
                    ...appStyles.row,
-                   paddingVertical: verticalScale(8),
+                   paddingBottom: verticalScale(5),
                    paddingHorizontal: scale(20),
                  }}
                >
@@ -346,7 +346,7 @@ const OthersProfile = () => {
                    // marginTop: 15,
                  }}
                  resizeMode="cover"
-                 source={images.defimage12}
+                 source={item.img}
                />
                <View style={{ paddingHorizontal: scale(10) }}>
                  <View

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 // import Tabs from "../BottomTabs/Tabs";
+import SplashScreen from "react-native-splash-screen";
+
 import HomeScreen from "../../screens/main/HomeScreen";
 import MessageScreen from "../../screens/main/MessageScreen";
 import ProfileScreen from "../../screens/main/ProfileScreen";
@@ -28,16 +30,55 @@ import ChangePassword from "../../screens/main/ChangePassword";
 import AccountDeletion from "../../screens/main/AccountDeletion";
 import SearchMember from "../../screens/main/SearchMember";
 import NewMessage from "../../screens/main/NewMessage";
+import ResetPasswordConfirmation from "../../screens/auth/ResetPasswordConfirmation";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getRemember,
+  getUserData,
+  setRemember,
+  setToken,
+  setUserData,
+} from "../../redux/reducers/authReducer";
+import {
+  AUTH,
+  REMEMBER,
+  StorageServices,
+  TOKEN,
+} from "../../utils/hooks/StorageServices";
 
 const AppStack = () => {
   const Stack = createStackNavigator();
   const [splashState, setSplashState] = useState(true);
+  const user = useSelector(getUserData);
+
+  // const remember=useSelector(getRemember)
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  // console.log("userremeber",   remember);
+
+  const getUserInfo = async () => {
+    const userInfo = await StorageServices.getItem(AUTH);
+    const token = await StorageServices.getItem(TOKEN);
+    // const remeber = await StorageServices.getItem(REMEMBER);
 
 
+    // console.log("userInfo", remeber);
+    // dispatch(setRemember(remeber));
+
+    // const obj = JSON.parse(userInfo);
+
+    dispatch(setUserData(userInfo));
+    dispatch(setToken(token));
+  };
 
   return (
     <Stack.Navigator
-    //  screenOptions={{ headerShown: false }
+      //  screenOptions={{ headerShown: false }
       screenOptions={{
         headerShown: false,
         cardStyleInterpolator: ({ current: { progress } }) => {
@@ -49,45 +90,47 @@ const AppStack = () => {
         },
       }}
     >
-            
-            <Stack.Screen name={"Join"} component={JoinScreen} />
-            <Stack.Screen name={"Login"} component={Login} />
-            <Stack.Screen name={"Signup"} component={Signup} />
-            <Stack.Screen name={"ProfileSetup"} component={ProfileSetup} />
-            <Stack.Screen name={"LostPassword"} component={LostPassword} />
-            <Stack.Screen name={"ResetPassword"} component={ResetPassword} />
-            <Stack.Screen name={"ConfirmationCode"} component={ConfirmationCode} />
-
-
-
-
-
-      <Stack.Screen name={"Tabs"} component={BottomTab} />
-      <Stack.Screen name={"HomeScreen"} component={HomeScreen} />
-      <Stack.Screen name={"MessageScreen"} component={MessageScreen} />
-      <Stack.Screen name={"ProfileScreen"} component={ProfileScreen} />
-      <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
-      <Stack.Screen name={"OthersProfile"} component={OthersProfile} />
-      <Stack.Screen name={"AddStatus"} component={AddStatus} />
-      <Stack.Screen name={"ChatScreen"} component={Chat} />
-      <Stack.Screen name={"Settings"} component={Settings} />
-      <Stack.Screen name={"Notifications"} component={Notifications} />
-      <Stack.Screen name={"EditGifs"} component={EditGifs} />
-      <Stack.Screen name={"Sent Request"} component={SentRequest} />
-      <Stack.Screen name={"Post"} component={Post} />
-      <Stack.Screen name={"EditProfile"} component={EditProfile} />
-      <Stack.Screen name={"BlockedAccount"} component={BlockedAccount} />
-      <Stack.Screen name={"ChangeEmail"} component={ChangeEmail} />
-      <Stack.Screen name={"ChangePassword"} component={ChangePassword} />
-      <Stack.Screen name={"AccountDeletion"} component={AccountDeletion} />
-      <Stack.Screen name={"SearchMember"} component={SearchMember} />
-      <Stack.Screen name={"NewMessage"} component={NewMessage} />
-
-
-
-
-
-
+      {(!user?.email  )? (
+        <>
+          <Stack.Screen name={"Join"} component={JoinScreen} />
+          <Stack.Screen name={"Login"} component={Login} />
+          <Stack.Screen name={"Signup"} component={Signup} />
+          <Stack.Screen name={"ProfileSetup"} component={ProfileSetup} />
+          <Stack.Screen name={"LostPassword"} component={LostPassword} />
+          <Stack.Screen name={"ResetPassword"} component={ResetPassword} />
+          <Stack.Screen
+            name={"ConfirmationCode"}
+            component={ConfirmationCode}
+          />
+          <Stack.Screen
+            name={"ResetPasswordConfirmation"}
+            component={ResetPasswordConfirmation}
+          />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name={"Tabs"} component={BottomTab} />
+          <Stack.Screen name={"HomeScreen"} component={HomeScreen} />
+          <Stack.Screen name={"MessageScreen"} component={MessageScreen} />
+          <Stack.Screen name={"ProfileScreen"} component={ProfileScreen} />
+          <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
+          <Stack.Screen name={"OthersProfile"} component={OthersProfile} />
+          <Stack.Screen name={"AddStatus"} component={AddStatus} />
+          <Stack.Screen name={"ChatScreen"} component={Chat} />
+          <Stack.Screen name={"Settings"} component={Settings} />
+          <Stack.Screen name={"Notifications"} component={Notifications} />
+          <Stack.Screen name={"EditGifs"} component={EditGifs} />
+          <Stack.Screen name={"Sent Request"} component={SentRequest} />
+          <Stack.Screen name={"Post"} component={Post} />
+          <Stack.Screen name={"EditProfile"} component={EditProfile} />
+          <Stack.Screen name={"BlockedAccount"} component={BlockedAccount} />
+          <Stack.Screen name={"ChangeEmail"} component={ChangeEmail} />
+          <Stack.Screen name={"ChangePassword"} component={ChangePassword} />
+          <Stack.Screen name={"AccountDeletion"} component={AccountDeletion} />
+          <Stack.Screen name={"SearchMember"} component={SearchMember} />
+          <Stack.Screen name={"NewMessage"} component={NewMessage} />
+        </>
+      )}
     </Stack.Navigator>
   );
 };

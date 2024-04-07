@@ -23,7 +23,7 @@ import {
   import { Spacer } from "../../../components/Spacer";
   import { images } from "../../../assets/images";
   
-  const ChangePasswordForm = () => {
+  const ChangePasswordForm = ({values,setValues}:any) => {
     const navigation = useNavigation();
     const [showPassword, setShowPAssword] = useState(true);
   
@@ -33,11 +33,19 @@ import {
         <CustomTextInput
           label="Current Password"
           placeholder="Enter current password"
+          value={values?.currentPassword}
+          onChangeText={(txt: string) => {
+            setValues({ ...values, currentPassword: txt });
+          }}
         />
         <Spacer height={7} />
         <CustomTextInput
           label="New Password"
           isPassword={showPassword}
+          value={values?.newPassword}
+          onChangeText={(txt: string) => {
+            setValues({ ...values, newPassword: txt });
+          }}
           onShowPassword={() => setShowPAssword(!showPassword)}
           placeholder="At least 6 characters"
           source={showPassword ? images.eyeclose : images.eye}
@@ -46,6 +54,10 @@ import {
         <CustomTextInput
           label="Confirm New Password"
           isPassword={showPassword}
+          value={values?.confirmNewPassword}
+          onChangeText={(txt: string) => {
+            setValues({ ...values, confirmNewPassword: txt });
+          }}
           onShowPassword={() => setShowPAssword(!showPassword)}
           placeholder="At least 6 characters"
           source={showPassword ? images.eyeclose : images.eye}

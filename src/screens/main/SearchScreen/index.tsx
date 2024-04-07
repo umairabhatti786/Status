@@ -37,29 +37,37 @@ const SearchScreen = ({ navigation }) => {
   const [activeBar, setActiveBar] = useState("All");
   const [activeFilter, setActiveFilter] = useState(0);
   const bottomSheetModalRef = useRef(null);
-  const [activeCategory, setActiveCategory] = useState("Bodybuilder");
+  const [activeCategory, setActiveCategory] = useState("All");
   // const [setSelectedCategory,setSelectedCategory]=useState("")
   // const [setSelectedCategory, setSelectedCategory] = useState("All");
 
-  const snapPoints = useMemo(() => ["20%", "80%"], []);
+  const snapPoints = useMemo(() => [ "95%"], []);
   const handleClosePress = () => bottomSheetModalRef?.current?.close();
   // const handleOpenress = () => {
   //   bottomSheetRef?.current?.expand();
   // };
 
   let profileCategories = [
+    "All",
     "Actor",
+    "Artist",
     "Athlete",
     "Bodybuilder",
+    "Coder",
     "Comedian",
+    "Designer",
     "Entrepreneur",
     "Fighter",
     "Filmmaker",
+    "Gamer",
     "Influencer",
+    "Investor",
     "Model",
     "Musician",
     "News",
     "Podcaster",
+    "Reality Star",
+    "YouTuber",
     "Other",
   ];
 
@@ -357,18 +365,19 @@ const SearchScreen = ({ navigation }) => {
           />
         </View>
 
-        <Spacer height={10} />
+        <Spacer height={verticalScale(12)} />
 
         <View
           style={{
             ...appStyles.row,
-            marginBottom: verticalScale(8),
+            marginBottom: verticalScale(12),
             // marginLeft: scale(10),
           }}
         >
           <ScrollView
           horizontal
           style={{paddingLeft:scale(10)}}
+          showsHorizontalScrollIndicator={false}
           >
 
           {filterData.map((item, index) => {

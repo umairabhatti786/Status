@@ -20,14 +20,15 @@ import { images } from "../../../assets/images";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsScroll } from "../../../redux/reducers/authReducer";
 import { scale, verticalScale } from "react-native-size-matters";
+import { getUserData } from "../../../redux/reducers/authReducer";
 
 const HomeScreen = () => {
   const navigation: any = useNavigation();
   const [activeBar, setActiveBar] = useState("Following");
      const dispatch=useDispatch()
-     const isSroll=useSelector(state=>state.auth)?.isScroll
+     const isSroll=useSelector(getUserData)
+     console.log("isSroll",isSroll)
 
 
   const topBarData=[
@@ -130,7 +131,7 @@ const HomeScreen = () => {
             <View style={{paddingHorizontal:scale(15)}}>
             <TopHeader
             onPressNotification={() => navigation.navigate("Notifications")}
-            onPressSetting={() => navigation.replace("Settings")}
+            onPressSetting={() => navigation.navigate("Settings")}
           />
 
             </View>

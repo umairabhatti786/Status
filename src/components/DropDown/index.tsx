@@ -123,13 +123,13 @@ const styles = StyleSheet.create({
 
     backgroundColor: colors.primary,
     borderRadius: scale(10),
-    height:verticalScale(55)
+    height:verticalScale(48)
   },
   dropdown: {
     // borderColor: colors.superLightGray,
     // borderColor: '#A0A2B1',
     borderRadius: scale(10),
-    height: verticalScale(55),
+    height: verticalScale(48),
     paddingHorizontal: 16,
   },
   icon: {

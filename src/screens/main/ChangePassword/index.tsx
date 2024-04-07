@@ -1,4 +1,5 @@
 import {
+  Alert,
     FlatList,
     Image,
     KeyboardAvoidingView,
@@ -30,20 +31,143 @@ import { windowWidth } from "../../../utils/Dimensions";
 import ChangePasswordForm from "./ChangePasswordForm";
 import ErrorToast from "../../../components/ErrorToast";
 import { Spacer } from "../../../components/Spacer";
-import { useDispatch } from "react-redux";
-import { setIsVerify, setVerifyData } from "../../../redux/reducers/authReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { ChangeUserPassword } from "../../../api/ApiServices";
+import { getToken, getUserData } from "../../../redux/reducers/authReducer";
+import CustomToast from "../../../components/CustomToast";
+import Loader from "../../../components/Loader";
 
   
   const ChangePassword = () => {
     const navigation = useNavigation();
+    const [showError, setShowError] = useState(false);
+    const [toastColor,setToastColor]=useState(colors.red)
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const userData=useSelector(getUserData)
+    const token=useSelector(getToken)
 
     const dispatch=useDispatch()
+
+    console.log("userData",userData,token)
+
+  
+    const [values, setValues] = useState({
+      currentPassword:"",
+      newPassword: "",
+      confirmNewPassword:""
+    });
+
+    const onChangePassword = () => {
+      if (!values?.currentPassword) {
+        setError("Current Password is required");
+        setShowError(true);
+        setTimeout(() => {
+          setShowError(false);
+        }, 4000);
+  
+        return;
+      }
+  
+  
+      if (!values?.newPassword) {
+        setError("New  Password is required");
+        setShowError(true);
+        setTimeout(() => {
+          setShowError(false);
+        }, 4000);
+        return;
+      }
+      if (values?.newPassword.length < 6) {
+        setError("password At least 6 characters");
+        setShowError(true);
+        setTimeout(() => {
+          setShowError(false);
+        }, 4000);
+        return;
+      }
+      if (values?.confirmNewPassword!=values.newPassword) {
+        setError("Password not match");
+        setShowError(true);
+        setTimeout(() => {
+          setShowError(false);
+        }, 4000);
+        return;
+      }
+      setLoading(true);
+      const data = {
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      };
+
+      console.log("dataUser",data)
+  
+      ChangeUserPassword(data, token,async ({ isSuccess, response }: any) => {
+        console.log("ckdnckdnc", response);
+
+        if (isSuccess) {
+          let result = JSON.parse(response);
+  
+          if (result.status) {
+            setLoading(false);
+            setError(result.msg);
+            setToastColor(colors.green)
+            setShowError(true);
+            setTimeout(() => {
+              setShowError(false);
+              setToastColor(colors.red)
+              // StorageServices.setItem(AUTH,result.user)
+              // dispatch(setUserData(result.user))
+            ;
+  
+  
+              // navigation.navigate("ConfirmationCode", {
+              //   data: { email: values.email },
+              // });
+            }, 2000);
+          } else {
+            if (result.error) {
+              setLoading(false);
+  
+              setError(result?.error);
+              setToastColor(colors.red)
+  
+              setShowError(true);
+              setTimeout(() => {
+                setShowError(false);
+                setToastColor(colors.red)
+  
+              }, 4000);
+            } else {
+              setLoading(false);
+              setError(result?.msg);
+              setToastColor(colors.red)
+  
+              setShowError(true);
+              setTimeout(() => {
+                setShowError(false);
+                setToastColor(colors.red)
+  
+              }, 4000);
+            }
+          }
+        } else {
+          setLoading(false);
+  
+          Alert.alert("Alert!", "Network Error.");
+        }
+      });
+    };
+
  
  
   
    
     return (
-        <KeyboardAwareScrollView
+      <>
+            {loading && <Loader />}
+
+       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={appStyles.main}
         // extraScrollHeight={-100}
@@ -72,7 +196,10 @@ import { setIsVerify, setVerifyData } from "../../../redux/reducers/authReducer"
         <View
         style={{padding:scale(15)}}
         >
-            <ChangePasswordForm/>
+            <ChangePasswordForm
+            values={values}
+            setValues={setValues}
+            />
 
 
           
@@ -85,17 +212,18 @@ import { setIsVerify, setVerifyData } from "../../../redux/reducers/authReducer"
           height={verticalScale(36)}
           borderRadius={scale(20)}
           size={14}
+          onPress={onChangePassword}
           
           style={{alignSelf:"center",marginTop:verticalScale(30)}}
-          onPress={()=>{
-            dispatch(setIsVerify(true))
-            dispatch(setVerifyData({
-                label:"Success!",
-                text:"Your password has been changed"
+          // onPress={()=>{
+          //   dispatch(setIsVerify(true))
+          //   dispatch(setVerifyData({
+          //       label:"Success!",
+          //       text:"Your password has been changed"
 
-            }))
-            navigation.goBack()
-          }}
+          //   }))
+          //   navigation.goBack()
+          // }}
           fontWeight={"600"}
           fontFam={"Poppins-SemiBold"}
           bgColor={colors.white}
@@ -120,7 +248,7 @@ import { setIsVerify, setVerifyData } from "../../../redux/reducers/authReducer"
 
         </View>
 
-        <View style={{paddingHorizontal:scale(10),marginTop:"20%"}}>
+        {/* <View style={{paddingHorizontal:scale(10),marginTop:"20%"}}>
         <ErrorToast
           text="Invalid password"
           />
@@ -132,12 +260,22 @@ import { setIsVerify, setVerifyData } from "../../../redux/reducers/authReducer"
           
 
 
-        </View>
+        </View> */}
         
   
       
       </View>
         </KeyboardAwareScrollView>
+      {showError && (
+        <CustomToast
+          showError={showError}
+          setShowError={setShowError}
+          bgColor={toastColor}
+          text={error}
+        />
+      )}
+      </>
+       
      
     );
   };

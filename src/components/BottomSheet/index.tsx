@@ -12,7 +12,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 const BottomSheet = (props) => {
   const { bottomSheetModalRef, snapTo, onDismiss, children } = props;
 
-  const snapPoints = useMemo(() => snapTo || [ "82%"], []);
+  const snapPoints = useMemo(() => snapTo || [ "95%"], []);
 
   useFocusEffect(
     useCallback(() => {

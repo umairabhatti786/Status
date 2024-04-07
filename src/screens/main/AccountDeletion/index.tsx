@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Image,
   KeyboardAvoidingView,
@@ -27,12 +28,85 @@ import sizeHelper from "../../../utils/helpers/sizeHelper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CustomButton from "../../../components/CustomButton";
 import { windowWidth } from "../../../utils/Dimensions";
+import CustomToast from "../../../components/CustomToast";
+import Loader from "../../../components/Loader";
+import { DeleteAccount } from "../../../api/ApiServices";
+import { useDispatch, useSelector } from "react-redux";
+import { getToken, setToken, setUserData } from "../../../redux/reducers/authReducer";
+import { StorageServices } from "../../../utils/hooks/StorageServices";
 
 const AccountDeletion = () => {
   const navigation = useNavigation();
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const token=useSelector(getToken)
+
+  const dispatch=useDispatch()
+
+
+  const _deleteAccount = (item: any) => {
+
+    setLoading(true)
+
+    DeleteAccount(token, async ({ isSuccess, response }: any) => {
+      if (isSuccess) {
+        let result = JSON.parse(response);
+        console.log("ckdnckdnc", result);
+
+        if (result.status) {
+          setLoading(false);
+
+          StorageServices.removeItems()
+          dispatch(setToken(null))
+
+          dispatch(setUserData(null))
+         
+        } else {
+          if (result.error) {
+            setLoading(false);
+
+            setError(result?.error);
+            setShowError(true);
+            setTimeout(() => {
+              setShowError(false);
+
+            }, 4000);
+          } else {
+            setLoading(false);
+            setError(result?.msg);
+
+            setShowError(true);
+            setTimeout(() => {
+              setShowError(false);
+
+            }, 4000);
+          }
+        }
+      } else {
+        setLoading(false);
+
+        Alert.alert("Alert!", "Network Error.");
+      }
+    });
+   
+  };
+  const onDeleteAccount = () => {
+    Alert.alert("Delete Account", "Are you sure you want to delete?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        // style: "cancel",
+      },
+      { text: "Delete", onPress: _deleteAccount, style: "destructive" },
+    ]);
+  };
 
   return (
-    <KeyboardAwareScrollView
+    <>
+          {loading && <Loader />}
+
+        <KeyboardAwareScrollView
       showsVerticalScrollIndicator={false}
       style={appStyles.main}
       // extraScrollHeight={-100}
@@ -106,6 +180,7 @@ const AccountDeletion = () => {
             borderRadius={scale(20)}
             style={{ alignSelf: "center" }}
             paddingHorizontal={scale(15)}
+            onPress={onDeleteAccount}
 
             // width={windowWidth/2.5}
             // size={17}
@@ -137,6 +212,17 @@ const AccountDeletion = () => {
         </View>
       </View>
     </KeyboardAwareScrollView>
+
+{showError && (
+  <CustomToast
+    showError={showError}
+    setShowError={setShowError}
+    bgColor={colors.red}
+    text={error}
+  />
+)}
+    </>
+
   );
 };
 

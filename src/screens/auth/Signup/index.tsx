@@ -22,166 +22,279 @@ import CustomTextInput from "../../../components/CustomTextInput";
 import { scale, verticalScale } from "react-native-size-matters";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
+import NewText from "../../../components/NewText";
+import Input from "../../../components/Input";
+import ErrorToast from "../../../components/ErrorToast";
+import CustomToast from "../../../components/CustomToast";
+import { emailRegex } from "../../../utils/Regex";
+import Button from "../../../components/Button";
+import { SignupForm } from "./SignupForm";
+import Loader from "../../../components/Loader";
+import { UserSignup } from "../../../api/ApiServices";
 
 const Signup = () => {
   const navigation: any = useNavigation();
-  const [showPassword,setShowPAssword]=useState(true)
+  const [showPassword, setShowPAssword] = useState(true);
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [toastColor,setToastColor]=useState(colors.red)
 
-  console.log("showPassword",showPassword)
+
+  const [values, setValues] = useState({
+    email: "",
+    confirmEmail: "",
+    password: "",
+  });
+
+  const OnSignup = async () => {
+    const viladResponse = SignupForm(values, setShowError, setError);
+
+    if (viladResponse) {
+      setLoading(true);
+      const data = {
+        email: values.email,
+        password: values.password,
+      };
+      UserSignup(data, async ({ isSuccess, response }: any) => {
+        if (isSuccess) {
+          let result = JSON.parse(response);
+          console.log("ckdnckdnc", result);
+
+          if (result.status) {
+            setLoading(false);
+            if (result?.errors) {
+              setError(result?.message);
+              setToastColor(colors.red)
+
+              setShowError(true);
+              setTimeout(() => {
+                setShowError(false);
+              }, 4000);
+            } else {
+              setToastColor(colors.green)
+              setError(result?.msg);
+              setShowError(true);
+              setTimeout(() => {
+                setShowError(false);
+                navigation.navigate("ConfirmationCode", {
+                  data: { email: values.email },
+                });
+              }, 2000);
+            }
+          } else {
+            setLoading(false);
+            setToastColor(colors.red)
+
+            setError(result?.msg);
+            setShowError(true);
+            setTimeout(() => {
+              setShowError(false);
+            }, 4000);
+          }
+        } else {
+          setLoading(false);
+
+          Alert.alert("Alert!", "Network Error.");
+        }
+      });
+
+      // setLoading(false)
+
+      // console.log("ckbdckdbc",response)
+
+      // setTimeout(() => {
+      //   setLoading(false)
+
+      // }, 4000);
+    }
+  };
 
   return (
-    <KeyboardAwareScrollView
-    showsVerticalScrollIndicator={false}
-    style={{ flex: 1 }}
-    // extraScrollHeight={-100}
-  >
-      <SafeAreaView style={appStyles.main}>
-      <View style={{ flex: 1, padding: scale(20) }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image source={images.back} />
-        </TouchableOpacity>
-        <Spacer height={verticalScale(10)} />
-        <Image
-          style={{ width: windowWidth/3.5, height: windowHeight/5.7,alignSelf: "center"}}
-          source={images.logo}
-          resizeMode="contain"
-        />
-        {/* <Spacer height={10}/> */}
-        <CustomText
-          text={"Create Account"}
-          color={colors.white}
-          size={21}
-          style={{ textAlign: "center" }}
-          fontFam="Poppins-Medium"
-          fontWeight="500"
-        />
-        <Spacer height={10} />
-
-        <CustomTextInput
-          label="Email"
-          placeholder="Enter your email address"
-        />
-        <Spacer height={7} />
-        <CustomTextInput
-          label="Confirm Email"
-          placeholder="Retype your email address"
-        />
-        <Spacer height={7} />
-        <CustomTextInput
-          label="Password"
-          isPassword={showPassword}
-          
-          onShowPassword={()=>setShowPAssword(!showPassword)}
-          placeholder="● ● ● ● ● ● ● ●"
-          source={ showPassword? images.eyeclose:images.eye}
-        />
-        <Spacer height={15} />
-
-        <View>
-          <View style={appStyles.row}>
-            <CustomText
-              text={"By tapping Continue, you agree to Status’s"}
+    <>
+      {loading && <Loader />}
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1 }}
+      >
+        <SafeAreaView style={appStyles.main}>
+          <View style={{ flex: 1, padding: scale(20) }}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={images.back} />
+            </TouchableOpacity>
+            <Spacer height={verticalScale(10)} />
+            <Image
+              style={{
+                width: windowWidth / 3.5,
+                height: windowHeight / 5.7,
+                alignSelf: "center",
+              }}
+              source={images.logo}
+              resizeMode="contain"
+            />
+            <NewText
+              text={"Create Account"}
               color={colors.white}
-              size={11}
+              size={25}
               style={{ textAlign: "center" }}
               fontFam="Poppins-Medium"
               fontWeight="500"
             />
-            <Spacer width={3} />
-            <TouchableOpacity>
-              <CustomText
-                text={"Terms of"}
-                textDecorationLine={"underline"}
-                color={colors.white}
-                size={11}
-                style={{ textAlign: "center", marginRight: 10 }}
-                fontFam="Poppins-Medium"
-                fontWeight="500"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={appStyles.row}>
-            <TouchableOpacity>
-              <CustomText
-                text={"Use"}
-                textDecorationLine={"underline"}
-                color={colors.white}
-                size={11}
-                //   style={{textAlign:"center",marginRight:10}}
-                fontFam="Poppins-Medium"
-                fontWeight="500"
-              />
-            </TouchableOpacity>
-            <Spacer width={3} />
-            <CustomText
-              text={"and"}
-              color={colors.white}
-              size={11}
-              fontFam="Poppins-Medium"
-              fontWeight="500"
+            <Spacer height={10} />
+
+            <Input
+              label="Email"
+              value={values.email}
+              onChangeText={(txt: string) => {
+                setValues({ ...values, email: txt });
+              }}
+              placeholder="Enter your email address"
             />
-            <Spacer width={3} />
+            <Spacer height={7} />
+            <Input
+              label="Confirm Email"
+              value={values.confirmEmail}
+              onChangeText={(txt: string) => {
+                setValues({ ...values, confirmEmail: txt });
+              }}
+              placeholder="Retype your email address"
+            />
+            <Spacer height={7} />
+            <Input
+              label="Password"
+              isPassword={showPassword}
+              value={values.password}
+              onChangeText={(txt: string) => {
+                setValues({ ...values, password: txt });
+              }}
+              onShowPassword={() => setShowPAssword(!showPassword)}
+              placeholder="At least 6 characters"
+              source={showPassword ? images.eyeclose : images.eye}
+            />
+            <Spacer height={15} />
 
-            <TouchableOpacity>
-              <CustomText
-                text={"Privacy Policy."}
-                textDecorationLine={"underline"}
+            <View>
+              <View style={appStyles.row}>
+                <NewText
+                  text={"By tapping Continue, you agree to Status’s"}
+                  color={colors.white}
+                  size={13}
+                  style={{ textAlign: "center" }}
+                  fontFam="Poppins-Medium"
+                  fontWeight="500"
+                />
+                <Spacer width={3} />
+                <TouchableOpacity>
+                  <NewText
+                    text={"Terms of"}
+                    textDecorationLine={"underline"}
+                    color={colors.white}
+                    size={13}
+                    style={{ textAlign: "center", marginRight: 10 }}
+                    fontFam="Poppins-Medium"
+                    fontWeight="500"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={appStyles.row}>
+                <TouchableOpacity>
+                  <NewText
+                    text={"Use"}
+                    textDecorationLine={"underline"}
+                    color={colors.white}
+                    size={13}
+                    //   style={{textAlign:"center",marginRight:10}}
+                    fontFam="Poppins-Medium"
+                    fontWeight="500"
+                  />
+                </TouchableOpacity>
+                <Spacer width={3} />
+                <NewText
+                  text={"and"}
+                  color={colors.white}
+                  size={13}
+                  fontFam="Poppins-Medium"
+                  fontWeight="500"
+                />
+                <Spacer width={3} />
+
+                <TouchableOpacity>
+                  <NewText
+                    text={"Privacy Policy."}
+                    textDecorationLine={"underline"}
+                    color={colors.white}
+                    size={13}
+                    style={{ marginLeft: 3 }}
+                    fontFam="Poppins-Medium"
+                    fontWeight="500"
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Spacer height={25} />
+
+            <Button
+              text="CONTINUE"
+              width={"100%"}
+              onPress={OnSignup}
+              fontWeight={"500"}
+              textColor={colors.black}
+              bgColor={colors.white}
+            />
+            <Spacer height={25} />
+
+            <View style={{ height: 1, backgroundColor: colors.white }} />
+            <Spacer height={20} />
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => navigation.navigate("Login")}
+              style={{
+                ...appStyles.row,
+                justifyContent: "center",
+                paddingVertical: verticalScale(5),
+                width: "65%",
+                alignSelf: "center",
+              }}
+            >
+              <NewText
+                text={"Already a member?"}
                 color={colors.white}
-                size={11}
-                style={{marginLeft:3}}
+                // size={11}
+                style={{ textAlign: "center" }}
                 fontFam="Poppins-Medium"
                 fontWeight="500"
               />
+              <Spacer width={5} />
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => navigation.navigate("Login")}
+              >
+                <NewText
+                  text={"Log In here"}
+                  color={colors.white}
+                  // size={11}
+                  textDecorationLine={"underline"}
+                  style={{ textAlign: "center" }}
+                  fontFam="Poppins-Medium"
+                  fontWeight="500"
+                />
+              </TouchableOpacity>
             </TouchableOpacity>
+            {/* <ErrorToast
+          text="Invalid email address"
+          /> */}
           </View>
-        </View>
-        <Spacer height={25} />
-
-        <CustomButton
-          text="CONTINUE"
-          width={"100%"}
-          onPress={() => navigation.navigate("ConfirmationCode")}
-          fontWeight={"500"}
-          // size={18}
-          textColor={colors.black}
-          bgColor={colors.white}
+        </SafeAreaView>
+      </KeyboardAwareScrollView>
+      {showError && (
+        <CustomToast
+          showError={showError}
+          setShowError={setShowError}
+          text={error}
+          bgColor={toastColor}
         />
-        <Spacer height={25} />
-
-        <View style={{ height: 1, backgroundColor: colors.white }} />
-        <Spacer height={20} />
-        <View style={{ ...appStyles.row, justifyContent: "center" }}>
-          <CustomText
-            text={"Already a member?"}
-            color={colors.white}
-            size={11}
-            style={{ textAlign: "center" }}
-            fontFam="Poppins-Medium"
-            fontWeight="500"
-          />
-          <Spacer width={5} />
-          <TouchableOpacity
-          activeOpacity={0.6}
-                    onPress={() => navigation.navigate("Login")}
-
-          >
-            <CustomText
-            text={"Log In here"}
-            color={colors.white}
-            size={11}
-            textDecorationLine={"underline"}
-            style={{ textAlign: "center" }}
-            fontFam="Poppins-Medium"
-            fontWeight="500"
-          />
-
-          </TouchableOpacity>
-          
-        </View>
-      </View>
-    </SafeAreaView>
-    </KeyboardAwareScrollView>
-  
+      )}
+    </>
   );
 };
 

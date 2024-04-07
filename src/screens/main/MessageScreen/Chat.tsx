@@ -119,8 +119,8 @@ const Chat = () => {
                   >
                     <Image
                       style={{
-                        width: scale(21),
-                        height: scale(21),
+                        width: scale(22),
+                        height: scale(22),
                         tintColor: colors.white,
                       }}
                       source={images.download}
@@ -134,8 +134,8 @@ const Chat = () => {
                   >
                     <Image
                       style={{
-                        width: scale(17),
-                        height: scale(17),
+                        width: scale(18),
+                        height: scale(18),
                         tintColor: colors.white,
                       }}
                       source={images.block}

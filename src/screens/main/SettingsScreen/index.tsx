@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Platform,
   ScrollView,
@@ -29,12 +30,13 @@ import { scale, verticalScale } from "react-native-size-matters";
 import sizeHelper from "../../../utils/helpers/sizeHelper";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsVerify } from "../../../redux/reducers/authReducer";
+import { setRemember, setUserData } from "../../../redux/reducers/authReducer";
 import DropDown from "../../../components/DropDown";
 import { data } from "../../../utils/Data";
+import { AUTH, REMEMBER, StorageServices } from "../../../utils/hooks/StorageServices";
 
-const Settings = () => {
-  const navigation = useNavigation();
+const Settings = ({navigation}) => {
+  // const navigation = useNavigation();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("Everyone");
   const [inApp, setInApp] = useState(true);
@@ -56,6 +58,29 @@ const Settings = () => {
       }, 2000);
     }
   });
+  const _handleSignOut = async () => {
+    StorageServices.removeItem(AUTH);
+    StorageServices.removeItem(REMEMBER);
+
+
+    dispatch(setRemember(false))
+
+
+        dispatch(setUserData(null))
+
+  };
+
+  const onLogout=()=>{
+    Alert.alert("Logout", "Are you sure you want to proceed?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        // style: "cancel",
+      },
+      { text: "Logout", onPress: _handleSignOut, style: "destructive" },
+    ]);
+
+  }
 
   const Detail = ({ txt, onPress }: any) => {
     return (
@@ -224,6 +249,7 @@ const Settings = () => {
               paddingVertical: verticalScale(15),
               paddingLeft: scale(15),
             }}
+            onPress={onLogout}
           >
             <CustomText
               // style={{ marginVertical: 12 }}

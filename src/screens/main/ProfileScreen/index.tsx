@@ -118,7 +118,7 @@ const ProfileScreen = () => {
           </View>
           
           <View
-            style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10),marginBottom:verticalScale(10) }}
+            style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10),marginBottom:verticalScale(5) }}
           >
             {
               ["Profile","Channel"].map((item,index)=>{
@@ -145,16 +145,17 @@ const ProfileScreen = () => {
               height={35}
             /> */}
           </View>
+          {isActiveProfile==0?(
           <ScrollView 
         showsVerticalScrollIndicator={false}
         >
-          {isActiveProfile==0?(
+         
                <View>
            
                <View
                  style={{
                    ...appStyles.row,
-                   paddingVertical: verticalScale(8),
+                   paddingBottom: verticalScale(5),
                    paddingHorizontal: scale(20),
                  }}
                >
@@ -311,19 +312,23 @@ const ProfileScreen = () => {
                </View>
                </View>
               
-              ):(
-                <>
-                <View style={{width:"100%",height:windowHeight,paddingTop:verticalScale(10)}}>
-                <Channel/>
-
-
-                </View>
-                </>
-              )}
+            
        
 
         </ScrollView>
+          ):(
+              <>
+      <View style={{width:"100%",height:windowHeight,paddingTop:verticalScale(10)}}>
+      <Channel/>
+
+
+      </View>
+      </>
+               
+            )}
       </SafeAreaView>
+
+    
    
    
        

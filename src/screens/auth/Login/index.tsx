@@ -23,132 +23,289 @@ import CheckBox from "../../../components/CheckBox";
 import { scale, verticalScale } from "react-native-size-matters";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
+import Input from "../../../components/Input";
+import Button from "../../../components/Button";
+import NewText from "../../../components/NewText";
+import { emailRegex } from "../../../utils/Regex";
+import CustomToast from "../../../components/CustomToast";
+import { UserLogin } from "../../../api/ApiServices";
+import Loader from "../../../components/Loader";
+import { useDispatch } from "react-redux";
+import { AUTH, REMEMBER, StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
+import { setRemember, setToken, setUserData } from "../../../redux/reducers/authReducer";
 
 const Login = () => {
   const navigation: any = useNavigation();
   const [isRemember, setIsRemember] = useState(true);
   const [showPassword, setShowPAssword] = useState(true);
+  const [showError, setShowError] = useState(false);
+  const [toastColor,setToastColor]=useState(colors.red)
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const dispatch=useDispatch()
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+  });
+
+  const onLogin = () => {
+    if (!values?.email) {
+      setError("Email is required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+    let isValidEmail = emailRegex?.test(values.email);
+    if (!isValidEmail) {
+      setError("Invalid email address");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+
+    if (!values?.password) {
+      setError("password is required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+      return;
+    }
+    if (values?.password.length < 6) {
+      setError("password At least 6 characters");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+      return;
+    }
+    setLoading(true);
+    const data = {
+      email: values.email,
+      password: values.password,
+    };
+
+    UserLogin(data, async ({ isSuccess, response }: any) => {
+      if (isSuccess) {
+        let result = JSON.parse(response);
+        console.log("ckdnckdnc", result);
+
+        if (result.status) {
+          setLoading(false);
+          setError(result.msg);
+          setToastColor(colors.green)
+          setShowError(true);
+          setTimeout(() => {
+            setShowError(false);
+            setToastColor(colors.red)
+            StorageServices.setItem(AUTH,result?.user)
+            StorageServices.setItem(TOKEN,result?.token)
+            StorageServices.setItem(REMEMBER,isRemember)
+
+            dispatch(setToken(result?.token))
+            dispatch(setRemember(isRemember))
+
+            dispatch(setUserData(result?.user))
+            navigation.navigate("Tabs", {
+      
+            });
+
+
+            // navigation.navigate("ConfirmationCode", {
+            //   data: { email: values.email },
+            // });
+          }, 2000);
+        } else {
+          if (result.error) {
+            setLoading(false);
+
+            setError(result?.error);
+            setToastColor(colors.red)
+
+            setShowError(true);
+            setTimeout(() => {
+              setShowError(false);
+              setToastColor(colors.red)
+
+            }, 4000);
+          } else {
+            setLoading(false);
+            setError(result?.msg);
+            setToastColor(colors.red)
+
+            setShowError(true);
+            setTimeout(() => {
+              setShowError(false);
+              setToastColor(colors.red)
+
+            }, 4000);
+          }
+        }
+      } else {
+        setLoading(false);
+
+        Alert.alert("Alert!", "Network Error.");
+      }
+    });
+  };
 
   return (
-    <KeyboardAwareScrollView
-    showsVerticalScrollIndicator={false}
-    style={{ flex: 1,backgroundColor:colors.black }}
-    // extraScrollHeight={-100}
-  >
-      <SafeAreaView style={appStyles.main}>
-      <View style={{ flex: 1, padding: scale(20) }}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image source={images.back} />
-        </TouchableOpacity>
-        <Spacer height={verticalScale(10)} />
-        <Image
-          style={{
-            width: windowWidth / 3.5,
-            height: windowHeight / 5.7,
-            alignSelf: "center",
-          }}
-          source={images.logo}
-          resizeMode="contain"
-        />
-        {/* <Spacer height={10}/> */}
-        <CustomText
-          text={"Welcome back!"}
-          color={colors.white}
-          size={21}
-          style={{ textAlign: "center" }}
-          fontFam="Poppins-Medium"
-          fontWeight="500"
-        />
-        <Spacer height={10} />
+    <>
+      {loading && <Loader />}
 
-        <CustomTextInput
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1, backgroundColor: colors.black }}
+        // extraScrollHeight={-100}
+      >
+        <SafeAreaView style={appStyles.main}>
+          <View style={{ flex: 1, padding: scale(20) }}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Image source={images.back} />
+            </TouchableOpacity>
+            <Spacer height={verticalScale(10)} />
+            <Image
+              style={{
+                width: windowWidth / 3.5,
+                height: windowHeight / 5.7,
+                alignSelf: "center",
+              }}
+              source={images.logo}
+              resizeMode="contain"
+            />
+            {/* <Spacer height={10}/> */}
+            <CustomText
+              text={"Welcome back!"}
+              color={colors.white}
+              size={21}
+              style={{ textAlign: "center" }}
+              fontFam="Poppins-Medium"
+              fontWeight="500"
+            />
+            <Spacer height={10} />
+            <Input
+              label="Email Address"
+              value={values.email}
+              onChangeText={(txt: string) => {
+                setValues({ ...values, email: txt });
+              }}
+              placeholder="Enter your login email address"
+            />
+
+            {/* <CustomTextInput
           label="Email Address"
           placeholder="Enter your login email address"
-        />
-        <Spacer height={7} />
-        <CustomTextInput
-          label="Password"
-          placeholder="● ● ● ● ● ● ● ●"
-          isPassword={showPassword}
-          onShowPassword={() => setShowPAssword(!showPassword)}
-          source={showPassword ? images.eyeclose : images.eye}
-        />
-        <Spacer height={verticalScale(20)} />
-
-        <View style={appStyles.rowjustify}>
-          <View style={appStyles.row}>
-            <CheckBox isRemember={isRemember} setIsRemember={setIsRemember} />
-
-            <Spacer width={scale(7)} />
-            <CustomText
-              text={"Remember Me"}
-              color={colors.white}
-              size={13}
-              style={{ textAlign: "center" }}
-              fontFam="Poppins-Medium"
-              fontWeight="500"
+        /> */}
+            <Spacer height={7} />
+            <Input
+              label="Password"
+              placeholder="At least 6 characters"
+              isPassword={showPassword}
+              value={values.password}
+              onChangeText={(txt: string) => {
+                setValues({ ...values, password: txt });
+              }}
+              onShowPassword={() => setShowPAssword(!showPassword)}
+              source={showPassword ? images.eyeclose : images.eye}
             />
-          </View>
-        </View>
-        <Spacer height={verticalScale(20)} />
+            <Spacer height={verticalScale(10)} />
 
-        <CustomButton
-          text="SIGN IN"
-          width={"100%"}
-          onPress={() => navigation.navigate("Tabs")}
-          fontWeight={"500"}
-          size={18}
-          textColor={colors.black}
-          bgColor={colors.white}
-        />
-        <Spacer height={verticalScale(25)} />
+            <View style={{...appStyles.rowjustify,paddingVertical:verticalScale(5)}}>
+              <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={()=>setIsRemember(!isRemember)}
+               style={appStyles.row}>
+                <CheckBox
+                  isRemember={isRemember}
+                  setIsRemember={setIsRemember}
+                />
 
-        <View style={{ height: 1, backgroundColor: colors.white }} />
-        <Spacer height={20} />
-        <View style={{ ...appStyles.row, justifyContent: "center" }}>
-          <CustomText
-            text={"Don’t have an account ? "}
-            color={colors.white}
-            size={11}
-            style={{ textAlign: "center" }}
-            fontFam="Poppins-Medium"
-            fontWeight="500"
-          />
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Signup")}
+                <Spacer width={scale(7)} />
+                <CustomText
+                  text={"Remember Me"}
+                  color={colors.white}
+                  size={13}
+                  style={{ textAlign: "center" }}
+                  fontFam="Poppins-Medium"
+                  fontWeight="500"
+                />
+              </TouchableOpacity>
+            </View>
+            <Spacer height={verticalScale(10)} />
+
+            <Button
+              text="SIGN IN"
+              width={"100%"}
+              onPress={onLogin}
+              fontWeight={"500"}
+              size={18}
+              textColor={colors.black}
+              bgColor={colors.white}
+            />
+            <Spacer height={verticalScale(25)} />
+
+            <View style={{ height: 1, backgroundColor: colors.white }} />
+            <Spacer height={20} />
+            <View style={{ ...appStyles.row, justifyContent: "center" }}>
+              <NewText
+                text={"Don’t have an account ? "}
+                color={colors.white}
+                size={13}
+                style={{ textAlign: "center" }}
+                fontFam="Poppins-Medium"
+                fontWeight="500"
+              />
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Signup")}
+                activeOpacity={0.6}
+              >
+                <NewText
+                  text={"Sign up"}
+                  color={colors.white}
+                  size={13}
+                  textDecorationLine={"underline"}
+                  style={{ textAlign: "center" }}
+                  fontFam="Poppins-Medium"
+                  fontWeight="500"
+                />
+              </TouchableOpacity>
+            </View>
+
+            <Spacer height={verticalScale(8)} />
+            <TouchableOpacity
             activeOpacity={0.6}
-          >
-            <CustomText
-              text={"Sign up"}
-              color={colors.white}
-              size={11}
-              textDecorationLine={"underline"}
-              style={{ textAlign: "center" }}
-              fontFam="Poppins-Medium"
-              fontWeight="500"
-            />
-          </TouchableOpacity>
-        </View>
+            onPress={()=>navigation.navigate("LostPassword")}
+            >
+              <NewText
+                text={"Forgot password?"}
+                color={colors.white}
+                size={13}
+                style={{ textAlign: "center" }}
+                textDecorationLine={"underline"}
+                fontFam="Poppins-Medium"
+                fontWeight="500"
+              />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </KeyboardAwareScrollView>
 
-        <Spacer height={verticalScale(8)}/>
-        <TouchableOpacity>
-        <CustomText
-            text={"Forgot password?"}
-            color={colors.white}
-            size={13}
-            style={{ textAlign: "center" }}
-            textDecorationLine={"underline"}
-
-            fontFam="Poppins-Medium"
-            fontWeight="500"
-          />
-
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-    </KeyboardAwareScrollView>
-  
+      {showError && (
+        <CustomToast
+          showError={showError}
+          setShowError={setShowError}
+          bgColor={toastColor}
+          text={error}
+        />
+      )}
+    </>
   );
 };
 

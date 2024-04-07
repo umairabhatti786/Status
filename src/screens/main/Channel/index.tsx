@@ -41,10 +41,11 @@ const Channel = ({hideSendMessage}:any) => {
           style={{ width: "100%", height: windowHeight }}
           source={images.channelbackground}
         >
-          <View style={{ height: windowHeight / 1 }}>
+          <View style={{ height:"80%" }}>
             <FlatList
               data={[1]}
-              // style={{ marginBottom: verticalScale(30) }}
+              nestedScrollEnabled={true}
+              style={{ marginBottom: verticalScale(80) }}
               //  contentContainerStyle={{
               //    gap: 100,
               //  }}
@@ -143,8 +144,10 @@ const Channel = ({hideSendMessage}:any) => {
 
               ):(
                                 <MessageSender
-                                bottom={verticalScale(9)}
+                                bottom={verticalScale(15)}
+                                sendImage={images.simplesend}
                                 />
+                                
 
               )
             }

@@ -20,6 +20,8 @@ import CustomTextInput from "../../../components/CustomTextInput";
 import { Spacer } from "../../../components/Spacer";
 import { scale, verticalScale } from "react-native-size-matters";
 import ToggleSwitch from "toggle-switch-react-native";
+import DropDown from "../../../components/DropDown";
+import { data } from "../../../utils/Data";
 
 const EditProfile = () => {
   const navigation: any = useNavigation();
@@ -237,6 +239,32 @@ const EditProfile = () => {
             size={19}
             text={"Your Info"}
           />
+                  <Spacer height={verticalScale(20)}/>
+
+
+<CustomText
+          fontWeight={"500"}
+          fontFam="Poppins-Medium"
+          size={13}
+          style={{ marginBottom: verticalScale(5) }}
+          text={"Profile Type"}
+          color={colors.white}
+        />
+          <DropDown
+          placeholder={'Make a Selection'}
+          dropWidth={"100%"}
+          //   data={data}
+          data={data.map((item, _index) => {
+            return {
+              id: item?.id,
+              label: item?.value,
+              value: item?.value,
+            }
+          })}
+        />
+        {/* <Spacer height={verticalScale(10)}/> */}
+
+
         
         <CustomTextInput
           label="Display Name"
@@ -244,7 +272,7 @@ const EditProfile = () => {
           placeholder="Name"
           color={colors.white}
           fontWeight="600"
-          marginTop={"8%"}
+          // marginTop={"8%"}
         />
 
 <CustomText

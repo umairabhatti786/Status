@@ -15,11 +15,11 @@ import { appStyles } from "../../../utils/AppStyles";
 import { useNavigation } from "@react-navigation/native";
 import { images } from "../../../assets/images";
 import { Spacer } from "../../../components/Spacer";
-import CustomButton from "../../../components/CustomButton";
 import { colors } from "../../../utils/colors";
 import { windowHeight } from "../../../utils/Dimensions";
 import { windowWidth } from "../../main/HomeScreen/FriendList";
 import { scale, verticalScale } from "react-native-size-matters";
+import Button from "../../../components/Button";
 
 const JoinScreen = () => {
   const navigation: any = useNavigation();
@@ -35,24 +35,24 @@ const JoinScreen = () => {
          source={images.logo} />
         <Spacer height={windowHeight/4} />
 
-        <CustomButton
+        <Button
           text="JOIN STATUS"
           width={"100%"}
           onPress={() => navigation.navigate("Signup")}
 
           // fontWeight={"500"}
-          size={16}
+          // size={16}
           textColor={colors.black}
           bgColor={colors.white}
         />
         <Spacer height={verticalScale(15)} />
-        <CustomButton
+        <Button
           text="SIGN IN"
           width={"100%"}
           onPress={() => navigation.navigate("Login")}
           // fontWeight={"500"}
           fontFam={"Poppins-Regular"}
-          size={16}
+          // size={46}
           borderColor={colors.white}
           borderWidth={1}
           // borderRadius={7}

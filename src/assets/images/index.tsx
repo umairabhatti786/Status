@@ -94,6 +94,8 @@ export const images = {
   appicon: require("../images/app-icon.png"),
   bell: require("../images/bell.png"),
   sendmessage: require("../images/send.png"),
+  simplesend: require("../images/simple-send.png"),
+
 
   messageinbox: require("../icons/message-inbox.png"),
 

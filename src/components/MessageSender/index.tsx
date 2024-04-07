@@ -27,9 +27,10 @@ type Props = {
   onEdit?: () => void;
   placeholder?:string
   bottom?:any
+  sendImage?:any
 };
 
-const MessageSender = ({placeholder,bottom}:Props) => {
+const MessageSender = ({placeholder,bottom,sendImage}:Props) => {
   return (
     <View
       style={{
@@ -107,9 +108,9 @@ const MessageSender = ({placeholder,bottom}:Props) => {
       >
 
 <Image
-            source={images.sendmessage}
+            source={sendImage|| images.sendmessage}
             style={{ width: scale(25), height: scale(25) }}
-            // resizeMode="contain"
+            resizeMode="contain"
           />
 
 
