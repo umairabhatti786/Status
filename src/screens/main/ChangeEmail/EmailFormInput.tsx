@@ -22,30 +22,58 @@ import sizeHelper from "../../../utils/helpers/sizeHelper";
 import CustomTextInput from "../../../components/CustomTextInput";
 import { Spacer } from "../../../components/Spacer";
 import { images } from "../../../assets/images";
+import Input from "../../../components/Input";
+interface props {
+  setValues: (value: { [key: string]: any }) => void;
+  values: { [key: string]: any };
+}
+const EmailFormInput = ({
 
-const EmailFormInput = () => {
+  values,
+  setValues,
+
+}:props) => {
   const navigation = useNavigation();
   const [showPassword, setShowPAssword] = useState(true);
 
   return (
     <View style={{ flex: 1 }}>
-      <CustomTextInput label="Email" placeholder="Enter your email address" />
+      <Input
+       label="Email" placeholder="Enter your email address"
+       value={values?.email}
+       editable={false}
+       onChangeText={(txt: string) => {
+         setValues({ ...values, email: txt });
+       }}
+        />
       <Spacer height={7} />
-      <CustomTextInput
+      <Input
         label="New Email"
         placeholder="Enter new email address"
+        value={values?.newEmail}
+        onChangeText={(txt: string) => {
+          setValues({ ...values, newEmail: txt });
+        }}
       />
       <Spacer height={7} />
-      <CustomTextInput
+      <Input
         label="Confirm New Email"
         placeholder="Retype your email address"
+        value={values?.confirmEmail}
+        onChangeText={(txt: string) => {
+          setValues({ ...values, confirmEmail: txt });
+        }}
       />
       <Spacer height={7} />
-      <CustomTextInput
+      <Input
         label="Password"
         isPassword={showPassword}
         onShowPassword={() => setShowPAssword(!showPassword)}
         placeholder="Your Status password"
+        value={values?.password}
+        onChangeText={(txt: string) => {
+          setValues({ ...values, password: txt });
+        }}
         source={showPassword ? images.eyeclose : images.eye}
       />
       <Spacer height={7} />

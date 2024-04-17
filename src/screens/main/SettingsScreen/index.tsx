@@ -1,6 +1,7 @@
 import {
   Alert,
   Image,
+  Linking,
   Platform,
   ScrollView,
   StatusBar,
@@ -30,34 +31,35 @@ import { scale, verticalScale } from "react-native-size-matters";
 import sizeHelper from "../../../utils/helpers/sizeHelper";
 import * as Animatable from "react-native-animatable";
 import { useDispatch, useSelector } from "react-redux";
-import { setRemember, setUserData } from "../../../redux/reducers/authReducer";
+import { getIsSuccess, getSuccessResponse, setIsSuccess, setRemember, setUserData } from "../../../redux/reducers/authReducer";
 import DropDown from "../../../components/DropDown";
 import { data } from "../../../utils/Data";
 import { AUTH, REMEMBER, StorageServices } from "../../../utils/hooks/StorageServices";
+import NewText from "../../../components/NewText";
 
-const Settings = ({navigation}) => {
+const Settings = ({ navigation }) => {
   // const navigation = useNavigation();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("Everyone");
   const [inApp, setInApp] = useState(true);
   const [email, setEmail] = useState(false);
-  const isVerify = useSelector((state) => state.auth?.isVerify);
-  const verifyData = useSelector((state) => state.auth?.verifyData);
+  const isSuccess = useSelector(getIsSuccess);
+  const successData = useSelector(getSuccessResponse);
   const dispatch = useDispatch();
 
-  console.log("isVerify", isVerify);
+  console.log("isVerify", isSuccess);
   const [items, setItems] = useState([
     { label: "Everyone", value: "Everyone" },
     { label: "Friends", value: "Friends" },
     { label: "No Body", value: "No Body" },
   ]);
   useEffect(() => {
-    if (isVerify) {
+    if (isSuccess) {
       setTimeout(() => {
-        dispatch(setIsVerify(false));
-      }, 2000);
+        dispatch(setIsSuccess(false));
+      }, 3000);
     }
-  });
+  }, [isSuccess]);
   const _handleSignOut = async () => {
     StorageServices.removeItem(AUTH);
     StorageServices.removeItem(REMEMBER);
@@ -66,11 +68,11 @@ const Settings = ({navigation}) => {
     dispatch(setRemember(false))
 
 
-        dispatch(setUserData(null))
+    dispatch(setUserData(null))
 
   };
 
-  const onLogout=()=>{
+  const onLogout = () => {
     Alert.alert("Logout", "Are you sure you want to proceed?", [
       {
         text: "Cancel",
@@ -94,9 +96,9 @@ const Settings = ({navigation}) => {
           paddingRight: scale(10),
         }}
       >
-        <CustomText
+        <NewText
           // style={{ marginVertical: 12 }}
-          size={16}
+          size={17}
           fontFam="Inter-SemiBold"
           color={colors.white}
           fontWeight={"600"}
@@ -104,7 +106,7 @@ const Settings = ({navigation}) => {
         />
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image
-            style={{ width: wp(5), height: hp(2.5) }}
+            style={{ width: 15, height: 15 }}
             resizeMode="contain"
             source={images.next}
           />
@@ -117,8 +119,8 @@ const Settings = ({navigation}) => {
       <View style={appStyles.main}>
         <AbsoluteHeader>
           <TouchableOpacity
-          style={{width:"10%"}}
-           onPress={() => navigation.goBack()}>
+            style={{ width: "10%" }}
+            onPress={() => navigation.goBack()}>
             <Image
               style={{ width: scale(15), height: scale(15) }}
               resizeMode="contain"
@@ -136,92 +138,9 @@ const Settings = ({navigation}) => {
         </AbsoluteHeader>
 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{ marginHorizontal: scale(15),marginTop:verticalScale(20) }}>
-          <CustomText
-          fontWeight={"500"}
-          fontFam="Poppins-Medium"
-          size={ 13}
-          style={{ marginBottom: verticalScale(5) }}
-          text={"Who can start a DM conversation with you?"}
-          color={colors.white}
-        />
-          <DropDown
-          placeholder={'Everyone'}
-          dropWidth={"100%"}
-          //   data={data}
-          data={data.map((item, _index) => {
-            return {
-              id: item?.id,
-              label: item?.value,
-              value: item?.value,
-            }
-          })}
-        />
-          
-          </View>
-          {/* <View
-          style={{ ...appStyles.row, alignSelf: "center", marginVertical: 20 }}>
-          <Image
-            source={images.gift}
-            resizeMode="contain"
-            style={{ width: 22, height: 22 }}
-          />
-          <Spacer width={15} />
 
-          <CustomText
-            style={{ textAlign: "center" }}
-            size={17}
-            textDecorationLine={"underline"}
-            color={colors.white}
-            text={"Please Visit our GoFundMe Campaign"}
-          />
-        </View> */}
-          {/* <CustomLine backgroundColor={colors.primary} height={1.5} /> */}
 
-          <View
-            style={{
-              ...appStyles.row,
-              paddingLeft: scale(15),
-              marginTop: verticalScale(10),
-              marginBottom: verticalScale(3),
-            }}
-          >
-            <CustomText
-              style={{ marginVertical: 12 }}
-              size={16}
-              fontFam="Inter-SemiBold"
-              color={colors.white}
-              fontWeight={"600"}
-              text={"Account ID:"}
-            />
-            <View
-              style={{
-                width: wp(28),
-                height: hp(3.7),
-                backgroundColor: colors.primary,
-                justifyContent: "center",
-                paddingHorizontal: scale(10),
-                marginHorizontal: scale(10),
-              }}
-            >
-              <CustomText
-                // style={{ marginVertical: 12 }}
-                size={15}
-                fontFam="Inter-SemiBold"
-                color={colors.white}
-                fontWeight={"600"}
-                text={"1459151"}
-              />
-            </View>
 
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image
-                style={{ width: scale(19), height: scale(19) }}
-                resizeMode="contain"
-                source={images.copy}
-              />
-            </TouchableOpacity>
-          </View>
 
           <CustomLine backgroundColor={colors.primary} height={1.5} />
           <Detail
@@ -235,7 +154,7 @@ const Settings = ({navigation}) => {
           />
           <CustomLine backgroundColor={colors.primary} height={1.5} />
           <Detail
-            txt={"Email" + "     " + "carmenelectra@gmail.com"}
+            txt={"Change your email"}
             onPress={() => navigation.navigate("ChangeEmail")}
           />
           <CustomLine backgroundColor={colors.primary} height={1.5} />
@@ -251,9 +170,9 @@ const Settings = ({navigation}) => {
             }}
             onPress={onLogout}
           >
-            <CustomText
+            <NewText
               // style={{ marginVertical: 12 }}
-              size={16}
+              size={17}
               fontFam="Inter-SemiBold"
               color={colors.white}
               fontWeight={"600"}
@@ -261,107 +180,86 @@ const Settings = ({navigation}) => {
             />
           </TouchableOpacity>
           <View style={styles.rowConttainer}>
-            <CustomText
+            <NewText
               fontWeight="600"
               fontFam="Poppins-Medium"
               color={colors.white}
-              size={17}
+              size={18}
               text={"Notifications"}
             />
           </View>
 
+
           <View
             style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
               paddingHorizontal: scale(20),
               paddingVertical: verticalScale(15),
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: verticalScale(20),
-              }}
-            >
-              <CustomText
-                color={colors.white}
-                text={"Push"}
-                size={16}
-                fontWeight="600"
-                fontFam="Poppins-Medium"
-              />
-              <ToggleSwitch
-                isOn={inApp}
-                onColor={colors.sky}
-                offColor={colors.grey300}
-                size="small"
-                onToggle={setInApp}
-                thumbOnStyle={{ width: 17, height: 17, borderRadius: 9999 }}
-                thumbOffStyle={{ width: 17, height: 17, borderRadius: 9999 }}
-                trackOffStyle={{width: 46, height:25,}}
-                trackOnStyle={{ width:46, height: 25 }}
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <CustomText
-                size={16}
-                fontWeight="600"
-                fontFam="Poppins-Medium"
-                color={colors.white}
-                text={"Email"}
-              />
-              <ToggleSwitch
-                isOn={email}
-                onColor={colors.sky}
-                offColor={colors.grey300}
-                size="small"
-                onToggle={setEmail}
-                thumbOnStyle={{ width: 17, height: 17, borderRadius: 9999 }}
-                thumbOffStyle={{ width: 17, height: 17, borderRadius: 9999 }}
-                trackOffStyle={{width: 46, height:25,}}
-                trackOnStyle={{ width:46, height: 25 }}
-              />
-            </View>
+            <NewText
+              color={colors.white}
+              text={"Enable Notifications?"}
+              size={17}
+              fontWeight="600"
+              fontFam="Poppins-Medium"
+            />
+            <ToggleSwitch
+              isOn={inApp}
+              onColor={colors.sky}
+              offColor={colors.grey300}
+              size="small"
+              onToggle={setInApp}
+              thumbOnStyle={{ width: 17, height: 17, borderRadius: 9999 }}
+              thumbOffStyle={{ width: 17, height: 17, borderRadius: 9999 }}
+              trackOffStyle={{ width: 46, height: 25, }}
+              trackOnStyle={{ width: 46, height: 25 }}
+            />
           </View>
+
           <View style={styles.rowConttainer}>
-            <CustomText
+            <NewText
               fontWeight="600"
               fontFam="Poppins-Medium"
               color={colors.white}
-              size={16}
+              size={17}
               text={"Donate to Status "}
             />
           </View>
           <View
             style={{
-              paddingHorizontal: scale(50),
+              paddingHorizontal: scale(20),
               paddingVertical: verticalScale(20),
             }}
           >
-            <CustomText
-              fontWeight="500"
-              color={colors.white}
-              size={14}
-              style={{ textAlign: "center", textDecorationLine: "underline" }}
-              text={
-                "Donate $5 or more and the founder will “Thank you” on your wall"
-              }
-            />
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => {
+                Linking.openURL("https://www.gofundme.com/f/statusapp")
+              }}
+            >
+              <NewText
+                fontWeight="500"
+                color={colors.white}
+                size={15}
+                style={{ textAlign: "center", textDecorationLine: "underline" }}
+                text={
+                  "Share Your Feedback, Ideas, and Suggestions. Help Elevate Real Innovation and Design."
+                }
+              />
+
+            </TouchableOpacity>
+
           </View>
 
           <View style={styles.rowConttainer}>
-            <CustomText
+            <NewText
               fontWeight="600"
               fontFam="Poppins-Medium"
               color={colors.white}
-              size={16}
+              size={17}
               text={"Follow the founder"}
             />
           </View>
@@ -369,25 +267,43 @@ const Settings = ({navigation}) => {
             style={{
               flexDirection: "row",
               alignSelf: "center",
-              marginVertical: verticalScale(20),
+              marginVertical: verticalScale(30),
             }}
           >
-            <TouchableOpacity activeOpacity={0.6}>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL("https://www.instagram.com/mikeodeaofficial/")
+              }}
+              activeOpacity={0.6}>
               <Image
                 source={images.insta}
-                style={{ width: scale(28), height: scale(28) }}
+                style={styles.socialImg}
               />
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.6} style={{ marginLeft: "8%" }}>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL("https://www.youtube.com/channel/UC3NXVxVCFQow6iJSopH5apw")
+              }}
+              activeOpacity={0.6} style={{ marginLeft: "5%" }}>
               <Image
-                style={{ width: scale(28), height: scale(28) }}
+                style={styles.socialImg}
                 source={images.youtube}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL("https://twitter.com/mike_odea_")
+              }}
+              activeOpacity={0.6} style={{ marginLeft: "5%" }}>
+              <Image
+                style={styles.socialImg}
+                source={images.twitter}
               />
             </TouchableOpacity>
           </View>
         </ScrollView>
       </View>
-      {isVerify && (
+      {isSuccess && (
         <Animatable.View
           animation={"slideInUp"}
           style={{
@@ -398,7 +314,7 @@ const Settings = ({navigation}) => {
             paddingHorizontal: scale(20),
             position: "absolute",
             paddingTop: verticalScale(7),
-            bottom: verticalScale(100),
+            bottom: verticalScale(0),
           }}
         >
           <Image
@@ -408,7 +324,7 @@ const Settings = ({navigation}) => {
           />
           <View style={{ marginTop: -4 }}>
             <CustomText
-              text={verifyData.lable}
+              text={successData.label}
               color={colors.white}
               fontWeight={"600"}
               size={15}
@@ -416,7 +332,7 @@ const Settings = ({navigation}) => {
               fontFam={"Poppins-SemiBold"}
             />
             <CustomText
-              text={verifyData.text}
+              text={successData.text}
               color={colors.white}
               fontWeight={"600"}
               size={12}
@@ -440,4 +356,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.primary,
   },
+  socialImg: { width: 32, height: 32 }
 });

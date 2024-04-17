@@ -25,6 +25,9 @@ import CustomToast from "../../../components/CustomToast";
 import Loader from "../../../components/Loader";
 import { ResetPasswordRequest } from "../../../api/ApiServices";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../../redux/reducers/authReducer";
 interface props {
   route: any;
 }
@@ -37,6 +40,7 @@ const ResetPassword = ({ route }: props) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const params=route?.params?.data
+  const dispatch=useDispatch()
 
   // console.log("data",data)
 
@@ -105,6 +109,10 @@ const ResetPassword = ({ route }: props) => {
           setTimeout(() => {
             setShowError(false);
             // setToastColor(colors.red)
+            StorageServices.removeItem(AUTH);
+
+            dispatch(setUserData(null))
+
 
             navigation.navigate("Login", {
             

@@ -33,9 +33,11 @@ import ErrorToast from "../../../components/ErrorToast";
 import { Spacer } from "../../../components/Spacer";
 import { useDispatch, useSelector } from "react-redux";
 import { ChangeUserPassword } from "../../../api/ApiServices";
-import { getToken, getUserData } from "../../../redux/reducers/authReducer";
+import { getToken, getUserData, setIsSuccess, setSuccessResponse } from "../../../redux/reducers/authReducer";
 import CustomToast from "../../../components/CustomToast";
 import Loader from "../../../components/Loader";
+import Button from "../../../components/Button";
+import NewText from "../../../components/NewText";
 
   
   const ChangePassword = () => {
@@ -95,36 +97,28 @@ import Loader from "../../../components/Loader";
         return;
       }
       setLoading(true);
-      const data = {
-        currentPassword: values.currentPassword,
-        newPassword: values.newPassword,
-      };
 
-      console.log("dataUser",data)
-  
-      ChangeUserPassword(data, token,async ({ isSuccess, response }: any) => {
-        console.log("ckdnckdnc", response);
+      const form = new FormData()
+      form.append("currentPassword", values.currentPassword);
+      form.append("newPassword", values.newPassword);  
+      ChangeUserPassword(form, token,async ({ isSuccess, response }: any) => {
+        console.log("changePasswordStatus", response);
 
         if (isSuccess) {
           let result = JSON.parse(response);
   
           if (result.status) {
             setLoading(false);
-            setError(result.msg);
-            setToastColor(colors.green)
-            setShowError(true);
-            setTimeout(() => {
-              setShowError(false);
-              setToastColor(colors.red)
-              // StorageServices.setItem(AUTH,result.user)
-              // dispatch(setUserData(result.user))
-            ;
   
-  
-              // navigation.navigate("ConfirmationCode", {
-              //   data: { email: values.email },
-              // });
-            }, 2000);
+              dispatch(setIsSuccess(true))
+              let res:any={
+                label:"Success!",
+                text:"Your password has been changed"
+
+
+              }
+              dispatch(setSuccessResponse(res))
+              navigation.goBack()
           } else {
             if (result.error) {
               setLoading(false);
@@ -194,7 +188,7 @@ import Loader from "../../../components/Loader";
           <CustomText color={"transparent"} size={18} text={"sss"} />
         </AbsoluteHeader>
         <View
-        style={{padding:scale(15)}}
+        // style={{padding:scale(15)}}
         >
             <ChangePasswordForm
             values={values}
@@ -204,12 +198,12 @@ import Loader from "../../../components/Loader";
 
           
 
-<CustomButton
+<Button
           text="Update Password"
           // width={windowWidth/2.5}
           // size={17}
-          paddingHorizontal={scale(15)}
-          height={verticalScale(36)}
+          paddingHorizontal={scale(20)}
+          height={33}
           borderRadius={scale(20)}
           size={14}
           onPress={onChangePassword}
@@ -230,16 +224,7 @@ import Loader from "../../../components/Loader";
           textColor={colors.black}
           />
             <TouchableOpacity>
-        <CustomText
-            text={"Forgot password?"}
-            color={colors.white}
-            size={13}
-            style={{textAlign:"center",marginTop:verticalScale(15)}}
-            textDecorationLine={"underline"}
-
-            fontFam="Poppins-Medium"
-            fontWeight="500"
-          />
+    
 
         </TouchableOpacity>
              

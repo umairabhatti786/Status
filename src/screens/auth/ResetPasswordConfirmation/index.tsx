@@ -192,6 +192,7 @@ const ResetPasswordConfirmation = ({ route }: props) => {
                 backgroundColor: colors.primary,
                 flexDirection: "row",
                 justifyContent: "space-between",
+                alignItems: "center",
 
                 paddingHorizontal: scale(15),
                 paddingVertical: verticalScale(5),
@@ -201,20 +202,16 @@ const ResetPasswordConfirmation = ({ route }: props) => {
               }}
             >
               <View>
-                <NewText
-                  text={"Confirmation code"}
-                  size={14}
-                  style={{ marginBottom: scale(-8) }}
-                  color={colors.white}
-                  fontWeight="500"
-                />
+
                 <TextInput
                   maxLength={6}
                   keyboardType="number-pad"
+                  placeholder="ENTER CODE HERE"
                   value={code}
+                  placeholderTextColor={colors.grey400}
                   onChangeText={(txt) => {
                     let isValidNumber = numericRegex?.test(txt);
-                    if(isValidNumber){
+                    if (isValidNumber) {
                       setCode(txt);
 
 
@@ -227,11 +224,17 @@ const ResetPasswordConfirmation = ({ route }: props) => {
 
                   }}
                   style={{
-                    fontSize: verticalScale(14),
+                    fontSize: 16,
                     width: windowWidth / 1.4,
                     alignItems: "center",
                     fontFamily: "Poppins-Regular",
                     color: colors.grey400,
+                    textAlignVertical: 'center',
+                    paddingTop: 0,
+                    paddingBottom: 0,
+                    marginTop: verticalScale(5),
+                    // backgroundColor:"red"
+
                   }}
                 />
               </View>
@@ -240,8 +243,11 @@ const ResetPasswordConfirmation = ({ route }: props) => {
                 activeOpacity={0.6}
                 style={{
                   height: "100%",
-                  alignItems: "center",
+                  alignItems: "flex-end",
                   justifyContent: "center",
+                  width:scale(30),
+                  paddingRight:scale(5)
+                
                 }}
                 onPress={() => setCode("")}
               >

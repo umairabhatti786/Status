@@ -26,6 +26,8 @@ export const images = {
   defimage100: require("../images/def-image100.png"),
   defimage200: require("../images/def-image200.png"),
   defimage300: require("../images/def-image300.png"),
+  addImage: require("../images/add-image.png"),
+
 
   sad: require("../images/sad.png"),
   verify: require("../images/verify.png"),
@@ -132,8 +134,10 @@ bagicon: require("../icons/bag-icon.png"),
 
 
   arrowdown: require("../icons/downarrow.png"),
-  youtube: require("../icons/youtube.png"),
-  insta: require("../icons/insta.png"),
+  youtube: require("../images/youtube.png"),
+  insta: require("../images/instagram.png"),
+  twitter: require("../images/twitter.png"),
+
   crosscircle: require("../icons/cross-circle.png"),
   next: require("../icons/next.png"),
   attach: require("../icons/attach.png"),

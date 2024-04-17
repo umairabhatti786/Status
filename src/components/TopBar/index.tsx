@@ -5,6 +5,7 @@ import { colors } from "../../utils/colors";
 import { Spacer } from "../Spacer";
 import { verticalScale } from "react-native-size-matters";
 import { windowWidth } from "../../utils/Dimensions";
+import NewText from "../NewText";
 
 const TopBar = ({ activeBar, setActiveBar, topBarData }: any) => {
   return (
@@ -23,10 +24,10 @@ const TopBar = ({ activeBar, setActiveBar, topBarData }: any) => {
                 activeOpacity={0.6}
                 onPress={() => setActiveBar(item)}
               >
-                <CustomText
+                <NewText
                   color={ colors.white}
                   text={item}
-                  size={verticalScale(18)}
+                  size={18}
                   fontWeight={"500"}
                   fontFam="Poppins-Regular"
                 />
@@ -36,7 +37,7 @@ const TopBar = ({ activeBar, setActiveBar, topBarData }: any) => {
               <View
                 style={{
                   width: windowWidth/2.2,
-                  height: verticalScale(3),
+                  height: verticalScale(2),
                   backgroundColor:
                     activeBar == item ? colors.white : colors.black200,
                 }}

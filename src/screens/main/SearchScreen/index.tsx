@@ -32,12 +32,27 @@ import UserList from "./UserList";
 import { scale, verticalScale } from "react-native-size-matters";
 import FilterCategory from "./FilterCategory";
 import CustomText from "../../../components/CustomText";
+import Button from "../../../components/Button";
+import Loader from "../../../components/Loader";
+import { useIsFocused } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { getToken,  } from "../../../redux/reducers/authReducer";
+import { GetAllUsers } from "../../../api/ApiServices";
+import CustomToast from "../../../components/CustomToast";
 
 const SearchScreen = ({ navigation }) => {
   const [activeBar, setActiveBar] = useState("All");
   const [activeFilter, setActiveFilter] = useState(0);
   const bottomSheetModalRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState("");
+
+  const [loading,setLoading]=useState(false)
+  const focused=useIsFocused()
+  const token=useSelector(getToken)
+  const [allUsers,setAllUsers]=useState([])
+  const[netpageUrl,setNextPageUrl]=useState()
   // const [setSelectedCategory,setSelectedCategory]=useState("")
   // const [setSelectedCategory, setSelectedCategory] = useState("All");
 
@@ -46,6 +61,8 @@ const SearchScreen = ({ navigation }) => {
   // const handleOpenress = () => {
   //   bottomSheetRef?.current?.expand();
   // };
+
+  console.log("netpageUrl",allUsers)
 
   let profileCategories = [
     "All",
@@ -79,6 +96,57 @@ const SearchScreen = ({ navigation }) => {
       handleClosePress();
     }
   }, []);
+
+  useEffect(()=>{
+
+    getUserData()
+
+  },[focused])
+
+  const getUserData=()=>{
+    setLoading(true)
+
+    const param='get=all'
+    GetAllUsers(param,token, async ({ isSuccess, response }: any) => {
+      if (isSuccess) {
+        let result = JSON.parse(response);
+        console.log("ckdnckdnc", result?.users?.data);
+
+        if (result.status) {
+          setLoading(false);
+          setAllUsers(result?.users?.data)
+          // setNextPageUrl(!result?.users?.next_page_url?true:false)
+
+         
+        } else {
+          if (result.error) {
+            setLoading(false);
+
+            setError(result?.error);
+            setShowError(true);
+            setTimeout(() => {
+              setShowError(false);
+
+            }, 4000);
+          } else {
+            setLoading(false);
+            setError(result?.msg);
+
+            setShowError(true);
+            setTimeout(() => {
+              setShowError(false);
+
+            }, 4000);
+          }
+        }
+      } else {
+        setLoading(false);
+
+        Alert.alert("Alert!", "Network Error.");
+      }
+    });
+
+  }
 
   const userData = [
     // online
@@ -342,6 +410,8 @@ const SearchScreen = ({ navigation }) => {
 
   return (
     <>
+          {loading && <Loader />}
+
       <SafeAreaView style={appStyles.main}>
         <StatusBar barStyle={"light-content"} backgroundColor={colors.black} />
 
@@ -383,7 +453,7 @@ const SearchScreen = ({ navigation }) => {
           {filterData.map((item, index) => {
             return (
               <View style={{ marginHorizontal: scale(3) }}>
-                <CustomButton
+                <Button
                   onPress={() => {
                     setActiveFilter(index);
                   }}
@@ -480,6 +550,15 @@ const SearchScreen = ({ navigation }) => {
           LOCATION={LOCATION1}
         /> */}
       </BottomSheet>
+
+{showError && (
+  <CustomToast
+    showError={showError}
+    setShowError={setShowError}
+    bgColor={colors.red}
+    text={error}
+  />
+)}
     </>
   );
 };

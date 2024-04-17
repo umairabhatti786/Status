@@ -129,6 +129,12 @@ const AppStack = () => {
           <Stack.Screen name={"AccountDeletion"} component={AccountDeletion} />
           <Stack.Screen name={"SearchMember"} component={SearchMember} />
           <Stack.Screen name={"NewMessage"} component={NewMessage} />
+          <Stack.Screen name={"LostPassword"} component={LostPassword} />
+          <Stack.Screen name={"ResetPassword"} component={ResetPassword} />
+          <Stack.Screen
+            name={"ResetPasswordConfirmation"}
+            component={ResetPasswordConfirmation}
+          />
         </>
       )}
     </Stack.Navigator>
