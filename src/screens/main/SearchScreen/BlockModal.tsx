@@ -19,7 +19,7 @@ import { appStyles } from "../../../utils/AppStyles";
 import CustomButton from "../../../components/CustomButton";
 
 
-const BlockModal = ({isModalVisible,setModalVisible,isBlock,title,des}:any) => {
+const BlockModal = ({isModalVisible,setModalVisible,isBlock,title,des,onBlocked}:any) => {
   
   return (
 
@@ -80,7 +80,7 @@ const BlockModal = ({isModalVisible,setModalVisible,isBlock,title,des}:any) => {
     height={verticalScale(43)}
     borderRadius={scale(20)}
     paddingHorizontal={scale(25)}
-    onPress={()=>setModalVisible(false)}
+    onPress={onBlocked}
     // fontWeight={"600"}
     fontFam={"Poppins-Regular"}
     bgColor={"#277DD2"}

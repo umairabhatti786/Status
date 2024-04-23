@@ -62,7 +62,7 @@ const SearchScreen = ({ navigation }) => {
   //   bottomSheetRef?.current?.expand();
   // };
 
-  console.log("netpageUrl",allUsers)
+  console.log("netpageUrl",token)
 
   let profileCategories = [
     "All",
@@ -90,7 +90,7 @@ const SearchScreen = ({ navigation }) => {
 
   const topBarData = ["All", "Following"];
 
-  const filterData = ["Online", "Nearby", "New", "Popular"];
+  const filterData = ["Online", "Nearby", "New", "Popular","Models"];
   const handleSheetChanges = useCallback((index) => {
     if (index == 0) {
       handleClosePress();
@@ -400,10 +400,17 @@ const SearchScreen = ({ navigation }) => {
   console.log("UserLoeng", userData.length);
 
   const renderUsers = ({ item, index }) => {
-    console.log("ckbdk", index);
+    console.log("ckbdk", item.id);
 
     return (
-      <UserList item={item} />
+      <UserList
+      name={item.name}
+      image={item.imageUrl}
+      id={item.id}
+      onPress={()=>   navigation.navigate("OthersProfile", {
+        item: item,
+      })}
+       item={item} />
       // <FriendList item={item}/>
     );
   };
@@ -473,25 +480,7 @@ const SearchScreen = ({ navigation }) => {
               </View>
             );
           })}
-          <TouchableOpacity
-          style={styles.categoryBtn}
-          onPress={() => {
-            bottomSheetModalRef.current.present();
-          }}
-        >
-          <CustomText
-            text={activeCategory}
-            color={colors.white}
-            fontWeight={"600"}
-            size={15}
-            fontFam={"Poppins-Medium"}
-          />
-          <Spacer width={10}/>
-          <Image
-          style={{width:scale(15),height:scale(15)}}
-          source={images.arrowdown}
-          />
-        </TouchableOpacity>
+        
         </ScrollView>
 
         </View>
@@ -501,17 +490,18 @@ const SearchScreen = ({ navigation }) => {
         {/* <Spacer height={10} /> */}
         <View>
           <FlatList
-            data={
-              activeFilter == 0
-                ? userData.filter((item) => item.online)
-                : activeFilter == 1
-                ? userData.filter((item) => item.nearby)
-                : activeFilter == 2
-                ? userData.filter((item) => item.new)
-                : activeFilter == 3
-                ? userData.filter((item) => item.popular)
-                : userData
-            }
+          data={allUsers}
+            // data={
+            //   activeFilter == 0
+            //     ? userData.filter((item) => item.online)
+            //     : activeFilter == 1
+            //     ? userData.filter((item) => item.nearby)
+            //     : activeFilter == 2
+            //     ? userData.filter((item) => item.new)
+            //     : activeFilter == 3
+            //     ? userData.filter((item) => item.popular)
+            //     : userData
+            // }
             numColumns={3}
             style={{ marginBottom: verticalScale(155) }}
             renderItem={renderUsers}

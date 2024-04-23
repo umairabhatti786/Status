@@ -1,5 +1,8 @@
 import {
+  Alert,
   Image,
+  Linking,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -22,15 +25,74 @@ import { scale, verticalScale } from "react-native-size-matters";
 import ToggleSwitch from "toggle-switch-react-native";
 import DropDown from "../../../components/DropDown";
 import { data } from "../../../utils/Data";
+import NewText from "../../../components/NewText";
+import ImagePicker from "react-native-image-crop-picker";
+import { usePermissions } from "../../../utils/Permissions";
+import { openSettings } from "react-native-permissions";
+import Button from "../../../components/Button";
+import FastImage from "react-native-fast-image";
+import Input from "../../../components/Input";
+import { URLS } from "../../../api/baseUrl";
+import PredictionList from "../../auth/ProfileSetup/PredictionList";
+import CustomToast from "../../../components/CustomToast";
+import { isUrlValid, validUrl } from "../../../utils/Regex";
+import { useDispatch, useSelector } from "react-redux";
+import { getToken, setUserData } from "../../../redux/reducers/authReducer";
+import { UserProfileSetup } from "../../../api/ApiServices";
+import Loader from "../../../components/Loader";
 
-const EditProfile = () => {
+
+const EditProfile = ({ route }: any) => {
   const navigation: any = useNavigation();
   const [male, setMale] = useState(false);
   const [doesApply, setDoesApply] = useState(false);
-  const [selectedGender,setSelectedGender]=useState(0)
+  const [selectedGender, setSelectedGender] = useState(0)
+  const [isUplaodWallpaper, setIsUplaodWallpaper] = useState(false)
+  const [isUplaodPicture, setIsUplaodPicture,] = useState(false)
+  const [isPredictionList, setIsPredictionList] = useState(false);
+  const [predictionData, setPredictionData] = useState([])
+  const [showError, setShowError] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [toastColor, setToastColor] = useState(colors.red)
+  const token=useSelector(getToken)
+
+  const dispatch=useDispatch()
+
+
+
+
+  const userData = route?.params?.data
+
+  const [model, setModel] = useState(userData?.isModel==false?"false":"true")
+
+
+  const [values, setValues] = useState({
+    wallComments: userData?.wallComments,
+    bio: userData?.bio?userData?.bio:"",
+    imageUrl: userData?.imageUrl ? userData?.imageUrl : "",
+    wallpaperUrl: userData?.wallpaperUrl ? userData?.wallpaperUrl : "",
+    gif1: userData?.gif1 ? userData?.gif1 : "",
+    name: userData?.name ? userData?.name : "",
+    gender: userData?.gender ? userData.gender : "Does not apply",
+    birthday: userData?.birthday ? userData.birthday:"" ,
+    occupation: userData?.occupation? userData?.occupation :"",
+    link: userData?.link?userData?.link:"" ,
+    gif2: userData?.gif2 ? userData?.gif2 : "",
+    location: userData?.location ? userData?.location : "",
+    lat: userData?.lat ? userData?.lat : "",
+    long: userData?.long ? userData?.long : ""
+
+
+  })
+  console.log("AllYSercjdbcValuebioUeer",  typeof userData?.link
+  )
+
+
+  console.log("wallComments",  userData?.isModel)
 
   const [active, setActive] = React.useState(0);
-  const [isToggle,setIsToggle]=useState(true)
+  const [isToggle, setIsToggle] = useState(true)
   const [itemsGender, setItemsGender] = useState([
     { label: "Straight", value: "Straight" },
     { label: "Male", value: "Male" },
@@ -38,6 +100,8 @@ const EditProfile = () => {
   ]);
   const [dropdownValueGender, setDropdownValueGender] = useState("Straight");
   const [openGender, setOpenGender] = useState(false);
+  const { requestGalleryPermission } = usePermissions();
+
   const [items, setItems] = useState([
     { label: "Single", value: "Single" },
     { label: "Married", value: "Married" },
@@ -56,28 +120,247 @@ const EditProfile = () => {
   const handlePress = () => {
     setMale(false);
   };
+
+  const modelData = [
+    {
+      id: 1,
+      label: true,
+      value: "true",
+    },
+    {
+      id: 2,
+      label: false,
+      value: "false",
+    },
+
+
+  ];
+  const onSearch = async (txt: any) => {
+    setValues({ ...values, location: txt });
+
+    // setSearch(txt);
+    if (txt.length == 0) {
+      setIsPredictionList(false);
+      setValues({ ...values, lat: null,long:null,location:"" });
+
+
+      return;
+    }
+    setIsPredictionList(true);
+    const apiUrl = `${URLS.GOOGLE_PLACES_API_BASE_URL}/autocomplete/json?key=${"AIzaSyC3ZsD7NPYT5dL3mapSdPtHMwiTYpejlSQ"}&input=${txt}`;
+    try {
+      let result = await fetch(apiUrl);
+      let data = await result.text();
+      let d = JSON.parse(data);
+      if (d.status == "OK") {
+        let { predictions } = d;
+        console.log("cibdicbduc", predictions);
+        setPredictionData(predictions);
+
+        // this.setState({ predictions: predictions });
+      }
+    } catch (e) {
+      Alert.alert(e);
+    }
+  };
+
+  const onPressLocationAddress = async (i) => {
+    const apiUrl = `${URLS.GOOGLE_PLACES_API_BASE_URL}/details/json?key=${URLS.GOOGLE_MAP_KEY}&place_id=${i.place_id}`;
+    let call = await fetch(apiUrl);
+    let res = await call.text();
+    let result = await JSON.parse(res);
+    if (result.result) {
+      const {
+        geometry: { location },
+        formatted_address,
+        name,
+      } = result.result;
+
+      console.log("isPredictionList", isPredictionList, name)
+      setIsPredictionList(false);
+      setValues({ ...values, lat: location.lat, long: location.lng,location:formatted_address });
+
+    }
+  };
+
+  const onOpenGallery = async (isPicture:any) => {
+    console.log("ISpucvibdv",isPicture)
+    let gallerypermission = await requestGalleryPermission();
+    if (gallerypermission == "granted" || gallerypermission == "limited") {
+      ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        mediaType: "photo",
+        forceJpg: true,
+      }).then(async (result) => {
+        if (result) {
+          const fileName = result?.path?.split("/").pop();
+          let data = {
+            ...result,
+            fileName: fileName,
+            name: fileName,
+            size: result?.size,
+            height: result?.height,
+            type: result?.mime,
+            uri: result?.path,
+            width: result?.width,
+          };
+          if (isPicture ) {
+            setIsUplaodPicture(true)
+            setValues({ ...values, imageUrl: data })
+          }
+          else {
+            setIsUplaodWallpaper(true)
+            setValues({ ...values, wallpaperUrl: data })
+          }
+        }
+      });
+    } else {
+      if (gallerypermission == "blocked") {
+        if (Platform.OS == "ios") {
+          openSettings();
+        } else {
+          Linking.openSettings();
+        }
+      }
+    }
+  };
+
+  const onSave=()=>{
+    if (!values?.name) {
+      setError("Name is Required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+    if (!values?.lat || !values.long) {
+      setError("Location is Required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+    if (!values.imageUrl) {
+      setError("Image is Required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+    if(values.link){
+      let validLink=  isUrlValid(values.link)
+      if(!validLink){
+        setError("inValid link");
+        setShowError(true);
+        setTimeout(() => {
+          setShowError(false);
+        }, 4000);
+
+
+
+        return
+
+      }
+
+
+      
+    }
+
+    const form = new FormData()
+    form.append("wallComments", values.wallComments?1:0); 
+    form.append("birthday", values.birthday);
+    form.append("gender", values.gender);
+    form.append("occupation", values.occupation);
+    form.append("link", values.link);
+    form.append("bio", values?.bio);
+    form.append("isModel",model=="true"?1:0)
+    form.append("wallpaperUrl", values.wallpaperUrl);
+    form.append("gif1", values.gif1);
+    form.append("gif2", values.gif2);
+    form.append("name", values.name);
+    form.append("imageUrl", values.imageUrl);
+    form.append("location", values?.location);
+    form.append("lat", values?.lat);
+    form.append("long", values?.long);
+
+setLoading(true)
+    UserProfileSetup(form, token, async ({ isSuccess, response }: any) => {
+      if (isSuccess) {
+        let result = JSON.parse(response);
+        console.log("responseData", result)
+        if (result.status) {
+          setLoading(false);
+          setToastColor(colors.green)
+          setError("Profile Update Successfully");
+          dispatch(setUserData(result?.user))
+
+          setShowError(true);
+          setTimeout(() => {
+            setShowError(false);
+            navigation.goBack()
+          }, 2000);
+
+        } else {
+          setLoading(false);
+          setToastColor(colors.red)
+          setError(result?.msg);
+          setShowError(true);
+          setTimeout(() => {
+            setShowError(false);
+          }, 4000);
+        }
+      } else {
+        setLoading(false);
+
+        Alert.alert("Alert!", "Network Error.");
+      }
+    });
+
+  
+
+  }
+
+  const toggleSwitch=()=>{
+    console.log("Vlaurdvjdbfv",values.to)
+// 
+    setValues({...values,wallComments:!values.wallComments})
+    // setIsToggle(previousState => !previousState);
+
+
+
+  }
   return (
-    <SafeAreaView style={appStyles.main}>
-            <StatusBar backgroundColor="#000" barStyle="light-content" />
+    <>
+          {loading && <Loader />}
+
+        <SafeAreaView style={appStyles.main}>
+      <StatusBar backgroundColor="#000" barStyle="light-content" />
 
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          paddingLeft:scale(20),
-          paddingRight:scale(10),
-          paddingTop:verticalScale(10)
+          paddingLeft: scale(20),
+          paddingRight: scale(10),
+          paddingTop: verticalScale(10)
           // padding:10
-     
+
         }}
       >
         <TouchableOpacity
-        style={{width:"10%"}}
-         onPress={() => navigation.goBack()}>
+          style={{ width: "10%" }}
+          onPress={() => navigation.goBack()}>
           <Image source={images.back} />
         </TouchableOpacity>
-        <CustomText
+        <NewText
           fontWeight="700"
           color={colors.white}
           size={18}
@@ -86,6 +369,7 @@ const EditProfile = () => {
         <CustomButton
           textColor={colors.black}
           bgColor={colors.white}
+          onPress={onSave}
           width={75}
           height={35}
           text="Save"
@@ -93,135 +377,170 @@ const EditProfile = () => {
         />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{paddingHorizontal:scale(20),            marginTop: "10%",
-}}>
+        <View style={{
+          paddingHorizontal: scale(20), marginTop: "10%",
+        }}>
 
-      <View
-              style={appStyles.rowjustify}
-            >
-              <CustomText
-                size={16}
-                fontWeight="600"
-                fontFam="Poppins-Medium"
-                color={colors.white}
-                text={"Enable Wall Comments?"}
-              />
-              <ToggleSwitch
-                isOn={isToggle}
-                onColor={colors.sky}
-                offColor={colors.grey300}
-                size="small"
-                onToggle={setIsToggle}
-                thumbOnStyle={{ width: 17, height: 17, borderRadius: 9999 }}
-                thumbOffStyle={{ width: 17, height: 17, borderRadius: 9999 }}
-                trackOffStyle={{width: 46, height:25,}}
-                trackOnStyle={{ width:46, height: 25 }}
-              />
-            </View>
-
-
-        <View
-          style={{...appStyles.rowjustify,            marginTop: "9%",
-          marginBottom:verticalScale(10)
-        }}
-        >
-          <CustomText
-            fontWeight="600"
-            color={colors.white}
-            size={19}
-            fontFam="Poppins-Medium"
-            text={"Channel Wallpaper"}
-          />
-          <CustomText color={colors.white} size={17} text={"Add"} />
-        </View>
-
-        <View
-          style={{
-            borderWidth: 1,
-            borderRadius: scale(7),
-            borderColor: colors.white,
-            alignItems: "center",
-            borderStyle: "dashed",
-            height: windowHeight / 4,
-            justifyContent: "center",
-          }}
-        >
-          <Image style={{ width: 16, height: 16 }} source={images.add} />
-        </View>
-
-
-        <View
-          style={{...appStyles.rowjustify,            marginTop: "10%",
-        }}
-        >
-          <CustomText
-            fontWeight="700"
-            color={colors.white}
-            size={19}
-            text={"Profile Pic"}
-          />
-          <CustomText color={colors.white} size={17} text={"Add"} />
-        </View>
-
-        <View
-          style={{
-            borderWidth: 1,
-            borderRadius: scale(5),
-            borderColor: colors.white,
-            alignItems: "center",
-            borderStyle: "dashed",
-            // marginHorizontal: 18,
-            height: scale(99),
-            width: scale(99),
-            justifyContent: "center",
-            marginTop: verticalScale(10),
-          }}
-        >
-          <Image style={{ width: 14, height: 14 }} source={images.add} />
-        </View>
-
-
-        <View
-          style={{...appStyles.rowjustify,
-            marginTop: "7%",
-            marginBottom:verticalScale(15)
-          }}
-        >
-          <CustomText
-            fontWeight="700"
-            color={colors.white}
-            size={19}
-            text={"Your GIFS"}
-          />
-          <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={()=>navigation.navigate("EditGifs")}
+          <View
+            style={appStyles.rowjustify}
           >
-          <CustomText color={colors.white} size={17} text={"Edit"} />
+            <NewText
+              size={17}
+              fontWeight="600"
+              fontFam="Poppins-Medium"
+              color={colors.white}
+              text={"Enable Wall Comments?"}
+            />
+            <ToggleSwitch
+              isOn={values?.wallComments}
+              onColor={colors.sky}
+              offColor={colors.grey300}
+              size="small"
+              onToggle={toggleSwitch}
 
 
-          </TouchableOpacity>
-        </View>
-        <View
-          style={appStyles.rowjustify}
-        >
-          <Image
+              // onToggle={(isOn: boolean)=>setIsToggle}
+              thumbOnStyle={{ width: 17, height: 17, borderRadius: 9999 }}
+              thumbOffStyle={{ width: 17, height: 17, borderRadius: 9999 }}
+              trackOffStyle={{ width: 46, height: 25, }}
+              trackOnStyle={{ width: 46, height: 25 }}
+            />
+          </View>
+
+
+          <View
             style={{
-              width: "48.5%",
-              height: windowHeight / 4,
-              borderRadius: 8,
+              ...appStyles.rowjustify, marginTop: "9%",
+              marginBottom: verticalScale(10),
             }}
-            source={images.defimage2}
-          />
-          <Image
+          >
+            <NewText
+              fontWeight="600"
+              color={colors.white}
+              size={19}
+              fontFam="Poppins-Medium"
+              text={"Channel Wallpaper"}
+            />
+            <Button
+              text="Add"
+              onPress={() => onOpenGallery(false)}
+              bgColor={"transparent"}
+            />
+
+          </View>
+          {
+            values?.wallpaperUrl ? (
+              <FastImage
+                style={styles.wallpaperContainer}
+
+                resizeMode="cover"
+                source={{
+                  uri:  isUplaodWallpaper?values?.wallpaperUrl?.path:values?.wallpaperUrl,
+                  headers: { Authorization: 'someAuthToken' },
+                  priority: FastImage.priority.normal,
+                }} />
+
+            ) : (
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => onOpenGallery(false)}
+                style={styles.wallpaperContainer}
+              >
+                <Image style={{ width: 16, height: 16 }} source={images.add} />
+              </TouchableOpacity>
+
+            )
+          }
+
+
+
+
+          <View
             style={{
-              width: "48.5%",
-              height: windowHeight / 4,
-              borderRadius: 8,
+              ...appStyles.rowjustify, marginTop: "10%",
             }}
-            source={images.defimage4}
-          />
-        </View>
+          >
+            <CustomText
+              fontWeight="700"
+              color={colors.white}
+              size={19}
+              text={"Profile Pic"}
+            />
+            <Button
+              text="Add"
+              onPress={() => onOpenGallery(true)}
+              bgColor={"transparent"}
+            />
+          </View>
+          {
+            values.imageUrl ? (
+              <FastImage
+                style={styles.picContainer}
+
+                resizeMode="cover"
+                source={{
+                  uri:  isUplaodPicture?values?.imageUrl?.path:values?.imageUrl,
+                  headers: { Authorization: 'someAuthToken' },
+                  priority: FastImage.priority.normal,
+                }} />
+
+            ) : (
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => onOpenGallery(true)}
+                style={styles.picContainer}
+              >
+                <Image style={{ width: 14, height: 14 }} source={images.add} />
+              </TouchableOpacity>
+
+            )
+          }
+
+
+
+
+          <View
+            style={{
+              ...appStyles.rowjustify,
+              marginTop: "7%",
+              marginBottom: verticalScale(15)
+            }}
+          >
+            <NewText
+              fontWeight="700"
+              color={colors.white}
+              size={19}
+              text={"Your GIFS"}
+            />
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => navigation.navigate("EditGifs")}
+            >
+              <CustomText color={colors.white} size={17} text={"Edit"} />
+
+
+            </TouchableOpacity>
+          </View>
+          <View
+            style={appStyles.rowjustify}
+          >
+            <Image
+              style={{
+                width: "48.5%",
+                height: windowHeight / 4,
+                borderRadius: 8,
+              }}
+              source={images.defimage2}
+            />
+            <Image
+              style={{
+                width: "48.5%",
+                height: windowHeight / 4,
+                borderRadius: 8,
+              }}
+              source={images.defimage4}
+            />
+          </View>
 
         </View>
 
@@ -232,147 +551,193 @@ const EditProfile = () => {
             marginVertical: "8%",
           }}
         />
-        <View style={{paddingHorizontal:scale(20)}}>
-          <CustomText
+        <View style={{ paddingHorizontal: scale(20) }}>
+          <NewText
             fontWeight="700"
             color={colors.white}
             size={19}
             text={"Your Info"}
           />
-                  <Spacer height={verticalScale(20)}/>
+          <Spacer height={verticalScale(20)} />
 
 
-<CustomText
-          fontWeight={"500"}
-          fontFam="Poppins-Medium"
-          size={13}
-          style={{ marginBottom: verticalScale(5) }}
-          text={"Profile Type"}
-          color={colors.white}
-        />
+          <CustomText
+            fontWeight={"500"}
+            fontFam="Poppins-Medium"
+            size={13}
+            style={{ marginBottom: verticalScale(5) }}
+            text={"Are you a Female Model?"}
+            color={colors.white}
+          />
           <DropDown
-          placeholder={'Make a Selection'}
-          dropWidth={"100%"}
-          //   data={data}
-          data={data.map((item, _index) => {
-            return {
-              id: item?.id,
-              label: item?.value,
-              value: item?.value,
-            }
-          })}
-        />
-        {/* <Spacer height={verticalScale(10)}/> */}
+            placeholder={'Make a Selection'}
+            dropWidth={"100%"}
+
+            setValue={setModel}
+            value={model}
 
 
-        
-        <CustomTextInput
-          label="Display Name"
-          value={"Lauren Connors"}
-          placeholder="Name"
-          color={colors.white}
-          fontWeight="600"
-          // marginTop={"8%"}
-        />
+            //   data={data}
+            data={modelData.map((item, _index) => {
+              return {
+                id: item?.id,
+                label: item?.value,
+                value: item?.value,
+              }
+            })}
+          />
+          {/* <Spacer height={verticalScale(10)}/> */}
+          <Input
+            label="Display Name"
+            value={values.name}
 
-<CustomText
+            placeholder="Name"
+            color={colors.white}
+            fontWeight="600"
+            onChangeText={(txt: string) => {
+              setValues({ ...values, name: txt });
+            }}
+          />
+          <NewText
             style={{ marginTop: "7%" }}
             color={colors.white}
-            
+
             size={15}
             text={"Gender"}
           />
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginLeft: "5%",
-            marginTop: "3%",
-          }}
-        >
-          {
-            ["Female","Male","Does not apply "].map((item,index)=>{
-              return(
-                <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={()=>setSelectedGender(index)} 
-                 style={{ flexDirection: "row", alignItems: "center",marginRight:"5%" }}>
-            <TouchableOpacity
-            activeOpacity={0.6}
-             onPress={()=>setSelectedGender(index)} style={styles.radioButton}>
-              <View>{selectedGender==index && <View style={styles.radioButtonInner} />}</View>
-            </TouchableOpacity>
-            <CustomText color={colors.white} size={13} text={item} />
-          </TouchableOpacity>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginLeft: "5%",
+              marginTop: "3%",
+            }}
+          >
+            {
+              ["Female", "Male", "Does not apply"].map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.6}
+                    onPress={() => {
+                      setValues({...values,gender:item})
+                      
+                    }}
+                    style={{ flexDirection: "row", alignItems: "center", marginRight: "5%" }}>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={() => setSelectedGender(index)} style={styles.radioButton}>
+                      <View>{values.gender == item && <View style={styles.radioButtonInner} />}</View>
+                    </TouchableOpacity>
+                    <CustomText color={colors.white} size={13} text={item} />
+                  </TouchableOpacity>
 
-              )
-            })
-          }
-          
+                )
+              })
+            }
+
+
+          </View>
+          <View>
+          <Input
+            label="Your Birthday"
+            value={values.birthday}
+            maxLength={8}
+            onChangeText={(txt: string) => {
+              setValues({ ...values, birthday: txt });
+            }}
+            // labelSize={15}
+            placeholder="Birthday"
+            
+            color={colors.white}
+            fontWeight="600"
+            marginTop={"7%"}
+          />
          
+
+          </View>
+          <View>
+          <Input
+            label="Your Location"
+            // labelSize={15}
+            value={values.location}
+            onChangeText={onSearch}
+
+            placeholder="Email"
+            color={colors.white}
+            fontWeight="600"
+            marginTop={"7%"}
+          />
+          {isPredictionList && (
+                <PredictionList
+                  onAddressPress={(i) => onPressLocationAddress(i)}
+                  Addresses={predictionData}
+                />
+              )}
+
+          </View>
+         
+         
+          <Input
+            // labelSize={15}
+
+            label="Occupation"
+            value={values.occupation}
+            placeholder="Occupation"
+            onChangeText={(txt: string) => {
+              setValues({ ...values, occupation: txt });
+            }}
+            color={colors.white}
+            fontWeight="600"
+            marginTop={"7%"}
+          />
+
+          <Input
+            // labelSize={15}
+
+            label="Bio"
+            value={
+              values.bio
+            }
+            placeholder="Bio"
+            color={colors.white}
+            onChangeText={(txt: string) => {
+              setValues({ ...values, bio: txt });
+            }}
+            fontWeight="600"
+            multiline={true}
+            height={85}
+            marginTop={"7%"}
+          />
+          <Input
+
+            label="Your Link"
+            value={values.link}
+            placeholder="Your Link"
+            onChangeText={(txt: string) => {
+              setValues({ ...values, link: txt });
+            }}
+            color={colors.white}
+            fontWeight="600"
+            marginTop={"7%"}
+          />
+
+
+          <Spacer height={20} />
+
         </View>
-        <CustomTextInput
-          label="Your Birthday"
-          value={"05/24/77"}
-          labelSize={15}
-          placeholder="Email"
-          color={colors.white}
-          fontWeight="600"
-          marginTop={"7%"}
-        />
-        <CustomTextInput
-          label="Your Location"
-          labelSize={15}
 
-          value={"Los Angeles, CA"}
-          placeholder="Email"
-          color={colors.white}
-          fontWeight="600"
-          marginTop={"7%"}
-        />
-        <CustomTextInput
-                  labelSize={15}
-
-          label="Occupation"
-          value={"Model, Actress"}
-          placeholder="Occupation"
-          color={colors.white}
-          fontWeight="600"
-          marginTop={"7%"}
-        />
-      
-        <CustomTextInput
-                  labelSize={15}
-
-          label="Bio"
-          value={
-            "see my latest content using the link below ⚡️ bookings & inquiries email thaer@princemarketinggroup.com"
-          }
-          placeholder="Bio"
-          color={colors.white}
-          fontWeight="600"
-          multiline={true}
-          height={85}
-          marginTop={"7%"}
-        />
-           <CustomTextInput
-                  labelSize={15}
-
-          label="Your Link"
-          value={"link.me/carmenelectra"}
-          placeholder="Your Link"
-          color={colors.white}
-          fontWeight="600"
-          marginTop={"7%"}
-        />
-     
-      
-        <Spacer height={20}/>
-
-        </View>
-       
       </ScrollView>
     </SafeAreaView>
+     {showError && (
+        <CustomToast
+          showError={showError}
+          setShowError={setShowError}
+          bgColor={toastColor}
+          text={error}
+        />
+      )}
+    </>
+
   );
 };
 
@@ -395,4 +760,25 @@ const styles = StyleSheet.create({
     borderRadius: scale(12),
     backgroundColor: "white",
   },
+  wallpaperContainer: {
+    borderWidth: 1,
+    borderRadius: scale(7),
+    borderColor: colors.white,
+    alignItems: "center",
+    borderStyle: "dashed",
+    height: windowHeight / 4,
+    justifyContent: "center",
+
+  },
+  picContainer: {
+    borderWidth: 1,
+    borderRadius: scale(5),
+    borderColor: colors.white,
+    alignItems: "center",
+    borderStyle: "dashed",
+    height: scale(99),
+    width: scale(99),
+    justifyContent: "center",
+    marginTop: verticalScale(10),
+  }
 });

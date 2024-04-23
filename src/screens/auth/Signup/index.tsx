@@ -9,6 +9,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  ImageBackground,
 } from "react-native";
 import { appStyles } from "../../../utils/AppStyles";
 
@@ -113,11 +114,14 @@ const Signup = () => {
   return (
     <>
       {loading && <Loader />}
-      <KeyboardAwareScrollView
+      <ImageBackground 
+    source={images.lightBackground}
+    style={{flex:1}}>
+       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={{ flex: 1 }}
       >
-        <SafeAreaView style={appStyles.main}>
+        <SafeAreaView style={{flex:1}}>
           <View style={{ flex: 1, padding: scale(20) }}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image source={images.back} />
@@ -286,6 +290,8 @@ const Signup = () => {
           </View>
         </SafeAreaView>
       </KeyboardAwareScrollView>
+      </ImageBackground>
+     
       {showError && (
         <CustomToast
           showError={showError}

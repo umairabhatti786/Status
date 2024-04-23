@@ -22,7 +22,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 import { Spacer } from "../../../components/Spacer";
 import MessageSender from "../../../components/MessageSender";
 
-const Channel = ({hideSendMessage}:any) => {
+const Channel = ({hideSendMessage,userData}:any) => {
   const route: any = useRoute();
   const item = route?.params?.item;
   const navigation: any = useNavigation();

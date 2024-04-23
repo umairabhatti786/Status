@@ -15,6 +15,8 @@ const DropDown = ({
   placeholder,
   dropWidth,
   borderWidth,
+  onChangeDropDown,
+  setValue
 }:any) => {
   const [open, setOpen] = useState(false)
 
@@ -43,10 +45,10 @@ const DropDown = ({
         }}
         containerStyle={{
           backgroundColor: colors.primary,
-          minHeight: verticalScale(150),
+          minHeight: verticalScale(100),
           borderWidth: -1,
 
-          width:windowWidth/1.1,
+          width:"88%",
           borderBottomLeftRadius:scale(5),
           borderBottomRightRadius:scale(5)
         }}
@@ -71,9 +73,8 @@ const DropDown = ({
               style={{
                 height: verticalScale(40),
                 justifyContent: 'center',
-                borderTopRightRadius: 5,
-                borderTopLeftRadius: 5,
                 paddingHorizontal: 10,
+                backgroundColor:colors.primary
               }}
             >
               <CustomText
@@ -103,11 +104,16 @@ const DropDown = ({
         //   )
         // }}
         onChange={(item) => {
-          if (item.value == value) {
-            setOpen(false)
-            // setValue();
-            return
-          }
+          console.log("AllValcnd",item)
+          setValue(item.label);
+
+
+
+          // if (item.value == value) {
+          //   setOpen(false)
+          //   setValue(item.value);
+          //   return
+          // }
           //   setValue(item.value);
           setOpen(false)
         }}

@@ -26,8 +26,10 @@ import {
   import sizeHelper from "../../../utils/helpers/sizeHelper";
 import CustomButton from "../../../components/CustomButton";
 import { windowWidth } from "../HomeScreen/FriendList";
+import FastImage from "react-native-fast-image";
+import NewText from "../../../components/NewText";
   console.log("PixelRatio",PixelRatio)
-  const UserCard = ({item}:any) => {
+  const UserCard = ({item,onBlocked}:any) => {
     const navigation = useNavigation();
     const [isFollow,setIsFollow]=useState(false)
  
@@ -38,19 +40,24 @@ import { windowWidth } from "../HomeScreen/FriendList";
         <View style={appStyles.row}>
         <TouchableOpacity
            onPress={() => navigation.goBack()}>
-            <Image
-              style={{ width: scale(52), height: scale(52),borderRadius:scale(8), }}
-              resizeMode="contain"
-              source={images.defimage100}
-            />
+             <FastImage
+                resizeMode={FastImage.resizeMode.cover}
+                
+
+         style={{ width: scale(52), height: scale(52),borderRadius:scale(8),}} source={{uri:item.imageUrl,
+          headers: { Authorization: 'someAuthToken' },
+          priority: FastImage.priority.normal,
+         }}
+          />
+            
           </TouchableOpacity>
-          <CustomText
+          <NewText
             fontWeight="600"
             color={colors.white}
             fontFam="Poppins-Medium"
             numberOfLines={2}
-            style={{marginHorizontal:scale(5),width:scale(100),textAlign:"center"}}
-            size={16}
+            style={{marginLeft:10,marginRight:5,width:scale(100)}}
+            size={17}
             text={item?.name}
           />
           
@@ -58,16 +65,16 @@ import { windowWidth } from "../HomeScreen/FriendList";
        
 
           <CustomButton
-          text={isFollow?"Follow":"Blocked"}
+          text={"Unblock"}
           width={windowWidth/3.5}
           size={16}
           height={verticalScale(36)}
           borderRadius={scale(20)}
-          onPress={()=>setIsFollow(!isFollow)}
+          onPress={onBlocked}
           fontWeight={"600"}
           fontFam={"Poppins-SemiBold"}
-          bgColor={isFollow?colors.white:colors.red}
-          textColor={isFollow?colors.black:colors.white}
+          bgColor={colors.red}
+          textColor={colors.white}
           />
   
       

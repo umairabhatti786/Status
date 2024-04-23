@@ -26,7 +26,7 @@ const JoinScreen = () => {
 
   return (
     <ImageBackground 
-    source={images.carback}
+    source={images.background}
     style={appStyles.main}>
       <View style={{ flex: 1, alignItems: "center", padding: scale(15) }}>
         <Spacer height={windowHeight/8} />

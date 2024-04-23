@@ -22,6 +22,8 @@ const TopBar = ({ activeBar, setActiveBar, topBarData }: any) => {
             <View style={{ alignItems: "center",}}>
               <TouchableOpacity
                 activeOpacity={0.6}
+                style={{width:windowWidth/2,alignItems:"center"}}
+
                 onPress={() => setActiveBar(item)}
               >
                 <NewText

@@ -119,7 +119,7 @@ const Settings = ({ navigation }) => {
       <View style={appStyles.main}>
         <AbsoluteHeader>
           <TouchableOpacity
-            style={{ width: "10%" }}
+            style={{ width: "11%",height:40,justifyContent:"center", }}
             onPress={() => navigation.goBack()}>
             <Image
               style={{ width: scale(15), height: scale(15) }}

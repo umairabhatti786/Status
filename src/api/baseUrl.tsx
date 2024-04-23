@@ -14,4 +14,10 @@ export const URLS = {
 DELETE_ACCOOUNT: "deleteUser",
 CHANGE_USER_EMAIL:"changeUserEmail" ,
 GTE_ALL_USER:"getUsers",
+FOLLOW:"follow",
+ISFOLLOWING:"isFollowing",
+BLOCKED:"blockUser",
+GET_BLOCKED_USER:"getBlockedUsers",
+GET_AUTH:"getAuth"
+
 };

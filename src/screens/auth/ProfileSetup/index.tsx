@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Linking,
   Platform,
+  ImageBackground,
 } from "react-native";
 import { appStyles } from "../../../utils/AppStyles";
 
@@ -222,7 +223,7 @@ const ProfileSetup = ({ route }: props) => {
 
       console.log("isPredictionList", isPredictionList, name)
       setIsPredictionList(false);
-      setValues({ ...values, lat: location.lat, long: location.lng,location:name });
+      setValues({ ...values, lat: location.lat, long: location.lng,location:formatted_address });
 
 
 
@@ -252,14 +253,16 @@ const ProfileSetup = ({ route }: props) => {
   return (
     <>
       {loading && <Loader />}
-
-      <KeyboardAwareScrollView
+      <ImageBackground 
+    source={images.lightBackground}
+    style={appStyles.main}>
+         <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
-        style={{ flex: 1, backgroundColor: colors.black }}
+        style={{ flex: 1, backgroundColor: "transparent"}}
       // extraScrollHeight={-100}
       >
 
-        <SafeAreaView style={appStyles.main}>
+        <SafeAreaView style={{flex:1}}>
           <View style={{ flex: 1, padding: scale(20) }}>
             <Spacer height={verticalScale(30)} />
 
@@ -413,6 +416,9 @@ const ProfileSetup = ({ route }: props) => {
         </SafeAreaView>
 
       </KeyboardAwareScrollView>
+      </ImageBackground>
+
+   
 
 
       {showError && (

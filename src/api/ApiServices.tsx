@@ -313,14 +313,178 @@ export const DeleteAccount = async (
   //     console.error("createdError",error);
   //   });
 };
+
+export const GetBlockedUser = async (
+  token: any,
+  callback: any
+) => {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+
+  };
+  console.log("requestOptions",requestOptions)
+  try {
+    fetch(getApiUrl(URLS.GET_BLOCKED_USER), requestOptions)
+      .then((response) =>response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+
+  // fetch(getApiUrl(URLS.signup), requestOptions)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log("created",data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("createdError",error);
+  //   });
+};
+export const GetAuthUser = async (
+  token: any,
+  callback: any
+) => {
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+
+  };
+  console.log("requestOptions",requestOptions)
+  try {
+    fetch(getApiUrl(URLS.GET_AUTH), requestOptions)
+      .then((response) =>response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+
+  // fetch(getApiUrl(URLS.signup), requestOptions)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log("created",data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("createdError",error);
+  //   });
+};
+export const Follow = async (
+  data:any,
+  token: any,
+  callback: any
+) => {
+  
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' +token,
+},
+body:JSON.stringify(data)
+
+  };
+
+  try {
+    fetch(getApiUrl(URLS.FOLLOW), requestOptions)
+      .then((response) =>response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+
+  // fetch(getApiUrl(URLS.signup), requestOptions)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log("created",data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("createdError",error);
+  //   });
+};
+
+export const Blocked = async (
+  data:any,
+  token: any,
+  callback: any
+) => {
+  
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' +token,
+},
+body:JSON.stringify(data)
+
+  };
+
+  try {
+    fetch(getApiUrl(URLS.BLOCKED), requestOptions)
+      .then((response) =>response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+
+  // fetch(getApiUrl(URLS.signup), requestOptions)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log("created",data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("createdError",error);
+  //   });
+};
+export const isFollowing = async (
+  data:any,
+  token: any,
+  callback: any
+) => {
+  
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' +token,
+},
+body:JSON.stringify(data)
+
+  };
+
+  try {
+    fetch(getApiUrl(URLS.ISFOLLOWING), requestOptions)
+      .then((response) =>response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+
+  // fetch(getApiUrl(URLS.signup), requestOptions)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log("created",data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("createdError",error);
+  //   });
+};
 export const GetAllUsers = async (
   data,
   token: any,
   callback: any,
 ) => {
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer " + token);
-  myHeaders.append("Content-Type","application/x-www-form-urlencoded'")
+  // var myHeaders = new Headers();
+  // myHeaders.append("Authorization", "Bearer " + token);
+  // myHeaders.append("Content-Type","application/x-www-form-urlencoded'")
   const requestOptions = {
     method: 'POST',
     headers: {

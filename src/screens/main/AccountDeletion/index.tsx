@@ -113,7 +113,10 @@ const AccountDeletion = () => {
     >
       <View style={appStyles.main}>
         <AbsoluteHeader>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+            style={{ width: "11%",height:40,justifyContent:"center", }}
+
+           onPress={() => navigation.goBack()}>
             <Image
               style={{ width: wp(4.6), height: hp(2.6) }}
               resizeMode="contain"

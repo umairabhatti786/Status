@@ -11,11 +11,14 @@ import SearchStack from "../SearchStack";
 import AddStatus from "../../screens/main/AddStatus";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { getUserData } from "../../redux/reducers/authReducer";
 
 const BottomTab = ({ navigation }: any) => {
   const Bottom = createBottomTabNavigator();
   const isSrollDa=useSelector(state=>state.auth)?.isScroll
 
+  const image=useSelector(getUserData).imageUrl
+console.log("imageurlDsycdvyv",image)
 
   // useEffect()
 
@@ -114,11 +117,13 @@ const BottomTab = ({ navigation }: any) => {
                   ...style?.itemStyle,
 
                   paddingTop: 22,
+                 
                 }}
               >
                 <Image
                   source={focused ? images.add : images.add}
-                  style={{ height: 20, width: 20 }}
+                  style={{ height: 20, width: 20 ,              
+                  }}
                 />
               </View>
             );
@@ -184,8 +189,8 @@ const BottomTab = ({ navigation }: any) => {
                 }}
               >
                 <Image
-                  source={focused ? images.man1 : images.man1}
-                  style={{ height: 30, width: 30 }}
+                  source={ {uri:image}}
+                  style={{ height: 30, width: 30,borderRadius:999 }}
                 />
               </View>
             );

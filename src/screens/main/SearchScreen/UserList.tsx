@@ -18,17 +18,15 @@ import { images } from "../../../assets/images";
 import { useNavigation } from "@react-navigation/native";
 import { scale, verticalScale } from "react-native-size-matters";
 export const windowWidth = Dimensions.get("window").width;
+import FastImage from 'react-native-fast-image'
 
-const UserList = ({ item }: any) => {
+
+const UserList = ({ item,name,image ,onPress}: any) => {
   const navigation: any = useNavigation();
   return (
     <>
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("OthersProfile", {
-            item: item,
-          })
-        }
+        onPress={onPress}
         activeOpacity={0.6}
         style={{
           width: "32.8%",
@@ -39,7 +37,15 @@ const UserList = ({ item }: any) => {
           overflow: "hidden",
         }}
       >
-        <Image style={{ width: "100%", height: "100%" }} source={item.img} />
+        <FastImage
+                resizeMode={FastImage.resizeMode.cover}
+                
+
+         style={{ width: "100%", height: "100%" }} source={{uri:image,
+          headers: { Authorization: 'someAuthToken' },
+          priority: FastImage.priority.normal,
+         }}
+          />
         {item.online && (
           <View
             style={{
@@ -95,7 +101,7 @@ const UserList = ({ item }: any) => {
           <CustomText 
           fontFam="Inter-SemiBold"
           fontWeight="600"
-          text={item.name} color={colors.white} />
+          text={name} color={colors.white} />
         </View>
       </TouchableOpacity>
     </>

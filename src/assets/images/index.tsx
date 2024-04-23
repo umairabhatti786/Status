@@ -38,8 +38,9 @@ export const images = {
 
 
 
+  lightBackground:require("../images/light-background.png"),
 
-  // heart:require("../icons/heart.png"),
+  background:require("../images/background.png"),
   carback: require("../images/car-back.png"),
   profiledef: require("../images/profiledef.png"),
   defimagese: require("../images/def-image-se.png"),

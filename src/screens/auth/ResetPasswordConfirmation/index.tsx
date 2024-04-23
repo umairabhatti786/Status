@@ -10,6 +10,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ImageBackground,
 } from "react-native";
 import { appStyles } from "../../../utils/AppStyles";
 
@@ -153,8 +154,10 @@ const ResetPasswordConfirmation = ({ route }: props) => {
   return (
     <>
           {loading && <Loader />}
-
-      <SafeAreaView style={appStyles.main}>
+          <ImageBackground 
+    source={images.lightBackground}
+    style={{flex:1}}>
+       <SafeAreaView style={{flex:1}}>
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           style={{ flex: 1 }}
@@ -292,6 +295,8 @@ const ResetPasswordConfirmation = ({ route }: props) => {
           </View>
         </KeyboardAwareScrollView>
       </SafeAreaView>
+      </ImageBackground>
+     
       {showError && (
         <CustomToast
           showError={showError}
