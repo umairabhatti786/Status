@@ -118,15 +118,22 @@ const LostPassword = () => {
   return (
     <>
       {loading && <Loader />}
-      <ImageBackground 
-    source={images.lightBackground}
-    style={appStyles.main}>
-        <KeyboardAwareScrollView
+      <Image
+        source={images.lightBackground}
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: windowWidth,
+          height: windowHeight,
+        }}
+      />
+      <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={{ flex: 1, backgroundColor: "transparent" }}
         // extraScrollHeight={-100}
       >
-        <SafeAreaView style={{flex:1}}>
+        <SafeAreaView style={{ flex: 1 }}>
           <View style={{ flex: 1, padding: scale(20) }}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image source={images.back} />
@@ -216,8 +223,6 @@ const LostPassword = () => {
           </View>
         </SafeAreaView>
       </KeyboardAwareScrollView>
-      </ImageBackground>
-    
 
       {showError && (
         <CustomToast

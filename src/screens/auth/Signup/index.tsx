@@ -114,9 +114,16 @@ const Signup = () => {
   return (
     <>
       {loading && <Loader />}
-      <ImageBackground 
+      <Image 
     source={images.lightBackground}
-    style={{flex:1}}>
+    style={{
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width:windowWidth,
+    height:windowHeight,
+  }}
+    />
        <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={{ flex: 1 }}
@@ -152,7 +159,7 @@ const Signup = () => {
               onChangeText={(txt: string) => {
                 setValues({ ...values, email: txt });
               }}
-              placeholder="Enter your email address"
+              // placeholder="Enter your email address"
             />
             <Spacer height={7} />
             <Input
@@ -161,7 +168,7 @@ const Signup = () => {
               onChangeText={(txt: string) => {
                 setValues({ ...values, confirmEmail: txt });
               }}
-              placeholder="Retype your email address"
+              // placeholder="Retype your email address"
             />
             <Spacer height={7} />
             <Input
@@ -172,17 +179,17 @@ const Signup = () => {
                 setValues({ ...values, password: txt });
               }}
               onShowPassword={() => setShowPAssword(!showPassword)}
-              placeholder="At least 6 characters"
+              // placeholder="At least 6 characters"
               source={showPassword ? images.eyeclose : images.eye}
             />
             <Spacer height={15} />
 
-            <View>
-              <View style={appStyles.row}>
+            <View >
+              <View style={{...appStyles.row,}}>
                 <NewText
                   text={"By tapping Continue, you agree to Status’s"}
                   color={colors.white}
-                  size={13}
+                  size={11}
                   style={{ textAlign: "center" }}
                   fontFam="Poppins-Medium"
                   fontWeight="500"
@@ -193,7 +200,7 @@ const Signup = () => {
                     text={"Terms of"}
                     textDecorationLine={"underline"}
                     color={colors.white}
-                    size={13}
+                    size={11}
                     style={{ textAlign: "center", marginRight: 10 }}
                     fontFam="Poppins-Medium"
                     fontWeight="500"
@@ -206,7 +213,7 @@ const Signup = () => {
                     text={"Use"}
                     textDecorationLine={"underline"}
                     color={colors.white}
-                    size={13}
+                    size={11}
                     //   style={{textAlign:"center",marginRight:10}}
                     fontFam="Poppins-Medium"
                     fontWeight="500"
@@ -216,7 +223,7 @@ const Signup = () => {
                 <NewText
                   text={"and"}
                   color={colors.white}
-                  size={13}
+                  size={11}
                   fontFam="Poppins-Medium"
                   fontWeight="500"
                 />
@@ -227,7 +234,7 @@ const Signup = () => {
                     text={"Privacy Policy."}
                     textDecorationLine={"underline"}
                     color={colors.white}
-                    size={13}
+                    size={11}
                     style={{ marginLeft: 3 }}
                     fontFam="Poppins-Medium"
                     fontWeight="500"
@@ -290,7 +297,6 @@ const Signup = () => {
           </View>
         </SafeAreaView>
       </KeyboardAwareScrollView>
-      </ImageBackground>
      
       {showError && (
         <CustomToast

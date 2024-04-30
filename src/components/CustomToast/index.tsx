@@ -87,7 +87,7 @@ const CustomToast = ({
       <TouchableOpacity activeOpacity={0.6} onPress={() => setShowError(false)}>
         <Image
           style={{ width: scale(30), height: scale(30) }}
-          source={images.closeicon}
+          source={ bgColor==colors.red? images.closeicon:images.successcheck}
           resizeMode="contain"
         />
       </TouchableOpacity>

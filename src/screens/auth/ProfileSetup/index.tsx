@@ -35,6 +35,7 @@ import { UserProfileSetup } from "../../../api/ApiServices";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { URLS } from "../../../api/baseUrl";
 import PredictionList from "./PredictionList";
+import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 
 interface props {
   route: any;
@@ -225,37 +226,21 @@ const ProfileSetup = ({ route }: props) => {
       setIsPredictionList(false);
       setValues({ ...values, lat: location.lat, long: location.lng,location:formatted_address });
 
-
-
-      // setSearch    setValues({ ...values, location: txt });
-
-
-      // setLocationData({
-      //   ...locationData,
-      //   name: name,
-      //   address: formatted_address,
-      //   lat: location.lat,
-      //   long: location.lng,
-      // });
-      // const targetCoordinate = {
-      //   latitude: location?.lat,
-      //   longitude: location?.lng,
-      // };
-
-      // // Animate the map to the target coordinate
-      // mapREf.current?.animateCamera({
-      //   center: targetCoordinate,
-      //   zoom: 0, // Adjust the zoom level as needed
-      //   duration: 1000, // Animation duration in milliseconds
-      // });
     }
   };
   return (
     <>
       {loading && <Loader />}
-      <ImageBackground 
+      <Image 
     source={images.lightBackground}
-    style={appStyles.main}>
+    style={{
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width:windowWidth,
+    height:windowHeight,
+  }}
+    />
          <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={{ flex: 1, backgroundColor: "transparent"}}
@@ -274,6 +259,11 @@ const ProfileSetup = ({ route }: props) => {
               fontFam="Poppins-Medium"
               fontWeight="500"
             />
+            <TouchableOpacity
+            onPress={onOpenGallery}
+            activeOpacity={0.6}
+            >
+
 
             <Image
               style={{
@@ -282,36 +272,23 @@ const ProfileSetup = ({ route }: props) => {
                 borderRadius: scale(5),
                 alignSelf: "center",
                 marginBottom: verticalScale(10),
+                marginTop: verticalScale(17),
+
                 borderWidth: imageFile?.path ? 1 : -0,
                 borderColor: colors.white
               }}
               source={imageFile?.path ? { uri: imageFile?.path } : images.addImage}
               resizeMode="contain"
             />
+                        </TouchableOpacity>
 
-            {/* <TouchableOpacity
-            activeOpacity={0.6}
-            style={{
-              width: scale(72),
-              height: scale(72),
-              borderRadius: scale(5),
-              backgroundColor: colors.grey600,
-              alignSelf: "center",
-              marginVertical: verticalScale(10),
-              alignItems: "center",
-              justifyContent: "center",
-              borderWidth: 1,
-            }}
-          >
-            <TouchableOpacity>
-           
-            </TouchableOpacity>
-          </TouchableOpacity> */}
+
+            
             <TouchableOpacity activeOpacity={0.6} onPress={onOpenGallery}>
               <NewText
                 text={"Upload Profile Photo"}
                 color={colors.white}
-                size={15}
+                size={14}
                 textDecorationLine="underline"
                 style={{ textAlign: "center" }}
                 fontWeight="400"
@@ -321,7 +298,7 @@ const ProfileSetup = ({ route }: props) => {
             <Spacer height={15} />
 
             <Input label="Display Name"
-              placeholder="Enter your name or handle"
+              // placeholder="Enter your name or handle"
               value={values.name}
               onChangeText={(txt: string) => {
                 setValues({ ...values, name: txt });
@@ -333,7 +310,7 @@ const ProfileSetup = ({ route }: props) => {
               <Input
                 label="Your Location"
                 leftSource={images.location}
-                placeholder="Enter where you live for your profile"
+                // placeholder="Enter where you live for your profile"
                 value={values.location}
                 onChangeText={onSearch}
               />
@@ -364,7 +341,7 @@ const ProfileSetup = ({ route }: props) => {
                 <NewText
                   text={"By tapping “Let me In,” you agree to Status’s"}
                   color={colors.white}
-                  size={10}
+                  size={11}
                   style={{ textAlign: "center" }}
                   fontFam="Poppins-Medium"
                 />
@@ -374,7 +351,7 @@ const ProfileSetup = ({ route }: props) => {
                     text={"Terms of"}
                     textDecorationLine={"underline"}
                     color={colors.white}
-                    size={10}
+                    size={11}
                     style={{ textAlign: "center", marginRight: 10 }}
                     fontFam="Poppins-Medium"
                   />
@@ -386,7 +363,7 @@ const ProfileSetup = ({ route }: props) => {
                     text={"Use"}
                     textDecorationLine={"underline"}
                     color={colors.white}
-                    size={10}
+                    size={11}
                     fontFam="Poppins-Medium"
                   />
                 </TouchableOpacity>
@@ -394,7 +371,7 @@ const ProfileSetup = ({ route }: props) => {
                 <NewText
                   text={"and"}
                   color={colors.white}
-                  size={10}
+                  size={11}
                   fontFam="Poppins-Medium"
 
                 />
@@ -405,7 +382,7 @@ const ProfileSetup = ({ route }: props) => {
                     text={"Privacy Policy."}
                     textDecorationLine={"underline"}
                     color={colors.white}
-                    size={10}
+                    size={11}
                     style={{ marginLeft: 3 }}
                     fontFam="Poppins-Medium"
                   />
@@ -416,7 +393,6 @@ const ProfileSetup = ({ route }: props) => {
         </SafeAreaView>
 
       </KeyboardAwareScrollView>
-      </ImageBackground>
 
    
 

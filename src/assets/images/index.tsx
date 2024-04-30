@@ -16,6 +16,8 @@ export const images = {
   cross3x: require("../icons/cross3x.png"),
   crossicon: require("../icons/cross-icon.png"),
   closeicon: require("../icons/close-icon.png"),
+  successcheck: require("../icons/success-check.png"),
+
 
 
 
@@ -108,6 +110,8 @@ export const images = {
   search100: require("../icons/search.png"),
 back100: require("../icons/back100.png"),
 recent: require("../icons/recent.png"),
+profilemessage: require("../icons/profile-message.png"),
+
 back200: require("../icons/back200.png"),
 dot: require("../icons/dot.png"),
 link: require("../icons/link.png"),

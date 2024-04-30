@@ -23,10 +23,14 @@ import CustomText from "../../../components/CustomText";
 import CustomTextInput from "../../../components/CustomTextInput";
 import CheckBox from "../../../components/CheckBox";
 import { scale, verticalScale } from "react-native-size-matters";
-import { windowWidth } from "../../../utils/Dimensions";
+import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import CustomToast from "../../../components/CustomToast";
-import { ForgotPasswordRequest, ResendOtp, VerifyOtp } from "../../../api/ApiServices";
+import {
+  ForgotPasswordRequest,
+  ResendOtp,
+  VerifyOtp,
+} from "../../../api/ApiServices";
 import Loader from "../../../components/Loader";
 import { numericRegex } from "../../../utils/Regex";
 import Button from "../../../components/Button";
@@ -43,10 +47,10 @@ const ConfirmationCode = ({ route }: props) => {
   const [showError, setShowError] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [toastColor, setToastColor] = useState(colors.red)
+  const [toastColor, setToastColor] = useState(colors.red);
 
   const data = route?.params?.data;
-  console.log("datkbhjba", data)
+  console.log("datkbhjba", data);
 
   const OnConfirmCode = () => {
     // console.log("params",data)
@@ -70,16 +74,16 @@ const ConfirmationCode = ({ route }: props) => {
     const data = {
       otp: code,
     };
-    setLoading(true)
+    setLoading(true);
 
     VerifyOtp(data, async ({ isSuccess, response }: any) => {
       if (isSuccess) {
         let result = JSON.parse(response);
-        console.log("resultOtp", result)
+        console.log("resultOtp", result);
         if (result.status) {
           setLoading(false);
           if (result?.errors) {
-            setToastColor(colors.red)
+            setToastColor(colors.red);
 
             setError(result?.message);
             setShowError(true);
@@ -88,16 +92,16 @@ const ConfirmationCode = ({ route }: props) => {
             }, 4000);
           } else {
             setError(result?.msg);
-            setToastColor(colors.green)
+            setToastColor(colors.green);
             setShowError(true);
             setTimeout(() => {
               setShowError(false);
-              navigation.navigate("ProfileSetup", { token: result?.token })
+              navigation.navigate("ProfileSetup", { token: result?.token });
             }, 2000);
           }
         } else {
           setLoading(false);
-          setToastColor(colors.red)
+          setToastColor(colors.red);
 
           setError(result?.msg);
           setShowError(true);
@@ -114,30 +118,28 @@ const ConfirmationCode = ({ route }: props) => {
   };
 
   const onResendOtp = () => {
-
     const paramater = {
       email: data?.email,
     };
-    setLoading(true)
+    setLoading(true);
     ResendOtp(paramater, async ({ isSuccess, response }: any) => {
       if (isSuccess) {
         let result = JSON.parse(response);
-        console.log("resultOtp", result)
+        console.log("resultOtp", result);
         if (result.status) {
           setLoading(false);
-          setToastColor(colors.green)
-
+          setToastColor(colors.green);
           setError("Opt has been sent to your email");
           setShowError(true);
           setTimeout(() => {
             setShowError(false);
-            setToastColor(colors.red)
+            setToastColor(colors.red);
 
             // navigation.navigate("ProfileSetup",)
           }, 2000);
         } else {
           setLoading(false);
-          setToastColor(colors.red)
+          setToastColor(colors.red);
 
           setError(result?.msg);
           setShowError(true);
@@ -151,16 +153,22 @@ const ConfirmationCode = ({ route }: props) => {
         Alert.alert("Alert!", "Network Error.");
       }
     });
-
-  }
+  };
 
   return (
     <>
       {loading && <Loader />}
-      <ImageBackground 
-    source={images.lightBackground}
-    style={{flex:1}}>
-       <SafeAreaView style={{flex:1}}>
+      <Image
+        source={images.lightBackground}
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: windowWidth,
+          height: windowHeight,
+        }}
+      />
+      <SafeAreaView style={{ flex: 1 }}>
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           style={{ flex: 1 }}
@@ -179,9 +187,11 @@ const ConfirmationCode = ({ route }: props) => {
               fontWeight="600"
             />
             <Spacer height={verticalScale(10)} />
-            <View >
+            <View>
               <NewText
-                text={"To confirm your account, enter the 6-digit code we sent to your email."}
+                text={
+                  "To confirm your account, enter the 6-digit code we sent to your email."
+                }
                 color={colors.white}
                 size={16}
                 fontFam="Poppins-Medium"
@@ -208,7 +218,6 @@ const ConfirmationCode = ({ route }: props) => {
               }}
             >
               <View>
-
                 <TextInput
                   maxLength={6}
                   keyboardType="number-pad"
@@ -219,15 +228,9 @@ const ConfirmationCode = ({ route }: props) => {
                     let isValidNumber = numericRegex?.test(txt);
                     if (isValidNumber) {
                       setCode(txt);
-
-
-                    }
-                    else {
+                    } else {
                       setCode("");
-
-
                     }
-
                   }}
                   style={{
                     fontSize: 16,
@@ -235,12 +238,11 @@ const ConfirmationCode = ({ route }: props) => {
                     alignItems: "center",
                     fontFamily: "Poppins-Regular",
                     color: colors.grey400,
-                    textAlignVertical: 'center',
+                    textAlignVertical: "center",
                     paddingTop: 0,
                     paddingBottom: 0,
                     marginTop: verticalScale(5),
                     // backgroundColor:"red"
-
                   }}
                 />
               </View>
@@ -251,9 +253,8 @@ const ConfirmationCode = ({ route }: props) => {
                   height: "100%",
                   alignItems: "flex-end",
                   justifyContent: "center",
-                  width:scale(30),
-                  paddingRight:scale(5)
-                
+                  width: scale(30),
+                  paddingRight: scale(5),
                 }}
                 onPress={() => setCode("")}
               >
@@ -268,7 +269,7 @@ const ConfirmationCode = ({ route }: props) => {
                 />
               </TouchableOpacity>
             </View>
-            <Spacer height={verticalScale(17)} />
+            <Spacer height={verticalScale(30)} />
 
             <Button
               text="Next"
@@ -280,9 +281,26 @@ const ConfirmationCode = ({ route }: props) => {
               textColor={colors.black}
               bgColor={colors.white}
             />
-            <Spacer height={verticalScale(17)} />
+            <Spacer height={verticalScale(15)} />
+            <View style={{ ...appStyles.row, justifyContent: "center" }}>
+              <TouchableOpacity
+                onPress={onResendOtp}
+                style={{ paddingVertical: 4 }}
+                activeOpacity={0.6}
+              >
+                <NewText
+                  text={"Resend the code"}
+                  color={colors.white}
+                  size={14}
+                  textDecorationLine={"underline"}
+                  style={{ textAlign: "center" }}
+                  fontFam="Poppins-Medium"
+                  fontWeight="600"
+                />
+              </TouchableOpacity>
+            </View>
 
-            <Button
+            {/* <Button
               text="I didn’t get the code"
               width={"100%"}
               onPress={onResendOtp}
@@ -294,13 +312,11 @@ const ConfirmationCode = ({ route }: props) => {
               // borderRadius={7}
               textColor={colors.white}
               bgColor={"transparent"}
-            />
+            /> */}
           </View>
         </KeyboardAwareScrollView>
       </SafeAreaView>
-      </ImageBackground>
 
-     
       {showError && (
         <CustomToast
           showError={showError}

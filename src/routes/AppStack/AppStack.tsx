@@ -98,6 +98,7 @@ const AppStack = () => {
           <Stack.Screen name={"ProfileSetup"} component={ProfileSetup} />
           <Stack.Screen name={"LostPassword"} component={LostPassword} />
           <Stack.Screen name={"ResetPassword"} component={ResetPassword} />
+          
           <Stack.Screen
             name={"ConfirmationCode"}
             component={ConfirmationCode}

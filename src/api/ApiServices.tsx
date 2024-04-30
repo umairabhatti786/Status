@@ -237,15 +237,6 @@ export const ChangeUserPassword = async (
   } catch (error) {
     return { isSuccess: false, error: error };
   }
-
-  // fetch(getApiUrl(URLS.signup), requestOptions)
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log("created",data);
-  //   })
-  //   .catch((error) => {
-  //     console.error("createdError",error);
-  //   });
 };
 
 export const ChangeUserEmail = async (
@@ -271,15 +262,6 @@ export const ChangeUserEmail = async (
   } catch (error) {
     return { isSuccess: false, error: error };
   }
-
-  // fetch(getApiUrl(URLS.signup), requestOptions)
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log("created",data);
-  //   })
-  //   .catch((error) => {
-  //     console.error("createdError",error);
-  //   });
 };
 
 
@@ -408,6 +390,40 @@ body:JSON.stringify(data)
   //     console.error("createdError",error);
   //   });
 };
+export const Favorite = async (
+  data:any,
+  token: any,
+  callback: any
+) => {
+  
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' +token,
+},
+body:JSON.stringify(data)
+
+  };
+
+  try {
+    fetch(getApiUrl(URLS.FAVORITE), requestOptions)
+      .then((response) =>response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+
+  // fetch(getApiUrl(URLS.signup), requestOptions)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log("created",data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("createdError",error);
+  //   });
+};
 
 export const Blocked = async (
   data:any,
@@ -477,27 +493,25 @@ body:JSON.stringify(data)
   //     console.error("createdError",error);
   //   });
 };
-export const GetAllUsers = async (
-  data,
+
+export const getUserDetail = async (
+  data:any,
   token: any,
-  callback: any,
+  callback: any
 ) => {
-  // var myHeaders = new Headers();
-  // myHeaders.append("Authorization", "Bearer " + token);
-  // myHeaders.append("Content-Type","application/x-www-form-urlencoded'")
+  
   const requestOptions = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       Authorization: 'Bearer ' +token,
 },
-    body: data
-
+body:JSON.stringify(data)
 
   };
-  console.log("requestOptions",requestOptions)
+
   try {
-    fetch(getApiUrl(URLS.GTE_ALL_USER), requestOptions)
+    fetch(getApiUrl(URLS.GET_USER_DETAIL), requestOptions)
       .then((response) =>response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
@@ -514,6 +528,56 @@ export const GetAllUsers = async (
   //     console.error("createdError",error);
   //   });
 };
+export const GetAllUsers = async (
+  data,
+  token: any,
+  callback: any,
+) => {
+  
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      Authorization: "Bearer "+token,
+      Accept: 'application/json',
+    },
+    data:data,
+  };
+  try {
+    fetch(getApiUrl(URLS.GET_ALL_USER), requestOptions)
+    .then((response) =>response.json())
+    .then((result) => callback({ isSuccess: true, response: result }))
+
+    .catch((error) =>console.log(error));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+
+}
+export const SearchUserName = async (
+  data,
+  token: any,
+  callback: any,
+) => {
+  
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      Authorization: "Bearer "+token,
+      Accept: 'application/json',
+    },
+    body:data,
+  };
+  try {
+    fetch(getApiUrl(URLS.SEARCH_USER_BY_NAME), requestOptions)
+    .then((response) =>response.json())
+    .then((result) => callback({ isSuccess: true, response: result }))
+
+    .catch((error) =>console.log(error));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+
+}
 
 export const ResendOtp = async (data: any, callback: any) => {
   const requestOptions = {

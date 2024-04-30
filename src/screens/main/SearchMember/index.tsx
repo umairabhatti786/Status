@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Image,
   Platform,
@@ -25,24 +26,27 @@ import { scale, verticalScale } from "react-native-size-matters";
 import CustomSearch from "../../../components/CustomSearch";
 import { Spacer } from "../../../components/Spacer";
 import UserList from "../SearchScreen/UserList";
+import { SearchUserName } from "../../../api/ApiServices";
+import { useSelector } from "react-redux";
+import { getToken } from "../../../redux/reducers/authReducer";
+import Loader from "../../../components/Loader";
 
-const SearchMember = () => {
-  const navigation = useNavigation();
+const SearchMember = ({ navigation }) => {
   const [search, setSearch] = useState("");
+
+  const token = useSelector(getToken);
 
   const resentSearch = [{ text: "Lucas" }, { text: "Netflix" }];
 
-  const [memberList, setMemberList] = useState([
+  const [loading, setLoading] = useState(false);
 
-  ]
-  
-  );
+  const [memberList, setMemberList] = useState([]);
+  console.log("token", memberList);
 
-  let userData=  [
+  let userData = [
     // online
     { name: "MIke O’Dea", img: images.defimage9, online: true },
     { name: "Lexi Reegan", img: images.defimage10, online: true },
-  
 
     /// nearby
     {
@@ -63,16 +67,14 @@ const SearchMember = () => {
     { name: "MIke O’Dea", img: images.defimage9, nearby: "10mi" },
     { name: "MIke O’Dea", img: images.defimage10, nearby: "10mi" },
     { name: "Lexi Reegan", img: images.defimage11, nearby: "10mi" },
- 
 
     // new
     { name: "T Smith", img: images.defimage18, new: true, online: true },
     { name: "T Smith", img: images.defimage19, new: true, online: true },
     { name: "Eric Broadway", img: images.defimage20, new: true, online: true },
-   
+
     // popular
 
-   
     {
       name: "Eric Broadway",
       img: images.defimage18,
@@ -88,28 +90,34 @@ const SearchMember = () => {
     { name: "MIke O’Dea", img: images.defimage20, popular: "205k" },
     { name: "Eric Broadway", img: images.defimage21, popular: "205k" },
     { name: "MIke O’Dea", img: images.defimage22, popular: "205k" },
-  
-  ]
-
+  ];
 
   const onSearchMember = (txt: any) => {
+    console.log("ckdbkcdbc",txt)
     setSearch(txt);
-
     if (txt.length == 0) {
-      // dispatch(setEmptyBarnches([]));
-
-      setMemberList([])
-
+      setMemberList([]);
       return;
     } else {
-      console.log("kcndkcnTextLwnghtdxdc", txt);
-      let filterSearch = userData?.filter((item) => {
-        return `${item.name} ${item.popular}`
-          .toLowerCase()
-          .trim()
-          .includes(txt.toLowerCase().trim());
+      let form = new FormData();
+      setLoading(true);
+      form.append("search", txt);
+      SearchUserName(form, token, async ({ isSuccess, response }: any) => {
+        if (isSuccess) {
+          if (response?.status) {
+            setLoading(false);
+
+            setMemberList(response?.result?.data);
+          } else {
+            setLoading(false);
+            Alert.alert("Alert!", "Network Error.");
+          }
+        } else {
+          setLoading(false);
+
+          Alert.alert("Alert!", "Network Error.");
+        }
       });
-      setMemberList(filterSearch);
     }
   };
 
@@ -117,8 +125,17 @@ const SearchMember = () => {
     console.log("ckbdk", index);
 
     return (
-      <UserList item={item} />
-      // <FriendList item={item}/>
+      <UserList
+        name={item.name}
+        image={item.imageUrl}
+        id={item.id}
+        onPress={() =>
+          navigation.navigate("OthersProfile", {
+            id: item?.id,
+          })
+        }
+        item={item}
+      /> // <FriendList item={item}/>
     );
   };
 
@@ -141,14 +158,15 @@ const SearchMember = () => {
           />
           <CustomText color={"transparent"} size={18} text={"sss"} />
         </AbsoluteHeader> */}
-      <View style={{ padding: scale(10),paddingTop:verticalScale(20) }}>
+      <View style={{ padding: scale(10), paddingTop: verticalScale(20) }}>
         <CustomSearch
           value={search}
+          onBack={() => navigation.goBack()}
+          navigation={navigation}
           onChangeText={(txt) => onSearchMember(txt)}
         />
-        {
-          memberList.length==0&&(
-            <View style={{ paddingHorizontal: scale(10) }}>
+        {/* {memberList?.length == 0 && (
+          <View style={{ paddingHorizontal: scale(10) }}>
             <View
               style={{
                 ...appStyles.rowjustify,
@@ -193,10 +211,7 @@ const SearchMember = () => {
               );
             })}
           </View>
-
-          )
-        }
-      
+        )} */}
 
         {/* <FlatList
         // style={{paddingHorizontal:10}}
@@ -210,11 +225,10 @@ const SearchMember = () => {
         /> */}
       </View>
 
-      <View style={{marginTop:verticalScale(10)}}>
+      <View style={{ marginTop: verticalScale(10) }}>
+        {loading && <Loader />}
         <FlatList
-          data={
-           memberList
-          }
+          data={memberList}
           numColumns={3}
           style={{ marginBottom: verticalScale(75) }}
           renderItem={renderUsers}

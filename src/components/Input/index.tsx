@@ -114,8 +114,8 @@ const Input = ({
           flexDirection: "row",
           justifyContent: "space-between",
           paddingHorizontal: 10,
-          paddingTop:6,
-         height: verticalScale(height || 49),
+          paddingVertical:2,
+        //  height: verticalScale(height || 49),
 
           alignItems:"center",
           borderRadius: 10,
@@ -180,6 +180,7 @@ const Input = ({
                 fontSize: 16,
                 width:source?windowWidth / 1.3: windowWidth / 1.2,
                 alignItems:"center",
+                flex:1,
                 // paddingTop:20,
                 fontFamily:"Poppins-Regular",
                 fontWeight: fontWeight,
@@ -204,8 +205,10 @@ const Input = ({
             activeOpacity={0.6}
             disabled={!onShowPassword}
             style={{ justifyContent: "center", alignItems: "center",   width: 30,
+            paddingVertical:5,
 
-            height: verticalScale(height || 49)  , }}
+            // height: verticalScale(height || 49)  ,
+           }}
           >
             <Image
               source={source}

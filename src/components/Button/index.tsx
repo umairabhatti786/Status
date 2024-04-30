@@ -55,7 +55,7 @@ const Button = ({
       style={{
         ...style,
         width: width,
-        height: verticalScale(height||46),
+        height:height || 46,
         backgroundColor: bgColor || colors.primary,
         justifyContent: "center",
         alignItems: "center",

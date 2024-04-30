@@ -40,7 +40,7 @@ const PredictionList = ({ data, onPress, Addresses,onAddressPress }: Props) => {
                 onPress={()=>onAddressPress(i)}
                 style={{ ...appStyles.row, padding: 15 }}>
                   <Image
-                    style={{ width: 15, height: 15 }}
+                    style={{ width: 15, height: 15,marginBottom:3 }}
                     resizeMode="contain"
                     source={images.location}
                   />

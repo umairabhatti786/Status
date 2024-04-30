@@ -36,7 +36,7 @@ const JoinScreen = () => {
         <Spacer height={windowHeight/4} />
 
         <Button
-          text="I’M NEW HERE!"
+          text="CREATE ACCOUNT"
           width={"100%"}
           onPress={() => navigation.navigate("Signup")}
 

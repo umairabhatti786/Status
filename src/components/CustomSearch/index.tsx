@@ -33,8 +33,9 @@ const CustomSearch = ({
   isLoading,
   onChangeText,
   value,
+  navigation
 }: any) => {
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   return (
     <View style={appStyles.rowjustify}>
       <TouchableOpacity

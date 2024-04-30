@@ -225,7 +225,7 @@ const Settings = ({ navigation }) => {
               fontFam="Poppins-Medium"
               color={colors.white}
               size={17}
-              text={"Donate to Status "}
+              text={"Join Our Community"}
             />
           </View>
           <View

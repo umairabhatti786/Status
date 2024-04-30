@@ -4,24 +4,39 @@ import { windowWidth } from '../HomeScreen/FriendList'
 import { colors } from '../../../utils/colors'
 import { images } from '../../../assets/images'
 import { verticalScale } from 'react-native-size-matters'
+import FastImage from 'react-native-fast-image'
 
-const GifContainer = ({item}) => {
+const GifContainer = ({item,onPress,selectedGif}:any) => {
     const [isSelectGif,setSelectGif]=useState(false)
+    const [loading, setLoading] = useState(true);
+    let findIndex = selectedGif.findIndex((it) => it === item);
+
+     // Replace yourTargetItem with the item you want to find
+
+
   return (
     <TouchableOpacity
     activeOpacity={0.6}
-    onPress={() => setSelectGif(!isSelectGif)}
+    onPress={onPress}
     style={{
       width: "33%",
       height: verticalScale(130),
       margin: 3,
     }}>
-    <Image
+    <FastImage
       style={{ width: "100%", height: "100%" }}
-      source={item.gif}
-    />
+      source={{ uri: item?.images?.original?.url ,
+        headers: { Authorization: 'AuthToken' },
+        priority: FastImage.priority.normal,
+    
+      }}
+      resizeMode="cover"
+      
+
+      
+      />
     {
-        isSelectGif&&(
+        findIndex!=-1&&(
             <View
             style={{
               width: 25,

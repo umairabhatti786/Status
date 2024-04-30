@@ -1,4 +1,5 @@
 export const URLS = {
+  GIFY_API_KEY:"VKeEVWormURuEiqpoD5DTT8IpSS68x4n",
   GOOGLE_MAP_KEY:"AIzaSyBy4aAbZ3L4UtBUWIpmyoO7M-jdom-HCBU",
   GOOGLE_PLACES_API_BASE_URL:"https://maps.googleapis.com/maps/api/place",
   BASE_URL: "https://giantcorp.us/api/",
@@ -13,11 +14,14 @@ export const URLS = {
  CHANGE_USER_PASSWORD:"changeUserPassword",
 DELETE_ACCOOUNT: "deleteUser",
 CHANGE_USER_EMAIL:"changeUserEmail" ,
-GTE_ALL_USER:"getUsers",
+GET_ALL_USER:"searchUserWithFilter",
 FOLLOW:"follow",
+FAVORITE:"favorite",
 ISFOLLOWING:"isFollowing",
 BLOCKED:"blockUser",
 GET_BLOCKED_USER:"getBlockedUsers",
-GET_AUTH:"getAuth"
+GET_AUTH:"getAuth",
+GET_USER_DETAIL:"getUserDetail",
+SEARCH_USER_BY_NAME:"searchUserByName"
 
 };

@@ -13,12 +13,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState, version,useEffect } from "react";
+import React, { useState, version, useEffect } from "react";
 import { appStyles } from "../../../utils/AppStyles";
 import CustomText from "../../../components/CustomText";
 import { colors } from "../../../utils/colors";
 import { images } from "../../../assets/images";
-import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import CustomButton from "../../../components/CustomButton";
 import MessagesComponent from "../../../components/MessageComponent";
@@ -38,25 +42,22 @@ import Loader from "../../../components/Loader";
 const ProfileScreen = () => {
   const navigation: any = useNavigation();
   const [isSideBar, setIsBar] = useState(false);
-  const [isFollow,setIsFollow]=useState(false)
-  const [isActiveProfile,setIsActiveProfile]=useState(0)
-  const focused=useIsFocused()
+  const [isFollow, setIsFollow] = useState(false);
+  const [isActiveProfile, setIsActiveProfile] = useState(0);
+  const focused = useIsFocused();
 
-  const [loading, setLoading] = useState(false)
-  const [userData, setUserData] = useState()
-  const token = useSelector(getToken)
+  const [loading, setLoading] = useState(false);
+  const [userData, setUserData] = useState();
+  const token = useSelector(getToken);
 
   useEffect(() => {
+    getAuth();
+  }, [focused]);
 
-    getAuth()
-
-  }, [focused])
-
-  console.log("userDatauserData",userData?.imageUrl)
-
+  console.log("userDatauserData", userData?.imageUrl);
 
   const getAuth = () => {
-    setLoading(true)
+    setLoading(true);
     GetAuthUser(token, async ({ isSuccess, response }: any) => {
       if (isSuccess) {
         let result = JSON.parse(response);
@@ -64,16 +65,12 @@ const ProfileScreen = () => {
 
         if (result.status) {
           setLoading(false);
-          setUserData(result?.user)
+          setUserData(result?.user);
           // setNextPageUrl(!result?.users?.next_page_url?true:false)
-
-
         } else {
           setLoading(false);
 
           // Alert.alert("Alert!", "Something wrong");
-
-
         }
       } else {
         setLoading(false);
@@ -81,9 +78,7 @@ const ProfileScreen = () => {
         Alert.alert("Alert!", "Network Error.");
       }
     });
-  }
-  
-
+  };
 
   const renderChatList = ({ item }: any) => {
     return (
@@ -100,239 +95,222 @@ const ProfileScreen = () => {
   };
   return (
     <>
-              {loading ? (
-                <View style={appStyles.main}>
-                  <Loader />
+      {loading ? (
+        <View style={appStyles.main}>
+          <Loader />
+        </View>
+      ) : (
+        <SafeAreaView style={appStyles.main}>
+          <StatusBar backgroundColor="#000" barStyle="light-content" />
 
-                </View>
-              ):(
+          <View style={appStyles.rowjustify}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: scale(20),
+                paddingVertical: verticalScale(5),
+              }}
+            >
+              <FastImage
+                style={{
+                  width: scale(37),
+                  height: scale(37),
+                  borderRadius: 999,
+                }}
+                source={{
+                  uri: userData?.imageUrl,
+                  headers: { Authorization: "someAuthToken" },
+                  priority: FastImage.priority.normal,
+                }}
+              />
+              <View
+                style={{
+                  marginHorizontal: scale(7),
+                  paddingBottom: verticalScale(5),
+                  width: windowWidth / 2.5,
+                }}
+              >
+                <NewText
+                  color={colors.white}
+                  size={18}
+                  numberOfLines={1}
+                  style={{ marginTop: verticalScale(5) }}
+                  text={userData?.name}
+                />
+                <NewText
+                  // fontWeight="700"
+                  color={colors.white}
+                  size={14}
+                  style={{ marginTop: verticalScale(-3) }}
+                  text={`${userData?.followers_count} Followers`}
+                />
+              </View>
+            </View>
+            <View style={{ ...appStyles.row, paddingRight: scale(20) }}>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() =>
+                  navigation.navigate("EditProfile", { data: userData })
+                }
+              >
+                <NewText
+                  color={colors.white}
+                  size={16}
+                  fontFam="Poppins-SemiBold"
+                  fontWeight="700"
+                  textDecorationLine={"underline"}
+                  // style={{marginTop:verticalScale(5)}}
+                  text={"Edit Profile"}
+                />
+              </TouchableOpacity>
+            </View>
 
-<SafeAreaView style={appStyles.main}>
-<StatusBar backgroundColor="#000" barStyle="light-content" />
+            {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
+          </View>
 
-
-    <View style={appStyles.rowjustify}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          paddingHorizontal: scale(20),
-          paddingVertical: verticalScale(5),
-        }}
-      >
-       
-
-       <FastImage
-        style={{
-          width: scale(37),
-          height: scale(37),
-          borderRadius: 999,
-        }}
-        source={{
-          uri: userData?.imageUrl,
-          headers: { Authorization: 'someAuthToken' },
-          priority: FastImage.priority.normal,
-        }}
-      />
-      <View
-        style={{
-          marginHorizontal: scale(7),
-          paddingBottom: verticalScale(5),
-          width: windowWidth / 2.5
-        }}
-      >
-        <NewText
-          color={colors.white}
-          size={18}
-          numberOfLines={1}
-          style={{ marginTop: verticalScale(5) }}
-          text={userData?.name}
-        />
-        <NewText
-          // fontWeight="700"
-          color={colors.white}
-          size={14}
-          style={{ marginTop: verticalScale(-3) }}
-          text={`${userData?.followers_count} Followers`}
-        />
-      </View>
-      </View>
-      <View style={{ ...appStyles.row, paddingRight: scale(20) }}>
-      <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={()=>navigation.navigate("EditProfile",{data:userData})}
+          <View
+            style={{
+              ...appStyles.rowjustify,
+              paddingHorizontal: scale(10),
+              marginBottom: verticalScale(5),
+            }}
           >
-             <NewText
-            color={colors.white}
-            size={16}
-            fontFam="Poppins-SemiBold"
-            fontWeight="700"
-            textDecorationLine={"underline"}
-            // style={{marginTop:verticalScale(5)}}
-            text={"Edit Profile"}
-          />
+            {["Profile", "Channel"].map((item, index) => {
+              return (
+                <CustomButton
+                  width={"48.5%"}
+                  onPress={() => setIsActiveProfile(index)}
+                  text={item}
+                  textColor={
+                    isActiveProfile == index ? colors.black : colors.white
+                  }
+                  height={35}
+                  bgColor={
+                    isActiveProfile == index ? colors.grey400 : colors.primary
+                  }
+                  borderRadius={8}
+                />
+              );
+            })}
 
-          </TouchableOpacity>
-
-      
-      </View>
-
-      {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
-    </View>
-    
-    <View
-      style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10),marginBottom:verticalScale(5) }}
-    >
-      {
-        ["Profile","Channel"].map((item,index)=>{
-          return(
-            <CustomButton
-            width={"48.5%"}
-            onPress={()=>setIsActiveProfile(index)}
-            
-            text={item}
-            textColor={ isActiveProfile==index?  colors.black:colors.white}
-            height={35}
-            bgColor={ isActiveProfile==index?  colors.grey400:colors.primary}
-            borderRadius={8}
-          />
-
-          )
-        })
-      }
-  
-      {/* <CustomButton
+            {/* <CustomButton
         width={"48.5%"}
         borderRadius={8}
         text="Channel"
         height={35}
       /> */}
-    </View>
-    {isActiveProfile==0?(
-    <ScrollView 
-  showsVerticalScrollIndicator={false}
-  >
-   
-         <View>
-     
-         <View
-                style={{
-                  ...appStyles.row,
-                  paddingBottom: verticalScale(5),
-                  paddingHorizontal: scale(20),
-                }}
-              >
-                <View style={{ ...appStyles.row, width: "46%" }}>
-                  <Image
-                    style={{
-                      width: scale(16),
-                      height: scale(16),
-                    }}
-                    source={images.locationicon}
-                  />
-                  <CustomText
-                    color={colors.grey300}
-                    size={15}
-                    numberOfLines={1}
-                    fontFam="Inter-Medium"
-                    style={{ marginLeft: scale(8) }}
-                    text={userData?.location}
-                  />
-                </View>
-                <Spacer width={scale(22)} />
-
-                <View style={{...appStyles.row,width: "48%",}}>
-                  <Image
-                    style={{
-                      width: scale(20),
-                      height: scale(20),
-                    }}
-                    source={images.bagicon}
-                  />
-                  <CustomText
-                    color={colors.grey300}
-                    size={15}
-                    numberOfLines={1}
-                    fontFam="Inter-Medium"
-                    style={{ marginLeft: scale(8), marginRight:scale(10)}}
-                    text={userData?.occupation}
-                  />
-                </View>
-              </View>
-         <FastImage
-           style={{
-             width: "94%",
-             height: verticalScale(350),
-             alignSelf: "center",
-           }}
-           resizeMode="cover"
-           source={{
-            uri: userData?.imageUrl,
-            headers: { Authorization: 'someAuthToken' },
-            priority: FastImage.priority.normal,
-          }}               />
-         <View style={{ paddingHorizontal: scale(10) }}>
-         
-           <View
-             style={{
-               backgroundColor: colors.primary,
-               borderBottomRightRadius: scale(5),
-               borderBottomLeftRadius: scale(5),
-               paddingLeft: scale(10),
-               paddingVertical: verticalScale(10),
-             }}
-           >
-            
-            {
-              userData?.bio&&(
-                <NewText
-                color={colors.white}
-                lineHeight={20}
-                size={15}
-                text={
-                 userData?.bio
-                }
-              />
-
-              )
-            }
-
-            {
-              userData?.link&&(
-
-                <TouchableOpacity 
-                activeOpacity={0.6}
-                onPress={()=>{
-                  Linking.openURL(userData?.link)
-
-
-                }}
-                style={{ ...appStyles.row, marginTop: verticalScale(3) }}>
-                <Image
+          </View>
+          {isActiveProfile == 0 ? (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View>
+                <View
                   style={{
-                    width: scale(18),
-                    height: scale(18),
+                    ...appStyles.row,
+                    paddingBottom: verticalScale(5),
+                    paddingHorizontal: scale(20),
                   }}
-                  resizeMode="contain"
-                  source={images.link}
-                />
-                <NewText
-                  color={colors.grey300}
-                  size={14}
-                  fontFam="Inter-Medium"
-                  style={{ marginLeft: scale(8) }}
-                  text={userData?.link}
-                />
-              </TouchableOpacity>
+                >
+                  <View style={{ ...appStyles.row, width: "46%" }}>
+                    <Image
+                      style={{
+                        width: scale(16),
+                        height: scale(16),
+                      }}
+                      source={images.locationicon}
+                    />
+                    <CustomText
+                      color={colors.grey300}
+                      size={15}
+                      numberOfLines={1}
+                      fontFam="Inter-Medium"
+                      style={{ marginLeft: scale(8) }}
+                      text={userData?.location}
+                    />
+                  </View>
+                  <Spacer width={scale(22)} />
 
-              )
-            }
-            
-            
-            
-           </View>
+                  <View style={{ ...appStyles.row, width: "48%" }}>
+                    <Image
+                      style={{
+                        width: scale(20),
+                        height: scale(20),
+                      }}
+                      source={images.bagicon}
+                    />
+                    <CustomText
+                      color={colors.grey300}
+                      size={15}
+                      numberOfLines={1}
+                      fontFam="Inter-Medium"
+                      style={{ marginLeft: scale(8), marginRight: scale(10) }}
+                      text={userData?.occupation}
+                    />
+                  </View>
+                </View>
+                <FastImage
+                  style={{
+                    width: "94%",
+                    height: verticalScale(350),
+                    alignSelf: "center",
+                  }}
+                  resizeMode="cover"
+                  source={{
+                    uri: userData?.imageUrl,
+                    headers: { Authorization: "someAuthToken" },
+                    priority: FastImage.priority.normal,
+                  }}
+                />
+                <View style={{ paddingHorizontal: scale(10) }}>
+                  <View
+                    style={{
+                      backgroundColor: colors.primary,
+                      borderBottomRightRadius: scale(5),
+                      borderBottomLeftRadius: scale(5),
+                      paddingLeft: scale(10),
+                      paddingVertical: verticalScale(10),
+                    }}
+                  >
+                    {userData?.bio && (
+                      <NewText
+                        color={colors.white}
+                        lineHeight={20}
+                        size={15}
+                        text={userData?.bio}
+                      />
+                    )}
 
-           {/* <View
+                    {userData?.link && (
+                      <TouchableOpacity
+                        activeOpacity={0.6}
+                        onPress={() => {
+                          Linking.openURL(userData?.link);
+                        }}
+                        style={{
+                          ...appStyles.row,
+                          marginTop: verticalScale(3),
+                        }}
+                      >
+                        <Image
+                          style={{
+                            width: scale(18),
+                            height: scale(18),
+                          }}
+                          resizeMode="contain"
+                          source={images.link}
+                        />
+                        <NewText
+                          color={colors.grey300}
+                          size={14}
+                          fontFam="Inter-Medium"
+                          style={{ marginLeft: scale(8) }}
+                          text={userData?.link}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+
+                  {/* <View
              style={{
                ...appStyles.rowjustify,
                marginVertical: verticalScale(10),
@@ -356,72 +334,61 @@ const ProfileScreen = () => {
              />
            </View> */}
 
-           
-           <View
-             style={{
-               flexDirection: "row",
-               justifyContent: "space-between",
-               alignItems: "center",
-               paddingHorizontal: 20,
-               borderWidth: 1,
-               borderColor: colors.gray200,
-               // paddingVertical:verticalScale(5),
-               borderRadius: 10,
-               marginVertical: verticalScale(10),
-             }}
-           >
-             <TextInput
-               style={{
-                 color: colors.gray200,
-                 width:"90%",
-                 fontSize: verticalScale(15),
-               }}
-               placeholderTextColor={colors.gray200}
-               placeholder="Write on my wall"
-             />
-             <Image
-               style={{ tintColor: colors.gray200 }}
-               source={images.send}
-             />
-           </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingHorizontal: 20,
+                      borderWidth: 1,
+                      borderColor: colors.gray200,
+                      // paddingVertical:verticalScale(5),
+                      borderRadius: 10,
+                      marginVertical: verticalScale(10),
+                    }}
+                  >
+                    <TextInput
+                      style={{
+                        color: colors.gray200,
+                        width: "90%",
+                        fontSize: verticalScale(15),
+                      }}
+                      placeholderTextColor={colors.gray200}
+                      placeholder="Write on my wall"
+                    />
+                    <Image
+                      style={{ tintColor: colors.gray200 }}
+                      source={images.send}
+                    />
+                  </View>
 
-           {/* <FlatList
+                  {/* <FlatList
              data={profileComments}
              contentContainerStyle={{
                gap: 7,
              }}
              renderItem={renderChatList}
            /> */}
-         </View>
-         </View>
-        
-      
- 
-
-  </ScrollView>
-    ):(
-        <>
-<View style={{width:"100%",height:windowHeight,paddingTop:verticalScale(10)}}>
-<Channel
-userData={userData}
-/>
-
-
-</View>
-</>
-         
+                </View>
+              </View>
+            </ScrollView>
+          ) : (
+            <>
+              <View
+                style={{
+                  width: "100%",
+                  height: windowHeight,
+                  paddingTop: verticalScale(10),
+                }}
+              >
+                <Channel userData={userData} />
+              </View>
+            </>
+          )}
+        </SafeAreaView>
       )}
-</SafeAreaView>
 
-              )}
-
-    
-
-    
-   
-   
-       
-{/* 
+      {/* 
       <CustomModal
           isModalVisible={isBlockModal}
           setModalVisible={setIsBlockModal}

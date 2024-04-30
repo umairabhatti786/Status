@@ -160,9 +160,16 @@ const Login = () => {
   return (
     <>
       {loading && <Loader />}
-      <ImageBackground 
+      <Image 
     source={images.lightBackground}
-    style={appStyles.main}>
+    style={{
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width:windowWidth,
+    height:windowHeight,
+  }}
+    />
         <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={{ flex: 1, backgroundColor: "transparent"}}
@@ -199,7 +206,7 @@ const Login = () => {
               onChangeText={(txt: string) => {
                 setValues({ ...values, email: txt });
               }}
-              placeholder="Enter your login email address"
+              // placeholder="Enter your login email address"
             />
 
             {/* <CustomTextInput
@@ -209,7 +216,7 @@ const Login = () => {
             <Spacer height={7} />
             <Input
               label="Password"
-              placeholder="At least 6 characters"
+              // placeholder="At least 6 characters"
               isPassword={showPassword}
               value={values.password}
               onChangeText={(txt: string) => {
@@ -299,7 +306,6 @@ const Login = () => {
           </View>
         </SafeAreaView>
       </KeyboardAwareScrollView>
-      </ImageBackground>
 
     
 

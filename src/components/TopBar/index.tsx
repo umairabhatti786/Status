@@ -7,7 +7,7 @@ import { verticalScale } from "react-native-size-matters";
 import { windowWidth } from "../../utils/Dimensions";
 import NewText from "../NewText";
 
-const TopBar = ({ activeBar, setActiveBar, topBarData }: any) => {
+const TopBar = ({ activeBar, setActiveBar, topBarData,setActiveFilter }: any) => {
   return (
     <View>
       <View
@@ -17,18 +17,24 @@ const TopBar = ({ activeBar, setActiveBar, topBarData }: any) => {
           justifyContent: "center",
         }}
       >
-        {topBarData.map((item, index) => {
+        {topBarData?.map((item, index) => {
           return (
             <View style={{ alignItems: "center",}}>
               <TouchableOpacity
                 activeOpacity={0.6}
                 style={{width:windowWidth/2,alignItems:"center"}}
 
-                onPress={() => setActiveBar(item)}
+                onPress={() => {
+                  setActiveFilter?.(item)
+                  setActiveBar(item)
+
+                }}
               >
                 <NewText
                   color={ colors.white}
                   text={item}
+                  style={{textTransform:"capitalize" }}
+                  
                   size={18}
                   fontWeight={"500"}
                   fontFam="Poppins-Regular"

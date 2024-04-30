@@ -29,6 +29,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../../redux/reducers/authReducer";
+import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 interface props {
   route: any;
 }
@@ -156,9 +157,16 @@ const ResetPassword = ({ route }: props) => {
   return (
     <>
       {loading && <Loader />}
-      <ImageBackground 
+      <Image 
     source={images.lightBackground}
-    style={{flex:1}}>
+    style={{
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width:windowWidth,
+    height:windowHeight,
+  }}
+    />
         <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={{ flex: 1,}}
@@ -235,7 +243,6 @@ const ResetPassword = ({ route }: props) => {
           </View>
         </SafeAreaView>
       </KeyboardAwareScrollView>
-      </ImageBackground>
     
 
       {showError && (

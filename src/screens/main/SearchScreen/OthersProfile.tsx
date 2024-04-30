@@ -3,6 +3,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Linking,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -29,60 +30,85 @@ import BlockModal from "./BlockModal";
 import Channel from "../Channel";
 import FastImage from "react-native-fast-image";
 import NewText from "../../../components/NewText";
-import { Blocked, Follow, isFollowing } from "../../../api/ApiServices";
+import {
+  Blocked,
+  Favorite,
+  Follow,
+  getUserDetail,
+  isFollowing,
+} from "../../../api/ApiServices";
 import { useSelector } from "react-redux";
 import { getToken } from "../../../redux/reducers/authReducer";
+import Loader from "../../../components/Loader";
 
 const OthersProfile = () => {
   const route: any = useRoute();
-  const data = route?.params?.item;
+  const id = route?.params?.id;
   const navigation: any = useNavigation();
   const [isWatchList, setIsWatchList] = useState(false);
   const [isSideBar, setIsBar] = useState(false);
-  const [isFollow, setIsFollow] = useState(false)
-  const [isBlockModal, setIsBlockModal] = useState(false)
-  const [isReportModal, setIsReportModal] = useState(false)
-  const [isActiveProfile, setIsActiveProfile] = useState(0)
-  const token = useSelector(getToken)
+  const [isFollow, setIsFollow] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
-  const [isUnfollowModal, setIsUnfollowModal] = useState(false)
+  const [isBlockModal, setIsBlockModal] = useState(false);
+  const [isReportModal, setIsReportModal] = useState(false);
+  const [isActiveProfile, setIsActiveProfile] = useState(0);
+  const token = useSelector(getToken);
+  const [data, setData] = useState({});
+
+  const [loading, setLoading] = useState(false);
+
+  const [isUnfollowModal, setIsUnfollowModal] = useState(false);
 
   useEffect(() => {
+    getDetail();
+  }, []);
+  console.log("UserID",id)
+
+  const getDetail = () => {
+    setLoading(true);
     let params = {
-      followee: data.id
-    }
-
-    isFollowing(params, token, async ({ isSuccess, response }: any) => {
-      if (isSuccess) {
+      id: id,
+    };
+    getUserDetail(params, token, async ({ isSuccess, response }: any) => {
+      console.log("knckdnc",isSuccess)
+ 
         let result = JSON.parse(response);
-
         if (result.status) {
-          if (result?.isFollowing) {
-            setIsFollow(true)
+          console.log("Resuldcjdbvc", result);
+          setData(result?.user);
+          if (result?.user?.followers.length > 0) {
+            setIsFollow(true);
           }
-          else {
-            setIsFollow(false)
+          if (result?.user?.favoritee.length > 0) {
+            setIsFavorite(true);
           }
-        } else {
-          // Alert.alert("Alert!", "Something went wrong");
+          setLoading(false);
+
+          //   if (result?.) {
+          //     setIsFollow(true)
+          //   }
+          //   else {
+          //     setIsFollow(false)
+          //   }
+          // } else {
+          //   // Alert.alert("Alert!", "Something went wrong");
+        }
+        else {
+             Alert.alert("Alert!", "Something went wrong");
 
 
         }
-      } else {
-        // setLoading(false);
-
-        // Alert.alert("Alert!", "Network Error.");
-      }
+      
+      
     });
-
-  }, [])
-
+  };
 
   const onFollow = () => {
-    setIsFollow(!isFollow)
+    setIsFollow(!isFollow);
     let params = {
-      followee: data.id
-    }
+      followee: id,
+    };
 
     Follow(params, token, async ({ isSuccess, response }: any) => {
       if (isSuccess) {
@@ -93,12 +119,8 @@ const OthersProfile = () => {
           // setLoading(false);
           // setAllUsers(result?.users?.data)
           // setNextPageUrl(!result?.users?.next_page_url?true:false)
-
-
         } else {
           Alert.alert("Alert!", "Something went wrong");
-
-
         }
       } else {
         // setLoading(false);
@@ -106,7 +128,32 @@ const OthersProfile = () => {
         Alert.alert("Alert!", "Network Error.");
       }
     });
-  }
+  };
+  const onFavorite = () => {
+    setIsFavorite(!isFavorite);
+    let params = {
+      favorite: id.toString(),
+    };
+
+    Favorite(params, token, async ({ isSuccess, response }: any) => {
+      if (isSuccess) {
+        let result = JSON.parse(response);
+        console.log("Favorite", result);
+
+        if (result.status) {
+          // setLoading(false);
+          // setAllUsers(result?.users?.data)
+          // setNextPageUrl(!result?.users?.next_page_url?true:false)
+        } else {
+          Alert.alert("Alert!", "Something went wrong");
+        }
+      } else {
+        // setLoading(false);
+
+        Alert.alert("Alert!", "Network Error.");
+      }
+    });
+  };
 
   const renderChatList = ({ item }: any) => {
     return (
@@ -122,31 +169,25 @@ const OthersProfile = () => {
     );
   };
 
-
-  const onBlocked=()=>{
+  const onBlocked = () => {
     // setIsFollow(!isFollow)
     let params = {
-      blocked:   data.id.toString()
-    }
+      blocked: data.id.toString(),
+    };
     console.log("BlokcedResult", params);
-
 
     Blocked(params, token, async ({ isSuccess, response }: any) => {
       if (isSuccess) {
         let result = JSON.parse(response);
 
         if (result.status) {
-          setIsBlockModal(false)
-          navigation.goBack()
+          setIsBlockModal(false);
+          navigation.goBack();
           // setLoading(false);
           // setAllUsers(result?.users?.data)
           // setNextPageUrl(!result?.users?.next_page_url?true:false)
-
-
         } else {
           Alert.alert("Alert!", "Something went wrong");
-
-
         }
       } else {
         // setLoading(false);
@@ -154,438 +195,409 @@ const OthersProfile = () => {
         Alert.alert("Alert!", "Network Error.");
       }
     });
-
-
-  }
+  };
   return (
     <>
       <SafeAreaView style={appStyles.main}>
-        <View style={appStyles.rowjustify}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingHorizontal: scale(20),
-              paddingVertical: verticalScale(5),
-            }}
-          >
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={{
-                width: scale(30),
-                height: scale(35),
-                alignItems: "flex-start",
-                justifyContent: "center",
-              }}
-              onPress={() => navigation.goBack()}
-            >
-              <Image
-                style={{ width: scale(18), height: scale(25) }}
-                source={images.back200}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-
-            <FastImage
-              style={{
-                width: scale(37),
-                height: scale(37),
-                borderRadius: 999,
-              }}
-              source={{
-                uri: data?.imageUrl,
-                headers: { Authorization: 'someAuthToken' },
-                priority: FastImage.priority.normal,
-              }}
-            />
-            <View
-              style={{
-                marginHorizontal: scale(7),
-                paddingBottom: verticalScale(5),
-                width: windowWidth / 2.5
-              }}
-            >
-              <NewText
-                color={colors.white}
-                size={18}
-                numberOfLines={1}
-                style={{ marginTop: verticalScale(5) }}
-                text={data.name}
-              />
-              <NewText
-                // fontWeight="700"
-                color={colors.white}
-                size={14}
-                style={{ marginTop: verticalScale(-3) }}
-                text={`${data?.followers_count} Followers`}
-              />
-            </View>
-          </View>
-          <View style={{ ...appStyles.row, paddingRight: scale(10) }}>
-            {isFollow ? (
-              <View style={appStyles.row}>
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <View style={appStyles.rowjustify}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingHorizontal: scale(20),
+                  paddingVertical: verticalScale(5),
+                }}
+              >
                 <TouchableOpacity
-                  activeOpacity={0.6}
-                  onPress={() => setIsWatchList(!isWatchList)}
+                  activeOpacity={0.8}
+                  style={{
+                    width: scale(30),
+                    height: scale(35),
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                  }}
+                  onPress={() => navigation.goBack()}
                 >
                   <Image
-                    style={{
-                      width: scale(20),
-                      height: scale(20),
-                      tintColor: colors.white,
-                    }}
-                    source={isWatchList ? images.star1 : images.star}
+                    style={{ width: scale(18), height: scale(25) }}
+                    source={images.back200}
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
-                <Spacer width={scale(10)} />
+
+                <FastImage
+                  style={{
+                    width: scale(37),
+                    height: scale(37),
+                    borderRadius: 999,
+                  }}
+                  source={{
+                    uri: data?.imageUrl,
+                    headers: { Authorization: "someAuthToken" },
+                    priority: FastImage.priority.normal,
+                  }}
+                />
+                <View
+                  style={{
+                    marginHorizontal: scale(7),
+                    paddingBottom: verticalScale(5),
+                    width: windowWidth / 2.5,
+                  }}
+                >
+                  <NewText
+                    color={colors.white}
+                    size={18}
+                    numberOfLines={1}
+                    style={{ marginTop: verticalScale(5) }}
+                    text={data?.name}
+                  />
+                  <NewText
+                    // fontWeight="700"
+                    color={colors.white}
+                    size={14}
+                    style={{ marginTop: verticalScale(-3) }}
+                    text={`${data?.followers_count} Followers`}
+                  />
+                </View>
+              </View>
+              <View style={{ ...appStyles.row, paddingRight: scale(10) }}>
+                {isFollow ? (
+                  <></>
+                ) : (
+                  <TouchableOpacity activeOpacity={0.6} onPress={onFollow}>
+                    <NewText
+                      color={colors.white}
+                      size={16}
+                      fontFam="Poppins-SemiBold"
+                      fontWeight="700"
+                      textDecorationLine={"underline"}
+                      // style={{marginTop:verticalScale(5)}}
+                      text={"Follow"}
+                    />
+                  </TouchableOpacity>
+                )}
+
                 <TouchableOpacity
-                  activeOpacity={1}
-                // onPress={() => navigation.goBack()}
+                  activeOpacity={0.6}
+                  style={{
+                    width: scale(30),
+                    height: scale(35),
+                    alignItems: "flex-end",
+                    justifyContent: "center",
+                  }}
+                  onPress={() => setIsBar(!isSideBar)}
                 >
                   <Image
                     style={{
-                      width: scale(25),
+                      width: scale(30),
                       height: scale(25),
                       tintColor: colors.white,
+                      marginLeft: scale(-3),
                     }}
-                    source={images.messageicon}
+                    source={images.dot}
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
               </View>
-            ) : (
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={onFollow}
-              >
-                <NewText
-                  color={colors.white}
-                  size={16}
-                  fontFam="Poppins-SemiBold"
-                  fontWeight="700"
-                  textDecorationLine={"underline"}
-                  // style={{marginTop:verticalScale(5)}}
-                  text={"Follow"}
-                />
 
-              </TouchableOpacity>
+              {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
+            </View>
 
-            )}
-
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={() => setIsBar(!isSideBar)}
-            >
-              <Image
-                style={{
-                  width: scale(30),
-                  height: scale(25),
-                  tintColor: colors.white,
-                  marginLeft: scale(-3),
-                }}
-                source={images.dot}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </View>
-
-          {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
-        </View>
-        {/* <ImageBackground
-          style={{ width: windowWidth, height: windowHeight / 6.5 }}
-          source={images.plane}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginTop: 15,
-              marginHorizontal: 20,
-            }}
-          >
             <View
               style={{
-                width: windowWidth / 4.5,
-                height: windowHeight / 10,
-                borderRadius: 10,
-                marginBottom: 3,
-                marginHorizontal: 1.5,
-                overflow: "hidden",
+                ...appStyles.rowjustify,
+                paddingHorizontal: scale(10),
+                marginBottom: verticalScale(5),
               }}
             >
-              <Image
-                style={{ width: "100%", height: "100%" }}
-                source={item.img}
-              />
+              {["Profile", "Channel"].map((item, index) => {
+                return (
+                  <CustomButton
+                    width={"48.5%"}
+                    onPress={() => setIsActiveProfile(index)}
+                    text={item}
+                    textColor={
+                      isActiveProfile == index ? colors.black : colors.white
+                    }
+                    height={35}
+                    bgColor={
+                      isActiveProfile == index ? colors.grey400 : colors.primary
+                    }
+                    borderRadius={8}
+                  />
+                );
+              })}
 
-              <View
-                style={{
-                  width: 12,
-                  height: 12,
-                  borderRadius: 999,
-                  backgroundColor: colors.green,
-                  position: "absolute",
-                  top: 10,
-                  left: 10,
-                }}
-              />
-            </View>
-            <View style={{ marginLeft: 15 }}>
-              <CustomText
-                fontWeight="700"
-                size={17}
-                color={colors.white}
-                numberOfLines={1}
-                style={{ width: windowWidth / 2.6 }}
-                text={item?.name}
-              />
-              <CustomText
-                style={{ width: windowWidth / 3 }}
-                fontWeight="700"
-                size={17}
-                numberOfLines={3}
-                color={colors.white}
-                text={"Boston, MA United States 245 Friends"}
-              />
-            </View>
-          </View>
-        </ImageBackground> */}
-        <View
-          style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10), marginBottom: verticalScale(5) }}
-        >
-          {
-            ["Profile", "Channel"].map((item, index) => {
-              return (
-                <CustomButton
-                  width={"48.5%"}
-                  onPress={() => setIsActiveProfile(index)}
-
-                  text={item}
-                  textColor={isActiveProfile == index ? colors.black : colors.white}
-                  height={35}
-                  bgColor={isActiveProfile == index ? colors.grey400 : colors.primary}
-                  borderRadius={8}
-                />
-
-              )
-            })
-          }
-
-          {/* <CustomButton
+              {/* <CustomButton
               width={"48.5%"}
               borderRadius={8}
               text="Channel"
               height={35}
             /> */}
-        </View>
-        {/* <View
-            style={{ ...appStyles.rowjustify, paddingHorizontal: scale(10) }}
-          >
-            <CustomButton
-              width={"48.5%"}
-              text="Profile"
-              textColor={colors.black}
-              height={35}
-              bgColor={colors.grey400}
-              borderRadius={8}
-            />
-            <CustomButton
-              width={"48.5%"}
-              borderRadius={8}
-              text="Channel"
-              height={35}
-            />
-          </View> */}
-
-        {isActiveProfile == 0 ? (
-          <View>
-            <ScrollView showsVerticalScrollIndicator={false}>
-
-
-              <View
-                style={{
-                  ...appStyles.row,
-                  paddingBottom: verticalScale(5),
-                  paddingHorizontal: scale(20),
-                }}
-              >
-                <View style={{ ...appStyles.row, width: "45%" }}>
-                  <Image
-                    style={{
-                      width: scale(16),
-                      height: scale(16),
-                    }}
-                    source={images.locationicon}
-                  />
-                  <CustomText
-                    color={colors.grey300}
-                    size={15}
-                    numberOfLines={1}
-                    fontFam="Inter-Medium"
-                    style={{ marginLeft: scale(8) }}
-                    text={data?.location}
-                  />
-                </View>
-                <Spacer width={scale(22)} />
-
-                <View style={appStyles.row}>
-                  <Image
-                    style={{
-                      width: scale(20),
-                      height: scale(20),
-                    }}
-                    source={images.bagicon}
-                  />
-                  <CustomText
-                    color={colors.grey300}
-                    size={15}
-                    fontFam="Inter-Medium"
-                    style={{ marginLeft: scale(8), }}
-                    text={"Actress, Model"}
-                  />
-                </View>
-              </View>
-              <FastImage
-                style={{
-                  width: "94%",
-                  height: verticalScale(350),
-                  // height: 362,
-                  alignSelf: "center",
-                  // marginTop: 15,
-                }}
-                resizeMode="cover"
-                source={{
-                  uri: data?.imageUrl,
-                  headers: { Authorization: 'someAuthToken' },
-                  priority: FastImage.priority.normal,
-                }}
-              />
-              <View style={{ paddingHorizontal: scale(10) }}>
-                <View
-                  style={{
-                    backgroundColor: colors.primary,
-                    borderBottomRightRadius: scale(5),
-                    borderBottomLeftRadius: scale(5),
-                    paddingLeft: scale(10),
-                    paddingVertical: verticalScale(10),
-                  }}
-                >
-                  <CustomText
-                    color={colors.white}
-                    lineHeight={20}
-                    size={15}
-                    text={
-                      "see my latest content using the link below ⚡ bookings & inquiries email"
-                    }
-                  />
-                  <CustomText
-                    color={colors.white}
-                    size={15}
-                    lineHeight={20}
-                    text={"thaer@princemarketinggroup.com"}
-                  />
-                  <View style={{ ...appStyles.row, marginTop: verticalScale(3) }}>
-                    <Image
-                      style={{
-                        width: scale(18),
-                        height: scale(18),
-                      }}
-                      resizeMode="contain"
-                      source={images.link}
-                    />
-                    <CustomText
-                      color={colors.grey300}
-                      size={14}
-                      fontFam="Inter-Medium"
-                      style={{ marginLeft: scale(8) }}
-                      text={"link.me/carmenelectra"}
-                    />
-                  </View>
-                </View>
-
-
-                {/* show Gif */}
-
-                {/* <View
-                   style={{
-                     ...appStyles.rowjustify,
-                     marginVertical: verticalScale(10),
-                   }}
-                 >
-                   <Image
-                     style={{
-                       width: "48.5%",
-                       height: windowHeight / 4.2,
-                       borderRadius: 8,
-                     }}
-                     source={images.defimg400}
-                   />
-                   <Image
-                     style={{
-                       width: "48.5%",
-                       height: windowHeight / 4.2,
-                       borderRadius: 8,
-                     }}
-                     source={images.defimage4}
-                   />
-                 </View> */}
-
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingHorizontal: 20,
-                    borderWidth: 1,
-                    borderColor: colors.gray200,
-                    // paddingVertical:verticalScale(5),
-                    borderRadius: 10,
-                    marginVertical: verticalScale(10),
-                  }}
-                >
-                  <TextInput
-                    style={{
-                      color: colors.gray200,
-                      width: "70%",
-                      fontSize: verticalScale(15),
-                    }}
-                    placeholderTextColor={colors.gray200}
-                    placeholder="Write on my wall"
-                  />
-                  <Image
-                    style={{ tintColor: colors.gray200 }}
-                    source={images.send}
-                  />
-                </View>
-                <Spacer height={verticalScale(100)} />
-
-                {/* show Comments */}
-
-                {/* <FlatList
-                   data={profileComments}
-                   style={{ marginBottom: verticalScale(130) }}
-                   contentContainerStyle={{
-                     gap: 7,
-                   }}
-                   renderItem={renderChatList}
-                 /> */}
-              </View>
-
-            </ScrollView>
-
-          </View>
-
-        ) : (
-          <>
-            <View style={{ width: "100%", height: windowHeight, paddingTop: verticalScale(10) }}>
-              <Channel />
-
-
             </View>
+
+            {isActiveProfile == 0 ? (
+              <View style={{ flex: 1 }}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  <View
+                    style={{
+                      ...appStyles.row,
+                      paddingBottom: verticalScale(5),
+                      paddingHorizontal: scale(20),
+                    }}
+                  >
+                    <View style={{ ...appStyles.row, width: "45%" }}>
+                      <Image
+                        style={{
+                          width: scale(16),
+                          height: scale(16),
+                        }}
+                        source={images.locationicon}
+                      />
+                      <CustomText
+                        color={colors.grey300}
+                        size={15}
+                        numberOfLines={1}
+                        fontFam="Inter-Medium"
+                        style={{ marginLeft: scale(8) }}
+                        text={data?.location}
+                      />
+                    </View>
+                    <Spacer width={scale(22)} />
+
+                    <View style={appStyles.row}>
+                      <Image
+                        style={{
+                          width: scale(20),
+                          height: scale(20),
+                        }}
+                        source={images.bagicon}
+                      />
+                      <CustomText
+                        color={colors.grey300}
+                        size={15}
+                        fontFam="Inter-Medium"
+                        style={{ marginLeft: scale(8) }}
+                        text={"Actress, Model"}
+                      />
+                    </View>
+                  </View>
+                  <FastImage
+                    style={{
+                      width: "100%",
+                      height: verticalScale(350),
+                      alignSelf: "center",
+                    }}
+                    resizeMode="cover"
+                    source={{
+                      uri: data?.imageUrl,
+                      headers: { Authorization: "someAuthToken" },
+                      priority: FastImage.priority.normal,
+                    }}
+                  />
+                  <View style={appStyles.rowjustify}>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={onFavorite}
+                      style={styles.box}
+                    >
+                      <Image
+                        style={{
+                          width: 30,
+                          height: 30,
+                          tintColor: colors.white,
+                        }}
+                        source={isFavorite ? images.star1 : images.star}
+                        resizeMode="contain"
+                      />
+                      <CustomText
+                        color={colors.white}
+                        size={13}
+                        numberOfLines={1}
+                        fontFam="Inter-Medium"
+                        style={{ marginTop: scale(5) }}
+                        text={"Favorite"}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={() => setIsWatchList(!isWatchList)}
+                      style={styles.box}
+                    >
+                      <Image
+                        style={{
+                          width: 25,
+                          height: 25,
+                          tintColor: colors.white,
+                        }}
+                        source={images.appicon}
+                        resizeMode="contain"
+                      />
+                      <CustomText
+                        color={colors.white}
+                        size={13}
+                        numberOfLines={1}
+                        fontFam="Inter-Medium"
+                        style={{ marginTop: scale(7) }}
+                        text={"STATUS"}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={() => setIsWatchList(!isWatchList)}
+                      style={styles.box}
+                    >
+                      <Image
+                        style={{
+                          width: 30,
+                          height: 30,
+                          tintColor: colors.white,
+                        }}
+                        source={images.profilemessage}
+                        resizeMode="contain"
+                      />
+                      <CustomText
+                        color={colors.white}
+                        size={13}
+                        numberOfLines={1}
+                        fontFam="Inter-Medium"
+                        style={{ marginTop: scale(5) }}
+                        text={"Message"}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ paddingHorizontal: scale(10) }}>
+                    <View
+                      style={{
+                        backgroundColor: colors.black,
+                        borderBottomRightRadius: scale(5),
+                        borderBottomLeftRadius: scale(5),
+                        paddingVertical: verticalScale(10),
+                      }}
+                    >
+                      {data?.bio && (
+                        <NewText
+                          color={colors.white}
+                          lineHeight={20}
+                          size={15}
+                          text={data?.bio}
+                        />
+                      )}
+
+                      {data?.link && (
+                        <TouchableOpacity
+                          activeOpacity={0.6}
+                          onPress={() => {
+                            Linking.openURL(data?.link);
+                          }}
+                          style={{
+                            flexDirection: "row",
+                            marginTop: verticalScale(3),
+                          }}
+                        >
+                          <Image
+                            style={{
+                              width: scale(18),
+                              height: scale(18),
+                            }}
+                            resizeMode="contain"
+                            source={images.link}
+                          />
+                          <NewText
+                            color={colors.grey300}
+                            size={14}
+                            fontFam="Inter-Medium"
+                            style={{
+                              marginRight: scale(20),
+                              marginLeft: scale(8),
+                            }}
+                            text={data?.link}
+                          />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+
+                    {/* <View
+             style={{
+               ...appStyles.rowjustify,
+               marginVertical: verticalScale(10),
+             }}
+           >
+             <Image
+               style={{
+                 width: "48.5%",
+                 height: windowHeight / 4.2,
+                 borderRadius: 8,
+               }}
+               source={images.defimg400}
+             />
+             <Image
+               style={{
+                 width: "48.5%",
+                 height: windowHeight / 4.2,
+                 borderRadius: 8,
+               }}
+               source={images.defimage4}
+             />
+           </View> */}
+
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        paddingHorizontal: 20,
+                        borderWidth: 1,
+                        borderColor: colors.gray200,
+                        // paddingVertical:verticalScale(5),
+                        borderRadius: 10,
+                        marginVertical: verticalScale(10),
+                      }}
+                    >
+                      <TextInput
+                        style={{
+                          color: colors.gray200,
+                          width: "90%",
+                          fontSize: verticalScale(15),
+                        }}
+                        placeholderTextColor={colors.gray200}
+                        placeholder="Write on my wall"
+                      />
+                      <Image
+                        style={{ tintColor: colors.gray200 }}
+                        source={images.send}
+                      />
+                    </View>
+
+                    {/* <FlatList
+             data={profileComments}
+             contentContainerStyle={{
+               gap: 7,
+             }}
+             renderItem={renderChatList}
+           /> */}
+                  </View>
+                </ScrollView>
+              </View>
+            ) : (
+              <>
+                <View
+                  style={{
+                    width: "100%",
+                    height: windowHeight,
+                    paddingTop: verticalScale(10),
+                  }}
+                >
+                  <Channel />
+                </View>
+              </>
+            )}
           </>
         )}
-
       </SafeAreaView>
       <SizeBar
         setIsModalVisible={setIsBar}
@@ -595,34 +607,28 @@ const OthersProfile = () => {
         // paddingVertical={5}
         isModalVisible={isSideBar}
       >
-        {
-          !isFollow ? (
-            <View>
-              <TouchableOpacity
+        {!isFollow ? (
+          <View>
+            <TouchableOpacity
               activeOpacity={0.6}
               onPress={() => {
-                setIsBar(false)
+                setIsBar(false);
                 setTimeout(() => {
-                  setIsBlockModal(true)
-
-
+                  setIsBlockModal(true);
                 }, 1000);
-
-
-              }}              >
+              }}
+            >
               <CustomText
                 color={"#F9FFFF"}
                 size={15}
                 style={{ marginBottom: verticalScale(10) }}
-
                 // fontFam="Inter-Medium"
                 // style={{ marginLeft: scale(8) }}
                 text={"Block"}
               />
+            </TouchableOpacity>
 
-              </TouchableOpacity>
-
-              <TouchableOpacity>
+            <TouchableOpacity>
               <CustomText
                 color={"#F9FFFF"}
                 size={15}
@@ -630,91 +636,65 @@ const OthersProfile = () => {
                 style={{ marginBottom: verticalScale(10) }}
                 text={"Report"}
               />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => {
+                setIsBar(false);
+                onFollow();
+              }}
+            >
+              <CustomText
+                color={"#F9FFFF"}
+                size={15}
+                style={{ marginBottom: verticalScale(10) }}
+                // fontFam="Inter-Medium"
+                // style={{ marginLeft: scale(8) }}
+                text={"Unfollow"}
+              />
+            </TouchableOpacity>
 
-              </TouchableOpacity>
-            
-             
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => {
+                setIsBar(false);
+                setTimeout(() => {
+                  setIsBlockModal(true);
+                }, 1000);
+              }}
+            >
+              <CustomText
+                color={"#F9FFFF"}
+                size={15}
+                style={{ marginBottom: verticalScale(10) }}
+                // fontFam="Inter-Medium"
+                // style={{ marginLeft: scale(8) }}
+                text={"Block"}
+              />
+            </TouchableOpacity>
 
-
-            </View>
-          ) : (
-            <View>
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => {
-                  setIsBar(false)
-                  onFollow()
-
-
-
-                }}
-              >
-                <CustomText
-                  color={"#F9FFFF"}
-                  size={15}
-                  style={{ marginBottom: verticalScale(10) }}
-
-                  // fontFam="Inter-Medium"
-                  // style={{ marginLeft: scale(8) }}
-                  text={"Unfollow"}
-                />
-
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => {
-                  setIsBar(false)
-                  setTimeout(() => {
-                    setIsBlockModal(true)
-
-
-                  }, 1000);
-
-
-                }}
-              >
-                <CustomText
-                  color={"#F9FFFF"}
-                  size={15}
-                  style={{ marginBottom: verticalScale(10) }}
-
-                  // fontFam="Inter-Medium"
-                  // style={{ marginLeft: scale(8) }}
-                  text={"Block"}
-                />
-
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => {
-                  setIsBar(false)
-                  setTimeout(() => {
-                    setIsReportModal(true)
-
-
-                  }, 1000);
-
-
-                }}
-              >
-                <CustomText
-                  color={"#F9FFFF"}
-                  size={15}
-
-                  // fontFam="Inter-Medium"
-                  // style={{ marginLeft: scale(8) }}
-                  text={"Report"}
-                />
-
-              </TouchableOpacity>
-
-            </View>
-          )
-        }
-
-
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => {
+                setIsBar(false);
+                setTimeout(() => {
+                  setIsReportModal(true);
+                }, 1000);
+              }}
+            >
+              <CustomText
+                color={"#F9FFFF"}
+                size={15}
+                // fontFam="Inter-Medium"
+                // style={{ marginLeft: scale(8) }}
+                text={"Report"}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </SizeBar>
       <BlockModal
         isModalVisible={isBlockModal}
@@ -722,16 +702,18 @@ const OthersProfile = () => {
         isBlock={"BLOCK"}
         onBlocked={onBlocked}
         title={"Block Carmen Electra?"}
-        des={"This user will no longer be able to follow, message, or see your profile."}
-
+        des={
+          "This user will no longer be able to follow, message, or see your profile."
+        }
       />
       <BlockModal
         isModalVisible={isReportModal}
         setModalVisible={setIsReportModal}
         isBlock={"REPORT"}
         title={"Report Carmen Electra?"}
-        des={"If you feel this user has violated our terms of service select REPORT and we will review your anonymous submission."}
-
+        des={
+          "If you feel this user has violated our terms of service select REPORT and we will review your anonymous submission."
+        }
       />
       {/* 
       <CustomModal
@@ -833,4 +815,11 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   flex: { flexDirection: "row", alignItems: "center", marginVertical: 6 },
+  box: {
+    alignItems: "center",
+    width: "33%",
+    height: 75,
+    backgroundColor: colors.black300,
+    justifyContent: "center",
+  },
 });
