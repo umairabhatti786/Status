@@ -189,7 +189,7 @@ const SearchScreen = ({ navigation }: any) => {
 
                       setFilterIndex(index);
                     }}
-                    height={35}
+                    height={32}
                     fontFam={"Inter-Regular"}
                     fontWeight={"400"}
                     paddingHorizontal={8}
@@ -246,7 +246,7 @@ const SearchScreen = ({ navigation }: any) => {
                   }
                 }
               }}
-              height={29}
+              height={32}
               fontFam={"Inter-Regular"}
               fontWeight={"400"}
               paddingHorizontal={8}

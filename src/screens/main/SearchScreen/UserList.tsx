@@ -23,6 +23,7 @@ import FastImage from 'react-native-fast-image'
 
 const UserList = ({ item,name,image ,onPress}: any) => {
   const navigation: any = useNavigation();
+  console.log("Popular",item)
   return (
     <>
       <TouchableOpacity
@@ -80,8 +81,8 @@ const UserList = ({ item,name,image ,onPress}: any) => {
               <CustomText text={item.nearby} color={colors.white} />
             </View>
           )}
-          {item.popular && (
-            <View style={{ flexDirection:"row", marginBottom: verticalScale(-1)  }}>
+          
+            <View style={appStyles.row}>
               <Image
                 style={{ width: 15, height: 15 }}
                 resizeMode="contain"
@@ -89,14 +90,14 @@ const UserList = ({ item,name,image ,onPress}: any) => {
               />
 
               <CustomText
-                text={item.popular}
+                text={item?.followers_count}
                 fontFam="Poppins-Medium"
 
                 color={colors.white}
-                style={{ marginLeft: 5 }}
+                style={{ marginLeft: 5,paddingTop:4}}
               />
             </View>
-          )}
+   
 
           <CustomText 
           fontFam="Inter-SemiBold"

@@ -107,12 +107,12 @@ const EditProfile = ({ route }: any) => {
 
   const dispatch = useDispatch();
 
-  console.log("selectedMedia", profileGifs);
+  console.log("selectedMedia", gif1,gif2.length);
 
   const userData = route?.params?.data;
 
   const [model, setModel] = useState(
-    userData?.isModel == false ? "false" : "true"
+    userData?.isModel == false ? "NO" : "YES"
   );
 
   const [values, setValues] = useState({
@@ -152,12 +152,12 @@ const EditProfile = ({ route }: any) => {
     {
       id: 1,
       label: true,
-      value: "true",
+      value: "NO",
     },
     {
       id: 2,
       label: false,
-      value: "false",
+      value: "YES",
     },
   ];
 
@@ -299,6 +299,51 @@ const EditProfile = ({ route }: any) => {
     }
     if (!values.imageUrl) {
       setError("Image is Required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+    if (!values.location) {
+      setError("Your birthdate is required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+    if (!values.location) {
+      setError("Bio required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+    if (!values.occupation) {
+      setError("Occupation required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+    if (!values.bio) {
+      setError("Bio required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+    if (!values.link) {
+      setError("Link required");
       setShowError(true);
       setTimeout(() => {
         setShowError(false);
@@ -460,7 +505,7 @@ const EditProfile = ({ route }: any) => {
                 text={"Channel Wallpaper"}
               />
               <Button
-                text="Add"
+                text={values?.wallpaperUrl?"Edit":"Add"}
                 onPress={() => onOpenGallery(false)}
                 bgColor={"transparent"}
               />
@@ -500,7 +545,7 @@ const EditProfile = ({ route }: any) => {
                 text={"Profile Pic"}
               />
               <Button
-                text="Add"
+                text={values?.imageUrl?"Edit":"Add"}
                 onPress={() => onOpenGallery(true)}
                 bgColor={"transparent"}
               />
@@ -639,7 +684,7 @@ const EditProfile = ({ route }: any) => {
               fontWeight="700"
               color={colors.white}
               size={19}
-              text={"Your Info"}
+              text={"Models"}
             />
             <Spacer height={verticalScale(20)} />
 
@@ -648,7 +693,7 @@ const EditProfile = ({ route }: any) => {
               fontFam="Poppins-Medium"
               size={13}
               style={{ marginBottom: verticalScale(5) }}
-              text={"Are you a Female Model?"}
+              text={"Are you a FEMALE model or a Female OnlyFans creator?"}
               color={colors.white}
             />
             <DropDown
@@ -736,7 +781,7 @@ const EditProfile = ({ route }: any) => {
             </View>
             <View>
               <Input
-                label="Your Location"
+                label="Your Current Location"
                 // labelSize={15}
                 value={values.location}
                 onChangeText={onSearch}

@@ -40,6 +40,7 @@ import {
 import { useSelector } from "react-redux";
 import { getToken } from "../../../redux/reducers/authReducer";
 import Loader from "../../../components/Loader";
+import CustomToast from "../../../components/CustomToast";
 
 const OthersProfile = () => {
   const route: any = useRoute();
@@ -55,6 +56,9 @@ const OthersProfile = () => {
   const [isActiveProfile, setIsActiveProfile] = useState(0);
   const token = useSelector(getToken);
   const [data, setData] = useState({});
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState("");
+  const [toastColor, setToastColor] = useState(colors.red)
 
   const [loading, setLoading] = useState(false);
 
@@ -106,6 +110,23 @@ const OthersProfile = () => {
 
   const onFollow = () => {
     setIsFollow(!isFollow);
+    if(!isFollow){
+      let name=`You followed ${data?.name}`
+      setIsFavorite(!isFavorite);
+      setShowMessage(true)
+      setMessage(name)
+      setToastColor(colors.green)
+  
+  
+      setTimeout(() => {
+        setShowMessage(false)
+        setToastColor(colors.red)
+  
+  
+        
+      }, 4000);
+    }
+   
     let params = {
       followee: id,
     };
@@ -116,9 +137,6 @@ const OthersProfile = () => {
         console.log("FollowUser", result);
 
         if (result.status) {
-          // setLoading(false);
-          // setAllUsers(result?.users?.data)
-          // setNextPageUrl(!result?.users?.next_page_url?true:false)
         } else {
           Alert.alert("Alert!", "Something went wrong");
         }
@@ -130,7 +148,7 @@ const OthersProfile = () => {
     });
   };
   const onFavorite = () => {
-    setIsFavorite(!isFavorite);
+
     let params = {
       favorite: id.toString(),
     };
@@ -701,7 +719,7 @@ const OthersProfile = () => {
         setModalVisible={setIsBlockModal}
         isBlock={"BLOCK"}
         onBlocked={onBlocked}
-        title={"Block Carmen Electra?"}
+        title={`Block Carmen${data.name}?`}
         des={
           "This user will no longer be able to follow, message, or see your profile."
         }
@@ -788,6 +806,15 @@ const OthersProfile = () => {
 
 
       </CustomModal> */}
+
+{showMessage && (
+        <CustomToast
+          showError={showMessage}
+          setShowError={setShowMessage}
+          bgColor={toastColor}
+          text={message}
+        />
+      )}
     </>
   );
 };

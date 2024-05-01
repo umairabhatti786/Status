@@ -82,10 +82,10 @@ const FriendList = ({ item, onPress, disabled }: any) => {
 
 
           <View style={{...appStyles.row}}>
-            <View style={{width:scale(7),height:scale(7),borderRadius:999,backgroundColor:colors.green100,marginBottom:verticalScale(3)}}/>
+            <View style={{width:scale(7),height:scale(7),borderRadius:999,backgroundColor:colors.sky,marginBottom:verticalScale(3)}}/>
             <CustomText
             text={`${item.unread} unread`}
-            color={colors.green100}
+            color={colors.white}
             size={10}
             style={{marginHorizontal:scale(5)}}
             // fontFam="Poppins-Medium"

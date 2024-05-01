@@ -37,7 +37,7 @@ const TopHeader = ({
               width: scale(7.5),
               height: scale(7.5),
               borderRadius: 999,
-              backgroundColor: colors.green100,
+              backgroundColor: colors.sky,
               marginBottom: verticalScale(3),
               right: scale(-3),
               top: 0,
