@@ -26,7 +26,7 @@ import {
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import CustomButton from "../../../components/CustomButton";
 import MessagesComponent from "../../../components/MessageComponent";
-import { profileComments } from "../../../utils/Data";
+import { data, profileComments } from "../../../utils/Data";
 import { scale, verticalScale } from "react-native-size-matters";
 import { Spacer } from "../../../components/Spacer";
 import SizeBar from "../../../components/SizeBar";
@@ -54,7 +54,7 @@ const ProfileScreen = () => {
     getAuth();
   }, [focused]);
 
-  console.log("userDatauserData", userData?.imageUrl);
+  console.log("userDatauserData", userData);
 
   const getAuth = () => {
     setLoading(true);
@@ -264,7 +264,6 @@ const ProfileScreen = () => {
                 <View style={{ paddingHorizontal: scale(10) }}>
                   <View
                     style={{
-                      backgroundColor: colors.primary,
                       borderBottomRightRadius: scale(5),
                       borderBottomLeftRadius: scale(5),
                       paddingLeft: scale(10),
@@ -309,30 +308,50 @@ const ProfileScreen = () => {
                       </TouchableOpacity>
                     )}
                   </View>
+                  {userData?.gif1 ? (
+                    <Image
+                      style={{ width: 130, height: 45, alignSelf: "flex-end" }}
+                      source={images.giphy}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <>
+                      {userData?.gif2 ? (
+                        <Image
+                          style={{
+                            width: 130,
+                            height: 45,
+                            alignSelf: "flex-end",
+                          }}
+                          source={images.giphy}
+                          resizeMode="contain"
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  )}
 
-                  {/* <View
-             style={{
-               ...appStyles.rowjustify,
-               marginVertical: verticalScale(10),
-             }}
-           >
-             <Image
-               style={{
-                 width: "48.5%",
-                 height: windowHeight / 4.2,
-                 borderRadius: 8,
-               }}
-               source={images.defimg400}
-             />
-             <Image
-               style={{
-                 width: "48.5%",
-                 height: windowHeight / 4.2,
-                 borderRadius: 8,
-               }}
-               source={images.defimage4}
-             />
-           </View> */}
+                
+
+                  <View style={appStyles.rowjustify}>
+                    {userData?.gif1 && (
+                      <View style={styles.gifhyContainer}>
+                        <Image
+                          style={{ width: "100%", height: "100%" }}
+                          source={{ uri: userData?.gif1 }}
+                        />
+                      </View>
+                    )}
+                    {userData?.gif2 && (
+                      <View style={styles.gifhyContainer}>
+                        <Image
+                          style={{ width: "100%", height: "100%" }}
+                          source={{ uri: userData?.gif2 }}
+                        />
+                      </View>
+                    )}
+                  </View>
 
                   <View
                     style={{
@@ -488,4 +507,13 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   flex: { flexDirection: "row", alignItems: "center", marginVertical: 6 },
+
+  gifhyContainer: {
+    width: "48%",
+    height: windowHeight / 4.3,
+    overflow: "hidden",
+    borderRadius: scale(5),
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

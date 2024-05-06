@@ -17,7 +17,7 @@ const BottomTab = ({ navigation }: any) => {
   const Bottom = createBottomTabNavigator();
   const isSrollDa=useSelector(state=>state.auth)?.isScroll
 
-  const image=useSelector(getUserData).imageUrl
+  const image=useSelector(getUserData)?.imageUrl
 console.log("imageurlDsycdvyv",image)
 
   // useEffect()

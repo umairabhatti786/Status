@@ -67,7 +67,7 @@ const OthersProfile = () => {
   useEffect(() => {
     getDetail();
   }, []);
-  console.log("UserID",id)
+  console.log("UserID",data?.gif)
 
   const getDetail = () => {
     setLoading(true);
@@ -112,7 +112,6 @@ const OthersProfile = () => {
     setIsFollow(!isFollow);
     if(!isFollow){
       let name=`You followed ${data?.name}`
-      setIsFavorite(!isFavorite);
       setShowMessage(true)
       setMessage(name)
       setToastColor(colors.green)
@@ -148,6 +147,8 @@ const OthersProfile = () => {
     });
   };
   const onFavorite = () => {
+    setIsFavorite(!isFavorite);
+
 
     let params = {
       favorite: id.toString(),
@@ -563,6 +564,51 @@ const OthersProfile = () => {
              />
            </View> */}
 
+{data?.gif1 ? (
+                    <Image
+                      style={{ width: 130, height: 45, alignSelf: "flex-end" }}
+                      source={images.giphy}
+                      resizeMode="contain"
+                    />
+                  ) : (
+                    <>
+                      {data?.gif2 ? (
+                        <Image
+                          style={{
+                            width: 130,
+                            height: 45,
+                            alignSelf: "flex-end",
+                          }}
+                          source={images.giphy}
+                          resizeMode="contain"
+                        />
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  )}
+
+                
+
+                  <View style={appStyles.rowjustify}>
+                    {data?.gif1 && (
+                      <View style={styles.gifhyContainer}>
+                        <Image
+                          style={{ width: "100%", height: "100%" }}
+                          source={{ uri: data?.gif1 }}
+                        />
+                      </View>
+                    )}
+                    {data?.gif2 && (
+                      <View style={styles.gifhyContainer}>
+                        <Image
+                          style={{ width: "100%", height: "100%" }}
+                          source={{ uri: data?.gif2 }}
+                        />
+                      </View>
+                    )}
+                  </View>
+
                     <View
                       style={{
                         flexDirection: "row",
@@ -599,6 +645,8 @@ const OthersProfile = () => {
              renderItem={renderChatList}
            /> */}
                   </View>
+
+
                 </ScrollView>
               </View>
             ) : (
@@ -719,7 +767,7 @@ const OthersProfile = () => {
         setModalVisible={setIsBlockModal}
         isBlock={"BLOCK"}
         onBlocked={onBlocked}
-        title={`Block Carmen${data.name}?`}
+        title={`Block Carmen ${data.name}?`}
         des={
           "This user will no longer be able to follow, message, or see your profile."
         }
@@ -847,6 +895,14 @@ const styles = StyleSheet.create({
     width: "33%",
     height: 75,
     backgroundColor: colors.black300,
+    justifyContent: "center",
+  },
+  gifhyContainer: {
+    width: "48%",
+    height: windowHeight / 4.3,
+    overflow: "hidden",
+    borderRadius: scale(5),
+    alignItems: "center",
     justifyContent: "center",
   },
 });

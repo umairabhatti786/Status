@@ -8,6 +8,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -37,6 +38,8 @@ import PredictionList from "../../auth/ProfileSetup/PredictionList";
 import CustomToast from "../../../components/CustomToast";
 import { isUrlValid } from "../../../utils/Regex";
 import { useDispatch, useSelector } from "react-redux";
+import DatePicker from "react-native-date-picker";
+
 import {
   GiphyContentType,
   GiphyDialog,
@@ -58,11 +61,9 @@ import Loader from "../../../components/Loader";
 import ImageCropPicker, {
   Image as ImagePickerType,
 } from "react-native-image-crop-picker";
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
-GiphySDK.configure({ apiKey: URLS.GIFY_API_KEY });
+import BottomSheet from "../../../components/BottomSheet";
+
+GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
 GiphyDialog.configure({
   mediaTypeConfig: [
     GiphyContentType.Emoji,
@@ -92,8 +93,14 @@ const EditProfile = ({ route }: any) => {
   const [showError, setShowError] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isGiphyOne, setIsGiphyOne] = useState(false);
+  const [isGiphyTwo, setIsGiphyTwo] = useState(false);
+
   const [toastColor, setToastColor] = useState(colors.red);
   const token = useSelector(getToken);
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+  const [selectedGifs, setSelectedGifs] = useState<any>([]);
 
   const [gif1, setGif1] = useState("");
   const [gif2, setGif2] = useState("");
@@ -103,17 +110,22 @@ const EditProfile = ({ route }: any) => {
   >(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
+  const bottomSheetModalRef = useRef(null);
+
   const profileGifs = useSelector(getProfileGifs);
 
   const dispatch = useDispatch();
 
-  console.log("selectedMedia", gif1,gif2.length);
+
 
   const userData = route?.params?.data;
 
-  const [model, setModel] = useState(
-    userData?.isModel == false ? "NO" : "YES"
+  console.log(
+    "selectedMedia1",
+    userData
   );
+
+  const [model, setModel] = useState(userData?.isModel == false ? "NO" : "YES");
 
   const [values, setValues] = useState({
     wallComments: userData?.wallComments,
@@ -129,22 +141,20 @@ const EditProfile = ({ route }: any) => {
     // gif2: userData?.gif2 ? userData?.gif2 : "",
     location: userData?.location ? userData?.location : "",
     lat: userData?.lat ? userData?.lat : "",
-    long: userData?.long ? userData?.long : "",
+    lng: userData?.lng ? userData?.lng : "",
   });
-  console.log("AllYSercjdbcValuebioUeer", profileGifs.gif2);
 
   useEffect(() => {
-    let gifData = {
-      gif1: userData?.gif1,
-      gif2: userData?.gif2,
-    };
-    setGif1(userData?.gif1);
-    setGif2(userData?.gif2);
+    console.log("profileGifs", profileGifs);
+    setSelectedGifs((prevSelectedGifs) => [userData.gif1, userData.gif2]);
 
-    // dispatch(setProfileGif(gifData));
+    // if (userData.gif1 && userData.gif2) {
+    // } else if (!userData.gif1) {
+    //   setSelectedGifs((prevSelectedGifs) => [userData.gif2]);
+    // } else if (!userData.gif2) {
+    //   setSelectedGifs((prevSelectedGifs) => [userData.gif1]);
+    // }
   }, []);
-
-  console.log("profileGifs", profileGifs);
 
   const { requestGalleryPermission } = usePermissions();
 
@@ -163,13 +173,11 @@ const EditProfile = ({ route }: any) => {
 
   useEffect(() => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
-      // setSelectedMedia(e.media.url);
-
-      if (!gif1) {
-        setGif1(e.media.url);
-      } else if (!gif2) {
-        setGif2(e.media.url);
-      }
+      // const filteredSelectedGifs = selectedGifs.filter((gif) => gif !== "");
+      // Add the selected GIF to the filteredSelectedGifs array
+      setSelectedGifs((prevSelectedGifs) => [...prevSelectedGifs, e.media.url]);
+      // Update the state with the updated selected GIFs array
+      // setSelectedGifs(updatedSelectedGifs);
 
       GiphyDialog.hide();
 
@@ -230,7 +238,7 @@ const EditProfile = ({ route }: any) => {
       setValues({
         ...values,
         lat: location.lat,
-        long: location.lng,
+        lng: location.lng,
         location: formatted_address,
       });
     }
@@ -288,7 +296,7 @@ const EditProfile = ({ route }: any) => {
 
       return;
     }
-    if (!values?.lat || !values.long) {
+    if (!values?.lat || !values.lng) {
       setError("Location is Required");
       setShowError(true);
       setTimeout(() => {
@@ -306,7 +314,7 @@ const EditProfile = ({ route }: any) => {
 
       return;
     }
-    if (!values.location) {
+    if (!values.birthday) {
       setError("Your birthdate is required");
       setShowError(true);
       setTimeout(() => {
@@ -315,15 +323,7 @@ const EditProfile = ({ route }: any) => {
 
       return;
     }
-    if (!values.location) {
-      setError("Bio required");
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-      }, 4000);
 
-      return;
-    }
     if (!values.occupation) {
       setError("Occupation required");
       setShowError(true);
@@ -363,6 +363,8 @@ const EditProfile = ({ route }: any) => {
         return;
       }
     }
+    const nonEmptySelectedGifs = selectedGifs.filter((gif) => gif !== "");
+
 
     const form = new FormData();
     form.append("wallComments", values.wallComments ? 1 : 0);
@@ -373,13 +375,13 @@ const EditProfile = ({ route }: any) => {
     form.append("bio", values?.bio);
     form.append("isModel", model == "true" ? 1 : 0);
     form.append("wallpaperUrl", values.wallpaperUrl);
-    form.append("gif1", gif1);
-    form.append("gif2", gif2);
+    form.append("gif1", nonEmptySelectedGifs[0]);
+    form.append("gif2", nonEmptySelectedGifs[1]);
     form.append("name", values.name);
     form.append("imageUrl", values.imageUrl);
     form.append("location", values?.location);
     form.append("lat", values?.lat);
-    form.append("long", values?.long);
+    form.append("lng", values?.long);
 
     setLoading(true);
     UserProfileSetup(form, token, async ({ isSuccess, response }: any) => {
@@ -505,7 +507,7 @@ const EditProfile = ({ route }: any) => {
                 text={"Channel Wallpaper"}
               />
               <Button
-                text={values?.wallpaperUrl?"Edit":"Add"}
+                text={values?.wallpaperUrl ? "Edit" : "Add"}
                 onPress={() => onOpenGallery(false)}
                 bgColor={"transparent"}
               />
@@ -545,7 +547,7 @@ const EditProfile = ({ route }: any) => {
                 text={"Profile Pic"}
               />
               <Button
-                text={values?.imageUrl?"Edit":"Add"}
+                text={values?.imageUrl ? "Edit" : "Add"}
                 onPress={() => onOpenGallery(true)}
                 bgColor={"transparent"}
               />
@@ -591,59 +593,53 @@ const EditProfile = ({ route }: any) => {
                   GiphyDialog.show();
                 }}
               >
-                {}
-                <CustomText
-                  color={colors.white}
-                  size={17}
-                  text={!gif1 && !gif2?"Add":gif1&& !gif2?"Edit":!gif1&& gif2?"Edit":""}
-                />
+                {selectedGifs.filter((gif) => gif !== "").length < 2 && (
+                  <CustomText color={colors.white} size={17} text={"Add"} />
+                )}
               </TouchableOpacity>
             </View>
 
             <View style={appStyles.rowjustify}>
-              {gif1 && (
-                <View
-                  style={{
-                    width: "48.5%",
-                    height: windowHeight / 4,
-                    borderRadius: 8,
-                    overflow: "hidden",
-                  }}
-                >
-                  <Image
-                    style={{ width: "100%", height: "100%" }}
-                    source={{ uri: gif1 }}
-                  />
-                  <TouchableOpacity
-                    activeOpacity={0.6}
-                    onPress={() => {
-                      setGif1("");
-                    }}
-                    style={{
-                      position: "absolute",
-                      top: 15,
-                      right: 15,
-                      width: 25,
-                      height: 25,
-                    }}
-                  >
-                    <Image
-                      style={{ width: "100%", height: "100%" }}
-                      source={images.crosswhite}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                </View>
-              )}
-              {gif2 && (
-                <View
-                  style={{
-                    width: "48.5%",
-                    height: windowHeight / 4,
-                    borderRadius: 8,
-                    overflow: "hidden",
-                  }}
-                >
+              {selectedGifs
+                .filter((gif) => gif !== "")
+                .map((gip, index) => {
+                  console.log("IndexGif", gip, index);
+                  return (
+                    <View style={styles.gifhyContainer} key={index}>
+                      <Image
+                        style={{ width: "100%", height: "100%" }}
+                        source={{ uri: gip }}
+                      />
+                      <TouchableOpacity
+                        activeOpacity={0.6}
+                        onPress={() => {
+                          // Remove the selected GIF from the selectedGifs array
+                          // const updatedSelectedGifs = [...selectedGifs];
+
+                          setSelectedGifs((prevSelectedGifs) =>
+                            prevSelectedGifs.filter((gi, ind) => gi !== gip)
+                          );
+                        }}
+                        style={{
+                          position: "absolute",
+                          top: 15,
+                          right: 15,
+                          width: 25,
+                          height: 25,
+                        }}
+                      >
+                        <Image
+                          style={{ width: "100%", height: "100%" }}
+                          source={images.crosswhite}
+                          resizeMode="contain"
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  );
+                })}
+
+              {/* {gif2 ? (
+                <View style={styles.gifhyContainer}>
                   <Image
                     style={{ width: "100%", height: "100%" }}
                     source={{ uri: gif2 }}
@@ -668,15 +664,37 @@ const EditProfile = ({ route }: any) => {
                     />
                   </TouchableOpacity>
                 </View>
-              )}
+              ) : (
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={() => {
+                    setIsGiphyTwo(!isGiphyTwo);
+
+                    GiphyDialog.show();
+                  }}
+                  style={styles.gifhyContainer}
+                >
+                  <Image
+                    style={{ width: 14, height: 14 }}
+                    source={images.add}
+                  />
+                </TouchableOpacity>
+              )} */}
             </View>
+            {selectedGifs.filter((gif) => gif !== "").length > 0 && (
+              <Image
+                style={{ width: 130, height: 45, alignSelf: "flex-end" }}
+                source={images.giphy}
+                resizeMode="contain"
+              />
+            )}
           </View>
 
           <View
             style={{
               borderBottomWidth: 1,
               borderColor: colors.white,
-              marginVertical: "8%",
+              marginBottom: "8%",
             }}
           />
           <View style={{ paddingHorizontal: scale(20) }}>
@@ -735,7 +753,7 @@ const EditProfile = ({ route }: any) => {
                 marginTop: "3%",
               }}
             >
-              {["Female", "Male", "Does not apply"].map((item, index) => {
+              {["Female", "Male", "N/A"].map((item, index) => {
                 return (
                   <TouchableOpacity
                     activeOpacity={0.6}
@@ -765,7 +783,35 @@ const EditProfile = ({ route }: any) => {
               })}
             </View>
             <View>
-              <Input
+              <NewText
+                fontWeight={"500"}
+                fontFam="Poppins-Medium"
+                size={15}
+                style={{ marginBottom: verticalScale(5), marginTop: "7%" }}
+                text={"Your Birthdate"}
+                color={colors.white}
+              />
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => bottomSheetModalRef.current.present()}
+                style={{
+                  width: "100%",
+                  height: 50,
+                  backgroundColor: colors.primary,
+                  borderRadius: 10,
+                  // alignItems: "center",
+                  padding: 10,
+                }}
+              >
+                <NewText
+                  fontWeight={"500"}
+                  fontFam="Poppins-Medium"
+                  size={15}
+                  text={values.birthday}
+                  color={colors.white}
+                />
+              </TouchableOpacity>
+              {/* <Input
                 label="Your Birthday"
                 value={values.birthday}
                 maxLength={8}
@@ -777,7 +823,7 @@ const EditProfile = ({ route }: any) => {
                 color={colors.white}
                 fontWeight="600"
                 marginTop={"7%"}
-              />
+              /> */}
             </View>
             <View>
               <Input
@@ -811,8 +857,59 @@ const EditProfile = ({ route }: any) => {
               fontWeight="600"
               marginTop={"7%"}
             />
+            <View style={{ marginTop: "7%" }}>
+              <View style={appStyles.rowjustify}>
+                <NewText
+                  fontWeight={"500"}
+                  fontFam="Poppins-Medium"
+                  size={15}
+                  style={{ marginBottom: verticalScale(5) }}
+                  text={"Bio"}
+                  color={colors.white}
+                />
+                <NewText
+                  fontWeight={"500"}
+                  fontFam="Poppins-Medium"
+                  size={15}
+                  style={{ marginBottom: verticalScale(5) }}
+                  text={`${values.bio.length}/500`}
+                  color={colors.white}
+                />
+              </View>
+              <View
+                style={{
+                  width: "100%",
+                  height: 150,
+                  backgroundColor: colors.primary,
+                  borderRadius: 10,
+                  alignItems: "flex-start",
+                  padding: 10,
+                }}
+              >
+                <TextInput
+                  value={values.bio}
+                  style={{
+                    fontSize: 16,
+                    alignItems: "center",
+                    width: "100%",
+                    // paddingTop:20,
+                    fontFamily: "Poppins-Regular",
+                    fontWeight: "500",
+                    color: colors.grey400,
+                  }}
+                  placeholder={"Bio"}
+                  multiline={true}
+                  placeholderTextColor={colors.grey400}
+                  maxLength={500}
+                  onChangeText={(txt: string) => {
+                    setValues({ ...values, bio: txt });
+                  }}
+                  autoCapitalize="none"
+                />
+              </View>
+            </View>
 
-            <Input
+            {/* <Input
               // labelSize={15}
 
               label="Bio"
@@ -826,7 +923,7 @@ const EditProfile = ({ route }: any) => {
               multiline={true}
               height={85}
               marginTop={"7%"}
-            />
+            /> */}
             <Input
               label="Your Link"
               value={values.link}
@@ -851,6 +948,76 @@ const EditProfile = ({ route }: any) => {
           text={error}
         />
       )}
+
+      <BottomSheet bottomSheetModalRef={bottomSheetModalRef}>
+        <View style={{ paddingHorizontal: scale(20), alignItems: "center" }}>
+          <View style={{ ...appStyles.rowjustify, width: "100%" }}>
+            <NewText
+              fontWeight={"600"}
+              fontFam="Poppins-Medium"
+              size={20}
+              style={{ marginBottom: verticalScale(5) }}
+              text={"Date of Birth"}
+              color={colors.white}
+            />
+
+            <TouchableOpacity
+              style={{ width: "10%", alignItems: "flex-end", height: 40 }}
+              onPress={() => bottomSheetModalRef.current.dismiss()}
+            >
+              <Image
+                style={{ width: 20, height: 20 }}
+                resizeMode="contain"
+                source={images.cross3x}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <DatePicker
+            modal={false}
+            mode="date"
+            locale="en_US"
+            title="lcmndlm"
+            theme="dark"
+            dividerColor={colors.white}
+            style={{
+              width: 300, // Adjust the width as per your requirement
+              height: 300,
+              alignSelf: "center",
+            }}
+            open={open}
+            date={date}
+            onDateChange={(date) => {
+              const day = date.getDate();
+              const month = date.getMonth() + 1;
+              const year = date.getFullYear().toString().slice(-2); // Extract last two digits of the year
+              let birth = `${month.toString().padStart(2, "0")}/${day
+                .toString()
+                .padStart(2, "0")}/${year}`;
+              console.log("birth", birth);
+              setValues({ ...values, birthday: birth });
+              setOpen(false);
+              setDate(date);
+            }}
+            // onCancel={() => {
+            //   setOpen(false)
+            // }}
+          />
+
+          <Button
+            text="Save"
+            width={"60%"}
+            borderRadius={40}
+            onPress={() => {
+              bottomSheetModalRef.current.dismiss();
+            }}
+            fontWeight={"500"}
+            size={18}
+            textColor={colors.black}
+            bgColor={colors.white}
+          />
+        </View>
+      </BottomSheet>
     </>
   );
 };
@@ -893,5 +1060,17 @@ const styles = StyleSheet.create({
     width: scale(99),
     justifyContent: "center",
     marginTop: verticalScale(10),
+  },
+  gifhyContainer: {
+    width: "48%",
+    height: windowHeight / 4.3,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderRadius: scale(5),
+    borderColor: colors.white,
+    alignItems: "center",
+    borderStyle: "dashed",
+    justifyContent: "center",
+    marginBottom: verticalScale(10),
   },
 });

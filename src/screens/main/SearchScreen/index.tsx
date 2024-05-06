@@ -60,7 +60,7 @@ const SearchScreen = ({ navigation }: any) => {
   const topBarData = ["all", "following"];
   const filterData = [
     { value: "Online", filter: "online" },
-    { value: "Nearby", filter: "nearby" },
+    { value: "Nearby", filter: "new" },
     { value: "New", filter: "new" },
     { value: "Popular", filter: "popular" },
   ];
@@ -86,6 +86,15 @@ const SearchScreen = ({ navigation }: any) => {
     axios
       .request(options)
       .then(function (response) {
+        // if(response.data.result.data.length>0){
+        //   const filteredUsers = response.data.result.data.filter(user => !user.blockers.length>0);
+        //   setAllUsers(filteredUsers);
+
+
+
+        // }
+
+        // blockers
         setAllUsers(response.data.result.data);
         setLoading(false);
         console.log(response.data);
@@ -215,10 +224,10 @@ const SearchScreen = ({ navigation }: any) => {
                     setFilterTwo("model");
                     setFilterThree("");
                   } else if (filterIndex == 0) {
-                    setFilterThree("online");
+                    setFilterThree("new");
                     setFilterTwo("");
                   } else if (filterIndex == 1) {
-                    setFilterThree("nearby");
+                    setFilterThree("new");
                     setFilterTwo("");
                   } else if (filterIndex == 2) {
                     setFilterThree("new");
@@ -232,10 +241,10 @@ const SearchScreen = ({ navigation }: any) => {
                     setFilterTwo("");
                     setFilterThree("");
                   } else if (filterIndex == 0) {
-                    setFilterTwo("online");
+                    setFilterTwo("new");
                     setFilterThree("");
                   } else if (filterIndex == 1) {
-                    setFilterTwo("nearby");
+                    setFilterTwo("new");
                     setFilterThree("");
                   } else if (filterIndex == 2) {
                     setFilterTwo("new");

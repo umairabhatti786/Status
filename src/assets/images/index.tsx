@@ -142,6 +142,8 @@ bagicon: require("../icons/bag-icon.png"),
   youtube: require("../images/youtube.png"),
   insta: require("../images/instagram.png"),
   twitter: require("../images/twitter.png"),
+  giphy: require("../images/giphy.png"),
+
 
   crosscircle: require("../icons/cross-circle.png"),
   next: require("../icons/next.png"),

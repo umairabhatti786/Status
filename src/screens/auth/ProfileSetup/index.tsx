@@ -141,7 +141,7 @@ const ProfileSetup = ({ route }: props) => {
     form.append("imageUrl", imageFile);
     form.append("location", values?.location);
     form.append("lat", values?.lat);
-    form.append("long", values?.long);
+    form.append("lng", values?.long);
 
 
     UserProfileSetup(form, token, async ({ isSuccess, response }: any) => {
