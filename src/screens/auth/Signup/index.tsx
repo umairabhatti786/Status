@@ -159,7 +159,7 @@ const Signup = () => {
               onChangeText={(txt: string) => {
                 setValues({ ...values, email: txt });
               }}
-              // placeholder="Enter your email address"
+              placeholder="Enter your email address"
             />
             <Spacer height={7} />
             <Input
@@ -168,7 +168,7 @@ const Signup = () => {
               onChangeText={(txt: string) => {
                 setValues({ ...values, confirmEmail: txt });
               }}
-              // placeholder="Retype your email address"
+              placeholder="Confirm your email address"
             />
             <Spacer height={7} />
             <Input
@@ -179,7 +179,7 @@ const Signup = () => {
                 setValues({ ...values, password: txt });
               }}
               onShowPassword={() => setShowPAssword(!showPassword)}
-              // placeholder="At least 6 characters"
+              placeholder="At least 6 characters"
               source={showPassword ? images.eyeclose : images.eye}
             />
             <Spacer height={15} />

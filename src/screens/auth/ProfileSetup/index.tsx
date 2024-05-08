@@ -36,6 +36,9 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { URLS } from "../../../api/baseUrl";
 import PredictionList from "./PredictionList";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
+import { AUTH, REMEMBER, StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
+import { setToken, setUserData } from "../../../redux/reducers/authReducer";
+import { useDispatch } from "react-redux";
 
 interface props {
   route: any;
@@ -51,6 +54,8 @@ const ProfileSetup = ({ route }: props) => {
   const [isPredictionList, setIsPredictionList] = useState(false);
   const [predictionData, setPredictionData] = useState([])
   const [search, setSearch] = useState()
+
+  const dispatch=useDispatch()
 
   const token = route?.params?.token
 
@@ -155,10 +160,30 @@ const ProfileSetup = ({ route }: props) => {
           setShowError(true);
           setTimeout(() => {
             setShowError(false);
-            navigation.navigate("Login", {
+            setToastColor(colors.red)
+            StorageServices.setItem(AUTH,result?.user)
+            StorageServices.setItem(TOKEN,result?.token)
+            // StorageServices.setItem(REMEMBER,isRemember)
 
+            dispatch(setToken(result?.token))
+            // dispatch(setRemember(isRemember))
+
+            dispatch(setUserData(result?.user))
+            navigation.navigate("Tabs", {
+      
             });
+
+
+            // navigation.navigate("ConfirmationCode", {
+            //   data: { email: values.email },
+            // });
           }, 2000);
+          // setTimeout(() => {
+          //   setShowError(false);
+          //   // navigation.navigate("Login", {
+
+          //   // });
+          // }, 2000);
 
         } else {
           setLoading(false);
@@ -298,7 +323,7 @@ const ProfileSetup = ({ route }: props) => {
             <Spacer height={15} />
 
             <Input label="Display Name"
-              // placeholder="Enter your name or handle"
+              placeholder="Enter your name or handle"
               value={values.name}
               onChangeText={(txt: string) => {
                 setValues({ ...values, name: txt });
@@ -310,7 +335,7 @@ const ProfileSetup = ({ route }: props) => {
               <Input
                 label="Your Location"
                 leftSource={images.location}
-                // placeholder="Enter where you live for your profile"
+                placeholder="Enter where you live for your profile"
                 value={values.location}
                 onChangeText={onSearch}
               />

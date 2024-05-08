@@ -263,7 +263,7 @@ const SearchScreen = ({ navigation }: any) => {
               style={{ marginHorizontal: scale(3) }}
               textColor={colors.white}
               bgColor={model ? "#48B1FF" : colors.primary}
-              text={"models"}
+              text={"Models"}
             />
           </ScrollView>
         </View>

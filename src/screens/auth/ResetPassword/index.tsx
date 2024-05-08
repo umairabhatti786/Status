@@ -190,8 +190,8 @@ const ResetPassword = ({ route }: props) => {
             <Spacer height={verticalScale(20)} />
 
             <CustomTextInput
-              label="New passwords"
-              placeholder="ADSS@#siya"
+              label="New Password"
+              placeholder="Enter new password"
               value={values.password}
               onChangeText={(txt: string) => {
                 setValues({ ...values, password: txt });
@@ -202,7 +202,7 @@ const ResetPassword = ({ route }: props) => {
             />
             <Spacer height={7} />
             <CustomTextInput
-              label="Confirm password"
+              label="Confirm Password"
               placeholder="Confirm your new password"
               value={values.confirmPassword}
               onChangeText={(txt: string) => {

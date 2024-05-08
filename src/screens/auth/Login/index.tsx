@@ -206,7 +206,7 @@ const Login = () => {
               onChangeText={(txt: string) => {
                 setValues({ ...values, email: txt });
               }}
-              // placeholder="Enter your login email address"
+              placeholder="Enter your email address"
             />
 
             {/* <CustomTextInput
@@ -216,7 +216,7 @@ const Login = () => {
             <Spacer height={7} />
             <Input
               label="Password"
-              // placeholder="At least 6 characters"
+              placeholder="At least 6 characters"
               isPassword={showPassword}
               value={values.password}
               onChangeText={(txt: string) => {
