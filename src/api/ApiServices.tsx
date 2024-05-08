@@ -2,6 +2,141 @@ import axios from "axios";
 import { client, getApiUrl } from "./Config";
 import { URLS } from "./baseUrl";
 
+export const CreatePost = async (data: any, token: any, callback: any) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + token);
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: data,
+    redirect: "follow",
+  };
+
+  try {
+    fetch(URLS.BASE_URL + URLS.CREATE_POST, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const GetStatus = async (id: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    // body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.GET_STATUS + id, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const GetFavoriteChannel = async (token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    // body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.GET_FAVORITES_CHANNEL, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const GetFollowingChannel = async (token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    // body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.GET_FOLLOWING_CHANNEL, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const DeleteComment = async (data: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.DELETE_COMMENT, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const CreateComment = async (data: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.CREATE_COMMENT, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const GetUserComment = async (data: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.GET_USER_COMMENT, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+
 export const UserSignup = async (data: any, callback: any) => {
   const requestOptions = {
     method: "POST",
@@ -226,12 +361,12 @@ export const ChangeUserPassword = async (
     method: "POST",
     headers: myHeaders,
 
-    body:  data
+    body: data,
   };
-  console.log("requestOptions",requestOptions)
+  console.log("requestOptions", requestOptions);
   try {
     fetch(getApiUrl(URLS.CHANGE_USER_PASSWORD), requestOptions)
-      .then((response) =>response.text())
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
@@ -239,11 +374,7 @@ export const ChangeUserPassword = async (
   }
 };
 
-export const ChangeUserEmail = async (
-  data: any,
-  token: any,
-  callback: any
-) => {
+export const ChangeUserEmail = async (data: any, token: any, callback: any) => {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer " + token);
   myHeaders.append("Accept", "application/json");
@@ -251,12 +382,12 @@ export const ChangeUserEmail = async (
     method: "POST",
     headers: myHeaders,
 
-    body:  data
+    body: data,
   };
-  console.log("requestOptions",requestOptions)
+  console.log("requestOptions", requestOptions);
   try {
     fetch(getApiUrl(URLS.CHANGE_USER_EMAIL), requestOptions)
-      .then((response) =>response.text())
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
@@ -264,22 +395,17 @@ export const ChangeUserEmail = async (
   }
 };
 
-
-export const DeleteAccount = async (
-  token: any,
-  callback: any
-) => {
+export const DeleteAccount = async (token: any, callback: any) => {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer " + token);
   const requestOptions = {
     method: "POST",
     headers: myHeaders,
-
   };
-  console.log("requestOptions",requestOptions)
+  console.log("requestOptions", requestOptions);
   try {
     fetch(getApiUrl(URLS.DELETE_ACCOOUNT), requestOptions)
-      .then((response) =>response.text())
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
@@ -296,21 +422,17 @@ export const DeleteAccount = async (
   //   });
 };
 
-export const GetBlockedUser = async (
-  token: any,
-  callback: any
-) => {
+export const GetBlockedUser = async (token: any, callback: any) => {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer " + token);
   const requestOptions = {
     method: "POST",
     headers: myHeaders,
-
   };
-  console.log("requestOptions",requestOptions)
+  console.log("requestOptions", requestOptions);
   try {
     fetch(getApiUrl(URLS.GET_BLOCKED_USER), requestOptions)
-      .then((response) =>response.text())
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
@@ -326,21 +448,17 @@ export const GetBlockedUser = async (
   //     console.error("createdError",error);
   //   });
 };
-export const GetAuthUser = async (
-  token: any,
-  callback: any
-) => {
+export const GetAuthUser = async (token: any, callback: any) => {
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer " + token);
   const requestOptions = {
     method: "POST",
     headers: myHeaders,
-
   };
-  console.log("requestOptions",requestOptions)
+  console.log("requestOptions", requestOptions);
   try {
     fetch(getApiUrl(URLS.GET_AUTH), requestOptions)
-      .then((response) =>response.text())
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
@@ -356,25 +474,19 @@ export const GetAuthUser = async (
   //     console.error("createdError",error);
   //   });
 };
-export const Follow = async (
-  data:any,
-  token: any,
-  callback: any
-) => {
-  
+export const Follow = async (data: any, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' +token,
-},
-body:JSON.stringify(data)
-
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
   };
 
   try {
     fetch(getApiUrl(URLS.FOLLOW), requestOptions)
-      .then((response) =>response.text())
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
@@ -390,25 +502,19 @@ body:JSON.stringify(data)
   //     console.error("createdError",error);
   //   });
 };
-export const Favorite = async (
-  data:any,
-  token: any,
-  callback: any
-) => {
-  
+export const Favorite = async (data: any, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' +token,
-},
-body:JSON.stringify(data)
-
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
   };
 
   try {
     fetch(getApiUrl(URLS.FAVORITE), requestOptions)
-      .then((response) =>response.text())
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
@@ -425,25 +531,19 @@ body:JSON.stringify(data)
   //   });
 };
 
-export const Blocked = async (
-  data:any,
-  token: any,
-  callback: any
-) => {
-  
+export const Blocked = async (data: any, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' +token,
-},
-body:JSON.stringify(data)
-
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
   };
 
   try {
     fetch(getApiUrl(URLS.BLOCKED), requestOptions)
-      .then((response) =>response.text())
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
@@ -459,25 +559,19 @@ body:JSON.stringify(data)
   //     console.error("createdError",error);
   //   });
 };
-export const isFollowing = async (
-  data:any,
-  token: any,
-  callback: any
-) => {
-  
+export const isFollowing = async (data: any, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' +token,
-},
-body:JSON.stringify(data)
-
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
   };
 
   try {
     fetch(getApiUrl(URLS.ISFOLLOWING), requestOptions)
-      .then((response) =>response.text())
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
@@ -494,25 +588,19 @@ body:JSON.stringify(data)
   //   });
 };
 
-export const getUserDetail = async (
-  data:any,
-  token: any,
-  callback: any
-) => {
-  
+export const getUserDetail = async (data: any, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' +token,
-},
-body:JSON.stringify(data)
-
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
   };
 
   try {
     fetch(getApiUrl(URLS.GET_USER_DETAIL), requestOptions)
-      .then((response) =>response.text())
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
@@ -528,56 +616,44 @@ body:JSON.stringify(data)
   //     console.error("createdError",error);
   //   });
 };
-export const GetAllUsers = async (
-  data,
-  token: any,
-  callback: any,
-) => {
-  
+export const GetAllUsers = async (data, token: any, callback: any) => {
   const requestOptions = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Authorization: "Bearer "+token,
-      Accept: 'application/json',
+      Authorization: "Bearer " + token,
+      Accept: "application/json",
     },
-    data:data,
+    data: data,
   };
   try {
     fetch(getApiUrl(URLS.GET_ALL_USER), requestOptions)
-    .then((response) =>response.json())
-    .then((result) => callback({ isSuccess: true, response: result }))
+      .then((response) => response.json())
+      .then((result) => callback({ isSuccess: true, response: result }))
 
-    .catch((error) =>console.log(error));
+      .catch((error) => console.log(error));
   } catch (error) {
     return { isSuccess: false, error: error };
   }
-
-}
-export const SearchUserName = async (
-  data,
-  token: any,
-  callback: any,
-) => {
-  
+};
+export const SearchUserName = async (data, token: any, callback: any) => {
   const requestOptions = {
-    method: 'POST',
+    method: "POST",
     headers: {
-      Authorization: "Bearer "+token,
-      Accept: 'application/json',
+      Authorization: "Bearer " + token,
+      Accept: "application/json",
     },
-    body:data,
+    body: data,
   };
   try {
     fetch(getApiUrl(URLS.SEARCH_USER_BY_NAME), requestOptions)
-    .then((response) =>response.json())
-    .then((result) => callback({ isSuccess: true, response: result }))
+      .then((response) => response.json())
+      .then((result) => callback({ isSuccess: true, response: result }))
 
-    .catch((error) =>console.log(error));
+      .catch((error) => console.log(error));
   } catch (error) {
     return { isSuccess: false, error: error };
   }
-
-}
+};
 
 export const ResendOtp = async (data: any, callback: any) => {
   const requestOptions = {

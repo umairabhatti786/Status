@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState, version } from "react";
+import React, { useEffect, useState, version } from "react";
 import { appStyles } from "../../../utils/AppStyles";
 import CustomText from "../../../components/CustomText";
 import { colors } from "../../../utils/colors";
@@ -21,8 +21,10 @@ import CustomButton from "../../../components/CustomButton";
 import { scale, verticalScale } from "react-native-size-matters";
 import { Spacer } from "../../../components/Spacer";
 import MessageSender from "../../../components/MessageSender";
+import moment from "moment";
+import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
 
-const Channel = ({hideSendMessage,userData}:any) => {
+const Channel = ({ hideSendMessage, userData, posts,channelId,token,authPosts, setAuthPosts }: any) => {
   const route: any = useRoute();
   const item = route?.params?.item;
   const navigation: any = useNavigation();
@@ -31,8 +33,9 @@ const Channel = ({hideSendMessage,userData}:any) => {
   const [isFollow, setIsFollow] = useState(false);
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
-
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
+  
+  
 
   return (
     <>
@@ -41,9 +44,9 @@ const Channel = ({hideSendMessage,userData}:any) => {
           style={{ width: "100%", height: windowHeight }}
           source={images.channelbackground}
         >
-          <View style={{ height:"80%" }}>
+          <View style={{ height: "80%" }}>
             <FlatList
-              data={[1]}
+              data={hideSendMessage?posts:authPosts}
               nestedScrollEnabled={true}
               style={{ marginBottom: verticalScale(80) }}
               //  contentContainerStyle={{
@@ -51,7 +54,7 @@ const Channel = ({hideSendMessage,userData}:any) => {
               //  }}
               renderItem={({ item, index }) => {
                 return (
-                  <View  style={{paddingBottom:verticalScale(10)}}>
+                  <View style={{ paddingBottom: verticalScale(10) }}>
                     <Spacer height={verticalScale(30)} />
                     <View style={styles.timeContainer}>
                       <CustomText
@@ -59,7 +62,7 @@ const Channel = ({hideSendMessage,userData}:any) => {
                         size={15}
                         // fontFam="Inter-SemiBold"
                         //  style={{ marginLeft: scale(8),backgroundColor:colors.primary }}
-                        text={"Today 5:45 PM"}
+                        text={moment(item?.created_at).format("dddd h:s a")}
                       />
                     </View>
                     <View
@@ -81,12 +84,17 @@ const Channel = ({hideSendMessage,userData}:any) => {
                         size={15}
                         fontFam="Inter-Medium"
                         style={{ marginBottom: verticalScale(8) }}
-                        text={"Carmen Electra"}
+                        text={item?.title}
                       />
-                      <Image
-                        style={{ width: "100%", height: verticalScale(300) }}
-                        source={images.defimage200}
-                      />
+                      {item?.imageUrl ? (
+                        <Image
+                          style={{ width: "100%", height: verticalScale(300) }}
+                          source={{ uri: item?.imageUrl }}
+                        />
+                      ) : (
+                        <></>
+                      )}
+
                       <CustomText
                         color={colors.white + "80"}
                         size={14}
@@ -95,9 +103,7 @@ const Channel = ({hideSendMessage,userData}:any) => {
                           marginTop: verticalScale(8),
                           marginLeft: scale(5),
                         }}
-                        text={
-                          "What a wonderful night I had at the Grammy Awards."
-                        }
+                        text={item?.description}
                       />
 
                       <CustomText
@@ -105,7 +111,7 @@ const Channel = ({hideSendMessage,userData}:any) => {
                         size={14}
                         // fontFam="Inter-Medium"
                         style={{ marginRight: scale(5), textAlign: "right" }}
-                        text={"1:34 PM"}
+                        text={moment(item?.created_at).format("h:s a")}
                       />
                     </View>
                     <View
@@ -126,34 +132,29 @@ const Channel = ({hideSendMessage,userData}:any) => {
                       <CustomText
                         color={colors.grey300}
                         size={15}
-                        
                         // fontFam="Inter-Medium"
-                         style={{  letterSpacing: 3,
-                         }}
-                        text={"❤️" + "  " + "11K"}
+                        style={{ letterSpacing: 3 }}
+                        text={"❤️" + "  " + item?.likes}
                       />
                     </View>
                   </View>
                 );
               }}
             />
-            {
-              hideSendMessage?(
-                <></>
-
-
-              ):(
-                                <MessageSender
-                                bottom={verticalScale(15)}
-                                sendImage={images.simplesend}
-                                />
-                                
-
-              )
-            }
-
+            {hideSendMessage ? (
+              <></>
+            ) : (
+              <MessageSender
+                bottom={verticalScale(15)}
+                sendImage={images.simplesend}
+                channelId={channelId}
+                token={token}
+                setAuthPosts={setAuthPosts}
+                authPosts={authPosts}
+                
+              />
+            )}
           </View>
-
         </ImageBackground>
       </View>
     </>

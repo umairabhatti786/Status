@@ -15,6 +15,7 @@ import CustomText from "../../../components/CustomText";
 import { Spacer } from "../../../components/Spacer";
 import { scale, verticalScale } from "react-native-size-matters";
 import { appStyles } from "../../../utils/AppStyles";
+import moment from "moment";
 export const windowWidth = Dimensions.get("window").width;
 
 const FriendList = ({ item, onPress, disabled }: any) => {
@@ -30,16 +31,27 @@ const FriendList = ({ item, onPress, disabled }: any) => {
           backgroundColor: "#1D2029",
           padding: scale(6),
           flexDirection: "row",
-          justifyContent:"space-between"
+          justifyContent: "space-between",
         }}
       >
-        <View style={{flexDirection:"row"}}>
-        <View style={{ width: verticalScale(75), height:verticalScale(90),marginLeft:scale(3)}}>
-          <Image
-            style={{ width: "100%", height: "100%",borderRadius:scale(5),overflow:'hidden' }}
-            source={item?.img}
-          />
-          {/* {item.update && (
+        <View style={{ flexDirection: "row" }}>
+          <View
+            style={{
+              width: verticalScale(75),
+              height: verticalScale(90),
+              marginLeft: scale(3),
+            }}
+          >
+            <Image
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: scale(5),
+                overflow: "hidden",
+              }}
+              source={{ uri: item?.imageUrl }}
+            />
+            {/* {item.update && (
             <View
               style={{
                 width: verticalScale(10),
@@ -52,80 +64,114 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               }}
             ></View>
           )} */}
-        </View>
-        
+          </View>
 
-       <View style={{ paddingLeft: scale(15), width:item.postimg ?scale(187):scale(250),}}>
-
-       {/* size={15}
+          <View
+            style={{
+              paddingLeft: scale(15),
+              width: item.postimg ? scale(187) : scale(250),
+            }}
+          >
+            {/* size={15}
                 fontFam="Poppins-Bold"
                 fontWeight="800 */}
-          <CustomText
-            text={item.name}
-            color={colors.white}
-            size={16}
-            fontFam="Poppins-SemiBold"
-            fontWeight="800"
-          />
-          {/* <Spacer height={verticalScale(6)} /> */}
-          <CustomText
-            text={item.message}
-            color={"#FFFFFF"}
-            size={14}
-            numberOfLines={2}
-            style={{marginVertical:verticalScale(5)}}
-            // fontFam="Poppins-Medium"
-            fontWeight="500"
-          />
-                    {/* <Spacer height={verticalScale(6)} /> */}
-
-
-
-          <View style={{...appStyles.row}}>
-            <View style={{width:scale(7),height:scale(7),borderRadius:999,backgroundColor:colors.sky,marginBottom:verticalScale(3)}}/>
             <CustomText
-            text={`${item.unread} unread`}
-            color={colors.white}
-            size={10}
-            style={{marginHorizontal:scale(5)}}
-            // fontFam="Poppins-Medium"
-            fontWeight="400"
-          />
-                      <View style={{width:scale(4.5),height:scale(4.5),borderRadius:999,backgroundColor:colors.white,marginRight:scale(5),marginBottom:verticalScale(3)}}/>
+              text={item.name}
+              color={colors.white}
+              size={16}
+              fontFam="Poppins-SemiBold"
+              fontWeight="800"
+            />
+            {/* <Spacer height={verticalScale(6)} /> */}
+            {item?.channel?.last_post != "null" ? (
+              <CustomText
+                text={item?.channel?.last_post?.description}
+                color={"#FFFFFF"}
+                size={14}
+                numberOfLines={2}
+                style={{ marginVertical: verticalScale(5) }}
+                // fontFam="Poppins-Medium"
+                fontWeight="500"
+              />
+            ) : (
+              <></>
+            )}
+            {/* <Spacer height={verticalScale(6)} /> */}
 
-          <CustomText
-            text={item.time}
-            color={"#FFFFFF"}
-            size={10}
-            // fontFam="Poppins-Medium"
-            fontWeight="400"
-          />
-
+            <View style={{ ...appStyles.row }}>
+              <View
+                style={{
+                  width: scale(7),
+                  height: scale(7),
+                  borderRadius: 999,
+                  backgroundColor: colors.sky,
+                  marginBottom: verticalScale(3),
+                }}
+              />
+              <CustomText
+                text={`0 unread`}
+                color={colors.white}
+                size={10}
+                style={{ marginHorizontal: scale(5) }}
+                // fontFam="Poppins-Medium"
+                fontWeight="400"
+              />
+              <View
+                style={{
+                  width: scale(4.5),
+                  height: scale(4.5),
+                  borderRadius: 999,
+                  backgroundColor: colors.white,
+                  marginRight: scale(5),
+                  marginBottom: verticalScale(3),
+                }}
+              />
+              {item?.channel?.last_post != "null" ? (
+                <CustomText
+                  text={moment(item?.channel?.last_post?.created_at).format("h:s a")}
+                  color={"#FFFFFF"}
+                  size={10}
+                  // fontFam="Poppins-Medium"
+                  fontWeight="400"
+                />
+              ) : (
+                <></>
+              )}
+            </View>
           </View>
         </View>
-        </View>
-        {
-          item.postimg&&(
-            <View
+        {item?.channel?.last_post?.imageUrl && (
+          <View
             style={{
               alignItems: "flex-end",
               justifyContent: "space-between",
-              paddingRight:scale(7),
-              paddingTop:verticalScale(5),
+              paddingRight: scale(7),
+              paddingTop: verticalScale(5),
               paddingBottom: verticalScale(5),
-              position:"absolute",
-              alignSelf:"center",
-              right:scale(5),
-              top:"20%",
-              
+              position: "absolute",
+              alignSelf: "center",
+              right: scale(5),
+              top: "20%",
+
               // backgroundColor:"red"
             }}
           >
-             <View style={{ width: verticalScale(55), height:verticalScale(55),}}>
-            <Image
-              style={{ width: "100%", height: "100%",borderRadius:scale(5),overflow:'hidden' }}
-              source={item?.postimg}
-            />
+            <View
+              style={{ width: verticalScale(55), height: verticalScale(55) }}
+            >
+              {item?.channel?.last_post != "null" ? (
+                <Image
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: scale(5),
+                    overflow: "hidden",
+                  }}
+                  source={{ uri: item?.channel?.last_post?.imageUrl }}
+                />
+              ) : (
+                <></>
+              )}
             </View>
             {/* <CustomText
               text={item.time}
@@ -162,11 +208,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
              
             )} */}
           </View>
-            
-          )
-        }
-        
-       
+        )}
       </TouchableOpacity>
     </>
   );

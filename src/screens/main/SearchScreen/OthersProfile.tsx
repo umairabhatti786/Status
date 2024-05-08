@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   Image,
@@ -17,7 +18,11 @@ import { appStyles } from "../../../utils/AppStyles";
 import CustomText from "../../../components/CustomText";
 import { colors } from "../../../utils/colors";
 import { images } from "../../../assets/images";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import CustomButton from "../../../components/CustomButton";
 import MessagesComponent from "../../../components/MessageComponent";
@@ -32,8 +37,11 @@ import FastImage from "react-native-fast-image";
 import NewText from "../../../components/NewText";
 import {
   Blocked,
+  CreateComment,
   Favorite,
   Follow,
+  GetStatus,
+  GetUserComment,
   getUserDetail,
   isFollowing,
 } from "../../../api/ApiServices";
@@ -41,16 +49,28 @@ import { useSelector } from "react-redux";
 import { getToken } from "../../../redux/reducers/authReducer";
 import Loader from "../../../components/Loader";
 import CustomToast from "../../../components/CustomToast";
+import {
+  Pusher,
+  PusherMember,
+  PusherChannel,
+  PusherEvent,
+} from "@pusher/pusher-websocket-react-native";
+import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
 
 const OthersProfile = () => {
+  const pusher = Pusher.getInstance();
   const route: any = useRoute();
   const id = route?.params?.id;
+  const channelId = route?.params?.channelId;
   const navigation: any = useNavigation();
   const [isWatchList, setIsWatchList] = useState(false);
   const [isSideBar, setIsBar] = useState(false);
   const [isFollow, setIsFollow] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState<any>([]);
+  const [posts, setPosts] = useState<any>([]);
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
   const [isActiveProfile, setIsActiveProfile] = useState(0);
@@ -58,16 +78,138 @@ const OthersProfile = () => {
   const [data, setData] = useState({});
   const [showMessage, setShowMessage] = useState(false);
   const [message, setMessage] = useState("");
-  const [toastColor, setToastColor] = useState(colors.red)
-
+  const [toastColor, setToastColor] = useState(colors.red);
+  const isFocused = useIsFocused();
+  const [loading2, setLoading2] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
 
+  // const [channelId, setIsChannelId] = useState("");
+  // const getChannelId = async () => {
+  //   const userInfo = await StorageServices.getItem(AUTH);
+  //   setIsChannelId(userInfo?.channel?.id);
+  // };
+  // useEffect(() => {
+  //   getChannelId();
+  // }, []);
+  // function onConnectionStateChange(currentState:string, previousState:string) {
+
+  //   console.log(`Connection: ${currentState}`,'commentsChannel_'+id);
+  // }
+  
+  const con = async () => {
+    console.log("am focused");
+    try {
+      await pusher.init({
+        apiKey: "e8f7ca7b8515f9bfcbb0",
+        cluster: "mt1",
+        // onConnectionStateChange,
+      });
+
+      let commentsChannel = await pusher.subscribe({
+        channelName: "commentsChannel_" + id,
+        onEvent: (event: PusherEvent) => {
+          setComments([...comments,JSON.parse(event.data).comment])
+        },
+      });
+      let channelUpdates = await pusher.subscribe({
+        channelName: "channelUpdates_"+channelId ,
+        onEvent: (event: PusherEvent) => {
+          // console.log("postEvent",JSON.parse(event.data).post)
+          setPosts([...posts,JSON.parse(event.data).post])
+          // setComments([...comments,JSON.parse(event.data).comment])
+        },
+      });
+      // await pusher.subscribe({ channelName:'commentsChannel_'+id });
+      await pusher.connect();
+    } catch (e) {
+      console.log(`ERROR: ${e}`);
+    }
+  };
+  const unCon = async () => {
+    await pusher.unsubscribe({ channelName: "commentsChannel_" + id });
+    await pusher.unsubscribe({ channelName: "channelUpdates_" + channelId });
+    await pusher.disconnect();
+  };
+  useEffect(() => {
+    if (isFocused) {
+      con();
+    } else {
+      unCon();
+    }
+  }, [isFocused]);
+
   useEffect(() => {
     getDetail();
   }, []);
-  console.log("UserID",data?.gif)
+  // console.log("UserID", data?.gif);
+
+  useEffect(() => {
+    getUserComment();
+  }, []);
+
+  useEffect(() => {
+    GetPosts();
+  }, []);
+
+  const GetPosts = async () => {
+    GetStatus(id, token, async ({ isSuccess, response }: any) => {
+      console.log("data p", isSuccess);
+
+      let result = JSON.parse(response);
+      if (result.status) {
+        // console.log(result?.posts?.data)
+        setPosts(result?.posts?.data);
+      } else {
+        console.log(result);
+        // Alert.alert("Alert!", "Something went wrong",);
+        console.log("Something went wrong");
+      }
+    });
+  };
+
+  const getUserComment = async () => {
+    let data = {
+      userId: id,
+    };
+    GetUserComment(data, token, async ({ isSuccess, response }: any) => {
+      console.log("data g", isSuccess);
+
+      let result = JSON.parse(response);
+      if (result.status) {
+        // console.log(result.comments.data)
+        setComments(result?.comments?.data);
+        // setLoading(false);
+      } else {
+        console.log(result);
+        // Alert.alert("Alert!", "Something went wrong",);
+        console.log("Something went wrong");
+      }
+    });
+  };
+
+  const submitComment = async () => {
+    let data = {
+      description: comment,
+      userId: id,
+    };
+    // console.log(comment)
+    setLoading2(true);
+    CreateComment(data, token, async ({ isSuccess, response }: any) => {
+      console.log("data c", isSuccess);
+
+      let result = JSON.parse(response);
+      // console.log('result',result);
+      if (result.status) {
+        // setComments([...comments, result.comment]);
+        setLoading2(false);
+      } else {
+        // Alert.alert("Alert!", "Something went wrong");
+        console.log("Something went wrong");
+      }
+    });
+  };
 
   const getDetail = () => {
     setLoading(true);
@@ -75,57 +217,48 @@ const OthersProfile = () => {
       id: id,
     };
     getUserDetail(params, token, async ({ isSuccess, response }: any) => {
-      console.log("knckdnc",isSuccess)
- 
-        let result = JSON.parse(response);
-        if (result.status) {
-          console.log("Resuldcjdbvc", result);
-          setData(result?.user);
-          if (result?.user?.followers.length > 0) {
-            setIsFollow(true);
-          }
-          if (result?.user?.favoritee.length > 0) {
-            setIsFavorite(true);
-          }
-          setLoading(false);
+      console.log("knckdnc", isSuccess);
 
-          //   if (result?.) {
-          //     setIsFollow(true)
-          //   }
-          //   else {
-          //     setIsFollow(false)
-          //   }
-          // } else {
-          //   // Alert.alert("Alert!", "Something went wrong");
+      let result = JSON.parse(response);
+      if (result.status) {
+        console.log("Resuldcjdbvc", result);
+        setData(result?.user);
+        if (result?.user?.followers.length > 0) {
+          setIsFollow(true);
         }
-        else {
-             Alert.alert("Alert!", "Something went wrong");
-
-
+        if (result?.user?.favoritee.length > 0) {
+          setIsFavorite(true);
         }
-      
-      
+        setLoading(false);
+
+        //   if (result?.) {
+        //     setIsFollow(true)
+        //   }
+        //   else {
+        //     setIsFollow(false)
+        //   }
+        // } else {
+        //   // Alert.alert("Alert!", "Something went wrong");
+      } else {
+        Alert.alert("Alert!", "Something went wrong");
+      }
     });
   };
 
   const onFollow = () => {
     setIsFollow(!isFollow);
-    if(!isFollow){
-      let name=`You followed ${data?.name}`
-      setShowMessage(true)
-      setMessage(name)
-      setToastColor(colors.green)
-  
-  
+    if (!isFollow) {
+      let name = `You followed ${data?.name}`;
+      setShowMessage(true);
+      setMessage(name);
+      setToastColor(colors.green);
+
       setTimeout(() => {
-        setShowMessage(false)
-        setToastColor(colors.red)
-  
-  
-        
+        setShowMessage(false);
+        setToastColor(colors.red);
       }, 4000);
     }
-   
+
     let params = {
       followee: id,
     };
@@ -148,7 +281,6 @@ const OthersProfile = () => {
   };
   const onFavorite = () => {
     setIsFavorite(!isFavorite);
-
 
     let params = {
       favorite: id.toString(),
@@ -179,10 +311,11 @@ const OthersProfile = () => {
       <MessagesComponent
         comments={true}
         profile={true}
-        name={item?.name}
-        image={item?.img}
-        message={item?.message}
-        time={item?.time}
+        onDelete={false}
+        name={item?.username}
+        image={item?.imageUrl}
+        message={item?.description}
+        time={item?.created_at}
         chatDate={item?.chatDate}
       />
     );
@@ -564,50 +697,52 @@ const OthersProfile = () => {
              />
            </View> */}
 
-{data?.gif1 ? (
-                    <Image
-                      style={{ width: 130, height: 45, alignSelf: "flex-end" }}
-                      source={images.giphy}
-                      resizeMode="contain"
-                    />
-                  ) : (
-                    <>
-                      {data?.gif2 ? (
-                        <Image
-                          style={{
-                            width: 130,
-                            height: 45,
-                            alignSelf: "flex-end",
-                          }}
-                          source={images.giphy}
-                          resizeMode="contain"
-                        />
-                      ) : (
-                        <></>
+                    {data?.gif1 ? (
+                      <Image
+                        style={{
+                          width: 130,
+                          height: 45,
+                          alignSelf: "flex-end",
+                        }}
+                        source={images.giphy}
+                        resizeMode="contain"
+                      />
+                    ) : (
+                      <>
+                        {data?.gif2 ? (
+                          <Image
+                            style={{
+                              width: 130,
+                              height: 45,
+                              alignSelf: "flex-end",
+                            }}
+                            source={images.giphy}
+                            resizeMode="contain"
+                          />
+                        ) : (
+                          <></>
+                        )}
+                      </>
+                    )}
+
+                    <View style={appStyles.rowjustify}>
+                      {data?.gif1 && (
+                        <View style={styles.gifhyContainer}>
+                          <Image
+                            style={{ width: "100%", height: "100%" }}
+                            source={{ uri: data?.gif1 }}
+                          />
+                        </View>
                       )}
-                    </>
-                  )}
-
-                
-
-                  <View style={appStyles.rowjustify}>
-                    {data?.gif1 && (
-                      <View style={styles.gifhyContainer}>
-                        <Image
-                          style={{ width: "100%", height: "100%" }}
-                          source={{ uri: data?.gif1 }}
-                        />
-                      </View>
-                    )}
-                    {data?.gif2 && (
-                      <View style={styles.gifhyContainer}>
-                        <Image
-                          style={{ width: "100%", height: "100%" }}
-                          source={{ uri: data?.gif2 }}
-                        />
-                      </View>
-                    )}
-                  </View>
+                      {data?.gif2 && (
+                        <View style={styles.gifhyContainer}>
+                          <Image
+                            style={{ width: "100%", height: "100%" }}
+                            source={{ uri: data?.gif2 }}
+                          />
+                        </View>
+                      )}
+                    </View>
 
                     <View
                       style={{
@@ -630,23 +765,35 @@ const OthersProfile = () => {
                         }}
                         placeholderTextColor={colors.gray200}
                         placeholder="Write on my wall"
+                        onChangeText={(text) => setComment(text)}
+                        value={comment}
                       />
-                      <Image
-                        style={{ tintColor: colors.gray200 }}
-                        source={images.send}
-                      />
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={submitComment}
+                      >
+                        {loading2 ? (
+                          <ActivityIndicator
+                            size={"small"}
+                            color={colors.white}
+                          />
+                        ) : (
+                          <Image
+                            style={{ tintColor: colors.gray200 }}
+                            source={images.send}
+                          />
+                        )}
+                      </TouchableOpacity>
                     </View>
-
-                    {/* <FlatList
-             data={profileComments}
-             contentContainerStyle={{
-               gap: 7,
-             }}
-             renderItem={renderChatList}
-           /> */}
+                    {/* public comments */}
+                    <FlatList
+                      data={comments}
+                      contentContainerStyle={{
+                        gap: 7,
+                      }}
+                      renderItem={renderChatList}
+                    />
                   </View>
-
-
                 </ScrollView>
               </View>
             ) : (
@@ -658,7 +805,7 @@ const OthersProfile = () => {
                     paddingTop: verticalScale(10),
                   }}
                 >
-                  <Channel />
+                  <Channel posts={posts} hideSendMessage={true} channelId={channelId} />
                 </View>
               </>
             )}
@@ -767,7 +914,7 @@ const OthersProfile = () => {
         setModalVisible={setIsBlockModal}
         isBlock={"BLOCK"}
         onBlocked={onBlocked}
-        title={`Block Carmen ${data.name}?`}
+        title={`Block Carmen ${data?.name}?`}
         des={
           "This user will no longer be able to follow, message, or see your profile."
         }
@@ -855,7 +1002,7 @@ const OthersProfile = () => {
 
       </CustomModal> */}
 
-{showMessage && (
+      {showMessage && (
         <CustomToast
           showError={showMessage}
           setShowError={setShowMessage}

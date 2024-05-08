@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   Image,
@@ -34,10 +35,21 @@ import CustomModal from "../../../components/CustomModal";
 import Channel from "../Channel";
 import { useSelector } from "react-redux";
 import { getToken } from "../../../redux/reducers/authReducer";
-import { GetAuthUser } from "../../../api/ApiServices";
+import {
+  CreateComment,
+  DeleteComment,
+  GetAuthUser,
+  GetStatus,
+  GetUserComment,
+} from "../../../api/ApiServices";
 import NewText from "../../../components/NewText";
 import FastImage from "react-native-fast-image";
 import Loader from "../../../components/Loader";
+import {
+  AUTH,
+  StorageServices,
+  TOKEN,
+} from "../../../utils/hooks/StorageServices";
 
 const ProfileScreen = () => {
   const navigation: any = useNavigation();
@@ -45,23 +57,134 @@ const ProfileScreen = () => {
   const [isFollow, setIsFollow] = useState(false);
   const [isActiveProfile, setIsActiveProfile] = useState(0);
   const focused = useIsFocused();
-
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState<any>([]);
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState();
+  const [loading2, setLoading2] = useState(false);
+  const [userData, setUserData] = useState<any>();
   const token = useSelector(getToken);
+  const [authPosts, setAuthPosts] = useState([]);
+
+  const [channelId, setIsChannelId] = useState("");
+  const getChannelId = async () => {
+    const userInfo = await StorageServices.getItem(AUTH);
+    setIsChannelId(userInfo?.channel?.id);
+  };
+  useEffect(() => {
+    getChannelId();
+  }, []);
 
   useEffect(() => {
     getAuth();
   }, [focused]);
 
-  console.log("userDatauserData", userData);
+  useEffect(() => {
+    getUserComment();
+  }, []);
+
+  useEffect(() => {
+    GetPosts();
+  }, []);
+
+  const GetPosts = async () => {
+    let userInfo = await StorageServices.getItem(AUTH);
+    let token = await StorageServices.getItem(TOKEN);
+    GetStatus(userInfo?.id, token, async ({ isSuccess, response }: any) => {
+      console.log("data p", isSuccess);
+
+      let result = JSON.parse(response);
+      if (result.status) {
+        // console.log('result?.posts',result?.posts?.data)
+        setAuthPosts(result?.posts?.data);
+      } else {
+        console.log(result);
+        // Alert.alert("Alert!", "Something went wrong",);
+        console.log("Something went wrong");
+      }
+    });
+  };
+
+  const delComment = async (com: any) => {
+    let userInfo = await StorageServices.getItem(AUTH);
+    let data = {
+      commentId: com?.id,
+      userId: userInfo?.id,
+    };
+    console.log(data);
+    DeleteComment(data, token, async ({ isSuccess, response }: any) => {
+      console.log("data", isSuccess);
+
+      let result = JSON.parse(response);
+      if (result.status) {
+        console.log(result);
+        let newComs = comments.filter(
+          (c: any) => c.id != result?.comment?.commentId
+        );
+        setComments(newComs);
+        // console.log('newComs',newComs);
+        // setLoading(false);
+      } else {
+        // Alert.alert(result);
+        // Alert.alert("Alert!", "Something went wrong");
+        console.log("Something went wrong");
+        // console.log(userData?.id,token);
+        console.log(result);
+      }
+    });
+  };
+  const getUserComment = async () => {
+    let userInfo = await StorageServices.getItem(AUTH);
+    let data = {
+      userId: userInfo?.id,
+    };
+    // console.log(userData?.id, token);
+    GetUserComment(data, token, async ({ isSuccess, response }: any) => {
+      console.log("data", isSuccess);
+
+      let result = JSON.parse(response);
+      if (result.status) {
+        console.log(result);
+        setComments(result?.comments?.data);
+        // setLoading(false);
+      } else {
+        // Alert.alert(result);
+        // Alert.alert("Alert!", "Something went wrong");
+        console.log("Something went wrong");
+        // console.log(userData?.id,token);
+        // console.log(result)
+      }
+    });
+  };
+
+  const submitComment = async () => {
+    let data = {
+      description: comment,
+      userId: userData?.id,
+    };
+    // console.log(data)
+    setLoading2(true);
+    CreateComment(data, token, async ({ isSuccess, response }: any) => {
+      console.log("data", isSuccess);
+
+      let result = JSON.parse(response);
+      if (result.status) {
+        setComments([...comments, result.comment]);
+        setLoading2(false);
+      } else {
+        // Alert.alert("Alert!", "Something went wrong");
+        console.log("Something went wrong");
+      }
+    });
+  };
+
+  // console.log("userData", userData);
 
   const getAuth = () => {
     setLoading(true);
     GetAuthUser(token, async ({ isSuccess, response }: any) => {
       if (isSuccess) {
         let result = JSON.parse(response);
-        console.log("ckdnckdnc", result?.user);
+        // console.log("ckdnckdnc", result?.user);
 
         if (result.status) {
           setLoading(false);
@@ -85,10 +208,12 @@ const ProfileScreen = () => {
       <MessagesComponent
         comments={true}
         profile={true}
-        name={item?.name}
-        image={item?.img}
-        message={item?.message}
-        time={item?.time}
+        // id={item?.id}
+        onDelete={() => delComment(item)}
+        name={item?.username}
+        image={item?.imageUrl}
+        message={item?.description}
+        time={item?.created_at}
         chatDate={item?.chatDate}
       />
     );
@@ -332,8 +457,6 @@ const ProfileScreen = () => {
                     </>
                   )}
 
-                
-
                   <View style={appStyles.rowjustify}>
                     {userData?.gif1 && (
                       <View style={styles.gifhyContainer}>
@@ -374,20 +497,35 @@ const ProfileScreen = () => {
                       }}
                       placeholderTextColor={colors.gray200}
                       placeholder="Write on my wall"
+                      onChangeText={(text) => setComment(text)}
+                      value={comment}
                     />
-                    <Image
-                      style={{ tintColor: colors.gray200 }}
-                      source={images.send}
-                    />
+
+                    <TouchableOpacity
+                      activeOpacity={0.7}
+                      onPress={submitComment}
+                    >
+                      {loading2 ? (
+                        <ActivityIndicator
+                          size={"small"}
+                          color={colors.white}
+                        />
+                      ) : (
+                        <Image
+                          style={{ tintColor: colors.gray200 }}
+                          source={images.send}
+                        />
+                      )}
+                    </TouchableOpacity>
                   </View>
 
-                  {/* <FlatList
-             data={profileComments}
-             contentContainerStyle={{
-               gap: 7,
-             }}
-             renderItem={renderChatList}
-           /> */}
+                  <FlatList
+                    data={comments}
+                    contentContainerStyle={{
+                      gap: 7,
+                    }}
+                    renderItem={renderChatList}
+                  />
                 </View>
               </View>
             </ScrollView>
@@ -400,7 +538,13 @@ const ProfileScreen = () => {
                   paddingTop: verticalScale(10),
                 }}
               >
-                <Channel userData={userData} />
+                <Channel
+                  userData={userData}
+                  channelId={channelId}
+                  token={token}
+                  authPosts={authPosts}
+                  setAuthPosts={setAuthPosts}
+                />
               </View>
             </>
           )}

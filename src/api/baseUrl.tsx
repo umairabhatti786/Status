@@ -22,6 +22,16 @@ BLOCKED:"blockUser",
 GET_BLOCKED_USER:"getBlockedUsers",
 GET_AUTH:"getAuth",
 GET_USER_DETAIL:"getUserDetail",
-SEARCH_USER_BY_NAME:"searchUserByName"
+SEARCH_USER_BY_NAME:"searchUserByName",
+GET_USER_COMMENT:"getUserComment",
+CREATE_COMMENT:"createComment",
+DELETE_COMMENT:"deleteComment",
+GET_CHANNEL:"getChannel",
+GET_FOLLOWING_CHANNEL:"getFollowingChannel",
+GET_FAVORITES_CHANNEL:"getFavoritesChannel",
+GET_STATUS:"getStatus/",
+CREATE_POST:"createPost",
+UPDATE_POST:"updatePost",
+DELETE_POST:"deletePost",
 
 };
