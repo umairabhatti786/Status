@@ -21,39 +21,69 @@ import MessagesComponent from "../../../components/MessageComponent";
 import { scale, verticalScale } from "react-native-size-matters";
 import { Spacer } from "../../../components/Spacer";
 import MessageSender from "../../../components/MessageSender";
+import { SearchUserName } from "../../../api/ApiServices";
+import { StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
+import { useSelector } from "react-redux";
+import { getUserData } from "../../../redux/reducers/authReducer";
 
 const NewMessage = () => {
   const route: any = useRoute();
   const navigation: any = useNavigation();
-  const [selectedUser, setSelectedUser] = useState();
+  const [selectedUser, setSelectedUser] = useState<any>();
   const [search, setSearch] = useState("");
-  const [isSearch, setIsSearch] = useState(false);
+  const [isSearch, setIsSearch] = useState(true);
+  const [conversation, setConversation] = useState<any>([]);
+  const userData = useSelector(getUserData);
 
   const [usersList, setUsersList] = useState([
     { name: "Mike O’Dea", img: images.defimage12 },
-   
   ]);
 
-  const onSearchUsers = (txt: any) => {
-    setSearch(txt);
-    setIsSearch(true);
-
-    if (txt.length == 0) {
-      setIsSearch(false);
-
-      return;
-    } else {
-      let filterSearch = usersList?.filter((item) => {
-        return `${item.name}`
-          .toLowerCase()
-          .trim()
-          .includes(txt.toLowerCase().trim());
-      });
-      console.log("kcndkcnTextLwnghtdxdc", filterSearch);
-
-      setUsersList(filterSearch);
-    }
+  const onSearchUsers = async (text: any) => {
+    setSearch(text);
+    let token = await StorageServices.getItem(TOKEN);
+    // console.log({ search: text })
+    SearchUserName(
+      JSON.stringify({ search: text }),
+      token,
+      async ({ isSuccess, response }: any) => {
+        console.log("data s", isSuccess);
+        // console.log(response)
+        let result = response;
+        if (result.status) {
+          // console.log(result?.result?.data);
+          // console.log('result?.posts',result?.posts?.data)
+          if (result?.result?.data.length) setUsersList(result?.result?.data);
+        } else {
+          // setMsg({...msg,message:''})
+          console.log(result);
+          // Alert.alert("Alert!", "Something went wrong",);
+          console.log("Something went wrong");
+        }
+      }
+    );
   };
+
+  // const onSearchUsers = (txt: any) => {
+  //   setSearch(txt);
+  //   setIsSearch(true);
+
+  //   if (txt.length == 0) {
+  //     setIsSearch(false);
+
+  //     return;
+  //   } else {
+  //     let filterSearch = usersList?.filter((item) => {
+  //       return `${item.name}`
+  //         .toLowerCase()
+  //         .trim()
+  //         .includes(txt.toLowerCase().trim());
+  //     });
+  //     console.log("kcndkcnTextLwnghtdxdc", filterSearch);
+
+  //     setUsersList(filterSearch);
+  //   }
+  // };
 
   return (
     <View style={appStyles.main}>
@@ -130,31 +160,35 @@ const NewMessage = () => {
             }}
           >
             {selectedUser ? (
-                <View style={{flexDirection:"row",alignItems:"center"}}>
-                      <View
-                style={{
-                    marginVertical:verticalScale(4),
-                    
-            
-                    //   minWidth: scale(80),
-                  borderRadius: scale(8),
-                  
-                  borderWidth: 1,
-                  borderColor: colors.white,
-                }}
+              <TouchableOpacity
+                onPress={() => {}}
+                style={{ flexDirection: "row", alignItems: "center" }}
               >
-                <CustomText
-                //   fontWeight="600"
-                  color={colors.white}
-                //   fontFam="Poppins-Medium"
-                  size={16}
-                  style={{marginHorizontal:scale(10),marginVertical:verticalScale(1)}}
-                  text={selectedUser.name}
-                />
-              </View>
-              <View/>
-                    </View>
-            
+                <View
+                  style={{
+                    marginVertical: verticalScale(4),
+
+                    //   minWidth: scale(80),
+                    borderRadius: scale(8),
+
+                    borderWidth: 1,
+                    borderColor: colors.white,
+                  }}
+                >
+                  <CustomText
+                    //   fontWeight="600"
+                    color={colors.white}
+                    //   fontFam="Poppins-Medium"
+                    size={16}
+                    style={{
+                      marginHorizontal: scale(10),
+                      marginVertical: verticalScale(1),
+                    }}
+                    text={selectedUser.name}
+                  />
+                </View>
+                <View />
+              </TouchableOpacity>
             ) : (
               <TextInput
                 placeholder="Search"
@@ -167,7 +201,7 @@ const NewMessage = () => {
                   fontWeight: "400",
                   color: colors.white,
                   width: "87%",
-                  paddingVertical:verticalScale(6),
+                  paddingVertical: verticalScale(6),
                   alignItems: "center",
 
                   // textAlign:"center"
@@ -199,7 +233,7 @@ const NewMessage = () => {
                     fontFam="Poppins-Medium"
                     size={18}
                     style={{ marginVertical: verticalScale(5) }}
-                    text={item.name}
+                    text={item?.name}
                   />
                 </TouchableOpacity>
               );
@@ -207,51 +241,55 @@ const NewMessage = () => {
           </View>
         )}
 
-        {
-            selectedUser&&(
-                <View style={{marginTop:"20%",alignItems:"center",justifyContent:"center",}}>
+        {selectedUser && (
+          <View
+            style={{
+              marginTop: "20%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              style={{
+                width: scale(100),
+                height: scale(100),
+                borderRadius: scale(10),
+              }}
+              source={selectedUser?.img}
+            />
+            <CustomText
+              fontWeight="600"
+              color={colors.white}
+              fontFam="Poppins-Medium"
+              size={17}
+              style={{ marginVertical: verticalScale(10) }}
+              text={"Mike O’Dea"}
+            />
 
-
-                <Image
-                style={{width:scale(100),height:scale(100),borderRadius:scale(10)}}
-                source={selectedUser?.img}
-                />
-                    <CustomText
-                fontWeight="600"
-                color={colors.white}
-                fontFam="Poppins-Medium"
-                size={17}
-                style={{ marginVertical: verticalScale(10) }}
-                text={"Mike O’Dea"}
-              />
-    
-    <CustomText
-                // fontWeight="600"
-                color={colors.white}
-                // fontFam="Poppins-Medium"
-                size={17}
-                style={{ textAlign:"center",marginHorizontal:scale(20) }}
-                text={"You started a private message with Mike O’Dea. Please be respectful."}
-              />
-    
-    
-            </View>
-
-            )
-        }
-    
-
-       
+            <CustomText
+              // fontWeight="600"
+              color={colors.white}
+              // fontFam="Poppins-Medium"
+              size={17}
+              style={{ textAlign: "center", marginHorizontal: scale(20) }}
+              text={
+                "You started a private message with Mike O’Dea. Please be respectful."
+              }
+            />
+          </View>
+        )}
       </View>
-      {
-        selectedUser&&(
-            <MessageSender/>
-
-
-        )
-      }
-
-
+      {selectedUser && (
+        <MessageSender
+          message={"chat"}
+          // setConversation={setConversation}
+          // conversation={conversation}
+          receiver={selectedUser}
+          newChat={true}
+          receiverId={selectedUser?.id}
+          authId={userData.id}
+        />
+      )}
     </View>
   );
 };

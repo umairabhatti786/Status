@@ -12,6 +12,7 @@ import AddStatus from "../../screens/main/AddStatus";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { getUserData } from "../../redux/reducers/authReducer";
+import NewMessage from "../../screens/main/NewMessage";
 
 const BottomTab = ({ navigation }: any) => {
   const Bottom = createBottomTabNavigator();
@@ -106,7 +107,8 @@ console.log("imageurlDsycdvyv",image)
       <Bottom.Screen
         name="AddStatus"
         // component={AddStatus}
-        component={ProfileScreen}
+        // component={ProfileScreen}
+        component={NewMessage}
 
         options={{
           headerShown: false,

@@ -9,13 +9,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { appStyles } from "../../../utils/AppStyles";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import { images } from "../../../assets/images";
 import MessagesList, { windowWidth } from "./MessagesList";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import ImagePicker from "react-native-image-crop-picker";
 import { messages, messagesList } from "../../../utils/Data";
 import MessagesComponent from "../../../components/MessageComponent";
@@ -23,11 +27,103 @@ import { scale, verticalScale } from "react-native-size-matters";
 import { Spacer } from "../../../components/Spacer";
 import MessageSender from "../../../components/MessageSender";
 import InboxComponent from "../../../components/InboxComponent";
+import { useSelector } from "react-redux";
+import { getUserData } from "../../../redux/reducers/authReducer";
+import { StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
+import { GetConversation } from "../../../api/ApiServices";
+import moment from "moment";
+import {
+  Pusher,
+  PusherMember,
+  PusherChannel,
+  PusherEvent,
+} from "@pusher/pusher-websocket-react-native";
 
 const Chat = () => {
+  const pusher = Pusher.getInstance();
   const route: any = useRoute();
   const item = route.params.item;
   const navigation: any = useNavigation();
+  const [conversation, setConversation] = useState<any>([]);
+  const [NewMessage, setNewMessage] = useState<any>({})
+  const isFocused = useIsFocused();
+  const userData = useSelector(getUserData);
+
+  const getConversation = async () => {
+    let token = await StorageServices.getItem(TOKEN);
+    // console.log(item.id)
+    GetConversation(
+      { conversationId: item.id },
+      token,
+      async ({ isSuccess, response }: any) => {
+        console.log("data c", isSuccess);
+        // console.log(msg)
+        let result = JSON.parse(response);
+        if (result.status) {
+          console.log(result?.conversation?.data);
+          // console.log('result?.posts',result?.posts?.data)
+          setConversation(result?.conversation?.data);
+        } else {
+          // setMsg({...msg,message:''})
+          console.log(result);
+          // Alert.alert("Alert!", "Something went wrong",);
+          console.log("Something went wrong");
+        }
+      }
+    );
+  };
+
+  useEffect(() => {
+    setConversation([...conversation,NewMessage])
+  }, [NewMessage])
+  
+
+  const con = async () => {
+    // console.log("am focused");
+    try {
+      await pusher.init({
+        apiKey: "e8f7ca7b8515f9bfcbb0",
+        cluster: "mt1",
+        // onConnectionStateChange,
+      });
+      let channelNumber =
+        parseInt(item?.user1?.id || item?.user2?.id) + parseInt(userData.id);
+      console.log("channelNumber", channelNumber);
+      console.log("chatChannel_" + channelNumber);
+      let chatChannel = await pusher.subscribe({
+        channelName: "chatChannel_" + channelNumber,
+        onEvent: (event: PusherEvent) => {
+          console.log("chat", JSON.parse(event.data));
+          setNewMessage(JSON.parse(event.data).message)
+          // setConversation([...conversation, JSON.parse(event.data).message]);
+          // setComments([...comments,JSON.parse(event.data).comment])
+        },
+      });
+      // await pusher.subscribe({ channelName:'commentsChannel_'+id });
+      await pusher.connect();
+    } catch (e) {
+      console.log(`ERROR: ${e}`);
+    }
+  };
+  const unCon = async () => {
+    await pusher.unsubscribe({
+      channelName:
+        "chatChannel_" + (item?.user1?.id || item?.user2?.id) + userData.id,
+    });
+    await pusher.disconnect();
+  };
+  useEffect(() => {
+    if (isFocused) {
+      con();
+    } else {
+      unCon();
+    }
+  }, [isFocused]);
+
+  useEffect(() => {
+    if (isFocused) getConversation();
+  }, [isFocused]);
+
   const imagePicker = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -41,10 +137,10 @@ const Chat = () => {
   const renderChatList = ({ item }: any) => {
     return (
       <InboxComponent
-        name={item?.name}
-        image={item?.img}
+        name={item?.sender?.name}
+        image={{ uri: item?.sender?.imageUrl }}
         message={item?.message}
-        time={item?.time}
+        time={moment(item?.created_at).format("h:s a")}
         chatDate={item?.chatDate}
       />
     );
@@ -52,133 +148,139 @@ const Chat = () => {
 
   return (
     <View style={appStyles.main}>
-            <StatusBar backgroundColor="#000" barStyle="light-content" />
+      <StatusBar backgroundColor="#000" barStyle="light-content" />
 
       <View style={styles.header}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                // backgroundColor:"red"
-              }}
-            >
-              <TouchableOpacity
-                activeOpacity={0.6}
-                style={{
-                  width: scale(27),
-                  height: scale(30),
-                  alignItems: "flex-start",
-                  justifyContent: "center",
-                  // backgroundColor:"red"
-                  // backgroundColor:"red"
-                }}
-                onPress={() => navigation.goBack()}
-              >
-                <Image
-                  style={{ width: scale(18), height: scale(25) }}
-                  source={images.back200}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            // backgroundColor:"red"
+          }}
+        >
+          <TouchableOpacity
+            activeOpacity={0.6}
+            style={{
+              width: scale(27),
+              height: scale(30),
+              alignItems: "flex-start",
+              justifyContent: "center",
+              // backgroundColor:"red"
+              // backgroundColor:"red"
+            }}
+            onPress={() => navigation.goBack()}
+          >
+            <Image
+              style={{ width: scale(18), height: scale(25) }}
+              source={images.back200}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
 
+          <Image
+            style={{
+              width: scale(37),
+              height: scale(37),
+              borderRadius: 999,
+            }}
+            source={{ uri: item?.user1?.imageUrl || item?.user2?.imageUrl }}
+          />
+          <View
+            style={{
+              marginHorizontal: scale(7),
+              // paddingBottom: verticalScale(5),
+            }}
+          >
+            <CustomText
+              color={colors.white}
+              size={17}
+              // style={{ marginTop: verticalScale(5) }}
+              text={item?.user1?.name || item?.user2?.name}
+            />
+            <CustomText
+              // fontWeight="700"
+              color={colors.white}
+              size={13}
+              style={{ marginTop: verticalScale(-4) }}
+              text={`${
+                item?.user1?.followers_count || item?.user2?.followers_count
+              } Followers`}
+            />
+          </View>
+        </View>
+        <View style={{ ...appStyles.row }}>
+          <View style={appStyles.row}>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              // onPress={() => setIsWatchList(!isWatchList)}
+            >
               <Image
                 style={{
-                  width: scale(37),
-                  height: scale(37),
-                  borderRadius: 999,
+                  width: scale(22),
+                  height: scale(22),
+                  tintColor: colors.white,
                 }}
-                source={item.img}
+                source={images.download}
+                resizeMode="contain"
               />
-              <View
+            </TouchableOpacity>
+            <Spacer width={scale(20)} />
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => navigation.goBack()}
+            >
+              <Image
                 style={{
-                  marginHorizontal: scale(7),
-                  // paddingBottom: verticalScale(5),
+                  width: scale(18),
+                  height: scale(18),
+                  tintColor: colors.white,
                 }}
-              >
-                <CustomText
-                  color={colors.white}
-                  size={17}
-                  // style={{ marginTop: verticalScale(5) }}
-                  text={item.name}
-                />
-                <CustomText
-                  // fontWeight="700"
-                  color={colors.white}
-                  size={13}
-                  style={{ marginTop: verticalScale(-4) }}
-                  text={"1.2M Followers"}
-                />
-              </View>
-            </View>
-            <View style={{ ...appStyles.row, }}>
-
-            <View style={appStyles.row}>
-                  <TouchableOpacity
-                    activeOpacity={0.6}
-                    // onPress={() => setIsWatchList(!isWatchList)}
-                  >
-                    <Image
-                      style={{
-                        width: scale(22),
-                        height: scale(22),
-                        tintColor: colors.white,
-                      }}
-                      source={images.download}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                  <Spacer width={scale(20)} />
-                  <TouchableOpacity
-                    activeOpacity={0.6}
-                    onPress={() => navigation.goBack()}
-                  >
-                    <Image
-                      style={{
-                        width: scale(18),
-                        height: scale(18),
-                        tintColor: colors.white,
-                      }}
-                      source={images.block}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                  <Spacer width={scale(20)} />
-                  <TouchableOpacity
-                    activeOpacity={0.6}
-                    onPress={() => navigation.goBack()}
-                  >
-                    <Image
-                      style={{
-                        width: scale(17),
-                        height: scale(17),
-                        tintColor: colors.white,
-                      }}
-                      source={images.trash}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
-                         </View>
-
-            {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
+                source={images.block}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <Spacer width={scale(20)} />
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => navigation.goBack()}
+            >
+              <Image
+                style={{
+                  width: scale(17),
+                  height: scale(17),
+                  tintColor: colors.white,
+                }}
+                source={images.trash}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
           </View>
-     
-      
+
+          {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
+        </View>
       </View>
       <View style={{ flex: 1 }}>
         <FlatList
-          data={messages}
+          data={conversation}
           // style={{paddingTop:verticalScale(20)}}
           contentContainerStyle={{
             gap: 7,
+            // transform: [{ scaleY: -1 }],
           }}
+          // inverted={true} 
           renderItem={renderChatList}
+          // style={{ transform: [{ scaleY: -1 }] }}
         />
-        <View>
+      <View>
         <MessageSender
-        placeholder="write a message"
+          placeholder="write a message"
+          message={"chat"}
+          setConversation={setConversation}
+          conversation={conversation}
+          receiverId={item?.user1?.id || item?.user2?.id}
+          authId={userData.id}
         />
-
-        </View>
+      </View>
       </View>
     </View>
   );
@@ -190,8 +292,8 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.black300,
     alignItems: "center",
-    paddingTop: Platform.OS=="ios"?"18%":"2%",
-    paddingBottom:"1%",
+    paddingTop: Platform.OS == "ios" ? "18%" : "2%",
+    paddingBottom: "1%",
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: scale(15),

@@ -70,7 +70,9 @@ const OthersProfile = () => {
 
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<any>([]);
+  const [newComment, setNewComment] = useState<any>({});
   const [posts, setPosts] = useState<any>([]);
+  const [newPost, setNewPost] = useState<any>({});
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
   const [isActiveProfile, setIsActiveProfile] = useState(0);
@@ -97,7 +99,14 @@ const OthersProfile = () => {
 
   //   console.log(`Connection: ${currentState}`,'commentsChannel_'+id);
   // }
-  
+  useEffect(() => {
+    setComments([...comments,newComment])
+  }, [newComment])
+
+  useEffect(() => {
+    setNewPost([...posts,newPost])
+  }, [newPost])
+
   const con = async () => {
     console.log("am focused");
     try {
@@ -106,18 +115,22 @@ const OthersProfile = () => {
         cluster: "mt1",
         // onConnectionStateChange,
       });
-
+      // console.log('init')
       let commentsChannel = await pusher.subscribe({
         channelName: "commentsChannel_" + id,
         onEvent: (event: PusherEvent) => {
-          setComments([...comments,JSON.parse(event.data).comment])
+          // console.log("channelUpdates_"+JSON.stringify(route?.params))
+          console.log("commentsChannel_", JSON.parse(event.data));
+          setNewComment(JSON.parse(event.data).comment);
+          // setComments([...comments,JSON.parse(event.data).comment])
         },
       });
       let channelUpdates = await pusher.subscribe({
-        channelName: "channelUpdates_"+channelId ,
+        channelName: "channelUpdates_" + channelId,
         onEvent: (event: PusherEvent) => {
-          // console.log("postEvent",JSON.parse(event.data).post)
-          setPosts([...posts,JSON.parse(event.data).post])
+          console.log("channelUpdates_", JSON.parse(event.data).post);
+          // setPosts([...posts,JSON.parse(event.data).post])
+          setNewPost(JSON.parse(event.data).post);
           // setComments([...comments,JSON.parse(event.data).comment])
         },
       });
@@ -146,12 +159,12 @@ const OthersProfile = () => {
   // console.log("UserID", data?.gif);
 
   useEffect(() => {
-    getUserComment();
-  }, []);
+    if (isFocused) getUserComment();
+  }, [isFocused]);
 
   useEffect(() => {
-    GetPosts();
-  }, []);
+    if (isFocused) GetPosts();
+  }, [isFocused]);
 
   const GetPosts = async () => {
     GetStatus(id, token, async ({ isSuccess, response }: any) => {
@@ -805,7 +818,11 @@ const OthersProfile = () => {
                     paddingTop: verticalScale(10),
                   }}
                 >
-                  <Channel posts={posts} hideSendMessage={true} channelId={channelId} />
+                  <Channel
+                    posts={posts}
+                    hideSendMessage={true}
+                    channelId={channelId}
+                  />
                 </View>
               </>
             )}

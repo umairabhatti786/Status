@@ -6,6 +6,7 @@ import { Spacer } from "../../../components/Spacer";
 import { images } from "../../../assets/images";
 import { useNavigation } from "@react-navigation/native";
 import { scale, verticalScale } from "react-native-size-matters";
+import moment from "moment";
 export const windowWidth = Dimensions.get("window").width;
 
 const MessagesList = ({ item }: any, List: boolean) => {
@@ -48,25 +49,35 @@ const MessagesList = ({ item }: any, List: boolean) => {
         <View style={{ width: scale(65), height: scale(65) }}>
           <Image
             style={{ width: "100%", height: "100%", borderRadius: scale(8) }}
-            source={item?.img}
+            source={{uri:item?.user1?.imageUrl||item?.user2?.imageUrl}}
           />
         </View>
 
         <View style={{ paddingHorizontal: 10, width: scale(180), }}>
           <View style={{ flexDirection: "row",  }}>
-            <CustomText
-              text={item.name}
-              color={colors.white}
-              size={15}
-              fontFam="Poppins-Bold"
-              fontWeight="800"
-            />
+            
+
+              <CustomText
+                text={item?.user1?.name||item?.user2?.name}
+                color={colors.white}
+                size={15}
+                fontFam="Poppins-Bold"
+                fontWeight="800"
+              />
+            
            
           
           </View>
+          {/* <CustomText
+                text={(item?.user1?.followers_count||item?.user2?.followers_count)+' Followers'}
+                color={colors.white}
+                size={10}
+                fontFam="Poppins-Bold"
+                fontWeight="800"
+              /> */}
           {/* <Spacer height={5} /> */}
           <CustomText
-            text={item.message}
+            text={item?.last_message?.message}
             color={
               item?.message === "Typing..." ? colors.lightgreen : colors.gray500
             }
@@ -95,14 +106,14 @@ const MessagesList = ({ item }: any, List: boolean) => {
           }}
         >
             <CustomText
-              text={item.time}
+              text={moment(item?.last_message?.created_at).format("h:s a")}
               color={colors.gray500}
               size={14}
               fontFam="Poppins-Regular"
             />
           <TouchableOpacity onPress={() => setFavorite(!favorite)}>
             <Image
-              source={item.favorite ? images.star1 : images.star}
+              source={item?.user1?.favoritee?.length||item?.user2?.favoritee?.length ? images.star1 : images.star}
               style={{ marginRight:scale(5),width:scale(18),height:scale(18)}}
               resizeMode="contain"
             />
