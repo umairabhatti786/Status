@@ -128,6 +128,7 @@ const MessageSender = ({
       if (result.status) {
         console.log(result);
         setAuthPosts([...authPosts, result?.post]);
+        setState({description: "",channelId: channelId,})
         // setComments([...comments, result.comment]);
         // setLoading2(false);
       } else {

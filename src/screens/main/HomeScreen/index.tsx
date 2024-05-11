@@ -28,7 +28,7 @@ import { StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
 const HomeScreen = () => {
   const navigation: any = useNavigation();
   const [activeBar, setActiveBar] = useState("Following");
-  const focused = useIsFocused();
+  const isFocused = useIsFocused();
   const [followingChannels, setFollowingChannels] = useState<any>([]);
   const [favoritesChannels, setFavoritesChannels] = useState<any>([]);
   // const token = StorageServices.getItem(TOKEN);
@@ -101,11 +101,11 @@ const HomeScreen = () => {
 
   useEffect(() => {
     GetFollowingChannels();
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     GetFavoriteChannels();
-  }, []);
+  }, [isFocused]);
 
   const GetFollowingChannels = async () => {
     let token = await StorageServices.getItem(TOKEN);
