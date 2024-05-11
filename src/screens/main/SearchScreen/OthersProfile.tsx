@@ -124,7 +124,7 @@ const OthersProfile = () => {
           console.log("commentsChannel_", JSON.parse(event.data));
           let com=JSON.parse(event.data).comment;
           if(com?.deleted){
-            let filter = comments.filter((c:any)=>c.id!=JSON.parse(event.data).comment.id)
+            let filter = comments.filter((c:any)=>c.id!=com.commentId)
             setComments(filter)
           }else{
             setComments([...comments,com])
