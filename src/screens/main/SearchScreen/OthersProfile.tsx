@@ -385,6 +385,9 @@ const OthersProfile = () => {
       }
     });
   };
+
+  const shortenedText = data?.name?.length > 17 ? data?.name?.substring(0, 16) + "..." : data?.name;
+
   return (
     <>
       <SafeAreaView style={appStyles.main}>
@@ -442,7 +445,7 @@ const OthersProfile = () => {
                     size={18}
                     numberOfLines={1}
                     style={{ marginTop: verticalScale(5) }}
-                    text={data?.name}
+                    text={shortenedText}
                   />
                   <NewText
                     // fontWeight="700"

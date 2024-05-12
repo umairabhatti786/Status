@@ -220,6 +220,8 @@ const ProfileScreen = () => {
       />
     );
   };
+  const shortenedText = userData?.name?.length > 17 ? userData?.name?.substring(0, 16) + "..." : userData?.name;
+
   return (
     <>
       {loading ? (
@@ -263,7 +265,7 @@ const ProfileScreen = () => {
                   size={18}
                   numberOfLines={1}
                   style={{ marginTop: verticalScale(5) }}
-                  text={userData?.name}
+                  text={shortenedText}
                 />
                 <NewText
                   // fontWeight="700"
