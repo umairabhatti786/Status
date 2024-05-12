@@ -71,7 +71,7 @@ const ProfileScreen = () => {
     setIsChannelId(userInfo?.channel?.id);
   };
   useEffect(() => {
-    getChannelId();
+    getChannelId(); 
   }, []);
 
   useEffect(() => {
