@@ -31,7 +31,7 @@ import { useSelector } from "react-redux";
 import { getToken } from "../../../redux/reducers/authReducer";
 import Loader from "../../../components/Loader";
 
-const SearchMember = ({ navigation }) => {
+const SearchMember = ({ navigation }:any) => {
   const [search, setSearch] = useState("");
 
   const token = useSelector(getToken);
@@ -93,16 +93,16 @@ const SearchMember = ({ navigation }) => {
   ];
 
   const onSearchMember = (txt: any) => {
-    console.log("ckdbkcdbc",txt)
+    // console.log("search Text",txt,token)
     setSearch(txt);
     if (txt.length == 0) {
       setMemberList([]);
       return;
     } else {
-      let form = new FormData();
+      // let form = new FormData();
       setLoading(true);
-      form.append("search", txt);
-      SearchUserName(form, token, async ({ isSuccess, response }: any) => {
+      // form.append("search", txt);
+      SearchUserName({search:txt}, token, async ({ isSuccess, response }: any) => {
         if (isSuccess) {
           if (response?.status) {
             setLoading(false);
@@ -163,7 +163,7 @@ const SearchMember = ({ navigation }) => {
           value={search}
           onBack={() => navigation.goBack()}
           navigation={navigation}
-          onChangeText={(txt) => onSearchMember(txt)}
+          onChangeText={(txt:any) => onSearchMember(txt)}
         />
         {/* {memberList?.length == 0 && (
           <View style={{ paddingHorizontal: scale(10) }}>

@@ -702,7 +702,7 @@ export const SearchUserName = async (data:any, token: any, callback: any) => {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
-    body: data,
+    body: JSON.stringify(data),
   };
   try {
     fetch(getApiUrl(URLS.SEARCH_USER_BY_NAME), requestOptions)
