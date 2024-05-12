@@ -44,7 +44,7 @@ const NewMessage = () => {
     let token = await StorageServices.getItem(TOKEN);
     // console.log({ search: text })
     SearchUserName(
-      JSON.stringify({ search: text }),
+      { search: text },
       token,
       async ({ isSuccess, response }: any) => {
         console.log("data s", isSuccess);
