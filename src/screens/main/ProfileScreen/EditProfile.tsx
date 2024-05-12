@@ -886,7 +886,7 @@ const EditProfile = ({ route }: any) => {
                   fontFam="Poppins-Medium"
                   size={15}
                   style={{ marginBottom: verticalScale(5) }}
-                  text={`${values.bio.length}/500`}
+                  text={`${values.bio.length}/300`}
                   color={colors.white}
                 />
               </View>
@@ -914,7 +914,7 @@ const EditProfile = ({ route }: any) => {
                   placeholder={"Bio"}
                   multiline={true}
                   placeholderTextColor={colors.grey400}
-                  maxLength={500}
+                  maxLength={300}
                   onChangeText={(txt: string) => {
                     setValues({ ...values, bio: txt });
                   }}

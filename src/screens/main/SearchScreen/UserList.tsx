@@ -18,12 +18,12 @@ import { images } from "../../../assets/images";
 import { useNavigation } from "@react-navigation/native";
 import { scale, verticalScale } from "react-native-size-matters";
 export const windowWidth = Dimensions.get("window").width;
-import FastImage from 'react-native-fast-image'
+import FastImage from "react-native-fast-image";
+import NewText from "../../../components/NewText";
 
-
-const UserList = ({ item,name,image ,onPress}: any) => {
+const UserList = ({ item, name, image, onPress }: any) => {
   const navigation: any = useNavigation();
-  console.log("Popular",item)
+  console.log("Popular", item);
   return (
     <>
       <TouchableOpacity
@@ -31,7 +31,7 @@ const UserList = ({ item,name,image ,onPress}: any) => {
         activeOpacity={0.6}
         style={{
           width: "32.8%",
-          height:verticalScale(120),
+          height: verticalScale(120),
           borderRadius: 10,
           marginBottom: 3,
           marginHorizontal: 1.5,
@@ -39,14 +39,14 @@ const UserList = ({ item,name,image ,onPress}: any) => {
         }}
       >
         <FastImage
-                resizeMode={FastImage.resizeMode.cover}
-                
-
-         style={{ width: "100%", height: "100%" }} source={{uri:image,
-          headers: { Authorization: 'someAuthToken' },
-          priority: FastImage.priority.normal,
-         }}
-          />
+          resizeMode={FastImage.resizeMode.cover}
+          style={{ width: "100%", height: "100%" }}
+          source={{
+            uri: image,
+            headers: { Authorization: "someAuthToken" },
+            priority: FastImage.priority.normal,
+          }}
+        />
         {item.online && (
           <View
             style={{
@@ -66,13 +66,19 @@ const UserList = ({ item,name,image ,onPress}: any) => {
             position: "absolute",
             bottom: 0,
             width: "100%",
-            paddingHorizontal:scale(10),
-            paddingBottom:verticalScale(2),
+            paddingBottom: verticalScale(2),
             justifyContent: "flex-end",
           }}
         >
           {item.nearby && (
-            <View style={{ ...appStyles.row, marginLeft: -5, marginBottom: verticalScale(-1) }}>
+            <View
+              style={{
+                ...appStyles.row,
+                marginLeft: -5,
+                marginBottom: verticalScale(-1),
+                paddingHorizontal: scale(10),
+              }}
+            >
               <Image
                 style={{ width: 15, height: 15 }}
                 source={images.location}
@@ -81,28 +87,44 @@ const UserList = ({ item,name,image ,onPress}: any) => {
               <CustomText text={item.nearby} color={colors.white} />
             </View>
           )}
-          
-            <View style={appStyles.row}>
-              <Image
-                style={{ width: 15, height: 15 }}
-                resizeMode="contain"
-                source={images.users}
-              />
 
-              <CustomText
-                text={item?.followers_count}
-                fontFam="Poppins-Medium"
+          <View style={{ ...appStyles.row, paddingHorizontal: scale(10) }}>
+            <Image
+              style={{ width: 15, height: 15 }}
+              resizeMode="contain"
+              source={images.users}
+            />
 
-                color={colors.white}
-                style={{ marginLeft: 5,paddingTop:4}}
-              />
-            </View>
-   
+            <CustomText
+              text={item?.followers_count}
+              fontFam="Poppins-Medium"
+              color={colors.white}
+              style={{ marginLeft: 5, paddingTop: 4 }}
+            />
+          </View>
 
-          <CustomText 
-          fontFam="Inter-SemiBold"
-          fontWeight="600"
-          text={name} color={colors.white} />
+          <View style={{ height: 17 }}>
+
+          <View
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: 23,
+                backgroundColor: `rgba(0, 0, 0, 0.4)`, // Apply opacity to the background color
+                opacity: 0.4,
+              }}
+            />
+            <NewText
+              fontFam="Poppins-Bold"
+              fontWeight="bold"
+              text={name}
+              numberOfLines={1}
+              size={11.5}
+              style={{ marginLeft: 10 }}
+              color={colors.white}
+            />
+           
+          </View>
         </View>
       </TouchableOpacity>
     </>

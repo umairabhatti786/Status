@@ -549,22 +549,23 @@ const OthersProfile = () => {
                     </View>
                     <Spacer width={scale(22)} />
 
-                    <View style={appStyles.row}>
-                      <Image
-                        style={{
-                          width: scale(20),
-                          height: scale(20),
-                        }}
-                        source={images.bagicon}
-                      />
-                      <CustomText
-                        color={colors.grey300}
-                        size={15}
-                        fontFam="Inter-Medium"
-                        style={{ marginLeft: scale(8) }}
-                        text={"Actress, Model"}
-                      />
-                    </View>
+                    <View style={{ ...appStyles.row, width: "48%" }}>
+                    <Image
+                      style={{
+                        width: scale(20),
+                        height: scale(20),
+                      }}
+                      source={images.bagicon}
+                    />
+                    <CustomText
+                      color={colors.grey300}
+                      size={15}
+                      numberOfLines={1}
+                      fontFam="Inter-Medium"
+                      style={{ marginLeft: scale(8), marginRight: scale(10) }}
+                      text={data?.occupation}
+                    />
+                  </View>
                   </View>
                   <FastImage
                     style={{
@@ -949,16 +950,17 @@ const OthersProfile = () => {
         setModalVisible={setIsBlockModal}
         isBlock={"BLOCK"}
         onBlocked={onBlocked}
-        title={`Block Carmen ${data?.name}?`}
+        title={`Block ${data?.name}?`}
         des={
           "This user will no longer be able to follow, message, or see your profile."
         }
       />
+      
       <BlockModal
         isModalVisible={isReportModal}
         setModalVisible={setIsReportModal}
         isBlock={"REPORT"}
-        title={"Report Carmen Electra?"}
+        title={`Report ${data?.name}?`}
         des={
           "If you feel this user has violated our terms of service select REPORT and we will review your anonymous submission."
         }

@@ -386,6 +386,80 @@ const ProfileScreen = () => {
                     priority: FastImage.priority.normal,
                   }}
                 />
+
+<View style={appStyles.rowjustify}>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      disabled={true}
+                      // onPress={onFavorite}
+                      style={styles.box}
+                    >
+                      <Image
+                        style={{
+                          width: 30,
+                          height: 30,
+                          tintColor: "#8A8A8A",
+                        }}
+                        source={images.star}
+                        resizeMode="contain"
+                      />
+                      <CustomText
+                        color={"#8A8A8A"}
+                        size={13}
+                        numberOfLines={1}
+                        fontFam="Inter-Medium"
+                        style={{ marginTop: scale(5) }}
+                        text={"Favorite"}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      // onPress={() => setIsWatchList(!isWatchList)}
+                      style={styles.box}
+                    >
+                      <Image
+                        style={{
+                          width: 25,
+                          height: 25,
+                          tintColor: colors.white,
+                        }}
+                        source={images.appicon}
+                        resizeMode="contain"
+                      />
+                      <CustomText
+                        color={colors.white}
+                        size={13}
+                        numberOfLines={1}
+                        fontFam="Inter-Medium"
+                        style={{ marginTop: scale(7) }}
+                        text={"STATUS"}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      disabled={true}
+                      // onPress={() => setIsWatchList(!isWatchList)}
+                      style={styles.box}
+                    >
+                      <Image
+                        style={{
+                          width: 30,
+                          height: 30,
+                          tintColor:"#8A8A8A",
+                        }}
+                        source={images.profilemessage}
+                        resizeMode="contain"
+                      />
+                      <CustomText
+                        color={"#8A8A8A"}
+                        size={13}
+                        numberOfLines={1}
+                        fontFam="Inter-Medium"
+                        style={{ marginTop: scale(5) }}
+                        text={"Message"}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 <View style={{ paddingHorizontal: scale(10) }}>
                   <View
                     style={{
@@ -658,6 +732,13 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: scale(5),
     alignItems: "center",
+    justifyContent: "center",
+  },
+  box: {
+    alignItems: "center",
+    width: "33%",
+    height: 75,
+    backgroundColor: colors.black300,
     justifyContent: "center",
   },
 });

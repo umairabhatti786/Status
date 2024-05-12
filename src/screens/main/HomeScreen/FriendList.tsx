@@ -38,7 +38,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
           <View
             style={{
               width: verticalScale(75),
-              height: verticalScale(90),
+              height: verticalScale(80),
               marginLeft: scale(3),
             }}
           >
