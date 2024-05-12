@@ -28,7 +28,7 @@ const PredictionList = ({ data, onPress, Addresses,onAddressPress }: Props) => {
         // position: "absolute",
         backgroundColor: colors.primary,
         maxHeight: 300,
-        borderRadius:scale(10)
+        borderRadius:scale(10),
       }}
     >
       <View >

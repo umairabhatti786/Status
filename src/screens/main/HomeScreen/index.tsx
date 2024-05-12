@@ -22,7 +22,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { scale, verticalScale } from "react-native-size-matters";
 import { getToken, getUserData } from "../../../redux/reducers/authReducer";
-import { GetFavoriteChannel, GetFollowingChannel } from "../../../api/ApiServices";
+import {
+  GetFavoriteChannel,
+  GetFollowingChannel,
+} from "../../../api/ApiServices";
 import { StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
 
 const HomeScreen = () => {
@@ -34,7 +37,7 @@ const HomeScreen = () => {
   // const token = StorageServices.getItem(TOKEN);
   const dispatch = useDispatch();
   const isSroll = useSelector(getUserData);
-  
+
   console.log("isSroll", isSroll);
 
   const topBarData = ["Following", "Favorites"];
@@ -98,14 +101,13 @@ const HomeScreen = () => {
     },
   ];
 
-
   useEffect(() => {
     GetFollowingChannels();
-  }, []);
+  }, [focused]);
 
   useEffect(() => {
     GetFavoriteChannels();
-  }, []);
+  }, [focused]);
 
   const GetFollowingChannels = async () => {
     let token = await StorageServices.getItem(TOKEN);
@@ -115,12 +117,12 @@ const HomeScreen = () => {
       let result = JSON.parse(response);
       if (result.status) {
         // console.log('result.channel.following',result.channel.following)
-        setFollowingChannels(result.channel.following); 
+        setFollowingChannels(result.channel.following);
         // setComments([...comments, result.comment]);
         // setLoading2(false);
       } else {
         // Alert.alert("Alert!", "Something went wrong");
-        console.log("Something went wrong",result,token);
+        console.log("Something went wrong", result, token);
       }
     });
   };
@@ -197,12 +199,12 @@ const HomeScreen = () => {
         </View>
 
         <Spacer height={verticalScale(15)} />
- 
+
         <TopBar
           topBarData={topBarData}
           activeBar={activeBar}
           setActiveBar={setActiveBar}
-        /> 
+        />
       </View>
 
       <Spacer height={10} />
@@ -211,11 +213,7 @@ const HomeScreen = () => {
         // style={{paddingHorizontal:10}}
         // onScroll={onScroll}
         showsVerticalScrollIndicator={false}
-        data={
-          activeBar == "Favorites"
-            ? favoritesChannels
-            : followingChannels
-        }
+        data={activeBar == "Favorites" ? favoritesChannels : followingChannels}
         contentContainerStyle={{
           gap: 7,
         }}

@@ -59,8 +59,6 @@ const ProfileSetup = ({ route }: props) => {
 
   const token = route?.params?.token
 
-  // 23|3UGmrNTv6NKeaymPN3gH26ALkKfWd31hrNwoY2Jh56d31b92
-
   const [imageFile, setImageFile] = useState({})
 
   const [values, setValues] = useState({
@@ -162,7 +160,7 @@ const ProfileSetup = ({ route }: props) => {
             setShowError(false);
             setToastColor(colors.red)
             StorageServices.setItem(AUTH,result?.user)
-            StorageServices.setItem(TOKEN,result?.token)
+            StorageServices.setItem(TOKEN,token)
             // StorageServices.setItem(REMEMBER,isRemember)
 
             dispatch(setToken(result?.token))
@@ -332,6 +330,12 @@ const ProfileSetup = ({ route }: props) => {
             <Spacer height={7} />
 
             <View>
+            {isPredictionList && (
+                <PredictionList
+                  onAddressPress={(i) => onPressLocationAddress(i)}
+                  Addresses={predictionData}
+                />
+              )}
               <Input
                 label="Your Location"
                 leftSource={images.location}
@@ -340,12 +344,7 @@ const ProfileSetup = ({ route }: props) => {
                 onChangeText={onSearch}
               />
 
-              {isPredictionList && (
-                <PredictionList
-                  onAddressPress={(i) => onPressLocationAddress(i)}
-                  Addresses={predictionData}
-                />
-              )}
+              
 
             </View>
 

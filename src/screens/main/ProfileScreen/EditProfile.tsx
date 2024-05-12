@@ -116,14 +116,9 @@ const EditProfile = ({ route }: any) => {
 
   const dispatch = useDispatch();
 
-
-
   const userData = route?.params?.data;
 
-  console.log(
-    "selectedMedia1",
-    userData
-  );
+  console.log("selectedMedia1", userData);
 
   const [model, setModel] = useState(userData?.isModel == false ? "NO" : "YES");
 
@@ -134,7 +129,7 @@ const EditProfile = ({ route }: any) => {
     wallpaperUrl: userData?.wallpaperUrl ? userData?.wallpaperUrl : "",
     // gif1: userData?.gif1 ? userData?.gif1 : "",
     name: userData?.name ? userData?.name : "",
-    gender: userData?.gender ? userData.gender : "Does not apply",
+    gender: userData?.gender ? userData.gender : "",
     birthday: userData?.birthday ? userData.birthday : "",
     occupation: userData?.occupation ? userData?.occupation : "",
     link: userData?.link ? userData?.link : "",
@@ -143,6 +138,8 @@ const EditProfile = ({ route }: any) => {
     lat: userData?.lat ? userData?.lat : "",
     lng: userData?.lng ? userData?.lng : "",
   });
+
+  console.log("GenderValue", values.gender);
 
   useEffect(() => {
     console.log("profileGifs", profileGifs);
@@ -243,7 +240,6 @@ const EditProfile = ({ route }: any) => {
       });
     }
   };
-
   const onOpenGallery = async (isPicture: any) => {
     console.log("ISpucvibdv", isPicture);
     let gallerypermission = await requestGalleryPermission();
@@ -314,8 +310,17 @@ const EditProfile = ({ route }: any) => {
 
       return;
     }
-    if (!values.birthday) {
-      setError("Your birthdate is required");
+    if (!values.imageUrl) {
+      setError("Image is Required");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
+
+      return;
+    }
+    if (!values.gender) {
+      setError("Gender is required");
       setShowError(true);
       setTimeout(() => {
         setShowError(false);
@@ -342,15 +347,15 @@ const EditProfile = ({ route }: any) => {
 
       return;
     }
-    if (!values.link) {
-      setError("Link required");
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-      }, 4000);
+    // if (!values.link) {
+    //   setError("Link required");
+    //   setShowError(true);
+    //   setTimeout(() => {
+    //     setShowError(false);
+    //   }, 4000);
 
-      return;
-    }
+    //   return;
+    // }
     if (values.link) {
       let validLink = isUrlValid(values.link);
       if (!validLink) {
@@ -365,6 +370,8 @@ const EditProfile = ({ route }: any) => {
     }
     const nonEmptySelectedGifs = selectedGifs.filter((gif) => gif !== "");
 
+    console.log("nonEmptySelectedGifs[0]",nonEmptySelectedGifs[0])
+
 
     const form = new FormData();
     form.append("wallComments", values.wallComments ? 1 : 0);
@@ -375,8 +382,8 @@ const EditProfile = ({ route }: any) => {
     form.append("bio", values?.bio);
     form.append("isModel", model == "true" ? 1 : 0);
     form.append("wallpaperUrl", values.wallpaperUrl);
-    form.append("gif1", nonEmptySelectedGifs[0]);
-    form.append("gif2", nonEmptySelectedGifs[1]);
+    form.append("gif1", nonEmptySelectedGifs[0]?nonEmptySelectedGifs[0]:"");
+    form.append("gif2", nonEmptySelectedGifs[1]?nonEmptySelectedGifs[1]:"");
     form.append("name", values.name);
     form.append("imageUrl", values.imageUrl);
     form.append("location", values?.location);
@@ -392,7 +399,7 @@ const EditProfile = ({ route }: any) => {
         if (result.status) {
           setLoading(false);
           setToastColor(colors.green);
-          setError("Profile Update Successfully");
+          setError("Profile Updated Successfully");
           dispatch(setUserData(result?.user));
 
           setShowError(true);
@@ -513,17 +520,37 @@ const EditProfile = ({ route }: any) => {
               />
             </View>
             {values?.wallpaperUrl ? (
-              <FastImage
-                style={styles.wallpaperContainer}
-                resizeMode="cover"
-                source={{
-                  uri: isUplaodWallpaper
-                    ? values?.wallpaperUrl?.path
-                    : values?.wallpaperUrl,
-                  headers: { Authorization: "someAuthToken" },
-                  priority: FastImage.priority.normal,
-                }}
-              />
+              <View style={{ height: windowHeight / 4 }}>
+                <FastImage
+                  style={styles.wallpaperContainer}
+                  resizeMode="cover"
+                  source={{
+                    uri: isUplaodWallpaper
+                      ? values?.wallpaperUrl?.path
+                      : values?.wallpaperUrl,
+                    headers: { Authorization: "someAuthToken" },
+                    priority: FastImage.priority.normal,
+                  }}
+                />
+
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={() => {
+                    setValues({ ...values, wallpaperUrl: "" });
+
+                    // setSelectedGifs((prevSelectedGifs) =>
+                    //   prevSelectedGifs.filter((gi, ind) => gi !== gip)
+                    // );
+                  }}
+                  style={styles.crossContainer}
+                >
+                  <Image
+                    style={{ width: "100%", height: "100%" }}
+                    source={images.crosswhite}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
             ) : (
               <TouchableOpacity
                 activeOpacity={0.6}
@@ -553,17 +580,33 @@ const EditProfile = ({ route }: any) => {
               />
             </View>
             {values.imageUrl ? (
-              <FastImage
-                style={styles.picContainer}
-                resizeMode="cover"
-                source={{
-                  uri: isUplaodPicture
-                    ? values?.imageUrl?.path
-                    : values?.imageUrl,
-                  headers: { Authorization: "someAuthToken" },
-                  priority: FastImage.priority.normal,
-                }}
-              />
+              <View style={{ height: scale(99), width: scale(99) }}>
+                <FastImage
+                  style={styles.picContainer}
+                  resizeMode="cover"
+                  source={{
+                    uri: isUplaodPicture
+                      ? values?.imageUrl?.path
+                      : values?.imageUrl,
+                    headers: { Authorization: "someAuthToken" },
+                    priority: FastImage.priority.normal,
+                  }}
+                />
+
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={() => {
+                    setValues({ ...values, imageUrl: "" });
+                  }}
+                  style={styles.crossContainer}
+                >
+                  <Image
+                    style={{ width: "100%", height: "100%" }}
+                    source={images.crosswhite}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
             ) : (
               <TouchableOpacity
                 activeOpacity={0.6}
@@ -698,36 +741,6 @@ const EditProfile = ({ route }: any) => {
             }}
           />
           <View style={{ paddingHorizontal: scale(20) }}>
-            <NewText
-              fontWeight="700"
-              color={colors.white}
-              size={19}
-              text={"Models"}
-            />
-            <Spacer height={verticalScale(20)} />
-
-            <CustomText
-              fontWeight={"500"}
-              fontFam="Poppins-Medium"
-              size={13}
-              style={{ marginBottom: verticalScale(5) }}
-              text={"Are you a FEMALE model or a Female OnlyFans creator?"}
-              color={colors.white}
-            />
-            <DropDown
-              placeholder={"Make a Selection"}
-              dropWidth={"100%"}
-              setValue={setModel}
-              value={model}
-              //   data={data}
-              data={modelData.map((item, _index) => {
-                return {
-                  id: item?.id,
-                  label: item?.value,
-                  value: item?.value,
-                };
-              })}
-            />
             {/* <Spacer height={verticalScale(10)}/> */}
             <Input
               label="Display Name"
@@ -799,6 +812,7 @@ const EditProfile = ({ route }: any) => {
                   height: 50,
                   backgroundColor: colors.primary,
                   borderRadius: 10,
+                  justifyContent: "center",
                   // alignItems: "center",
                   padding: 10,
                 }}
@@ -938,6 +952,45 @@ const EditProfile = ({ route }: any) => {
 
             <Spacer height={20} />
           </View>
+
+          <View
+            style={{
+              borderTopWidth: 1,
+              borderTopColor: "#999999",
+              padding: 15,
+            }}
+          >
+            <NewText
+              fontWeight="700"
+              color={colors.white}
+              size={19}
+              text={"Models (Females only)"}
+            />
+            <Spacer height={verticalScale(20)} />
+
+            <CustomText
+              fontWeight={"500"}
+              fontFam="Poppins-Medium"
+              size={13}
+              style={{ marginBottom: verticalScale(5) }}
+              text={"Are you a FEMALE model or a female OnlyFans creator? "}
+              color={colors.white}
+            />
+            <DropDown
+              placeholder={"Make a Selection"}
+              dropWidth={"100%"}
+              setValue={setModel}
+              value={model}
+              //   data={data}
+              data={modelData.map((item, _index) => {
+                return {
+                  id: item?.id,
+                  label: item?.value,
+                  value: item?.value,
+                };
+              })}
+            />
+          </View>
         </ScrollView>
       </SafeAreaView>
       {showError && (
@@ -1072,5 +1125,12 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     justifyContent: "center",
     marginBottom: verticalScale(10),
+  },
+  crossContainer: {
+    position: "absolute",
+    top: 15,
+    right: 15,
+    width: 25,
+    height: 25,
   },
 });

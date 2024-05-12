@@ -35,7 +35,7 @@ const TopBar = ({ activeBar, setActiveBar, topBarData,setActiveFilter }: any) =>
                   text={item}
                   style={{textTransform:"capitalize" }}
                   
-                  size={18}
+                  size={16}
                   fontWeight={"500"}
                   fontFam="Poppins-Regular"
                 />

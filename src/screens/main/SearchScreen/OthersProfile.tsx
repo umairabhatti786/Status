@@ -103,9 +103,9 @@ const OthersProfile = () => {
     setComments([...comments,newComment])
   }, [newComment])
 
-  useEffect(() => {
-    setNewPost([...posts,newPost])
-  }, [newPost])
+  // useEffect(() => {
+  //   setNewPost([...posts,newPost])
+  // }, [newPost])
 
   const con = async () => {
     console.log("am focused");
@@ -711,7 +711,8 @@ const OthersProfile = () => {
            </View> */}
 
                     {data?.gif1 ? (
-                      <Image
+                      <View>
+                         <Image
                         style={{
                           width: 130,
                           height: 45,
@@ -720,6 +721,8 @@ const OthersProfile = () => {
                         source={images.giphy}
                         resizeMode="contain"
                       />
+                        </View>
+                     
                     ) : (
                       <>
                         {data?.gif2 ? (
