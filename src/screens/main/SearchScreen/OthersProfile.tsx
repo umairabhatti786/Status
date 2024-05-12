@@ -100,13 +100,15 @@ const OthersProfile = () => {
   //   console.log(`Connection: ${currentState}`,'commentsChannel_'+id);
   // }
 
-  // useEffect(() => {
-  //   setComments([...comments,newComment])
-  // }, [])
+  useEffect(() => {
+    // if (newComment) 
+    setComments([...comments, newComment]);
+  }, [newComment]);
 
   // useEffect(() => {
+  //   if(newPost)
   //   setNewPost([...posts,newPost])
-  // }, [])
+  // }, [newPost])
 
   const con = async () => {
     console.log("am focused");
@@ -117,35 +119,37 @@ const OthersProfile = () => {
         // onConnectionStateChange,
       });
       // console.log('init')
-      let commentsChannel = await pusher.subscribe({
+       await pusher.subscribe({
         channelName: "commentsChannel_" + id,
         onEvent: (event: PusherEvent) => {
           // console.log("channelUpdates_"+JSON.stringify(route?.params))
           console.log("commentsChannel_", JSON.parse(event.data));
-          let com=JSON.parse(event.data).comment;
-          if(com?.deleted){
-            let filter = comments.filter((c:any)=>c.id!=com.commentId)
-            setComments(filter)
-          }else{
-            setComments([...comments,com])
+          let com = JSON.parse(event.data).comment;
+          if (com?.deleted) {
+            let filter = comments.filter((c: any) => c.id != com.commentId);
+            setComments(filter);
+          } else {
+            setNewComment(com);
+            // setComments([...comments,com])
           }
           // let newCommentList= comments;
           // newCommentList.push(JSON.parse(event.data).comment)
           // console.log(newCommentList)
           // setNewComment(JSON.parse(event.data).comment);
           // comments.push(JSON.parse(event.data).comment)
-          
         },
       });
-      let channelUpdates = await pusher.subscribe({
+      await pusher.subscribe({
         channelName: "channelUpdates_" + channelId,
         onEvent: (event: PusherEvent) => {
           console.log("channelUpdates_", JSON.parse(event.data).post);
           // let newPostList= [posts,JSON.parse(event.data).post];
-          let post =JSON.parse(event.data).post;
-          setPosts([...posts,post])
+          let post = JSON.parse(event.data).post;
+          // if(post.id){
+          //   setNewPost(post)
+          // }
+          // setPosts([...posts, post]);
           // setNewPost(JSON.parse(event.data).post);
-         
         },
       });
       // await pusher.subscribe({ channelName:'commentsChannel_'+id });
@@ -231,6 +235,7 @@ const OthersProfile = () => {
       // console.log('result',result);
       if (result.status) {
         // setComments([...comments, result.comment]);
+        setComment('')
         setLoading2(false);
       } else {
         // Alert.alert("Alert!", "Something went wrong");
