@@ -118,7 +118,7 @@ const MessagesComponent = ({
               />
 
               <CustomText
-                text={moment(time).format("h:s a")}
+                text={moment(time).format("hh:mm a")}
                 color={colors.lightgray}
                 size={13}
                 style={{ marginTop: verticalScale(4) }}
