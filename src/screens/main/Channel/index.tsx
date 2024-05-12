@@ -24,7 +24,15 @@ import MessageSender from "../../../components/MessageSender";
 import moment from "moment";
 import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
 
-const Channel = ({ hideSendMessage, userData, posts,channelId,token,authPosts, setAuthPosts }: any) => {
+const Channel = ({
+  hideSendMessage,
+  userData,
+  posts,
+  channelId,
+  token,
+  authPosts,
+  setAuthPosts,
+}: any) => {
   const route: any = useRoute();
   const item = route?.params?.item;
   const navigation: any = useNavigation();
@@ -34,19 +42,22 @@ const Channel = ({ hideSendMessage, userData, posts,channelId,token,authPosts, s
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
-  
-  
+  console.log("userData", userData?.wallpaperUrl);
 
   return (
     <>
       <View style={appStyles.main}>
         <ImageBackground
           style={{ width: "100%", height: windowHeight }}
-          source={images.channelbackground}
+          source={
+            userData?.wallpaperUrl
+              ? { uri: userData?.wallpaperUrl }
+              : images.channelbackground
+          }
         >
           <View style={{ height: "80%" }}>
             <FlatList
-              data={hideSendMessage?posts:authPosts}
+              data={hideSendMessage ? posts : authPosts}
               nestedScrollEnabled={true}
               style={{ marginBottom: verticalScale(80) }}
               //  contentContainerStyle={{
@@ -151,7 +162,6 @@ const Channel = ({ hideSendMessage, userData, posts,channelId,token,authPosts, s
                 token={token}
                 setAuthPosts={setAuthPosts}
                 authPosts={authPosts}
-                
               />
             )}
           </View>

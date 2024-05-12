@@ -71,7 +71,7 @@ const ProfileScreen = () => {
     setIsChannelId(userInfo?.channel?.id);
   };
   useEffect(() => {
-    getChannelId(); 
+    getChannelId();
   }, []);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ const ProfileScreen = () => {
   useEffect(() => {
     GetPosts();
   }, []);
-
+  console.log("UserData", userData?.gif);
   const GetPosts = async () => {
     let userInfo = await StorageServices.getItem(AUTH);
     let token = await StorageServices.getItem(TOKEN);
@@ -387,79 +387,79 @@ const ProfileScreen = () => {
                   }}
                 />
 
-<View style={appStyles.rowjustify}>
-                    <TouchableOpacity
-                      activeOpacity={0.6}
-                      disabled={true}
-                      // onPress={onFavorite}
-                      style={styles.box}
-                    >
-                      <Image
-                        style={{
-                          width: 30,
-                          height: 30,
-                          tintColor: "#8A8A8A",
-                        }}
-                        source={images.star}
-                        resizeMode="contain"
-                      />
-                      <CustomText
-                        color={"#8A8A8A"}
-                        size={13}
-                        numberOfLines={1}
-                        fontFam="Inter-Medium"
-                        style={{ marginTop: scale(5) }}
-                        text={"Favorite"}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      activeOpacity={0.6}
-                      // onPress={() => setIsWatchList(!isWatchList)}
-                      style={styles.box}
-                    >
-                      <Image
-                        style={{
-                          width: 25,
-                          height: 25,
-                          tintColor: colors.white,
-                        }}
-                        source={images.appicon}
-                        resizeMode="contain"
-                      />
-                      <CustomText
-                        color={colors.white}
-                        size={13}
-                        numberOfLines={1}
-                        fontFam="Inter-Medium"
-                        style={{ marginTop: scale(7) }}
-                        text={"STATUS"}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      activeOpacity={0.6}
-                      disabled={true}
-                      // onPress={() => setIsWatchList(!isWatchList)}
-                      style={styles.box}
-                    >
-                      <Image
-                        style={{
-                          width: 30,
-                          height: 30,
-                          tintColor:"#8A8A8A",
-                        }}
-                        source={images.profilemessage}
-                        resizeMode="contain"
-                      />
-                      <CustomText
-                        color={"#8A8A8A"}
-                        size={13}
-                        numberOfLines={1}
-                        fontFam="Inter-Medium"
-                        style={{ marginTop: scale(5) }}
-                        text={"Message"}
-                      />
-                    </TouchableOpacity>
-                  </View>
+                <View style={appStyles.rowjustify}>
+                  <TouchableOpacity
+                    activeOpacity={0.6}
+                    disabled={true}
+                    // onPress={onFavorite}
+                    style={styles.box}
+                  >
+                    <Image
+                      style={{
+                        width: 30,
+                        height: 30,
+                        tintColor: "#8A8A8A",
+                      }}
+                      source={images.star}
+                      resizeMode="contain"
+                    />
+                    <CustomText
+                      color={"#8A8A8A"}
+                      size={13}
+                      numberOfLines={1}
+                      fontFam="Inter-Medium"
+                      style={{ marginTop: scale(5) }}
+                      text={"Favorite"}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={0.6}
+                    // onPress={() => setIsWatchList(!isWatchList)}
+                    style={styles.box}
+                  >
+                    <Image
+                      style={{
+                        width: 25,
+                        height: 25,
+                        tintColor: colors.white,
+                      }}
+                      source={images.appicon}
+                      resizeMode="contain"
+                    />
+                    <CustomText
+                      color={colors.white}
+                      size={13}
+                      numberOfLines={1}
+                      fontFam="Inter-Medium"
+                      style={{ marginTop: scale(7) }}
+                      text={"STATUS"}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={0.6}
+                    disabled={true}
+                    // onPress={() => setIsWatchList(!isWatchList)}
+                    style={styles.box}
+                  >
+                    <Image
+                      style={{
+                        width: 30,
+                        height: 30,
+                        tintColor: "#8A8A8A",
+                      }}
+                      source={images.profilemessage}
+                      resizeMode="contain"
+                    />
+                    <CustomText
+                      color={"#8A8A8A"}
+                      size={13}
+                      numberOfLines={1}
+                      fontFam="Inter-Medium"
+                      style={{ marginTop: scale(5) }}
+                      text={"Message"}
+                    />
+                  </TouchableOpacity>
+                </View>
                 <View style={{ paddingHorizontal: scale(10) }}>
                   <View
                     style={{
@@ -507,7 +507,7 @@ const ProfileScreen = () => {
                       </TouchableOpacity>
                     )}
                   </View>
-                  {userData?.gif1 ? (
+                  {/* {userData?.gif1 ? (
                     <Image
                       style={{ width: 130, height: 45, alignSelf: "flex-end" }}
                       source={images.giphy}
@@ -529,7 +529,7 @@ const ProfileScreen = () => {
                         <></>
                       )}
                     </>
-                  )}
+                  )} */}
 
                   <View style={appStyles.rowjustify}>
                     {userData?.gif1 && (
@@ -538,6 +538,20 @@ const ProfileScreen = () => {
                           style={{ width: "100%", height: "100%" }}
                           source={{ uri: userData?.gif1 }}
                         />
+
+                        <View
+                          style={{ position: "absolute", right: 5, bottom: 0 }}
+                        >
+                          <Image
+                            style={{
+                              width: 100,
+                              height: 30,
+                              alignSelf: "flex-end",
+                            }}
+                            source={images.giphy}
+                            resizeMode="contain"
+                          />
+                        </View>
                       </View>
                     )}
                     {userData?.gif2 && (
@@ -546,6 +560,19 @@ const ProfileScreen = () => {
                           style={{ width: "100%", height: "100%" }}
                           source={{ uri: userData?.gif2 }}
                         />
+                        <View
+                          style={{ position: "absolute", right: 5, bottom: 0 }}
+                        >
+                          <Image
+                            style={{
+                              width: 100,
+                              height: 30,
+                              alignSelf: "flex-end",
+                            }}
+                            source={images.giphy}
+                            resizeMode="contain"
+                          />
+                        </View>
                       </View>
                     )}
                   </View>

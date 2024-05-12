@@ -382,13 +382,13 @@ const EditProfile = ({ route }: any) => {
     form.append("bio", values?.bio);
     form.append("isModel", model == "true" ? 1 : 0);
     form.append("wallpaperUrl", values.wallpaperUrl);
-    form.append("gif1", nonEmptySelectedGifs[0]?nonEmptySelectedGifs[0]:"");
-    form.append("gif2", nonEmptySelectedGifs[1]?nonEmptySelectedGifs[1]:"");
+    form.append("gif1", nonEmptySelectedGifs[0]==undefined?"":nonEmptySelectedGifs[0]);
+    form.append("gif2", nonEmptySelectedGifs[1]==undefined?"":nonEmptySelectedGifs[1]);
     form.append("name", values.name);
     form.append("imageUrl", values.imageUrl);
     form.append("location", values?.location);
     form.append("lat", values?.lat);
-    form.append("lng", values?.long);
+    form.append("lng", values?.lng);
 
     setLoading(true);
     UserProfileSetup(form, token, async ({ isSuccess, response }: any) => {

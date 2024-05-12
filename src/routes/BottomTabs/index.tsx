@@ -25,10 +25,16 @@ console.log("imageurlDsycdvyv",image)
 
   return (
     <Bottom.Navigator
+    
       initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarHideOnKeyboard: true,
              tabBarShowLabel: false,
+             animationEnabled: false,
+             keyboardHidesTabBar: true,
+
+
+             
 
         // tabBarColor: ({focused, size, color}) => {},
         // tabBarStyle:()=>{innerHeight:1000},

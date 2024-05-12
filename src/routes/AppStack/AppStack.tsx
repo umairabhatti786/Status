@@ -78,6 +78,7 @@ const AppStack = () => {
 
   return (
     <Stack.Navigator
+    
       //  screenOptions={{ headerShown: false }
       screenOptions={{
         headerShown: false,
