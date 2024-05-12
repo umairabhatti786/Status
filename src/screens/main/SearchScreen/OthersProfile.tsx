@@ -222,12 +222,16 @@ const OthersProfile = () => {
   };
 
   const submitComment = async () => {
+
     let data = {
       description: comment,
       userId: id,
     };
+    // setComment("")
+
     // console.log(comment)
     setLoading2(true);
+
     CreateComment(data, token, async ({ isSuccess, response }: any) => {
       console.log("data c", isSuccess);
 
@@ -802,8 +806,9 @@ const OthersProfile = () => {
                         }}
                         placeholderTextColor={colors.gray200}
                         placeholder="Write on my wall"
-                        onChangeText={(text) => setComment(text)}
                         value={comment}
+
+                        onChangeText={(text) => setComment(text)}
                       />
                       <TouchableOpacity
                         activeOpacity={0.7}

@@ -168,6 +168,8 @@ const ProfileScreen = () => {
 
       let result = JSON.parse(response);
       if (result.status) {
+        setComment('')
+
         setComments([...comments, result.comment]);
         setLoading2(false);
       } else {
