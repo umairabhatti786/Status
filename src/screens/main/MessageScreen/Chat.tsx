@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Image,
   Platform,
@@ -29,8 +30,8 @@ import MessageSender from "../../../components/MessageSender";
 import InboxComponent from "../../../components/InboxComponent";
 import { useSelector } from "react-redux";
 import { getUserData } from "../../../redux/reducers/authReducer";
-import { StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
-import { GetConversation } from "../../../api/ApiServices";
+import { AUTH, StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
+import { CREATE_TRASH_CONVERSATION, CreateArchive, GetConversation } from "../../../api/ApiServices";
 import moment from "moment";
 import {
   Pusher,
@@ -45,12 +46,18 @@ const Chat = () => {
   const item = route.params.item;
   const navigation: any = useNavigation();
   const [conversation, setConversation] = useState<any>([]);
-  const [NewMessage, setNewMessage] = useState<any>({})
+  const [NewMessage, setNewMessage] = useState<any>({});
   const isFocused = useIsFocused();
   const userData = useSelector(getUserData);
+  const [state, setState] = useState({
+    archive: false,
+    block: false,
+    trash: false,
+  });
 
   const getConversation = async () => {
     let token = await StorageServices.getItem(TOKEN);
+
     // console.log(item.id)
     GetConversation(
       { conversationId: item.id },
@@ -62,7 +69,9 @@ const Chat = () => {
         if (result.status) {
           console.log(result?.conversation?.data);
           // console.log('result?.posts',result?.posts?.data)
+
           setConversation(result?.conversation?.data);
+          await StorageServices.setItem("chatlist", result?.conversation?.data);
         } else {
           // setMsg({...msg,message:''})
           console.log(result);
@@ -74,9 +83,8 @@ const Chat = () => {
   };
 
   useEffect(() => {
-    setConversation([...conversation,NewMessage])
-  }, [NewMessage])
-  
+    setConversation([...conversation, NewMessage]);
+  }, [NewMessage]);
 
   const con = async () => {
     // console.log("am focused");
@@ -94,7 +102,7 @@ const Chat = () => {
         channelName: "chatChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
           console.log("chat", JSON.parse(event.data));
-          setNewMessage(JSON.parse(event.data).message)
+          setNewMessage(JSON.parse(event.data).message);
           // setConversation([...conversation, JSON.parse(event.data).message]);
           // setComments([...comments,JSON.parse(event.data).comment])
         },
@@ -121,8 +129,57 @@ const Chat = () => {
   }, [isFocused]);
 
   useEffect(() => {
+    async () => {
+      let chatList = await StorageServices.getItem("chatList");
+      if (chatList) {
+        setConversation(chatList);
+      }
+    };
+  }, [isFocused]);
+
+  useEffect(() => {
     if (isFocused) getConversation();
   }, [isFocused]);
+
+  const handleArchive = async () => {
+    let user = await StorageServices.getItem(AUTH);
+    let conversationId = item.id;
+    let token = await StorageServices.getItem(TOKEN);
+    let data = { userId: user.id, conversationId: conversationId };
+
+    CreateArchive(data, token, async ({ isSuccess, response }: any) => {
+      console.log("data c", isSuccess);
+      // console.log(msg)
+      let result = JSON.parse(response);
+      if (result.status) {
+        console.log(result)
+      } else {
+        Alert.alert("Alert!", "Something went wrong");
+        console.log(result);
+        console.log("Something went wrong");
+      }
+    });
+  };
+  const handleTrash = async () => {
+    let user = await StorageServices.getItem(AUTH);
+    let conversationId = item.id;
+    let token = await StorageServices.getItem(TOKEN);
+    let data = { userId: user.id, conversationId: conversationId };
+
+    CREATE_TRASH_CONVERSATION(data, token, async ({ isSuccess, response }: any) => {
+      console.log("data t", isSuccess);
+      // console.log(msg)
+      let result = JSON.parse(response);
+      if (result.status) {
+        console.log(result)
+        Alert.alert("Alert!", result?.msg);
+      } else {
+        Alert.alert("Alert!", "Something went wrong");
+        console.log(result);
+        console.log("Something went wrong");
+      }
+    });
+  };
 
   const imagePicker = () => {
     ImagePicker.openPicker({
@@ -210,20 +267,20 @@ const Chat = () => {
         </View>
         <View style={{ ...appStyles.row }}>
           <View style={appStyles.row}>
-            <TouchableOpacity
-              activeOpacity={0.6}
-              // onPress={() => setIsWatchList(!isWatchList)}
-            >
-              <Image
-                style={{
-                  width: scale(22),
-                  height: scale(22),
-                  tintColor: colors.white,
-                }}
-                source={images.download}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.6} onPress={handleArchive}>
+                <Image
+                  style={{
+                    width: scale(22),
+                    height: scale(22),
+                    tintColor: colors.white,
+                  }}
+                  source={images.download}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            {/* {state.archive && (
+            )} */}
+
             <Spacer width={scale(20)} />
             <TouchableOpacity
               activeOpacity={0.6}
@@ -242,7 +299,7 @@ const Chat = () => {
             <Spacer width={scale(20)} />
             <TouchableOpacity
               activeOpacity={0.6}
-              onPress={() => navigation.goBack()}
+              onPress={handleTrash}
             >
               <Image
                 style={{
@@ -267,20 +324,20 @@ const Chat = () => {
             gap: 7,
             // transform: [{ scaleY: -1 }],
           }}
-          // inverted={true} 
+          // inverted={true}
           renderItem={renderChatList}
           // style={{ transform: [{ scaleY: -1 }] }}
         />
-      <View>
-        <MessageSender
-          placeholder="write a message"
-          message={"chat"}
-          setConversation={setConversation}
-          conversation={conversation}
-          receiverId={item?.user1?.id || item?.user2?.id}
-          authId={userData.id}
-        />
-      </View>
+        <View>
+          <MessageSender
+            placeholder="write a message"
+            message={"chat"}
+            setConversation={setConversation}
+            conversation={conversation}
+            receiverId={item?.user1?.id || item?.user2?.id}
+            authId={userData.id}
+          />
+        </View>
       </View>
     </View>
   );
