@@ -16,10 +16,9 @@ import NewMessage from "../../screens/main/NewMessage";
 
 const BottomTab = ({ navigation }: any) => {
   const Bottom = createBottomTabNavigator();
-  const isSrollDa=useSelector(state=>state.auth)?.isScroll
+  const isDisableTab=useSelector(state=>state.auth)?.disableBottomTab
 
   const image=useSelector(getUserData)?.imageUrl
-console.log("imageurlDsycdvyv",image)
 
   // useEffect()
 
@@ -43,7 +42,7 @@ console.log("imageurlDsycdvyv",image)
               justifyContent: "center",
               alignItems: "center",
               borderTopWidth: -1,
-              display:"flex",
+              display: isDisableTab?"none": "flex",
               // paddingTop: 8,
               height: 48,
           // display: route.name === "Home" ? "none" : "flex",

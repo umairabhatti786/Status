@@ -79,9 +79,13 @@ const AppStack = () => {
   return (
     <Stack.Navigator
     
+    
       //  screenOptions={{ headerShown: false }
       screenOptions={{
         headerShown: false,
+      
+        
+      
         cardStyleInterpolator: ({ current: { progress } }) => {
           return {
             cardStyle: {
@@ -90,6 +94,7 @@ const AppStack = () => {
           };
         },
       }}
+
     >
       {(!user?.email  )? (
         <>
@@ -114,7 +119,10 @@ const AppStack = () => {
           <Stack.Screen name={"Tabs"} component={BottomTab} />
           <Stack.Screen name={"HomeScreen"} component={HomeScreen} />
           <Stack.Screen name={"MessageScreen"} component={MessageScreen} />
-          <Stack.Screen name={"ProfileScreen"} component={ProfileScreen} />
+          <Stack.Screen name={"ProfileScreen"}
+          
+           
+          component={ProfileScreen} />
           <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
           <Stack.Screen name={"OthersProfile"} component={OthersProfile} />
           <Stack.Screen name={"AddStatus"} component={AddStatus} />

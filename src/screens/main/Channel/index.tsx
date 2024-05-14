@@ -55,14 +55,14 @@ const Channel = ({
               : images.channelbackground
           }
         >
-          <View style={{ height: "80%" }}>
+          <View >
             <FlatList
               data={hideSendMessage ? posts : authPosts}
               nestedScrollEnabled={true}
-              style={{ marginBottom: verticalScale(80) }}
-              //  contentContainerStyle={{
-              //    gap: 100,
-              //  }}
+              style={{ marginBottom: verticalScale(180) }}
+              // //  contentContainerStyle={{
+              // //    gap: 100,
+              // //  }}
               renderItem={({ item, index }) => {
                 return (
                   <View style={{ paddingBottom: verticalScale(10) }}>
@@ -152,19 +152,9 @@ const Channel = ({
                 );
               }}
             />
-            {hideSendMessage ? (
-              <></>
-            ) : (
-              <MessageSender
-                bottom={verticalScale(15)}
-                sendImage={images.simplesend}
-                channelId={channelId}
-                token={token}
-                setAuthPosts={setAuthPosts}
-                authPosts={authPosts}
-              />
-            )}
+          
           </View>
+          
         </ImageBackground>
       </View>
     </>

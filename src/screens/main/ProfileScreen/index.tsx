@@ -4,7 +4,9 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
   Linking,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -33,8 +35,11 @@ import { Spacer } from "../../../components/Spacer";
 import SizeBar from "../../../components/SizeBar";
 import CustomModal from "../../../components/CustomModal";
 import Channel from "../Channel";
-import { useSelector } from "react-redux";
-import { getToken } from "../../../redux/reducers/authReducer";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getToken,
+  setDisableBottomTab,
+} from "../../../redux/reducers/authReducer";
 import {
   CreateComment,
   DeleteComment,
@@ -50,6 +55,7 @@ import {
   StorageServices,
   TOKEN,
 } from "../../../utils/hooks/StorageServices";
+import MessageSender from "../../../components/MessageSender";
 
 const ProfileScreen = () => {
   const navigation: any = useNavigation();
@@ -64,6 +70,8 @@ const ProfileScreen = () => {
   const [userData, setUserData] = useState<any>();
   const token = useSelector(getToken);
   const [authPosts, setAuthPosts] = useState([]);
+
+  const dispatch = useDispatch();
 
   const [channelId, setIsChannelId] = useState("");
   const getChannelId = async () => {
@@ -168,7 +176,7 @@ const ProfileScreen = () => {
 
       let result = JSON.parse(response);
       if (result.status) {
-        setComment('')
+        setComment("");
 
         setComments([...comments, result.comment]);
         setLoading2(false);
@@ -220,7 +228,10 @@ const ProfileScreen = () => {
       />
     );
   };
-  const shortenedText = userData?.name?.length > 17 ? userData?.name?.substring(0, 16) + "..." : userData?.name;
+  const shortenedText =
+    userData?.name?.length > 17
+      ? userData?.name?.substring(0, 16) + "..."
+      : userData?.name;
 
   return (
     <>
@@ -229,6 +240,7 @@ const ProfileScreen = () => {
           <Loader />
         </View>
       ) : (
+        
         <SafeAreaView style={appStyles.main}>
           <StatusBar backgroundColor="#000" barStyle="light-content" />
 
@@ -309,7 +321,14 @@ const ProfileScreen = () => {
               return (
                 <CustomButton
                   width={"48.5%"}
-                  onPress={() => setIsActiveProfile(index)}
+                  onPress={() => {
+                    if (item == "Channel") {
+                      dispatch(setDisableBottomTab(true));
+                    } else {
+                      dispatch(setDisableBottomTab(false));
+                    }
+                    setIsActiveProfile(index);
+                  }}
                   text={item}
                   textColor={
                     isActiveProfile == index ? colors.black : colors.white
@@ -636,10 +655,15 @@ const ProfileScreen = () => {
             </ScrollView>
           ) : (
             <>
-              <View
+            <KeyboardAvoidingView
+              style={{flex:1}}
+              behavior={Platform.OS === 'ios' ? 'padding' : null}
+              keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100} // Adjust this value as needed
+            >
+            <View
                 style={{
-                  width: "100%",
-                  height: windowHeight,
+                 
+          flex:1,
                   paddingTop: verticalScale(10),
                 }}
               >
@@ -650,85 +674,32 @@ const ProfileScreen = () => {
                   authPosts={authPosts}
                   setAuthPosts={setAuthPosts}
                 />
+             
+              <View  >
+            <MessageSender
+                // bottom={verticalScale(15)}
+                sendImage={images.simplesend}
+                channelId={channelId}
+                token={token}
+                setAuthPosts={setAuthPosts}
+                authPosts={authPosts}
+              />
+
               </View>
+            
+    
+
+
+              </View>
+              
+            </KeyboardAvoidingView>
+             
             </>
           )}
         </SafeAreaView>
       )}
 
-      {/* 
-      <CustomModal
-          isModalVisible={isBlockModal}
-          setModalVisible={setIsBlockModal}
-      >
-
-<View
-                style={{ alignItems: "center" }}>
-                <View
-                    style={{
-                        width: "85%",
-                        backgroundColor: colors.white,
-                        paddingVertical: 20,
-                        paddingHorizontal: 20,
-                        borderRadius:scale(15)
-                    }}
-                >
-
-<CustomText
-                        text={"Block Carmen Electra?!"}
-                        size={17}
-                        fontWeight='700'
-                        fontFam="Poppins-Bold"
-                        color={colors.black}
-                        style={{ textAlign: "center" }}
-                    />
-
-<CustomText
-                        text={"This user will no longer be able to follow, message, or see your profile."}
-                        size={16}
-                        color={colors.black}
-                        style={{ textAlign: "center",marginVertical:verticalScale(10) }}
-                    />
-                    <View style={{...appStyles.row,alignSelf:"center"}}>
-
-                    <CustomButton
-          text={"Cancel"}
-          // width={windowWidth/3.5}
-          size={16}
-          height={verticalScale(43)}
-          borderRadius={scale(20)}
-          paddingHoriontal={scale(25)}
-          onPress={()=>setIsFollow(!isFollow)}
-          // fontWeight={"600"}
-          fontFam={"Poppins-Regular"}
-          bgColor={"#C4C4C4"}
-          textColor={colors.black}
-          />
-          <Spacer width={scale(20)}/>
-
-          <CustomButton
-          text={"BLOCK"}
-          // width={windowWidth/3.5}
-          size={16}
-          height={verticalScale(43)}
-          borderRadius={scale(20)}
-          paddingHorizontal={scale(25)}
-          // onPress={()=>setIsFollow(!isFollow)}
-          // fontWeight={"600"}
-          fontFam={"Poppins-Regular"}
-          bgColor={"#277DD2"}
-          textColor={colors.white}
-          />
-  
-
-                    </View>
-                    
-                </View>
-            </View>
-
-
-
-      </CustomModal> */}
+     
     </>
   );
 };

@@ -167,6 +167,7 @@ const HomeScreen = () => {
             item: item,
             id: item?.id,
             channelId: item?.channel?.id,
+            isChannel:true
           })
         }
         item={item}
