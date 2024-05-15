@@ -2,6 +2,153 @@ import axios from "axios";
 import { client, getApiUrl } from "./Config";
 import { URLS } from "./baseUrl";
 
+export const CreateArchive = async (data: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.CREATE_ARCHIVE, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const GetUserTrashConversation = async (userId:any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.GET_USER_TRASH_CONVERSATION+userId, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const CREATE_TRASH_CONVERSATION = async (data: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.CREATE_TRASH_CONVERSATION, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const CreateFavoriteConversation = async (data: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.CREATE_FAVORITE_CONVERSATION, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const DeleteConversation = async (conversationId:any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.DELETE_CONVERSATION+conversationId, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const GetUserFavoriteConversation = async (userId:any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.GET_USER_FAVORITE_CONVERSATION+userId, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const GetUserArchives = async (userId:any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.GET_USER_ARCHIVES+userId, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const SearchMessages = async (userId:any,search:any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.SEARCH_MESSAGES+userId+"/"+search, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
 export const SendMessage = async (data: any, token: any, callback: any) => {
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");
