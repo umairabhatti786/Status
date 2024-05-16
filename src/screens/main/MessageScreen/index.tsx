@@ -47,11 +47,17 @@ const MessageScreen = ({ navigation }: any) => {
   const [search, setSearch] = useState("");
   const [messagesList, setMessagesList] = useState<any>([]);
   const [chatList, setChatList] = useState<any>([]);
+  const [contacts, setContacts] = useState<any>([]);
   const isFocused = useIsFocused();
 
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   const renderChatList = ({ item }: any) => {
-    return <MessagesList item={item} handleFavorite={()=>handleFavorite(item.id)}/>;
+    return (
+      <MessagesList
+        item={item}
+        handleFavorite={() => handleFavorite(item.id)}
+      />
+    );
   };
 
   const getChatList = async () => {
@@ -63,6 +69,7 @@ const MessageScreen = ({ navigation }: any) => {
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
+
         setChatList(result?.chatList);
         // setAuthPosts(result?.posts?.data);
       } else {
@@ -87,7 +94,7 @@ const MessageScreen = ({ navigation }: any) => {
         let result = JSON.parse(response);
         if (result.status) {
           console.log(result?.data[0]);
-          let arcF=result?.data?.map((a:any)=>(a?.conversations?.[0]))
+          let arcF = result?.data?.map((a: any) => a?.conversations?.[0]);
           setChatList(arcF);
           // setAuthPosts(result?.posts?.data);
         } else {
@@ -103,27 +110,23 @@ const MessageScreen = ({ navigation }: any) => {
 
     let user = await StorageServices.getItem(AUTH);
     // console.log(user.id)
-    GetUserArchives(
-      user.id,
-      token,
-      async ({ isSuccess, response }: any) => {
-        console.log("data archive", isSuccess);
+    GetUserArchives(user.id, token, async ({ isSuccess, response }: any) => {
+      console.log("data archive", isSuccess);
 
-        let result = JSON.parse(response);
-        if (result.status) {
-          console.log(result?.data[0]);
-          let arcF=result?.data?.map((a:any)=>(a?.conversations?.[0]))
-          // setMessagesList(result?.searchResult);
-          // console.log(arcF)
-          setChatList(arcF);
-          // setAuthPosts(result?.posts?.data);
-        } else {
-          console.log(result);
-          // Alert.alert("Alert!", "Something went wrong",);
-          console.log("Something went wrong");
-        }
+      let result = JSON.parse(response);
+      if (result.status) {
+        console.log(result?.data[0]);
+        let arcF = result?.data?.map((a: any) => a?.conversations?.[0]);
+        // setMessagesList(result?.searchResult);
+        // console.log(arcF)
+        setChatList(arcF);
+        // setAuthPosts(result?.posts?.data);
+      } else {
+        console.log(result);
+        // Alert.alert("Alert!", "Something went wrong",);
+        console.log("Something went wrong");
       }
-    );
+    });
   };
   const getUserTrashConversation = async () => {
     let token = await StorageServices.getItem(TOKEN);
@@ -139,7 +142,7 @@ const MessageScreen = ({ navigation }: any) => {
         let result = JSON.parse(response);
         if (result.status) {
           console.log(result?.data[0]);
-          let arcF=result?.data?.map((a:any)=>(a?.conversations?.[0]))
+          let arcF = result?.data?.map((a: any) => a?.conversations?.[0]);
           // setMessagesList(result?.searchResult);
           // console.log(arcF)
           setChatList(arcF);
@@ -152,22 +155,34 @@ const MessageScreen = ({ navigation }: any) => {
       }
     );
   };
-  
+
+  useEffect(() => {
+    if (isFocused) getChatList();
+  }, [isFocused]);
 
   useEffect(() => {
     if (isFocused) {
-      console.log(activeChat)
+      console.log(activeChat);
       if (activeChat === "Inbox") {
-        getChatList();
+        let actChat = chatList?.filter(
+          (c: any) => !(c.archive_con.length + c.trash_con.length)
+        );
+        setContacts(actChat);
       } else if (activeChat === "Starred") {
-        getUserFavoriteConversation()
+        let favCon = chatList.filter((c: any) => c.favorite_con.length);
+        setContacts(favCon);
+        // getUserFavoriteConversation();
       } else if (activeChat === "Archive") {
-        getUserArchives()
+        let arcCon = chatList.filter((c: any) => c.archive_con.length);
+        setContacts(arcCon);
+        // getUserArchives();
       } else if (activeChat === "Trash") {
-        getUserTrashConversation();
-      } 
+        let trashCon = chatList.filter((c: any) => c.trash_con.length);
+        setContacts(trashCon);
+        // getUserTrashConversation();
+      }
     }
-  }, [isFocused,activeChat]);
+  }, [isFocused, activeChat]);
 
   const handleSearch = async (text: any) => {
     setSearch(text);
@@ -200,29 +215,33 @@ const MessageScreen = ({ navigation }: any) => {
     }
   };
 
-  const handleFavorite = async (conId:any) => {
+  const handleFavorite = async (conId: any) => {
     let user = await StorageServices.getItem(AUTH);
     let conversationId = conId;
     let token = await StorageServices.getItem(TOKEN);
     let data = { userId: user.id, conversationId: conversationId };
 
-    CreateFavoriteConversation(data, token, async ({ isSuccess, response }: any) => {
-      console.log("data c", isSuccess);
-      // console.log(msg)
-      let result = JSON.parse(response);
-      if (result.status) {
-        console.log(result)
-      } else {
-        Alert.alert("Alert!", "Something went wrong");
-        console.log(result);
-        console.log("Something went wrong");
+    CreateFavoriteConversation(
+      data,
+      token,
+      async ({ isSuccess, response }: any) => {
+        console.log("data c", isSuccess);
+        // console.log(msg)
+        let result = JSON.parse(response);
+        if (result.status) {
+          console.log(result);
+        } else {
+          Alert.alert("Alert!", "Something went wrong");
+          console.log(result);
+          console.log("Something went wrong");
+        }
       }
-    });
+    );
   };
 
-  const handleDeleteConvo=()=>{
-    console.log('first')
-  }
+  const handleDeleteConvo = () => {
+    console.log("empty trash");
+  };
 
   // const filteredList = messagesList.filter((item) =>
   //   item?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
@@ -334,7 +353,6 @@ const MessageScreen = ({ navigation }: any) => {
 
           {activeChat == "Trash" && (
             <TouchableOpacity activeOpacity={0.6} onPress={handleDeleteConvo}>
-
               <CustomText
                 // fontWeight="600"
                 color={colors.white}
@@ -349,7 +367,7 @@ const MessageScreen = ({ navigation }: any) => {
 
         <View style={{ flex: 1 }}>
           <FlatList
-            data={chatList}
+            data={contacts}
             // data={ isArchived? messagesList.filter(it=>!it.isOnline):messagesList}
             contentContainerStyle={{
               gap: 5,

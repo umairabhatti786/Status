@@ -199,6 +199,7 @@ const Chat = () => {
         message={item?.message}
         time={moment(item?.created_at).format("h:s a")}
         chatDate={item?.chatDate}
+        attachments={item?.attachments}
       />
     );
   };
@@ -318,7 +319,7 @@ const Chat = () => {
       </View>
       <View style={{ flex: 1 }}>
         <FlatList
-          data={conversation}
+          data={conversation} 
           // style={{paddingTop:verticalScale(20)}}
           contentContainerStyle={{
             gap: 7,
