@@ -128,7 +128,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               />
               {item?.channel?.last_post != "null" ? (
                 <CustomText
-                  text={moment(item?.channel?.last_post?.created_at).format("h:s a")}
+                  text={moment(item?.channel?.last_post?.created_at).format("hh:mm a")}
                   color={"#FFFFFF"}
                   size={10}
                   // fontFam="Poppins-Medium"

@@ -105,7 +105,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
           <TouchableOpacity onPress={handleFavorite}>
             <Image
               source={
-                item?.user1?.favoritee?.length || item?.user2?.favoritee?.length
+                item?.favorite_con?.length 
                   ? images.star1
                   : images.star
               }

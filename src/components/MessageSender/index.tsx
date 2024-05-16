@@ -16,7 +16,11 @@ import { images } from "../../assets/images";
 import { windowWidth } from "../../utils/Dimensions";
 import { colors } from "../../utils/colors";
 import { Spacer } from "../Spacer";
-import { AUTH, StorageServices, TOKEN } from "../../utils/hooks/StorageServices";
+import {
+  AUTH,
+  StorageServices,
+  TOKEN,
+} from "../../utils/hooks/StorageServices";
 import { CreatePost, SendMessage } from "../../api/ApiServices";
 import { usePermissions } from "../../utils/Permissions";
 import ImagePicker from "react-native-image-crop-picker";
@@ -62,9 +66,9 @@ const MessageSender = ({
   receiverId,
   receiver,
   authId,
-  newChat
+  newChat,
 }: Props) => {
-  const navigation:any=useNavigation()
+  const navigation: any = useNavigation();
   const [state, setState] = useState({
     description: "",
     // imageUrl: "",
@@ -74,6 +78,7 @@ const MessageSender = ({
     message: "",
     senderId: authId,
     receiverId: receiverId,
+    attachment: "",
   });
   const { requestGalleryPermission } = usePermissions();
   const onOpenGallery = async (isPicture: any) => {
@@ -98,7 +103,9 @@ const MessageSender = ({
             uri: result?.path,
             width: result?.width,
           };
-          setState({ ...state, imageUrl: data });
+          message
+            ? setMsg({ ...msg, attachment: data })
+            : setState({ ...state, imageUrl: data });
           console.log(data);
         }
       });
@@ -143,34 +150,36 @@ const MessageSender = ({
 
   // console.log(state,token);
 
-  const sendMessage = async() => {
+  const sendMessage = async () => {
     let token = await StorageServices.getItem(TOKEN);
     const form = new FormData();
     form.append("message", msg.message);
     form.append("senderId", msg.senderId);
     form.append("receiverId", msg.receiverId);
-    setMsg({...msg,message:''})
-    SendMessage(form,token, async ({ isSuccess, response }: any) => {
+    if(msg.attachment){
+      form.append("attachment", msg.attachment);
+    }
+    setMsg({ ...msg, message: "",attachment:'' });
+    SendMessage(form, token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
-// console.log(msg)
+      // console.log(msg)
       let result = JSON.parse(response);
       if (result.status) {
+        console.log(result)
         message
         ? setMsg({ ...msg, message: "" })
         : setState({ ...state, description: "" })
-        // console.log(result)
         // console.log('result?.posts',result?.posts?.data)
-        if(newChat){
+        if (newChat) {
           // navigation.navigate('MessageScreen');
           navigation.navigate("MessageScreen", {
             item: receiver,
-          })
+          });
         }
         
         // setConversation([...conversation,result?.message]);
-        
       } else {
-        setMsg({...msg,message:''})
+        setMsg({ ...msg, message: "",attachment:'' });
         console.log(result);
         // Alert.alert("Alert!", "Something went wrong",);
         console.log("Something went wrong");
@@ -217,7 +226,7 @@ const MessageSender = ({
         }}
       >
         <TextInput
-          value={message?msg.message:state.description}
+          value={message ? msg.message : state.description}
           onChangeText={(text) =>
             message
               ? setMsg({ ...msg, message: text })
@@ -233,7 +242,7 @@ const MessageSender = ({
           placeholderTextColor={colors.gray200}
           placeholder={placeholder || "Write a status update"}
         />
-        <TouchableOpacity activeOpacity={0.6}>
+        <TouchableOpacity activeOpacity={0.6} onPress={onOpenGallery}>
           <Image
             source={images.attach}
             style={{ width: scale(20), height: scale(20) }}

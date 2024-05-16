@@ -11,6 +11,7 @@ type Props = {
   image?: any;
   time?: string;
   message?: string;
+  attachments?: any;
   chatDate?: string;
   comments?: boolean;
   profile?: boolean;
@@ -23,6 +24,7 @@ const InboxComponent = ({
   image,
   time,
   message,
+  attachments,
   chatDate,
   comments,
   profile,
@@ -38,13 +40,13 @@ const InboxComponent = ({
             alignItems: "center",
             alignSelf: "center",
             marginBottom: verticalScale(10),
-          }}>
+          }}
+        >
           <View
             style={{
               width: "35%",
               backgroundColor: "#2F3541",
-              height:1,
-
+              height: 1,
             }}
           />
           <CustomText
@@ -58,7 +60,7 @@ const InboxComponent = ({
           <View
             style={{
               width: "35%",
-              height:1,
+              height: 1,
               backgroundColor: "#2F3541",
             }}
           />
@@ -69,10 +71,11 @@ const InboxComponent = ({
           flexDirection: "row",
           // paddingVertical: verticalScale(8),
           paddingHorizontal: 10,
-          marginTop:verticalScale(20),
+          marginTop: verticalScale(20),
           backgroundColor: comments ? colors.black300 : colors.black,
           borderRadius: 12,
-        }}>
+        }}
+      >
         <View style={{ width: 62, height: 62 }}>
           <Image
             style={{ width: "100%", height: "100%", borderRadius: scale(5) }}
@@ -87,8 +90,9 @@ const InboxComponent = ({
               justifyContent: "space-between",
               width: windowWidth / 1.4,
               // backgroundColor:"red"
-            }}>
-            <View style={{...appStyles.row,marginTop:verticalScale(-5)}}>
+            }}
+          >
+            <View style={{ ...appStyles.row, marginTop: verticalScale(-5) }}>
               <CustomText
                 text={name}
                 color={colors.white}
@@ -96,27 +100,49 @@ const InboxComponent = ({
                 fontFam="Poppins-SemiBold"
                 fontWeight="700"
               />
-              <View style={{width:scale(3.5),height:scale(3.5),backgroundColor:colors.white,borderRadius:999,marginHorizontal: scale(8),marginTop:verticalScale(2)}}/>
-             
+              <View
+                style={{
+                  width: scale(3.5),
+                  height: scale(3.5),
+                  backgroundColor: colors.white,
+                  borderRadius: 999,
+                  marginHorizontal: scale(8),
+                  marginTop: verticalScale(2),
+                }}
+              />
+
               <CustomText
                 text={time}
                 color={colors.lightgray}
                 size={13}
-                style={{marginTop:verticalScale(4)}}
+                style={{ marginTop: verticalScale(4) }}
                 fontFam="Poppins-Regular"
               />
             </View>
-           
           </View>
           <CustomText
             text={message}
             color={profile ? colors.gray500 : colors.white}
             size={15}
             lineHeight={20}
-            style={{ width: windowWidth / 1.5,  }}
+            style={{ width: windowWidth / 1.5 }}
             fontFam="Poppins-Medium"
             fontWeight={profile ? "600" : "500"}
           />
+          {/* attachments */}
+          {attachments?.[0]?.path && (
+            <View style={{ width: "70%", height: 100 }}>
+              <Image
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: scale(5),
+                }}
+                // resizeMode={'contain'}
+                source={{ uri: attachments?.[0]?.path }}
+              />
+            </View>
+          )}
         </View>
       </View>
     </View>
