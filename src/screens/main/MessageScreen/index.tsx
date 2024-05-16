@@ -377,6 +377,12 @@ const MessageScreen = ({ navigation }: any) => {
         </View>
       </View>
 
+      {/* <TouchableOpacity
+      style={{width:45,height:45,borderRadius:999,backgroundColor}}
+      >
+
+      </TouchableOpacity> */}
+
       <CustomDrawer
         isModalVisible={isOpenDrawer}
         setActiveChat={setActiveChat}

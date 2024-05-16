@@ -125,6 +125,7 @@ const AppStack = () => {
           component={ProfileScreen} />
           <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
           <Stack.Screen name={"OthersProfile"} component={OthersProfile} />
+
           <Stack.Screen name={"AddStatus"} component={AddStatus} />
           <Stack.Screen name={"ChatScreen"} component={Chat} />
           <Stack.Screen name={"Settings"} component={Settings} />
