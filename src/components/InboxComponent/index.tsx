@@ -133,30 +133,29 @@ const InboxComponent = ({
           />
           {/* attachments */}
           {attachments?.[0]?.path && (
-            <View style={{ width: "70%", height: 100 }}>
-              <Image
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: scale(5),
-                }}
-                // resizeMode={'contain'}
-                source={{ uri: attachments?.[0]?.path }}
-              />
-            </View>
+            // <View style={{ width: "70%", height: 100 }}>
+            <Image
+              style={{
+                width: 130,
+                height: 150,
+                borderRadius: scale(5),
+              }}
+              resizeMode={"contain"}
+              source={{ uri: attachments?.[0]?.path }}
+            />
+            // </View>
           )}
           {gif && (
-            <View style={{ width: "70%", height: 100 }}>
-              <Image
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: scale(5),
-                }}
-                // resizeMode={'contain'}
-                source={{ uri: gif }}
-              />
-            </View>
+            <Image
+              style={{
+                width: 130,
+                height: 150,
+                alignSelf: "left",
+                borderRadius: scale(5),
+              }}
+              source={{ uri: gif }}
+              resizeMode="contain"
+            />
           )}
         </View>
       </View>

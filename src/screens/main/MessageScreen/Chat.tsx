@@ -439,6 +439,7 @@ console.log("giph",giphy)
             message={"chat"}
             onGiphyPress={()=>GiphyDialog.show()}
             giphy={giphy}
+            setGiphy={setGiphy}
             setConversation={setConversation}
             conversation={conversation}
             receiverId={item?.user1?.id || item?.user2?.id}

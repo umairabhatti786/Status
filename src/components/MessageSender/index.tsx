@@ -52,6 +52,7 @@ type Props = {
   receiver?: any;
   authId?: any;
   giphy?: any;
+  setGiphy?: any;
   notShow?: boolean;
   onGiphyPress?: () => void;
 };
@@ -74,6 +75,7 @@ const MessageSender = ({
   newChat,
   onGiphyPress,
   giphy,
+  setGiphy,
 }: Props) => {
   const navigation: any = useNavigation();
   const [isImageUplaod, setIsImageUplaod] = useState(false);
@@ -137,11 +139,11 @@ const MessageSender = ({
   };
 
   const createPost = async () => {
-    const form = new FormData();
+    let form = new FormData();
     form.append("description", state.description);
     form.append("channelId", state.channelId);
-    if (state?.imageUrl) {
-      form.append("imageUrl", state?.imageUrl);
+    if (imageData) {
+      form.append("imageUrl", imageData);
     }
     if (giphy) {
       form.append("gif", giphy);
@@ -151,15 +153,18 @@ const MessageSender = ({
     setLoading(true);
     CreatePost(form, token, async ({ isSuccess, response }: any) => {
       console.log("data", isSuccess);
+      console.log("data", response);
 
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
+        setIsImageUplaod(false)
+        setImageData({})
+        // setGiphy("")
+        setLoading(false);
         setAuthPosts([...authPosts, result?.post]);
-
         // setComments([...comments, result.comment]);
         // setLoading2(false);
-        setLoading(false);
       } else {
         setLoading(false);
         // Alert.alert("Alert!", "Something went wrong");
@@ -172,14 +177,14 @@ const MessageSender = ({
 
   const sendMessage = async () => {
     let token = await StorageServices.getItem(TOKEN);
-    const form = new FormData();
+    let form = new FormData();
     form.append("senderId", msg.senderId);
     form.append("receiverId", msg.receiverId);
     if (msg.message) {
       form.append("message", msg.message);
     }
-    if (msg.attachment) {
-      form.append("attachment", msg.attachment);
+    if (imageData) {
+      form.append("attachment", imageData);
     }
     if (giphy) {
       form.append("gif", giphy);
@@ -192,8 +197,11 @@ const MessageSender = ({
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
+        // setImageData({})
         setLoading(false);
         setIsImageUplaod(false)
+        setImageData({})
+        setGiphy("")
         // if(result?.message?.senderId===msg.senderId){
         //   setConversation([...conversation,result?.message])
         // }
