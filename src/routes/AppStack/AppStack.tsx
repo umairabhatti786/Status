@@ -45,6 +45,7 @@ import {
   StorageServices,
   TOKEN,
 } from "../../utils/hooks/StorageServices";
+import OneSignal from "react-native-onesignal";
 
 const AppStack = () => {
   const Stack = createStackNavigator();
@@ -66,26 +67,32 @@ const AppStack = () => {
     const token = await StorageServices.getItem(TOKEN);
     // const remeber = await StorageServices.getItem(REMEMBER);
 
-
-    // console.log("userInfo", remeber);
-    // dispatch(setRemember(remeber));
-
-    // const obj = JSON.parse(userInfo);
-
     dispatch(setUserData(userInfo));
     dispatch(setToken(token));
   };
 
+  useEffect(() => {
+    OneSignal.setAppId("32945f51-424b-4932-a5cc-f5dc0b54937c");
+    OneSignal.promptForPushNotificationsWithUserResponse();
+    OneSignal.setNotificationWillShowInForegroundHandler(
+      (notificationReceivedEvent: any) => {
+        let notification = notificationReceivedEvent.getNotification();
+        notificationReceivedEvent.complete(notification);
+
+        // dispatch(setNotificationAlert(true));
+      }
+    );
+    OneSignal.setNotificationOpenedHandler((notification) => {
+      console.log("OneSignal: notification opened:", notification);
+    });
+  }, []);
+
   return (
     <Stack.Navigator
-    
-    
       //  screenOptions={{ headerShown: false }
       screenOptions={{
         headerShown: false,
-      
-        
-      
+
         cardStyleInterpolator: ({ current: { progress } }) => {
           return {
             cardStyle: {
@@ -94,9 +101,8 @@ const AppStack = () => {
           };
         },
       }}
-
     >
-      {(!user?.email  )? (
+      {!user?.email ? (
         <>
           <Stack.Screen name={"Join"} component={JoinScreen} />
           <Stack.Screen name={"Login"} component={Login} />
@@ -104,7 +110,7 @@ const AppStack = () => {
           <Stack.Screen name={"ProfileSetup"} component={ProfileSetup} />
           <Stack.Screen name={"LostPassword"} component={LostPassword} />
           <Stack.Screen name={"ResetPassword"} component={ResetPassword} />
-          
+
           <Stack.Screen
             name={"ConfirmationCode"}
             component={ConfirmationCode}
@@ -121,10 +127,7 @@ const AppStack = () => {
           {/* <Stack.Screen name={"NewMessage"} component={NewMessage} /> */}
 
           <Stack.Screen name={"MessageScreen"} component={MessageScreen} />
-          <Stack.Screen name={"ProfileScreen"}
-          
-           
-          component={ProfileScreen} />
+          <Stack.Screen name={"ProfileScreen"} component={ProfileScreen} />
           <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
           <Stack.Screen name={"OthersProfile"} component={OthersProfile} />
 

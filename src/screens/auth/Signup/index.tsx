@@ -32,6 +32,7 @@ import Button from "../../../components/Button";
 import { SignupForm } from "./SignupForm";
 import Loader from "../../../components/Loader";
 import { UserSignup } from "../../../api/ApiServices";
+import OneSignal from "react-native-onesignal";
 
 const Signup = () => {
   const navigation: any = useNavigation();
@@ -53,11 +54,16 @@ const Signup = () => {
 
     if (viladResponse) {
       setLoading(true);
+
+      let deviceState = await OneSignal.getDeviceState();
+      console.log("devchc",  deviceState?.userId)
       const data = {
         email: values.email,
         password: values.password,
-        deviceId:'deviceId'
+        deviceId:deviceState?.userId
       };
+    
+
       UserSignup(data, async ({ isSuccess, response }: any) => {
         if (isSuccess) {
           let result = JSON.parse(response);
@@ -101,14 +107,14 @@ const Signup = () => {
         }
       });
 
-      // setLoading(false)
+      setLoading(false)
 
       // console.log("ckbdckdbc",response)
 
-      // setTimeout(() => {
-      //   setLoading(false)
+      setTimeout(() => {
+        setLoading(false)
 
-      // }, 4000);
+      }, 4000);
     }
   };
 

@@ -113,7 +113,7 @@ const BottomTab = ({ navigation }: any) => {
         name="AddChat"
         // component={AddStatus}
         // component={ProfileScreen}
-        component={NewMessage}
+        component={ProfileScreen}
 
         options={{
           headerShown: false,
