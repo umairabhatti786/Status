@@ -136,9 +136,7 @@ const MessageSender = ({
         console.log(result);
         setAuthPosts([...authPosts, result?.post]);
         setState({description: "",channelId: channelId,})
-        message
-        ? setMsg({ ...msg, message: "" })
-        : setState({ ...state, description: "" })
+        
         // setComments([...comments, result.comment]);
         // setLoading2(false);
       } else {
@@ -166,9 +164,9 @@ const MessageSender = ({
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result)
-        message
-        ? setMsg({ ...msg, message: "" })
-        : setState({ ...state, description: "" })
+        // if(result?.message?.senderId===msg.senderId){
+        //   setConversation([...conversation,result?.message])
+        // }
         // console.log('result?.posts',result?.posts?.data)
         if (newChat) {
           // navigation.navigate('MessageScreen');

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Platform,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { colors } from "../../../utils/colors";
 import { appStyles } from "../../../utils/AppStyles";
@@ -43,6 +44,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 const MessageScreen = ({ navigation }: any) => {
   const [isArchived, setIsArchived] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [activeChat, setActiveChat] = useState("Inbox");
   const [search, setSearch] = useState("");
   const [messagesList, setMessagesList] = useState<any>([]);
@@ -62,7 +64,8 @@ const MessageScreen = ({ navigation }: any) => {
 
   const getChatList = async () => {
     let token = await StorageServices.getItem(TOKEN);
-
+    setLoading(true);
+    setActiveChat("Inbox") 
     GetChatList(token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
 
@@ -71,9 +74,15 @@ const MessageScreen = ({ navigation }: any) => {
         console.log(result);
 
         setChatList(result?.chatList);
+        let actChat = result?.chatList?.filter(
+          (c: any) => !(c.archive_con.length + c.trash_con.length)
+        );
+        setContacts(actChat);
+        setLoading(false);
         // setAuthPosts(result?.posts?.data);
       } else {
         console.log(result);
+        setLoading(false);
         // Alert.alert("Alert!", "Something went wrong",);
         console.log("Something went wrong");
       }
@@ -350,7 +359,11 @@ const MessageScreen = ({ navigation }: any) => {
                 : ""
             }
           />
+          {loading&&
+                    <ActivityIndicator color={"#fff"} size={'small'}/>
 
+         
+        }
           {activeChat == "Trash" && (
             <TouchableOpacity activeOpacity={0.6} onPress={handleDeleteConvo}>
               <CustomText

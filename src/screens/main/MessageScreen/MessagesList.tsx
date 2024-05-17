@@ -97,7 +97,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
           }}
         >
           <CustomText
-            text={moment(item?.last_message?.created_at).format("h:s a")}
+            text={moment(item?.last_message?.created_at).format("hh:mm a")}
             color={colors.gray500}
             size={14}
             fontFam="Poppins-Regular"

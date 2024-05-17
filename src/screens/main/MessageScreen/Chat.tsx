@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   Image,
@@ -10,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { appStyles } from "../../../utils/AppStyles";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
@@ -30,8 +31,17 @@ import MessageSender from "../../../components/MessageSender";
 import InboxComponent from "../../../components/InboxComponent";
 import { useSelector } from "react-redux";
 import { getUserData } from "../../../redux/reducers/authReducer";
-import { AUTH, StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
-import { CREATE_TRASH_CONVERSATION, CreateArchive, GetConversation } from "../../../api/ApiServices";
+import {
+  AUTH,
+  StorageServices,
+  TOKEN,
+} from "../../../utils/hooks/StorageServices";
+import {
+  CREATE_TRASH_CONVERSATION,
+  CreateArchive,
+  DELETE_CONVERSATION,
+  GetConversation,
+} from "../../../api/ApiServices";
 import moment from "moment";
 import {
   Pusher,
@@ -45,6 +55,12 @@ const Chat = () => {
   const route: any = useRoute();
   const item = route.params.item;
   const navigation: any = useNavigation();
+  const flatListRef = useRef<FlatList<any>>();
+  const [loadings, setLoadings] = useState({
+    archive: false,
+    trash: false,
+    block: false,
+  });
   const [conversation, setConversation] = useState<any>([]);
   const [NewMessage, setNewMessage] = useState<any>({});
   const isFocused = useIsFocused();
@@ -54,6 +70,9 @@ const Chat = () => {
     block: false,
     trash: false,
   });
+  useEffect(() => {
+    flatListRef?.current?.scrollToEnd();
+  }, []);
 
   const getConversation = async () => {
     let token = await StorageServices.getItem(TOKEN);
@@ -102,7 +121,12 @@ const Chat = () => {
         channelName: "chatChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
           console.log("chat", JSON.parse(event.data));
-          setNewMessage(JSON.parse(event.data).message);
+          if (
+            JSON.parse(event.data).message?.receiverId === item?.user1?.id ||
+            item?.user2?.id
+          ) {
+            setNewMessage(JSON.parse(event.data).message);
+          }
           // setConversation([...conversation, JSON.parse(event.data).message]);
           // setComments([...comments,JSON.parse(event.data).comment])
         },
@@ -146,14 +170,19 @@ const Chat = () => {
     let conversationId = item.id;
     let token = await StorageServices.getItem(TOKEN);
     let data = { userId: user.id, conversationId: conversationId };
+    setLoadings({ ...loadings, archive: true });
 
     CreateArchive(data, token, async ({ isSuccess, response }: any) => {
       console.log("data c", isSuccess);
       // console.log(msg)
       let result = JSON.parse(response);
       if (result.status) {
-        console.log(result)
+        setLoadings({ ...loadings, archive: false });
+        //redirect
+        navigation.navigate("MessageScreen");
+        console.log(result);
       } else {
+        setLoadings({ ...loadings, archive: false });
         Alert.alert("Alert!", "Something went wrong");
         console.log(result);
         console.log("Something went wrong");
@@ -161,24 +190,30 @@ const Chat = () => {
     });
   };
   const handleTrash = async () => {
-    let user = await StorageServices.getItem(AUTH);
+    // let user = await StorageServices.getItem(AUTH);
     let conversationId = item.id;
     let token = await StorageServices.getItem(TOKEN);
-    let data = { userId: user.id, conversationId: conversationId };
-
-    CREATE_TRASH_CONVERSATION(data, token, async ({ isSuccess, response }: any) => {
-      console.log("data t", isSuccess);
-      // console.log(msg)
-      let result = JSON.parse(response);
-      if (result.status) {
-        console.log(result)
-        Alert.alert("Alert!", result?.msg);
-      } else {
-        Alert.alert("Alert!", "Something went wrong");
-        console.log(result);
-        console.log("Something went wrong");
+    // let data = { userId: user.id, conversationId: conversationId };
+    setLoadings({ ...loadings, trash: true });
+    DELETE_CONVERSATION(
+      conversationId,
+      token,
+      async ({ isSuccess, response }: any) => {
+        console.log("data t", isSuccess);
+        // console.log(msg)
+        let result = JSON.parse(response);
+        if (result.status) {
+          setLoadings({ ...loadings, trash: false });
+          //redirect
+          navigation.navigate("MessageScreen");
+        } else {
+          setLoadings({ ...loadings, trash: false });
+          Alert.alert("Alert!", "Something went wrong");
+          console.log(result);
+          console.log("Something went wrong");
+        }
       }
-    });
+    );
   };
 
   const imagePicker = () => {
@@ -197,7 +232,7 @@ const Chat = () => {
         name={item?.sender?.name}
         image={{ uri: item?.sender?.imageUrl }}
         message={item?.message}
-        time={moment(item?.created_at).format("h:s a")}
+        time={moment(item?.created_at).format("hh:mm a")}
         chatDate={item?.chatDate}
         attachments={item?.attachments}
       />
@@ -268,6 +303,9 @@ const Chat = () => {
         </View>
         <View style={{ ...appStyles.row }}>
           <View style={appStyles.row}>
+            {loadings.archive ? (
+              <ActivityIndicator size={"small"} color={"#fff"} />
+            ) : (
               <TouchableOpacity activeOpacity={0.6} onPress={handleArchive}>
                 <Image
                   style={{
@@ -279,39 +317,45 @@ const Chat = () => {
                   resizeMode="contain"
                 />
               </TouchableOpacity>
+            )}
             {/* {state.archive && (
             )} */}
 
             <Spacer width={scale(20)} />
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={() => navigation.goBack()}
-            >
-              <Image
-                style={{
-                  width: scale(18),
-                  height: scale(18),
-                  tintColor: colors.white,
-                }}
-                source={images.block}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
+            {loadings.block ? (
+              <ActivityIndicator size={"small"} color={"#fff"} />
+            ) : (
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => navigation.goBack()}
+              >
+                <Image
+                  style={{
+                    width: scale(18),
+                    height: scale(18),
+                    tintColor: colors.white,
+                  }}
+                  source={images.block}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            )}
             <Spacer width={scale(20)} />
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={handleTrash}
-            >
-              <Image
-                style={{
-                  width: scale(17),
-                  height: scale(17),
-                  tintColor: colors.white,
-                }}
-                source={images.trash}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
+            {loadings.trash ? (
+              <ActivityIndicator size={"small"} color={"#fff"} />
+            ) : (
+              <TouchableOpacity activeOpacity={0.6} onPress={handleTrash}>
+                <Image
+                  style={{
+                    width: scale(17),
+                    height: scale(17),
+                    tintColor: colors.white,
+                  }}
+                  source={images.trash}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            )}
           </View>
 
           {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
@@ -319,7 +363,7 @@ const Chat = () => {
       </View>
       <View style={{ flex: 1 }}>
         <FlatList
-          data={conversation} 
+          data={conversation}
           // style={{paddingTop:verticalScale(20)}}
           contentContainerStyle={{
             gap: 7,

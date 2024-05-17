@@ -73,7 +73,7 @@ const Channel = ({
                         size={15}
                         // fontFam="Inter-SemiBold"
                         //  style={{ marginLeft: scale(8),backgroundColor:colors.primary }}
-                        text={moment(item?.created_at).format("dddd h:s a")}
+                        text={moment(item?.created_at).format("dddd hh:mm a")}
                       />
                     </View>
                     <View
@@ -122,7 +122,7 @@ const Channel = ({
                         size={14}
                         // fontFam="Inter-Medium"
                         style={{ marginRight: scale(5), textAlign: "right" }}
-                        text={moment(item?.created_at).format("h:s a")}
+                        text={moment(item?.created_at).format("hh:mm a")}
                       />
                     </View>
                     <View
