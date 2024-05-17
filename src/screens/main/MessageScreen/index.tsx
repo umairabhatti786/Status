@@ -47,6 +47,7 @@ const MessageScreen = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false);
   const [activeChat, setActiveChat] = useState("Inbox");
   const [search, setSearch] = useState("");
+  const [counter, setCounter] = useState(0);
   const [messagesList, setMessagesList] = useState<any>([]);
   const [chatList, setChatList] = useState<any>([]);
   const [contacts, setContacts] = useState<any>([]);
@@ -167,7 +168,7 @@ const MessageScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     if (isFocused) getChatList();
-  }, [isFocused]);
+  }, [isFocused,counter]);
 
   useEffect(() => {
     if (isFocused) {
@@ -239,6 +240,7 @@ const MessageScreen = ({ navigation }: any) => {
         let result = JSON.parse(response);
         if (result.status) {
           console.log(result);
+          setCounter(counter+1)
         } else {
           Alert.alert("Alert!", "Something went wrong");
           console.log(result);
