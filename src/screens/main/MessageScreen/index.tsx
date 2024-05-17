@@ -377,11 +377,17 @@ const MessageScreen = ({ navigation }: any) => {
         </View>
       </View>
 
-      {/* <TouchableOpacity
-      style={{width:45,height:45,borderRadius:999,backgroundColor}}
+      <TouchableOpacity
+      activeOpacity={0.6}
+      onPress={()=>navigation.navigate("NewMessage")}
+        style={styles.addChat}
       >
+        <Image
+        style={{width:27,height:27}}
+        source={images.addChat}
+        />
 
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
       <CustomDrawer
         isModalVisible={isOpenDrawer}
@@ -415,4 +421,16 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   input: { color: colors.white, width: windowWidth / 3 },
+  addChat:{
+    width: 55,
+    height: 55,
+    borderRadius: 999,
+    backgroundColor: colors.sky,
+    position: "absolute",
+    margin: 30,
+    bottom: 0,
+    right: 0,
+    alignItems:"center",
+    justifyContent:"center"
+  }
 });

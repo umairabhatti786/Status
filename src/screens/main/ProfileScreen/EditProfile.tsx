@@ -170,15 +170,12 @@ const EditProfile = ({ route }: any) => {
 
   useEffect(() => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
-      // const filteredSelectedGifs = selectedGifs.filter((gif) => gif !== "");
-      // Add the selected GIF to the filteredSelectedGifs array
+
       setSelectedGifs((prevSelectedGifs) => [...prevSelectedGifs, e.media.url]);
-      // Update the state with the updated selected GIFs array
-      // setSelectedGifs(updatedSelectedGifs);
+      
 
       GiphyDialog.hide();
 
-      // setIsModalVisible(true);
     };
     const listener = GiphyDialog.addListener(
       GiphyDialogEvent.MediaSelected,
@@ -370,8 +367,7 @@ const EditProfile = ({ route }: any) => {
     }
     const nonEmptySelectedGifs = selectedGifs.filter((gif) => gif !== "");
 
-    console.log("nonEmptySelectedGifs[0]",nonEmptySelectedGifs[0])
-
+    console.log("nonEmptySelectedGifs[0]", nonEmptySelectedGifs[0]);
 
     const form = new FormData();
     form.append("wallComments", values.wallComments ? 1 : 0);
@@ -382,8 +378,14 @@ const EditProfile = ({ route }: any) => {
     form.append("bio", values?.bio);
     form.append("isModel", model == "true" ? 1 : 0);
     form.append("wallpaperUrl", values.wallpaperUrl);
-    form.append("gif1", nonEmptySelectedGifs[0]==undefined?"":nonEmptySelectedGifs[0]);
-    form.append("gif2", nonEmptySelectedGifs[1]==undefined?"":nonEmptySelectedGifs[1]);
+    form.append(
+      "gif1",
+      nonEmptySelectedGifs[0] == undefined ? "" : nonEmptySelectedGifs[0]
+    );
+    form.append(
+      "gif2",
+      nonEmptySelectedGifs[1] == undefined ? "" : nonEmptySelectedGifs[1]
+    );
     form.append("name", values.name);
     form.append("imageUrl", values.imageUrl);
     form.append("location", values?.location);

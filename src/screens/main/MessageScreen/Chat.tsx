@@ -22,8 +22,6 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import ImagePicker from "react-native-image-crop-picker";
-import { messages, messagesList } from "../../../utils/Data";
-import MessagesComponent from "../../../components/MessageComponent";
 import { scale, verticalScale } from "react-native-size-matters";
 import { Spacer } from "../../../components/Spacer";
 import MessageSender from "../../../components/MessageSender";
@@ -31,6 +29,16 @@ import InboxComponent from "../../../components/InboxComponent";
 import { useSelector } from "react-redux";
 import { getUserData } from "../../../redux/reducers/authReducer";
 import { AUTH, StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
+import {
+  GiphyContentType,
+  GiphyDialog,
+  GiphyDialogEvent,
+  GiphyDialogMediaSelectEventHandler,
+  GiphyMedia,
+  GiphySDK,
+  GiphyTheme,
+  GiphyThemePreset,
+} from "@giphy/react-native-sdk";
 import { CREATE_TRASH_CONVERSATION, CreateArchive, GetConversation } from "../../../api/ApiServices";
 import moment from "moment";
 import {
@@ -39,6 +47,23 @@ import {
   PusherChannel,
   PusherEvent,
 } from "@pusher/pusher-websocket-react-native";
+GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
+GiphyDialog.configure({
+  mediaTypeConfig: [
+    GiphyContentType.Emoji,
+    GiphyContentType.Gif,
+    GiphyContentType.Sticker,
+    GiphyContentType.Text,
+  ],
+  showConfirmationScreen: true,
+});
+const theme: GiphyTheme = {
+  preset: GiphyThemePreset.Light,
+  backgroundColor: colors.black300,
+  cellCornerRadius: 12,
+  defaultTextColor: colors.white,
+};
+GiphyDialog.configure({ theme });
 
 const Chat = () => {
   const pusher = Pusher.getInstance();
@@ -49,6 +74,7 @@ const Chat = () => {
   const [NewMessage, setNewMessage] = useState<any>({});
   const isFocused = useIsFocused();
   const userData = useSelector(getUserData);
+  const [giphy,setGiphy]=useState("")
   const [state, setState] = useState({
     archive: false,
     block: false,
@@ -81,6 +107,24 @@ const Chat = () => {
       }
     );
   };
+console.log("giph",giphy)
+  useEffect(() => {
+    const handler: GiphyDialogMediaSelectEventHandler = (e) => {
+
+      setGiphy( e.media.url);
+      
+
+      GiphyDialog.hide();
+
+    };
+    const listener = GiphyDialog.addListener(
+      GiphyDialogEvent.MediaSelected,
+      handler
+    );
+    return () => {
+      listener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     setConversation([...conversation, NewMessage]);
@@ -234,8 +278,19 @@ const Chat = () => {
               resizeMode="contain"
             />
           </TouchableOpacity>
+         
+          <TouchableOpacity
+          style={appStyles.row}
+          activeOpacity={0.6}
+          // onPress={()=>{
+          //   console.log("#Knkcndc",item)
+          //     navigation.navigate("OthersProfile", {
+          //   id: item?.receiverId,
+          // }) 
 
-          <Image
+          // }}
+          >
+              <Image
             style={{
               width: scale(37),
               height: scale(37),
@@ -265,6 +320,10 @@ const Chat = () => {
               } Followers`}
             />
           </View>
+
+          </TouchableOpacity>
+
+        
         </View>
         <View style={{ ...appStyles.row }}>
           <View style={appStyles.row}>
@@ -333,6 +392,7 @@ const Chat = () => {
           <MessageSender
             placeholder="write a message"
             message={"chat"}
+            onGiphyPress={()=>GiphyDialog.show()}
             setConversation={setConversation}
             conversation={conversation}
             receiverId={item?.user1?.id || item?.user2?.id}

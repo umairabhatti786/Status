@@ -1,7 +1,9 @@
 import {
   FlatList,
   Image,
+  Keyboard,
   Platform,
+  Pressable,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -25,6 +27,7 @@ import { SearchUserName } from "../../../api/ApiServices";
 import { StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
 import { useSelector } from "react-redux";
 import { getUserData } from "../../../redux/reducers/authReducer";
+import NewText from "../../../components/NewText";
 
 const NewMessage = () => {
   const route: any = useRoute();
@@ -35,69 +38,66 @@ const NewMessage = () => {
   const [conversation, setConversation] = useState<any>([]);
   const userData = useSelector(getUserData);
 
-  const [usersList, setUsersList] = useState([
-    { name: "Mike O’Dea", img: images.defimage12 },
-  ]);
+  const [usersList, setUsersList] = useState([]);
 
-  const onSearchUsers = async (text: any) => {
+  const onSearchUsers = async (text: string) => {
+    console.log("Input text:", text);
     setSearch(text);
-    let token = await StorageServices.getItem(TOKEN);
-    // console.log({ search: text })
-    SearchUserName(
-      { search: text },
-      token,
-      async ({ isSuccess, response }: any) => {
-        console.log("data s", isSuccess);
-        // console.log(response)
-        let result = response;
-        if (result.status) {
-          // console.log(result?.result?.data);
-          // console.log('result?.posts',result?.posts?.data)
-          if (result?.result?.data.length) setUsersList(result?.result?.data);
+
+    if (text.length > 0) {
+      console.log("Text length is greater than 0");
+      try {
+        const token = await StorageServices.getItem(TOKEN);
+        console.log("Retrieved token:", token);
+
+        if (token) {
+          console.log("Token is valid, proceeding with search");
+          SearchUserName(
+            { search: text },
+            token,
+            async ({ isSuccess, response }: any) => {
+              console.log("Search result:", isSuccess);
+              if (response.status) {
+                console.log("Search response:", response?.result?.data);
+                if (response?.result?.data.length) {
+                  setUsersList(response?.result?.data);
+                } else {
+                  setUsersList([]);
+                }
+              } else {
+                console.log("Search failed:", response);
+                console.log("Something went wrong");
+              }
+            }
+          );
         } else {
-          // setMsg({...msg,message:''})
-          console.log(result);
-          // Alert.alert("Alert!", "Something went wrong",);
-          console.log("Something went wrong");
+          console.error("No token found");
         }
+      } catch (error) {
+        console.error("Error while searching users:", error);
       }
-    );
+    } else {
+      console.log("Text length is 0, resetting search");
+      setSearch("");
+      setUsersList([]);
+    }
   };
 
-  // const onSearchUsers = (txt: any) => {
-  //   setSearch(txt);
-  //   setIsSearch(true);
-
-  //   if (txt.length == 0) {
-  //     setIsSearch(false);
-
-  //     return;
-  //   } else {
-  //     let filterSearch = usersList?.filter((item) => {
-  //       return `${item.name}`
-  //         .toLowerCase()
-  //         .trim()
-  //         .includes(txt.toLowerCase().trim());
-  //     });
-  //     console.log("kcndkcnTextLwnghtdxdc", filterSearch);
-
-  //     setUsersList(filterSearch);
-  //   }
-  // };
-
   return (
-    <View style={appStyles.main}>
-      <StatusBar backgroundColor="#000" barStyle="light-content" />
+    <Pressable 
+    onPress={()=>Keyboard.dismiss()}
+    style={appStyles.main}>
+      <StatusBar backgroundColor={colors.black300} barStyle="light-content" />
 
       <View style={styles.header}>
         <View style={{ width: "30%" }} />
 
         <View style={{ width: "40%" }}>
-          <CustomText
+          <NewText
             fontWeight="600"
             color={colors.white}
             fontFam="Poppins-Medium"
-            size={16}
+            size={17}
             text={"New Message"}
           />
         </View>
@@ -110,7 +110,7 @@ const NewMessage = () => {
           }}
           onPress={() => navigation.goBack()}
         >
-          <CustomText
+          <NewText
             // fontWeight="600"
             color={colors.white}
             // fontFam="Poppins-Medium"
@@ -124,7 +124,7 @@ const NewMessage = () => {
         style={{ paddingHorizontal: scale(15), paddingTop: verticalScale(20) }}
       >
         <View style={appStyles.rowjustify}>
-          <CustomText
+          <NewText
             fontWeight="600"
             color={colors.white}
             fontFam="Poppins-Medium"
@@ -133,52 +133,30 @@ const NewMessage = () => {
             text={"To:"}
           />
 
-          {/* <View
-        style={{
-          width: "87%",
-          height: verticalScale(40),
-          borderWidth: 1,
-          borderRadius: scale(8),
-          borderColor: colors.grey300,
-          flexDirection: "row",
-          alignItems: "center",
-          paddingHorizontal: 10,
-          justifyContent: "space-between",
-        }}
-      > */}
           <View
             style={{
-              // marginHorizontal: 10,
-              // paddingVertical:verticalScale(6),
               width: "90%",
               borderWidth: 1,
               borderRadius: scale(8),
               borderColor: colors.grey300,
               paddingHorizontal: scale(10),
-              // textAlign:"center"
-              // paddingHorizontal: scale(15),
             }}
           >
             {selectedUser ? (
               <TouchableOpacity
-                onPress={() => {}}
+                activeOpacity={0.6}
                 style={{ flexDirection: "row", alignItems: "center" }}
               >
                 <View
                   style={{
                     marginVertical: verticalScale(4),
-
-                    //   minWidth: scale(80),
                     borderRadius: scale(8),
-
                     borderWidth: 1,
                     borderColor: colors.white,
                   }}
                 >
-                  <CustomText
-                    //   fontWeight="600"
+                  <NewText
                     color={colors.white}
-                    //   fontFam="Poppins-Medium"
                     size={16}
                     style={{
                       marginHorizontal: scale(10),
@@ -186,7 +164,34 @@ const NewMessage = () => {
                     }}
                     text={selectedUser.name}
                   />
+                  <TouchableOpacity
+                    activeOpacity={0.6}
+                    onPress={() => {
+                      setSelectedUser("");
+                      setSearch("");
+                      setIsSearch(true);
+                      setUsersList([]);
+                    }}
+                    style={{
+                      width: 22,
+                      height: 22,
+                      backgroundColor: colors.gray200,
+                      position: "absolute",
+                      top: -12,
+                      right: -12,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: 999,
+                      padding: 5,
+                    }}
+                  >
+                    <Image
+                      style={{ width: 13, height: 13 }}
+                      source={images.crossicon}
+                    />
+                  </TouchableOpacity>
                 </View>
+
                 <View />
               </TouchableOpacity>
             ) : (
@@ -203,14 +208,10 @@ const NewMessage = () => {
                   width: "87%",
                   paddingVertical: verticalScale(6),
                   alignItems: "center",
-
-                  // textAlign:"center"
                 }}
               />
             )}
           </View>
-
-          {/* </View> */}
         </View>
 
         <Spacer height={verticalScale(10)} />
@@ -219,19 +220,33 @@ const NewMessage = () => {
             {usersList.map((item, index) => {
               return (
                 <TouchableOpacity
+                  style={{
+                    ...appStyles.row,
+                    paddingVertical: 8,
+                    marginLeft: 10,
+                  }}
                   activeOpacity={0.6}
                   onPress={() => {
                     setSearch(item.name);
                     setSelectedUser(item);
-
                     setIsSearch(false);
                   }}
                 >
-                  <CustomText
+                  <Image
+                    style={{
+                      width: 40,
+                      height: 40,
+                      marginRight: 10,
+                      borderRadius: 999,
+              
+                    }}
+                    source={{ uri: item?.imageUrl }}
+                  />
+                  <NewText
                     fontWeight="600"
                     color={colors.white}
                     fontFam="Poppins-Medium"
-                    size={18}
+                    size={17}
                     style={{ marginVertical: verticalScale(5) }}
                     text={item?.name}
                   />
@@ -240,7 +255,6 @@ const NewMessage = () => {
             })}
           </View>
         )}
-
         {selectedUser && (
           <View
             style={{
@@ -255,7 +269,7 @@ const NewMessage = () => {
                 height: scale(100),
                 borderRadius: scale(10),
               }}
-              source={selectedUser?.img}
+              source={{uri:selectedUser?.imageUrl}}
             />
             <CustomText
               fontWeight="600"
@@ -263,7 +277,7 @@ const NewMessage = () => {
               fontFam="Poppins-Medium"
               size={17}
               style={{ marginVertical: verticalScale(10) }}
-              text={"Mike O’Dea"}
+              text={selectedUser.name}
             />
 
             <CustomText
@@ -272,9 +286,10 @@ const NewMessage = () => {
               // fontFam="Poppins-Medium"
               size={17}
               style={{ textAlign: "center", marginHorizontal: scale(20) }}
-              text={
-                "You started a private message with Mike O’Dea. Please be respectful."
-              }
+              text={`You started a private message with ${selectedUser.name}. Please be respectful. `}
+              // text={
+              //   "You started a private message with Mike O’Dea. Please be respectful."
+              // }
             />
           </View>
         )}
@@ -282,6 +297,8 @@ const NewMessage = () => {
       {selectedUser && (
         <MessageSender
           message={"chat"}
+          notShow={true}
+          placeholder={"Write a message"}
           // setConversation={setConversation}
           // conversation={conversation}
           receiver={selectedUser}
@@ -290,7 +307,7 @@ const NewMessage = () => {
           authId={userData.id}
         />
       )}
-    </View>
+    </Pressable>
   );
 };
 
