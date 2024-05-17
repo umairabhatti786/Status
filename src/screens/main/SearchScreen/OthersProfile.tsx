@@ -258,7 +258,7 @@ const OthersProfile = () => {
 
       let result = JSON.parse(response);
       if (result.status) {
-        console.log("Resuldcjdbvc", result);
+        console.log("user", result);
         setData(result?.user);
         if (result?.user?.followers.length > 0) {
           setIsFollow(true);
@@ -648,7 +648,9 @@ const OthersProfile = () => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       activeOpacity={0.6}
-                      onPress={() => setIsWatchList(!isWatchList)}
+                      onPress={() =>navigation.navigate("NewMessage",{
+                        user:data
+                      })}
                       style={styles.box}
                     >
                       <Image

@@ -51,6 +51,7 @@ type Props = {
   receiverId?: any;
   receiver?: any;
   authId?: any;
+  giphy?: any;
   notShow?: boolean;
   onGiphyPress?:()=>void
 };
@@ -71,7 +72,8 @@ const MessageSender = ({
   authId,
   notShow,
   newChat,
-  onGiphyPress
+  onGiphyPress,
+  giphy
 }: Props) => {
   const navigation: any = useNavigation();
   const [isImageUplaod,setIsImageUplaod]=useState(false)
@@ -142,7 +144,11 @@ const MessageSender = ({
     if (state?.imageUrl) {
       form.append("imageUrl", state?.imageUrl);
     }
+    if (giphy) {
+      form.append("gif", giphy);
+    }
     console.log(form);
+    setState({description: "",channelId: channelId,})
     CreatePost(form, token, async ({ isSuccess, response }: any) => {
       console.log("data", isSuccess);
 
@@ -150,7 +156,6 @@ const MessageSender = ({
       if (result.status) {
         console.log(result);
         setAuthPosts([...authPosts, result?.post]);
-        setState({description: "",channelId: channelId,})
         
         // setComments([...comments, result.comment]);
         // setLoading2(false);
@@ -171,6 +176,9 @@ const MessageSender = ({
     form.append("receiverId", msg.receiverId);
     if (msg.attachment) {
       form.append("attachment", msg.attachment);
+    }
+    if (giphy) {
+      form.append("gif", giphy);
     }
     setMsg({ ...msg, message: "", attachment: "" });
     SendMessage(form, token, async ({ isSuccess, response }: any) => {

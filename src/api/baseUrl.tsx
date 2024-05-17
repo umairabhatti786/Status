@@ -47,4 +47,5 @@ export const URLS = {
   CREATE_TRASH_CONVERSATION: "createTrashConversation",
   GET_TRASH_CONVERSATION: "getTrashConversation/",
   GET_USER_TRASH_CONVERSATION: "getUserTrashConversation/",
+  GET_IN_NOTIFICATION: "getInNotifications",
 };

@@ -11,12 +11,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { appStyles } from "../../../utils/AppStyles";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import { images } from "../../../assets/images";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import ImagePicker from "react-native-image-crop-picker";
 import { messages, messagesList } from "../../../utils/Data";
 import MessagesComponent from "../../../components/MessageComponent";
@@ -37,8 +41,9 @@ const NewMessage = () => {
   const [isSearch, setIsSearch] = useState(true);
   const [conversation, setConversation] = useState<any>([]);
   const userData = useSelector(getUserData);
-
   const [usersList, setUsersList] = useState([]);
+  const user = route?.params?.user;
+  const isFocused = useIsFocused();
 
   const onSearchUsers = async (text: string) => {
     console.log("Input text:", text);
@@ -83,10 +88,16 @@ const NewMessage = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(user)
+    if (isFocused && user) {
+      setSearch(user.name);
+      setSelectedUser(user);
+    }
+  }, [user, isFocused]);
+
   return (
-    <Pressable 
-    onPress={()=>Keyboard.dismiss()}
-    style={appStyles.main}>
+    <Pressable onPress={() => Keyboard.dismiss()} style={appStyles.main}>
       <StatusBar backgroundColor={colors.black300} barStyle="light-content" />
 
       <View style={styles.header}>
@@ -238,7 +249,6 @@ const NewMessage = () => {
                       height: 40,
                       marginRight: 10,
                       borderRadius: 999,
-              
                     }}
                     source={{ uri: item?.imageUrl }}
                   />
@@ -269,7 +279,7 @@ const NewMessage = () => {
                 height: scale(100),
                 borderRadius: scale(10),
               }}
-              source={{uri:selectedUser?.imageUrl}}
+              source={{ uri: selectedUser?.imageUrl }}
             />
             <CustomText
               fontWeight="600"

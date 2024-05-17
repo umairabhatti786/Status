@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { appStyles } from "../../../utils/AppStyles";
 import { images } from "../../../assets/images";
 import { Spacer } from "../../../components/Spacer";
@@ -14,7 +14,7 @@ import CustomText from "../../../components/CustomText";
 import { colors } from "../../../utils/colors";
 import { windowWidth } from "../HomeScreen/FriendList";
 import ReceiveRequestCard from "../../../components/ReceiveRequestCard";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import ActivityCard from "../../../components/ActivityCard";
 import { activityData } from "../../../utils/Data";
 import CustomLine from "../../../components/CustomLine";
@@ -25,22 +25,66 @@ import {
 } from "react-native-responsive-screen";
 import CustomButton from "../../../components/CustomButton";
 import { scale, verticalScale } from "react-native-size-matters";
+import { GetInNotifications } from "../../../api/ApiServices";
+import { getToken } from "../../../redux/reducers/authReducer";
+import { useSelector } from "react-redux";
+import moment from "moment";
 const Notifications = () => {
   const navigation: any = useNavigation();
   const [request, setRequest] = useState(false);
+  const isFocused = useIsFocused();
   const [activeFilter, setActiveFilter] = useState(0);
+  const [data, setData] = useState<any>([]);
+  const [filter, setFilter] = useState<any>([]);
+  const token = useSelector(getToken);
 
   const filterData = ["All", "Follows", "Comments"];
+
+  useEffect(() => {
+    if (isFocused) {
+      if (activeFilter == 0) {
+        setFilter(data);
+      } else if (activeFilter == 1) {
+        let f= data.filter((f:any)=>f.forFollow)
+        setFilter(f)
+      } else if (activeFilter == 2) {
+        let f= data.filter((f:any)=>f.forComment)
+        setFilter(f)
+      }
+    }
+  }, [activeFilter]);
+
+  const getInNotifications = async () => {
+    GetInNotifications(token, async ({ isSuccess, response }: any) => {
+      console.log("data n", isSuccess);
+
+      let result = JSON.parse(response);
+      if (result.status) {
+        console.log(result?.InNotification);
+        setData(result?.InNotification);
+        setFilter(result?.InNotification);
+        // console.log(result?.posts?.data)
+      } else {
+        console.log(result);
+        // Alert.alert("Alert!", "Something went wrong",);
+        console.log("Something went wrong");
+      }
+    });
+  };
+
+  useEffect(() => {
+    getInNotifications();
+  }, []);
 
   const renderItem = ({ item }: any) => {
     return (
       <View style={{ marginBottom: 20 }}>
         <ActivityCard
-          image={item?.image}
-          time={item?.time}
-          name={item?.name}
-          isShowFollow={item.isShowFollow}
-          comment={item?.comment}
+          image={{ uri: item?.imageUrl }}
+          time={moment(item?.created_at).format("hh:mm a")}
+          name={item?.username}
+          isShowFollow={item?.forFollow ? item?.description : ""}
+          comment={item?.description}
         />
       </View>
     );
@@ -100,16 +144,7 @@ const Notifications = () => {
 
       <View style={{ padding: scale(15) }}>
         {/* <Spacer height={25} /> */}
-        <FlatList
-          data={
-            activeFilter == 0
-              ? activityData
-              : activeFilter == 1
-              ? activityData.filter((item) => item.isShowFollow)
-              : activityData.filter((item) => !item.isShowFollow)
-          }
-          renderItem={renderItem}
-        />
+        <FlatList data={filter} renderItem={renderItem} />
       </View>
     </View>
   );

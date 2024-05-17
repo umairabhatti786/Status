@@ -56,6 +56,7 @@ const Signup = () => {
       const data = {
         email: values.email,
         password: values.password,
+        deviceId:'deviceId'
       };
       UserSignup(data, async ({ isSuccess, response }: any) => {
         if (isSuccess) {
