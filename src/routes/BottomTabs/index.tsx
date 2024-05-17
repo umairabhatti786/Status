@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Image, Platform, Pressable, StyleSheet, View } from "react-native";
+import { Image, Platform, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { images } from "../../assets/images";
 import HomeScreen from "../../screens/main/HomeScreen";
@@ -10,13 +10,15 @@ import { colors } from "../../utils/colors";
 import SearchStack from "../SearchStack";
 import AddStatus from "../../screens/main/AddStatus";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { getUserData } from "../../redux/reducers/authReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserData, setDisableBottomTab } from "../../redux/reducers/authReducer";
 import NewMessage from "../../screens/main/NewMessage";
 
 const BottomTab = ({ navigation }: any) => {
   const Bottom = createBottomTabNavigator();
   const isDisableTab=useSelector(state=>state.auth)?.disableBottomTab
+
+  const dispatch=useDispatch()
 
   const image=useSelector(getUserData)?.imageUrl
 
@@ -119,7 +121,11 @@ const BottomTab = ({ navigation }: any) => {
           headerShown: false,
           tabBarIcon: ({ focused }) => {
             return (
-              <View
+              <TouchableOpacity
+              onPress={()=>{
+                dispatch(setDisableBottomTab(true))
+
+              }}
                 style={{
                   ...style?.itemStyle,
 
@@ -132,7 +138,7 @@ const BottomTab = ({ navigation }: any) => {
                   style={{ height: 20, width: 20 ,              
                   }}
                 />
-              </View>
+              </TouchableOpacity>
             );
           },
         }}
