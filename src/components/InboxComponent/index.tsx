@@ -13,6 +13,7 @@ type Props = {
   message?: string;
   attachments?: any;
   chatDate?: string;
+  gif?: string;
   comments?: boolean;
   profile?: boolean;
   edit?: boolean;
@@ -28,6 +29,7 @@ const InboxComponent = ({
   chatDate,
   comments,
   profile,
+  gif,
   edit,
   onEdit,
 }: Props) => {
@@ -140,6 +142,19 @@ const InboxComponent = ({
                 }}
                 // resizeMode={'contain'}
                 source={{ uri: attachments?.[0]?.path }}
+              />
+            </View>
+          )}
+          {gif && (
+            <View style={{ width: "70%", height: 100 }}>
+              <Image
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: scale(5),
+                }}
+                // resizeMode={'contain'}
+                source={{ uri: gif }}
               />
             </View>
           )}

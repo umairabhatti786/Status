@@ -279,6 +279,7 @@ console.log("giph",giphy)
         time={moment(item?.created_at).format("hh:mm a")}
         chatDate={item?.chatDate}
         attachments={item?.attachments}
+        gif={item?.gif}
       />
     );
   };

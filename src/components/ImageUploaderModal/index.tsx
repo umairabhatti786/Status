@@ -11,6 +11,7 @@ import {
   Pressable,
   Image,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import Modal from "react-native-modal";
 import { scale, verticalScale } from "react-native-size-matters";
@@ -30,8 +31,16 @@ interface Props {
   justifyContent?: any;
   setActiveChat?: any;
   imageData?: any;
+  createPost?: any;
+  sendMessage?: any;
+  setState?: any;
+  state?: any;
+  msg?: any;
+  setMsg?: any;
+  message?: any;
+  setLoading?: any;
+  loading?: any;
 }
-
 const ImageUploaderModal: React.FC<Props> = ({
   isModalVisible,
   setModalVisible,
@@ -41,6 +50,15 @@ const ImageUploaderModal: React.FC<Props> = ({
   paddingTop,
   setActiveChat,
   imageData,
+  createPost,
+  sendMessage,
+  setState,
+  state,
+  msg,
+  setMsg,
+  message,
+  setLoading,
+  loading,
 }) => {
   console.log("imageData", imageData);
   const windowWidth = useWindowDimensions().width;
@@ -146,12 +164,12 @@ const ImageUploaderModal: React.FC<Props> = ({
             }}
           >
             <TextInput
-              value={""}
-              //   onChangeText={(text) =>
-              //     // message
-              //     //   ? setMsg({ ...msg, message: text })
-              //     //   : setState({ ...state, description: text })
-              //   }
+              value={message ? msg.message : state.description}
+              onChangeText={(text) =>
+                message
+                  ? setMsg({ ...msg, message: text })
+                  : setState({ ...state, description: text })
+              }
               style={{
                 marginLeft: 12,
                 color: colors.white,
@@ -163,25 +181,28 @@ const ImageUploaderModal: React.FC<Props> = ({
               placeholder={"Write a message"}
             />
           </View>
-
-          <TouchableOpacity
-            // onPress={message ? sendMessage : createPost}
-            activeOpacity={0.6}
-            style={{
-              width: scale(45),
-              height: scale(45),
-              borderRadius: scale(45),
-              backgroundColor: colors.sky,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image
-              source={images.sendmessage}
-              style={{ width: scale(25), height: scale(25) }}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
+          {loading ? (
+            <ActivityIndicator size={"small"} color={'#fff'} />
+          ) : (
+            <TouchableOpacity
+              onPress={message ? sendMessage : createPost}
+              activeOpacity={0.6}
+              style={{
+                width: scale(45),
+                height: scale(45),
+                borderRadius: scale(45),
+                backgroundColor: colors.sky,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                source={images.sendmessage}
+                style={{ width: scale(25), height: scale(25) }}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </Modal>
