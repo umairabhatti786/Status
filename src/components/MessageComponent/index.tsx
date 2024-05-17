@@ -18,6 +18,7 @@ type Props = {
   edit?: boolean;
   onEdit?: () => void;
   onDelete: any;
+  onPress?:()=>void
 };
 
 const MessagesComponent = ({
@@ -31,6 +32,7 @@ const MessagesComponent = ({
   edit,
   onEdit,
   onDelete,
+  onPress
 }: Props) => {
   return (
     <View>
@@ -77,12 +79,15 @@ const MessagesComponent = ({
           paddingVertical: verticalScale(8),
         }}
       >
-        <View style={{ width: 62, height: 62 }}>
+        <TouchableOpacity
+        activeOpacity={0.6}
+        onPress={onPress}
+         style={{ width: 62, height: 62 }}>
           <Image
             style={{ width: "100%", height: "100%", borderRadius: scale(5) }}
             source={{ uri: image }}
           />
-        </View>
+        </TouchableOpacity>
         <View style={{ marginLeft: scale(12) }}>
           <View
             style={{

@@ -344,10 +344,17 @@ const OthersProfile = () => {
   };
 
   const renderChatList = ({ item }: any) => {
+
+    console.log("kncdknc",item)
     return (
       <MessagesComponent
         comments={true}
         profile={true}
+        onPress={() =>
+          navigation.navigate("OtherUserProfile", {
+            id: item?.commentatorId,
+          })
+        }
         onDelete={false}
         name={item?.username}
         image={item?.imageUrl}

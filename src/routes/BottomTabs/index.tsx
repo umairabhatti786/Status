@@ -110,7 +110,7 @@ const BottomTab = ({ navigation }: any) => {
         }}
       />
       <Bottom.Screen
-        name="AddStatus"
+        name="AddChat"
         // component={AddStatus}
         // component={ProfileScreen}
         component={NewMessage}

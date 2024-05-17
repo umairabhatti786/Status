@@ -56,6 +56,35 @@ import {
   TOKEN,
 } from "../../../utils/hooks/StorageServices";
 import MessageSender from "../../../components/MessageSender";
+import {
+  GiphyContentType,
+  GiphyDialog,
+  GiphyDialogEvent,
+  GiphyDialogMediaSelectEventHandler,
+  GiphyMedia,
+  GiphySDK,
+  GiphyTheme,
+  GiphyThemePreset,
+} from "@giphy/react-native-sdk";
+
+
+GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
+GiphyDialog.configure({
+  mediaTypeConfig: [
+    GiphyContentType.Emoji,
+    GiphyContentType.Gif,
+    GiphyContentType.Sticker,
+    GiphyContentType.Text,
+  ],
+  showConfirmationScreen: true,
+});
+const theme: GiphyTheme = {
+  preset: GiphyThemePreset.Light,
+  backgroundColor: colors.black300,
+  cellCornerRadius: 12,
+  defaultTextColor: colors.white,
+};
+GiphyDialog.configure({ theme });
 
 const ProfileScreen = () => {
   const navigation: any = useNavigation();
@@ -70,6 +99,8 @@ const ProfileScreen = () => {
   const [userData, setUserData] = useState<any>();
   const token = useSelector(getToken);
   const [authPosts, setAuthPosts] = useState([]);
+  const [giphy,setGiphy]=useState("")
+
 
   const dispatch = useDispatch();
 
@@ -92,6 +123,24 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     GetPosts();
+  }, []);
+
+  useEffect(() => {
+    const handler: GiphyDialogMediaSelectEventHandler = (e) => {
+
+      setGiphy( e.media.url);
+      
+
+      GiphyDialog.hide();
+
+    };
+    const listener = GiphyDialog.addListener(
+      GiphyDialogEvent.MediaSelected,
+      handler
+    );
+    return () => {
+      listener.remove();
+    };
   }, []);
   console.log("UserData", userData?.gif);
   const GetPosts = async () => {
@@ -677,6 +726,7 @@ const ProfileScreen = () => {
              
               <View  >
             <MessageSender
+            onGiphyPress={()=>GiphyDialog.show()}
                 // bottom={verticalScale(15)}
                 sendImage={images.simplesend}
                 channelId={channelId}

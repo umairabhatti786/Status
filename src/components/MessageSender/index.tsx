@@ -26,6 +26,7 @@ import { usePermissions } from "../../utils/Permissions";
 import ImagePicker from "react-native-image-crop-picker";
 import { openSettings } from "react-native-permissions";
 import { useNavigation } from "@react-navigation/native";
+import ImageUploaderModal from "../ImageUploaderModal";
 
 type Props = {
   name?: string;
@@ -50,6 +51,8 @@ type Props = {
   receiverId?: any;
   receiver?: any;
   authId?: any;
+  notShow?: boolean;
+  onGiphyPress?:()=>void
 };
 
 const MessageSender = ({
@@ -66,9 +69,14 @@ const MessageSender = ({
   receiverId,
   receiver,
   authId,
+  notShow,
   newChat,
+  onGiphyPress
 }: Props) => {
   const navigation: any = useNavigation();
+  const [isImageUplaod,setIsImageUplaod]=useState(false)
+  const [imageData,setImageData]=useState({})
+
   const [state, setState] = useState({
     description: "",
     // imageUrl: "",
@@ -103,10 +111,17 @@ const MessageSender = ({
             uri: result?.path,
             width: result?.width,
           };
-          message
-            ? setMsg({ ...msg, attachment: data })
-            : setState({ ...state, imageUrl: data });
-          console.log(data);
+          setImageData(data)
+
+          setTimeout(() => {
+            setIsImageUplaod(true)
+
+            
+          }, 500);
+          // message
+          //   ? setMsg({ ...msg, attachment: data })
+          //   : setState({ ...state, imageUrl: data });
+          // console.log(data);
         }
       });
     } else {
@@ -154,10 +169,10 @@ const MessageSender = ({
     form.append("message", msg.message);
     form.append("senderId", msg.senderId);
     form.append("receiverId", msg.receiverId);
-    if(msg.attachment){
+    if (msg.attachment) {
       form.append("attachment", msg.attachment);
     }
-    setMsg({ ...msg, message: "",attachment:'' });
+    setMsg({ ...msg, message: "", attachment: "" });
     SendMessage(form, token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
       // console.log(msg)
@@ -174,10 +189,10 @@ const MessageSender = ({
             item: receiver,
           });
         }
-        
+
         // setConversation([...conversation,result?.message]);
       } else {
-        setMsg({ ...msg, message: "",attachment:'' });
+        setMsg({ ...msg, message: "", attachment: "" });
         console.log(result);
         // Alert.alert("Alert!", "Something went wrong",);
         console.log("Something went wrong");
@@ -186,7 +201,8 @@ const MessageSender = ({
     // SendMessage()
   };
   return (
-    <View
+    <>
+     <View
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -194,17 +210,14 @@ const MessageSender = ({
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: "#8A8A8A",
-        //   paddingVertical: 10,
-        //   paddingHorizontal: 12,
+
         width: windowWidth,
         position: "absolute",
         bottom: bottom || 0,
-        //   paddingBottom: 30,
         backgroundColor: colors.primary,
         paddingVertical: verticalScale(10),
         paddingHorizontal: scale(10),
-        // height: verticalScale(100),
-        //   paddingHorizontal:scale(20)
+   
       }}
     >
       <View
@@ -215,12 +228,8 @@ const MessageSender = ({
           backgroundColor: colors.black,
           paddingHorizontal: scale(5),
           paddingVertical: verticalScale(3),
-
-          // padding:scale(10),
-          //   height: verticalScale(60),
           width: "82%",
           alignSelf: "center",
-          // marginBottom:verticalScale(30)
         }}
       >
         <TextInput
@@ -233,29 +242,41 @@ const MessageSender = ({
           style={{
             marginLeft: 12,
             color: colors.white,
-            width: "70%",
+            paddingRight: 5,
+            width: notShow ? "90%" : "75%",
             fontSize: verticalScale(16),
-            // backgroundColor:"red"
           }}
           placeholderTextColor={colors.gray200}
           placeholder={placeholder || "Write a status update"}
         />
-        <TouchableOpacity activeOpacity={0.6} onPress={onOpenGallery}>
-          <Image
-            source={images.attach}
-            style={{ width: scale(20), height: scale(20) }}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <Spacer width={scale(20)} />
+        {notShow ? (
+          <></>
+        ) : (
+          <>
+            <TouchableOpacity activeOpacity={0.6} onPress={onGiphyPress}>
+              <Image
+                source={images.uploadGiphy}
+                style={{ width: scale(20), height: scale(20) }}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <Spacer width={scale(10)} />
+          </>
+        )}
 
-        <TouchableOpacity activeOpacity={0.6} onPress={onOpenGallery}>
-          <Image
-            source={images.camera}
-            style={{ width: scale(20), height: scale(20) }}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
+        {notShow ? (
+          <></>
+        ) : (
+          <>
+            <TouchableOpacity activeOpacity={0.6} onPress={onOpenGallery}>
+              <Image
+                source={images.attach}
+                style={{ width: scale(20), height: scale(20) }}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </>
+        )}
       </View>
 
       <TouchableOpacity
@@ -277,6 +298,14 @@ const MessageSender = ({
         />
       </TouchableOpacity>
     </View>
+     <ImageUploaderModal
+        isModalVisible={isImageUplaod}
+      imageData={imageData}
+        // setActiveChat={setActiveChat}
+        setModalVisible={setIsImageUplaod}
+      />
+    </>
+   
   );
 };
 

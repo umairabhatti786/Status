@@ -21,6 +21,8 @@ const SearchStack = () => {
     >
       <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
       <Stack.Screen name={"OthersProfile"} component={OthersProfile} />
+      <Stack.Screen name={"OtherUserProfile"} component={OthersProfile} />
+
     </Stack.Navigator>
   );
 };

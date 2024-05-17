@@ -118,6 +118,8 @@ const AppStack = () => {
         <>
           <Stack.Screen name={"Tabs"} component={BottomTab} />
           <Stack.Screen name={"HomeScreen"} component={HomeScreen} />
+          {/* <Stack.Screen name={"NewMessage"} component={NewMessage} /> */}
+
           <Stack.Screen name={"MessageScreen"} component={MessageScreen} />
           <Stack.Screen name={"ProfileScreen"}
           
@@ -125,6 +127,7 @@ const AppStack = () => {
           component={ProfileScreen} />
           <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
           <Stack.Screen name={"OthersProfile"} component={OthersProfile} />
+
           <Stack.Screen name={"AddStatus"} component={AddStatus} />
           <Stack.Screen name={"ChatScreen"} component={Chat} />
           <Stack.Screen name={"Settings"} component={Settings} />

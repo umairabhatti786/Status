@@ -136,15 +136,13 @@ bagicon: require("../icons/bag-icon.png"),
   eye: require("../icons/eye.png"),
   eyeclose: require("../icons/eye-close.png"),
   gift: require("../icons/gift.png"),
-
-
+  addChat: require("../icons/add-chat.png"),
+  uploadGiphy: require("../icons/upload-giphy.png"),
   arrowdown: require("../icons/downarrow.png"),
   youtube: require("../images/youtube.png"),
   insta: require("../images/instagram.png"),
   twitter: require("../images/twitter.png"),
   giphy: require("../images/giphy.png"),
-
-
   crosscircle: require("../icons/cross-circle.png"),
   next: require("../icons/next.png"),
   attach: require("../icons/attach.png"),
