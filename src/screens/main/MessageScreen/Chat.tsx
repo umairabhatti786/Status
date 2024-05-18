@@ -37,6 +37,7 @@ import {
 import {
   CREATE_TRASH_CONVERSATION,
   CreateArchive,
+  CreateBlockConversation,
   DELETE_CONVERSATION,
   GetConversation,
 } from "../../../api/ApiServices";
@@ -230,6 +231,30 @@ const Chat = () => {
       }
     });
   };
+  const handleBlock = async () => {
+    let user = await StorageServices.getItem(AUTH);
+    let conversationId = item.id;
+    let token = await StorageServices.getItem(TOKEN);
+    let data = { userId: user.id, conversationId: conversationId };
+    setLoadings({ ...loadings, block: true });
+
+    CreateBlockConversation(data, token, async ({ isSuccess, response }: any) => {
+      console.log("data b", isSuccess);
+      // console.log(msg)
+      let result = JSON.parse(response);
+      if (result.status) {
+        setLoadings({ ...loadings, block: false });
+        //redirect
+        console.log(result);
+        // navigation.navigate("MessageScreen");
+      } else {
+        setLoadings({ ...loadings, block: false });
+        Alert.alert("Alert!", "Something went wrong");
+        console.log(result);
+        console.log("Something went wrong");
+      }
+    });
+  };
   const handleTrash = async () => {
     // let user = await StorageServices.getItem(AUTH);
     let conversationId = item.id;
@@ -381,7 +406,7 @@ const Chat = () => {
             ) : (
               <TouchableOpacity
                 activeOpacity={0.6}
-                onPress={() => navigation.goBack()}
+                onPress={handleBlock}
               >
                 <Image
                   style={{

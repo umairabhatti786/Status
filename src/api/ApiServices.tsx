@@ -2,6 +2,25 @@ import axios from "axios";
 import { client, getApiUrl } from "./Config";
 import { URLS } from "./baseUrl";
 
+export const CreateBlockConversation = async (data: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.CREATE_BLOCK_CONVERSATION, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
 export const CreateArchive = async (data: any, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",

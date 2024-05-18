@@ -194,7 +194,7 @@ const MessageSender = ({
     }
     setMsg({ ...msg, message: "", attachment: "" });
     setLoading(true);
-    setGiphy("");
+    // setGiphy("");
     SendMessage(form, token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
       console.log(response);
