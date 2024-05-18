@@ -235,6 +235,7 @@ const Channel = ({
         isModalVisible={isViewImage}
         imageObject={imageObject}
         // imageData={imageData}
+        
         // sendMessage={sendMessage}
         // createPost={createPost}
         // setState={setState}

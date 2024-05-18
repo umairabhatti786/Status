@@ -38,16 +38,18 @@ const Notifications = () => {
   const [filter, setFilter] = useState<any>([]);
   const token = useSelector(getToken);
 
-  const filterData = ["All", "Follows", "Comments"];
+  const filterData = ["All", "Comments"];
 
   useEffect(() => {
     if (isFocused) {
       if (activeFilter == 0) {
         setFilter(data);
-      } else if (activeFilter == 1) {
-        let f= data.filter((f:any)=>f.forFollow)
-        setFilter(f)
-      } else if (activeFilter == 2) {
+      } 
+      // else if (activeFilter == 1) {
+      //   let f= data.filter((f:any)=>f.forFollow)
+      //   setFilter(f)
+      // } 
+      else if (activeFilter == 1) {
         let f= data.filter((f:any)=>f.forComment)
         setFilter(f)
       }
@@ -57,7 +59,6 @@ const Notifications = () => {
   const getInNotifications = async () => {
     GetInNotifications(token, async ({ isSuccess, response }: any) => {
       console.log("data n", isSuccess);
-
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result?.InNotification);
@@ -142,7 +143,7 @@ const Notifications = () => {
         })}
       </View>
 
-      <View style={{ padding: scale(15) }}>
+      <View style={{ paddingHorizontal: scale(15) }}>
         {/* <Spacer height={25} /> */}
         <FlatList data={filter} renderItem={renderItem} />
       </View>
