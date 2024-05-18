@@ -90,7 +90,7 @@ const Chat = () => {
   const [NewMessage, setNewMessage] = useState<any>({});
   const isFocused = useIsFocused();
   const userData = useSelector(getUserData);
-  const [giphy,setGiphy]=useState("")
+  const [giphy, setGiphy] = useState("");
   const [state, setState] = useState({
     archive: false,
     block: false,
@@ -126,15 +126,12 @@ const Chat = () => {
       }
     );
   };
-console.log("giph",giphy)
+  // console.log("giph", giphy);
   useEffect(() => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
-
-      setGiphy( e.media.url);
-      
+      setGiphy(e.media.url);
 
       GiphyDialog.hide();
-
     };
     const listener = GiphyDialog.addListener(
       GiphyDialogEvent.MediaSelected,
@@ -314,52 +311,49 @@ console.log("giph",giphy)
               resizeMode="contain"
             />
           </TouchableOpacity>
-         
+
           <TouchableOpacity
-          style={appStyles.row}
-          activeOpacity={0.6}
-          // onPress={()=>{
-          //   console.log("#Knkcndc",item)
-          //     navigation.navigate("OthersProfile", {
-          //   id: item?.receiverId,
-          // }) 
+            style={appStyles.row}
+            activeOpacity={0.6}
+            // onPress={()=>{
+            //   console.log("#Knkcndc",item)
+            //     navigation.navigate("OthersProfile", {
+            //   id: item?.receiverId,
+            // })
 
-          // }}
+            // }}
           >
-              <Image
-            style={{
-              width: scale(37),
-              height: scale(37),
-              borderRadius: 999,
-            }}
-            source={{ uri: item?.user1?.imageUrl || item?.user2?.imageUrl }}
-          />
-          <View
-            style={{
-              marginHorizontal: scale(7),
-              // paddingBottom: verticalScale(5),
-            }}
-          >
-            <CustomText
-              color={colors.white}
-              size={17}
-              // style={{ marginTop: verticalScale(5) }}
-              text={item?.user1?.name || item?.user2?.name}
+            <Image
+              style={{
+                width: scale(37),
+                height: scale(37),
+                borderRadius: 999,
+              }}
+              source={{ uri: item?.user1?.imageUrl || item?.user2?.imageUrl }}
             />
-            <CustomText
-              // fontWeight="700"
-              color={colors.white}
-              size={13}
-              style={{ marginTop: verticalScale(-4) }}
-              text={`${
-                item?.user1?.followers_count || item?.user2?.followers_count
-              } Followers`}
-            />
-          </View>
-
+            <View
+              style={{
+                marginHorizontal: scale(7),
+                // paddingBottom: verticalScale(5),
+              }}
+            >
+              <CustomText
+                color={colors.white}
+                size={17}
+                // style={{ marginTop: verticalScale(5) }}
+                text={item?.user1?.name || item?.user2?.name}
+              />
+              <CustomText
+                // fontWeight="700"
+                color={colors.white}
+                size={13}
+                style={{ marginTop: verticalScale(-4) }}
+                text={`${
+                  item?.user1?.followers_count || item?.user2?.followers_count
+                } Followers`}
+              />
+            </View>
           </TouchableOpacity>
-
-        
         </View>
         <View style={{ ...appStyles.row }}>
           <View style={appStyles.row}>
@@ -437,7 +431,7 @@ console.log("giph",giphy)
           <MessageSender
             placeholder="write a message"
             message={"chat"}
-            onGiphyPress={()=>GiphyDialog.show()}
+            onGiphyPress={() => GiphyDialog.show()}
             giphy={giphy}
             setGiphy={setGiphy}
             setConversation={setConversation}
