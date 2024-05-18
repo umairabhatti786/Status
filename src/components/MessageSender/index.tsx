@@ -84,7 +84,7 @@ const MessageSender = ({
 
   const [state, setState] = useState({
     description: "",
-    // imageUrl: "",
+    imageUrl: "",
     channelId: channelId,
   });
   const [msg, setMsg] = useState({
@@ -95,7 +95,8 @@ const MessageSender = ({
   });
   const { requestGalleryPermission } = usePermissions();
   const onOpenGallery = async (isPicture: any) => {
-    console.log("ISpucvibdv", isPicture);
+    // console.log("ISpucvibdv", isPicture);
+    setIsImageUplaod(true);
     let gallerypermission = await requestGalleryPermission();
     if (gallerypermission == "granted" || gallerypermission == "limited") {
       ImagePicker.openPicker({
@@ -116,14 +117,14 @@ const MessageSender = ({
             uri: result?.path,
             width: result?.width,
           };
+          message
+            ? setMsg({ ...msg, attachment: data })
+            : setState({ ...state, imageUrl: data });
           setImageData(data);
 
-          setTimeout(() => {
-            setIsImageUplaod(true);
-          }, 500);
-          // message
-          //   ? setMsg({ ...msg, attachment: data })
-          //   : setState({ ...state, imageUrl: data });
+          // setTimeout(() => {
+          //   setIsImageUplaod(true);
+          // }, 500);
           // console.log(data);
         }
       });
@@ -142,27 +143,29 @@ const MessageSender = ({
     let form = new FormData();
     form.append("description", state.description);
     form.append("channelId", state.channelId);
-    if (imageData) {
-      form.append("imageUrl", imageData);
+    if (state.imageUrl) {
+      form.append("imageUrl", state.imageUrl);
     }
-    if (giphy) {
-      form.append("gif", giphy);
-    }
-    console.log(form);
-    setState({ description: "", channelId: channelId });
+    // form.append("gif", 'giphy');
+    // if (giphy) {
+    // form.append("gif", giphy);
+    // }
+    setState({ description: "", imageUrl: "", channelId: channelId });
     setLoading(true);
+
+    // setGiphy("")
+    console.log(form);
     CreatePost(form, token, async ({ isSuccess, response }: any) => {
       console.log("data", isSuccess);
-      console.log("data", response);
+      console.log("response", response);
 
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
-        setIsImageUplaod(false)
-        setImageData({})
-        // setGiphy("")
-        setLoading(false);
+        setIsImageUplaod(false);
+        setImageData({});
         setAuthPosts([...authPosts, result?.post]);
+        setLoading(false);
         // setComments([...comments, result.comment]);
         // setLoading2(false);
       } else {
@@ -183,25 +186,25 @@ const MessageSender = ({
     if (msg.message) {
       form.append("message", msg.message);
     }
-    if (imageData) {
-      form.append("attachment", imageData);
+    if (msg.attachment) {
+      form.append("attachment", msg.attachment);
     }
     if (giphy) {
       form.append("gif", giphy);
     }
     setMsg({ ...msg, message: "", attachment: "" });
     setLoading(true);
+    setGiphy("");
     SendMessage(form, token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
-      // console.log(msg)
+      console.log(response);
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
-        // setImageData({})
+        setIsImageUplaod(false);
+        setImageData({});
         setLoading(false);
-        setIsImageUplaod(false)
-        setImageData({})
-        setGiphy("")
+
         // if(result?.message?.senderId===msg.senderId){
         //   setConversation([...conversation,result?.message])
         // }
