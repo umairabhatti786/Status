@@ -77,7 +77,7 @@ const MessageSender = ({
   giphy,
   setGiphy,
 }: Props) => {
-  console.log("ckndkcnd",giphy)
+  // console.log("ckndkcnd",giphy)
   const navigation: any = useNavigation();
   const [isImageUplaod, setIsImageUplaod] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -214,9 +214,9 @@ const MessageSender = ({
         setImageData({});
         setLoading(false);
 
-        // if(result?.message?.senderId===msg.senderId){
-        //   setConversation([...conversation,result?.message])
-        // }
+        if(result?.message?.senderId==msg.senderId){
+          setConversation([...conversation,result?.message])
+        }
         // console.log('result?.posts',result?.posts?.data)
         if (newChat) {
           // navigation.navigate('MessageScreen');

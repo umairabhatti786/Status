@@ -61,7 +61,7 @@ const ImageUploaderModal: React.FC<Props> = ({
   setLoading,
   loading,
 }) => {
-  console.log("imageData", imageData);
+  // console.log("imageData", imageData);
   const windowWidth = useWindowDimensions().width;
 
   return (

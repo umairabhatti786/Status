@@ -149,6 +149,8 @@ const Chat = () => {
 
   const con = async () => {
     // console.log("am focused");
+    // let user = await StorageServices.getItem(AUTH);
+
     try {
       await pusher.init({
         apiKey: "e8f7ca7b8515f9bfcbb0",
@@ -162,11 +164,9 @@ const Chat = () => {
       let chatChannel = await pusher.subscribe({
         channelName: "chatChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
-          console.log("chat", JSON.parse(event.data));
-          if (
-            JSON.parse(event.data).message?.receiverId === item?.user1?.id ||
-            item?.user2?.id
-          ) {
+          console.log("chatChannel", JSON.parse(event.data));
+          if (!(JSON.parse(event.data).message?.senderId == userData.id)) {
+            // setConversation([...conversation,JSON.parse(event.data).message])
             setNewMessage(JSON.parse(event.data).message);
           }
           // setConversation([...conversation, JSON.parse(event.data).message]);
@@ -238,22 +238,26 @@ const Chat = () => {
     let data = { userId: user.id, conversationId: conversationId };
     setLoadings({ ...loadings, block: true });
 
-    CreateBlockConversation(data, token, async ({ isSuccess, response }: any) => {
-      console.log("data b", isSuccess);
-      // console.log(msg)
-      let result = JSON.parse(response);
-      if (result.status) {
-        setLoadings({ ...loadings, block: false });
-        //redirect
-        console.log(result);
-        // navigation.navigate("MessageScreen");
-      } else {
-        setLoadings({ ...loadings, block: false });
-        Alert.alert("Alert!", "Something went wrong");
-        console.log(result);
-        console.log("Something went wrong");
+    CreateBlockConversation(
+      data,
+      token,
+      async ({ isSuccess, response }: any) => {
+        console.log("data b", isSuccess);
+        // console.log(msg)
+        let result = JSON.parse(response);
+        if (result.status) {
+          setLoadings({ ...loadings, block: false });
+          //redirect
+          console.log(result);
+          navigation.navigate("MessageScreen");
+        } else {
+          setLoadings({ ...loadings, block: false });
+          Alert.alert("Alert!", "Something went wrong");
+          console.log(result);
+          console.log("Something went wrong");
+        }
       }
-    });
+    );
   };
   const handleTrash = async () => {
     // let user = await StorageServices.getItem(AUTH);
@@ -404,10 +408,7 @@ const Chat = () => {
             {loadings.block ? (
               <ActivityIndicator size={"small"} color={"#fff"} />
             ) : (
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={handleBlock}
-              >
+              <TouchableOpacity activeOpacity={0.6} onPress={handleBlock}>
                 <Image
                   style={{
                     width: scale(18),
@@ -440,9 +441,10 @@ const Chat = () => {
           {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
         </View>
       </View>
-      <View style={{ height:"90%" }}>
+      <View style={{ height: "90%" }}>
         <FlatList
           data={conversation}
+          // inverted={true}
           // style={{paddingTop:verticalScale(20)}}
           // contentContainerStyle={{
           //   gap: 7,

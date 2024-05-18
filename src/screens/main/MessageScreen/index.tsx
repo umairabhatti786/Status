@@ -76,7 +76,7 @@ const MessageScreen = ({ navigation }: any) => {
 
         setChatList(result?.chatList);
         let actChat = result?.chatList?.filter(
-          (c: any) => !(c.archive_con.length + c.trash_con.length)
+          (c: any) => !(c.archive_con.length + c.trash_con.length+c.blocked_con.length)
         );
         setContacts(actChat);
         setLoading(false);

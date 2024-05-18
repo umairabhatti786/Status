@@ -75,7 +75,7 @@ const Notifications = () => {
 
   useEffect(() => {
     getInNotifications();
-  }, []);
+  }, [isFocused]);
 
   const renderItem = ({ item }: any) => {
     return (
