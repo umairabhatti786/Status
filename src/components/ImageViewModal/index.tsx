@@ -22,6 +22,8 @@ import { colors } from "../../utils/colors";
 import { appStyles } from "../../utils/AppStyles";
 import CustomLine from "../CustomLine";
 import { Spacer } from "../Spacer";
+import NewText from "../NewText";
+import moment from "moment";
 
 interface Props {
   isModalVisible?: boolean;
@@ -36,7 +38,7 @@ interface Props {
   setMsg?: any;
   message?: any;
   loading?: any;
-  imageObject?:object
+  imageObject?: object;
 }
 const ImageViewModal: React.FC<Props> = ({
   isModalVisible,
@@ -55,6 +57,16 @@ const ImageViewModal: React.FC<Props> = ({
 }) => {
   console.log("imageData", imageData);
   const windowWidth = useWindowDimensions().width;
+  const createdAtDate = moment(imageObject.time);
+const currentDate = moment();
+
+// Check if the created_at date is today
+const isToday = createdAtDate.isSame(currentDate, 'day');
+
+// Format the date differently based on whether it's today or not
+const formattedDate = isToday
+  ? 'Today at ' + createdAtDate.format('hh:mm A')
+  : createdAtDate.format('MMM D [at] hh:mm A');
 
   return (
     <Modal
@@ -75,31 +87,87 @@ const ImageViewModal: React.FC<Props> = ({
             backgroundColor: colors.black300,
           }}
           onPress={() => {
-            setModalVisible?.(false)
-
+            setModalVisible?.(false);
           }}
         ></Pressable>
       }
     >
-      <Pressable
-      onPress={()=>{Keyboard.dismiss()}}
+      <View
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
         style={{
           width: "101%",
           height: "100%",
-          backgroundColor: colors.black300,
-          borderTopLeftRadius: scale(20),
-          borderTopRightRadius: scale(20),
-          overflow: "hidden",
-          justifyContent: "space-between",
-
-          borderRightWidth: 1,
-          borderColor: "#8A8A8A",
+          backgroundColor: "#0B0B0B",
+         
         }}
       >
-        <View style={{ width: "100%", height: "85%" }}>
+        <View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              paddingHorizontal: scale(20),
+              paddingVertical: verticalScale(5),
+            }}
+          >
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={()=>{
+                setModalVisible?.(false);
+
+
+              }}
+              style={{
+                width: scale(30),
+                height: scale(30),
+                // alignItems:"center",
+                justifyContent: "center",
+              }}
+            >
+              <Image
+                style={{
+                  width: 17,
+                  height: 17,
+                  borderRadius: 999,
+                }}
+                source={images.back}
+              />
+            </TouchableOpacity>
+
+            <View
+              style={{
+                marginHorizontal: scale(7),
+                paddingBottom: verticalScale(5),
+                width: windowWidth / 2.5,
+              }}
+            >
+              <NewText
+                color={colors.white}
+                size={18}
+                numberOfLines={1}
+                style={{ marginTop: verticalScale(5) }}
+                text={imageObject.name}
+              />
+              <NewText
+                color={colors.white}
+                size={14}
+                style={{ marginTop: verticalScale(-3) }}
+                text={formattedDate}
+              />
+            </View>
+          </View>
+        </View>
+        <View style={{ width: "100%", height: "75%" }}>
           <Image
-            style={{ width: "100%", height: "100%",position:"absolute",top:0 ,left:0}}
-            source={{uri:imageObject?.uri}}
+            style={{
+              width: "100%",
+              height: "100%",
+            
+            }}
+            resizeMode="cover"
+            source={{ uri: imageObject?.uri }}
           />
 
           <View
@@ -111,97 +179,31 @@ const ImageViewModal: React.FC<Props> = ({
               opacity: 0.5,
             }}
           />
-
-          <TouchableOpacity
-            activeOpacity={0.6}
-            onPress={() => {
-              setModalVisible(false);
-            }}
-            style={{
-              width: 35,
-              height: 35,
-              backgroundColor: colors.gray200,
-              position: "absolute",
-              top: 0,
-              left: 0,
-              margin: 20,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 999,
-              padding: 5,
-            }}
-          >
-            <Image
-              style={{ width: 13, height: 13 }}
-              source={images.crossicon}
-            />
-          </TouchableOpacity>
         </View>
 
-        {/* <View
+        <View></View>
+
+     <View
           style={{
-            flexDirection: "row",
-            alignItems: "center",
+            // flexDirection: "row",
+            // alignItems: "center",
             justifyContent: "space-between",
-            height:"15%",
-            marginBottom: verticalScale(20),
-            paddingHorizontal: 20,
+            // height:"25%",
+            width:windowWidth,
+            paddingTop: "12%",
+            paddingHorizontal:15
           }}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              borderRadius: 999,
-              backgroundColor: colors.black,
-              paddingHorizontal: scale(5),
-              paddingVertical: verticalScale(3),
-              width: "82%",
-              alignSelf: "center",
-            }}
-          >
-            <TextInput
-              value={message ? msg.message : state.description}
-              onChangeText={(text) =>
-                message
-                  ? setMsg({ ...msg, message: text })
-                  : setState({ ...state, description: text })
-              }
-              style={{
-                marginLeft: 12,
-                color: colors.white,
-                paddingRight: 5,
-                width: "90%",
-                fontSize: verticalScale(16),
-              }}
-              placeholderTextColor={colors.gray200}
-              placeholder={"Write a message"}
-            />
-          </View>
-          {loading ? (
-            <ActivityIndicator size={"small"} color={'#fff'} />
-          ) : (
-            <TouchableOpacity
-              onPress={message ? sendMessage : createPost}
-              activeOpacity={0.6}
-              style={{
-                width: scale(45),
-                height: scale(45),
-                borderRadius: scale(45),
-                backgroundColor: colors.sky,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Image
-                source={images.sendmessage}
-                style={{ width: scale(25), height: scale(25) }}
-                resizeMode="contain"
+             <NewText
+                color={colors.white}
+                size={15}
+                numberOfLines={3}
+                // style={{ textAlign:"center" }}
+                text={imageObject.description}
               />
-            </TouchableOpacity>
-          )}
-        </View> */}
-      </Pressable>
+         
+        </View> 
+      </View>
     </Modal>
   );
 };

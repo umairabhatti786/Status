@@ -68,7 +68,6 @@ import {
   GiphyThemePreset,
 } from "@giphy/react-native-sdk";
 
-
 GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
 GiphyDialog.configure({
   mediaTypeConfig: [
@@ -99,12 +98,9 @@ const ProfileScreen = () => {
   const [userData, setUserData] = useState<any>();
   const token = useSelector(getToken);
   const [authPosts, setAuthPosts] = useState([]);
-  const [giphy,setGiphy]=useState("")
-  const activeBar=useSelector(state=>state.auth)?.profileActiveBar
+  const [giphy, setGiphy] = useState("");
+  const activeBar = useSelector((state) => state.auth)?.profileActiveBar;
   const [isActiveProfile, setIsActiveProfile] = useState("");
-
-
-
 
   const dispatch = useDispatch();
 
@@ -119,7 +115,7 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     getAuth();
-    setIsActiveProfile(activeBar)
+    setIsActiveProfile(activeBar);
   }, [focused]);
 
   useEffect(() => {
@@ -132,18 +128,15 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     const backAction = () => {
+      dispatch(setDisableBottomTab(false));
+      navigation.goBack();
+      console.log("goBAckData");
 
-
-      dispatch(setDisableBottomTab(false))
-      navigation.goBack()
-      console.log("goBAckData")
-
-     
       return true;
     };
 
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
+      "hardwareBackPress",
       backAction
     );
 
@@ -152,12 +145,9 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
-
-      setGiphy( e.media.url);
-      
+      setGiphy(e.media.url);
 
       GiphyDialog.hide();
-
     };
     const listener = GiphyDialog.addListener(
       GiphyDialogEvent.MediaSelected,
@@ -314,7 +304,6 @@ const ProfileScreen = () => {
           <Loader />
         </View>
       ) : (
-        
         <SafeAreaView style={appStyles.main}>
           <StatusBar backgroundColor="#000" barStyle="light-content" />
 
@@ -402,7 +391,6 @@ const ProfileScreen = () => {
                       dispatch(setDisableBottomTab(false));
                     }
                     setIsActiveProfile(item);
-
                   }}
                   text={item}
                   textColor={
@@ -730,52 +718,42 @@ const ProfileScreen = () => {
             </ScrollView>
           ) : (
             <>
-            <KeyboardAvoidingView
-              style={{flex:1}}
-              behavior={Platform.OS === 'ios' ? 'padding' : null}
-              keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100} // Adjust this value as needed
-            >
-            <View
-                style={{
-                 
-          flex:1,
-                  paddingTop: verticalScale(10),
-                }}
+              <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : null}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100} // Adjust this value as needed
               >
-                <Channel
-                  userData={userData}
-                  channelId={channelId}
-                  token={token}
-                  authPosts={authPosts}
-                  setAuthPosts={setAuthPosts}
-                />
-             
-              <View  >
-            <MessageSender
-            onGiphyPress={()=>GiphyDialog.show()}
-                // bottom={verticalScale(15)}
-                sendImage={images.simplesend}
-                channelId={channelId}
-                token={token}
-                setAuthPosts={setAuthPosts}
-                authPosts={authPosts}
-              />
+                <View
+                  style={{
+                    flex: 1,
+                    paddingTop: verticalScale(10),
+                  }}
+                >
+                  <Channel
+                    userData={userData}
+                    channelId={channelId}
+                    token={token}
+                    authPosts={authPosts}
+                    setAuthPosts={setAuthPosts}
+                  />
 
-              </View>
-            
-    
-
-
-              </View>
-              
-            </KeyboardAvoidingView>
-             
+                  <View>
+                    <MessageSender
+                      onGiphyPress={() => GiphyDialog.show()}
+                      // bottom={verticalScale(15)}
+                      sendImage={images.simplesend}
+                      channelId={channelId}
+                      token={token}
+                      setAuthPosts={setAuthPosts}
+                      authPosts={authPosts}
+                    />
+                  </View>
+                </View>
+              </KeyboardAvoidingView>
             </>
           )}
         </SafeAreaView>
       )}
-
-     
     </>
   );
 };
