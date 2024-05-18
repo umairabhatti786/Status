@@ -180,7 +180,7 @@ const CustomDrawer: React.FC<Props> = ({
           />
         </TouchableOpacity>
 
-        <Spacer height={verticalScale(15)} />
+        {/* <Spacer height={verticalScale(15)} />
         <TouchableOpacity
         activeOpacity={0.6}
         onPress={()=>
@@ -204,7 +204,6 @@ const CustomDrawer: React.FC<Props> = ({
             />
           </View>
 
-          {/* <Spacer width={scale(5)} /> */}
 
           <CustomText
             color={colors.white}
@@ -213,7 +212,7 @@ const CustomDrawer: React.FC<Props> = ({
             style={{ marginLeft: scale(8) }}
             text={"Trash"}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </Modal>
   );

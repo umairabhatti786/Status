@@ -440,14 +440,14 @@ const Chat = () => {
           {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
         </View>
       </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ height:"90%" }}>
         <FlatList
           data={conversation}
           // style={{paddingTop:verticalScale(20)}}
-          contentContainerStyle={{
-            gap: 7,
-            // transform: [{ scaleY: -1 }],
-          }}
+          // contentContainerStyle={{
+          //   gap: 7,
+          //   // transform: [{ scaleY: -1 }],
+          // }}
           // inverted={true}
           renderItem={renderChatList}
           // style={{ transform: [{ scaleY: -1 }] }}

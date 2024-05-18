@@ -61,7 +61,7 @@ import Loader from "../../../components/Loader";
 import ImageCropPicker, {
   Image as ImagePickerType,
 } from "react-native-image-crop-picker";
-import BottomSheet from "../../../components/BottomSheet";
+import CustomBottomSheet from "../../../components/CustomBottomSheet";
 
 GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
 GiphyDialog.configure({
@@ -167,6 +167,102 @@ const EditProfile = ({ route }: any) => {
       value: "YES",
     },
   ];
+
+  const profileType=[
+    {
+      id: 1,
+      label:  "All",
+      value:  "All",
+    },
+    {
+      id: 2,
+      label:  "Actor",
+      value:  "Actor",
+    },
+
+    {
+      id: 3,
+      label:  "Athlete",
+      value:  "Athlete",
+    },
+    {
+      id: 4,
+      label:  "Bodybuilder",
+      value:  "Bodybuilder",
+    },
+    {
+      id: 5,
+      label:  "Comedian",
+      value:  "Comedian",
+    },
+    {
+      id: 6,
+      label:  "Fighter",
+      value:  "Fighter",
+    },
+
+    {
+      id: 7,
+      label:  "Filmmaker",
+      value:  "Filmmaker",
+    },
+    {
+      id: 8,
+      label:  "Founder",
+      value:  "Founder",
+    },
+
+    {
+      id: 9,
+      label:  "Influencer",
+      value:  "Influencer",
+    },
+    {
+      id: 10,
+      label:  "Model",
+      value:  "Model",
+    },
+    {
+      id: 11,
+      label:  "Musician",
+      value:  "Musician",
+    },
+    {
+      id: 12,
+      label:  "Podcaster",
+      value:  "Podcaster",
+    },
+    {
+      id: 13,
+      label:  "Rapper",
+      value:  "Rapper",
+    },
+    {
+      id: 14,
+      label:  "Reality Star",
+      value:  "Reality Star",
+    },
+
+    {
+      id: 15,
+      label:  "Streamer",
+      value:  "Streamer",
+    },
+    {
+      id: 16,
+      label:  "YouTuber",
+      value:  "YouTuber ",
+    },
+    {
+      id: 16,
+      label:  "Other",
+      value:  "Other ",
+    },
+   
+
+   
+  ]
+
 
   useEffect(() => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
@@ -376,7 +472,7 @@ const EditProfile = ({ route }: any) => {
     form.append("occupation", values.occupation);
     form.append("link", values.link);
     form.append("bio", values?.bio);
-    form.append("isModel", model == "true" ? 1 : 0);
+    form.append("isModel",1);
     form.append("wallpaperUrl", values.wallpaperUrl);
     form.append(
       "gif1",
@@ -743,6 +839,38 @@ const EditProfile = ({ route }: any) => {
             }}
           />
           <View style={{ paddingHorizontal: scale(20) }}>
+
+         
+            <NewText
+              fontWeight="700"
+              color={colors.white}
+              size={19}
+              text={"Your Profile Info "}
+            />
+            <Spacer height={verticalScale(20)} />
+
+            <CustomText
+              fontWeight={"500"}
+              fontFam="Poppins-Medium"
+              size={13}
+              style={{ marginBottom: verticalScale(5) }}
+              text={"Profile Type"}
+              color={colors.white}
+            />
+            <DropDown
+              placeholder={"Make a Selection"}
+              dropWidth={"100%"}
+              setValue={setModel}
+              value={model}
+              //   data={data}
+              data={modelData.map((item, _index) => {
+                return {
+                  id: item?.id,
+                  label: item?.value,
+                  value: item?.value,
+                };
+              })}
+            />
             {/* <Spacer height={verticalScale(10)}/> */}
             <Input
               label="Display Name"
@@ -955,44 +1083,7 @@ const EditProfile = ({ route }: any) => {
             <Spacer height={20} />
           </View>
 
-          <View
-            style={{
-              borderTopWidth: 1,
-              borderTopColor: "#999999",
-              padding: 15,
-            }}
-          >
-            <NewText
-              fontWeight="700"
-              color={colors.white}
-              size={19}
-              text={"Models (Females only)"}
-            />
-            <Spacer height={verticalScale(20)} />
-
-            <CustomText
-              fontWeight={"500"}
-              fontFam="Poppins-Medium"
-              size={13}
-              style={{ marginBottom: verticalScale(5) }}
-              text={"Are you a FEMALE model or a female OnlyFans creator? "}
-              color={colors.white}
-            />
-            <DropDown
-              placeholder={"Make a Selection"}
-              dropWidth={"100%"}
-              setValue={setModel}
-              value={model}
-              //   data={data}
-              data={modelData.map((item, _index) => {
-                return {
-                  id: item?.id,
-                  label: item?.value,
-                  value: item?.value,
-                };
-              })}
-            />
-          </View>
+        
         </ScrollView>
       </SafeAreaView>
       {showError && (
@@ -1004,7 +1095,7 @@ const EditProfile = ({ route }: any) => {
         />
       )}
 
-      <BottomSheet bottomSheetModalRef={bottomSheetModalRef}>
+      <CustomBottomSheet bottomSheetModalRef={bottomSheetModalRef}>
         <View style={{ paddingHorizontal: scale(20), alignItems: "center" }}>
           <View style={{ ...appStyles.rowjustify, width: "100%" }}>
             <NewText
@@ -1072,7 +1163,7 @@ const EditProfile = ({ route }: any) => {
             bgColor={colors.white}
           />
         </View>
-      </BottomSheet>
+      </CustomBottomSheet>
     </>
   );
 };

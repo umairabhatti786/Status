@@ -12,6 +12,7 @@ type Props = {
   onPressSetting?: any;
   onPressNotification?: any;
   isSearch?: any;
+  notificationAlert?:boolean
 };
 
 const TopHeader = ({
@@ -19,6 +20,7 @@ const TopHeader = ({
   onPressSetting,
   onPressNotification,
   isSearch,
+  notificationAlert
 }: Props) => {
   return (
     <View style={{ ...appStyles.rowjustify, height: verticalScale(40) }}>
@@ -32,23 +34,29 @@ const TopHeader = ({
             source={images.bell}
             // resizeMode="contain"
           />
-          <View
-            style={{
-              width: scale(7.5),
-              height: scale(7.5),
-              borderRadius: 999,
-              backgroundColor: colors.sky,
-              marginBottom: verticalScale(3),
-              right: scale(-3),
-              top: 0,
-              bottom: verticalScale(9),
-              position: "absolute",
+          {
+            notificationAlert&&(
+              <View
+              style={{
+                width: scale(7.5),
+                height: scale(7.5),
+                borderRadius: 999,
+                backgroundColor: colors.sky,
+                marginBottom: verticalScale(3),
+                right: scale(-3),
+                top: 0,
+                bottom: verticalScale(9),
+                position: "absolute",
+  
+  
+  
+  
+              }}
+            />
 
-
-
-
-            }}
-          />
+            )
+          }
+        
 
           
         </TouchableOpacity>

@@ -77,6 +77,7 @@ const MessageSender = ({
   giphy,
   setGiphy,
 }: Props) => {
+  console.log("ckndkcnd",giphy)
   const navigation: any = useNavigation();
   const [isImageUplaod, setIsImageUplaod] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -147,13 +148,12 @@ const MessageSender = ({
       form.append("imageUrl", state.imageUrl);
     }
     // form.append("gif", 'giphy');
-    // if (giphy) {
-    // form.append("gif", giphy);
-    // }
+    if (giphy) {
+    form.append("gif", giphy);
+    }
     setState({ description: "", imageUrl: "", channelId: channelId });
     setLoading(true);
 
-    // setGiphy("")
     console.log(form);
     CreatePost(form, token, async ({ isSuccess, response }: any) => {
       console.log("data", isSuccess);
@@ -162,8 +162,15 @@ const MessageSender = ({
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
+        if(giphy){
+          setGiphy("")
+
+
+        }
         setIsImageUplaod(false);
         setImageData({});
+      
+
         setAuthPosts([...authPosts, result?.post]);
         setLoading(false);
         // setComments([...comments, result.comment]);
@@ -194,7 +201,9 @@ const MessageSender = ({
     }
     setMsg({ ...msg, message: "", attachment: "" });
     setLoading(true);
-    // setGiphy("");
+    if(giphy){
+      setGiphy("");
+    }
     SendMessage(form, token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
       console.log(response);

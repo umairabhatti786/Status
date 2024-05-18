@@ -40,11 +40,18 @@ const Signup = () => {
   const [showError, setShowError] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [toastColor,setToastColor]=useState(colors.red)
+  const [toastColor, setToastColor] = useState(colors.red);
+  const [deveiceId, setDeviceId] = useState();
 
-useEffect(()=>{
+  useEffect(() => {
+    getDeviceId();
+  }, []);
 
-})
+  const getDeviceId = async () => {
+    let deviceState = await OneSignal.getDeviceState();
+    console.log("devchc", deviceState?.userId);
+    setDeviceId(deviceState?.userId);
+  };
   const [values, setValues] = useState({
     email: "",
     confirmEmail: "",
@@ -53,20 +60,16 @@ useEffect(()=>{
 
   const OnSignup = async () => {
     const viladResponse = SignupForm(values, setShowError, setError);
-    
 
     if (viladResponse) {
-      let deviceState = await OneSignal.getDeviceState();
-    console.log("devchc",  deviceState?.userId)
-      setLoading(true);
 
-   
       const data = {
         email: values.email,
         password: values.password,
-        deviceId:deviceState?.userId
+        deviceId: deveiceId,
       };
-    
+      setLoading(true);
+
 
       UserSignup(data, async ({ isSuccess, response }: any) => {
         if (isSuccess) {
@@ -77,14 +80,14 @@ useEffect(()=>{
             setLoading(false);
             if (result?.errors) {
               setError(result?.message);
-              setToastColor(colors.red)
+              setToastColor(colors.red);
 
               setShowError(true);
               setTimeout(() => {
                 setShowError(false);
               }, 4000);
             } else {
-              setToastColor(colors.green)
+              setToastColor(colors.green);
               setError(result?.msg);
               setShowError(true);
               setTimeout(() => {
@@ -96,7 +99,7 @@ useEffect(()=>{
             }
           } else {
             setLoading(false);
-            setToastColor(colors.red)
+            setToastColor(colors.red);
 
             setError(result?.msg);
             setShowError(true);
@@ -111,35 +114,31 @@ useEffect(()=>{
         }
       });
 
-      setLoading(false)
 
       // console.log("ckbdckdbc",response)
 
-      setTimeout(() => {
-        setLoading(false)
-
-      }, 4000);
+  
     }
   };
 
   return (
     <>
       {loading && <Loader />}
-      <Image 
-    source={images.lightBackground}
-    style={{
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    width:windowWidth,
-    height:windowHeight,
-  }}
-    />
-       <KeyboardAwareScrollView
+      <Image
+        source={images.lightBackground}
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: windowWidth,
+          height: windowHeight,
+        }}
+      />
+      <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={{ flex: 1 }}
       >
-        <SafeAreaView style={{flex:1}}>
+        <SafeAreaView style={{ flex: 1 }}>
           <View style={{ flex: 1, padding: scale(20) }}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image source={images.back} />
@@ -195,8 +194,8 @@ useEffect(()=>{
             />
             <Spacer height={15} />
 
-            <View >
-              <View style={{...appStyles.row,}}>
+            <View>
+              <View style={{ ...appStyles.row }}>
                 <NewText
                   text={"By tapping Continue, you agree to Status’s"}
                   color={colors.white}
@@ -308,7 +307,7 @@ useEffect(()=>{
           </View>
         </SafeAreaView>
       </KeyboardAwareScrollView>
-     
+
       {showError && (
         <CustomToast
           showError={showError}

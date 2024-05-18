@@ -455,13 +455,13 @@ const ProfileScreen = () => {
                       numberOfLines={1}
                       fontFam="Inter-Medium"
                       style={{ marginLeft: scale(8), marginRight: scale(10) }}
-                      text={userData?.occupation}
+                      text={"Actress, Modal"}
                     />
                   </View>
                 </View>
                 <FastImage
                   style={{
-                    width: "94%",
+                    width: "100%",
                     height: verticalScale(350),
                     alignSelf: "center",
                   }}
@@ -593,30 +593,6 @@ const ProfileScreen = () => {
                       </TouchableOpacity>
                     )}
                   </View>
-                  {/* {userData?.gif1 ? (
-                    <Image
-                      style={{ width: 130, height: 45, alignSelf: "flex-end" }}
-                      source={images.giphy}
-                      resizeMode="contain"
-                    />
-                  ) : (
-                    <>
-                      {userData?.gif2 ? (
-                        <Image
-                          style={{
-                            width: 130,
-                            height: 45,
-                            alignSelf: "flex-end",
-                          }}
-                          source={images.giphy}
-                          resizeMode="contain"
-                        />
-                      ) : (
-                        <></>
-                      )}
-                    </>
-                  )} */}
-
                   <View style={appStyles.rowjustify}>
                     {userData?.gif1 && (
                       <View style={styles.gifhyContainer}>
@@ -743,6 +719,8 @@ const ProfileScreen = () => {
                       // bottom={verticalScale(15)}
                       sendImage={images.simplesend}
                       channelId={channelId}
+                      giphy={giphy}
+                      setGiphy={setGiphy}
                       token={token}
                       setAuthPosts={setAuthPosts}
                       authPosts={authPosts}

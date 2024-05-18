@@ -14,11 +14,11 @@ import {
 import { scale, verticalScale } from "react-native-size-matters";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
+import NewText from "../../../components/NewText";
 
 
 
-const FilterCategory = ({isModalVisible,setModalVisible,isBlock,title,des,onSelectCatrgory,selectedCategory,item}:any) => {
-  console.log("selectedCategory",selectedCategory)
+const FilterCategory = ({isModalVisible,setModalVisible,isBlock,title,des,onSelectCatrgory,selectedType,item}:any) => {
   return (
 
     <TouchableOpacity
@@ -34,9 +34,9 @@ activeOpacity={0.6}
 onPress={onSelectCatrgory}
 
   style={styles.radioButton}>
-  <View>{selectedCategory==item && <View style={styles.radioButtonInner} />}</View>
+  <View>{selectedType==item && <View style={styles.radioButtonInner} />}</View>
 </TouchableOpacity>
-<CustomText color={colors.white} size={14} text={item} />
+<NewText color={colors.white} size={14} text={item} />
 </TouchableOpacity>
 
   

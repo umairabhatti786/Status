@@ -23,7 +23,7 @@ import CustomButton from "../../../components/CustomButton";
 import CustomSearch from "../../../components/CustomSearch";
 import { Spacer } from "../../../components/Spacer";
 import TopBar from "../../../components/TopBar";
-import BottomSheet from "../../../components/BottomSheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 import TopHeader from "../../../components/TopHeader";
 import { appStyles } from "../../../utils/AppStyles";
@@ -33,13 +33,19 @@ import { scale, verticalScale } from "react-native-size-matters";
 import Button from "../../../components/Button";
 import Loader from "../../../components/Loader";
 import { useIsFocused } from "@react-navigation/native";
-import { useSelector } from "react-redux";
-import { getToken } from "../../../redux/reducers/authReducer";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getToken,
+  setNotificationAlert,
+} from "../../../redux/reducers/authReducer";
 import { GetAllUsers } from "../../../api/ApiServices";
 import CustomToast from "../../../components/CustomToast";
 import axios from "axios";
 import { getApiUrl } from "../../../api/Config";
 import { URLS } from "../../../api/baseUrl";
+import FilterCategory from "./FilterCategory";
+import NewText from "../../../components/NewText";
+import CustomBottomSheet from "../../../components/CustomBottomSheet";
 
 const SearchScreen = ({ navigation }: any) => {
   const [activeBar, setActiveBar] = useState("all");
@@ -55,8 +61,16 @@ const SearchScreen = ({ navigation }: any) => {
   const token = useSelector(getToken);
   const [allUsers, setAllUsers] = useState([]);
   const [netpageUrl, setNextPageUrl] = useState();
+  const [selectedType, setSelectedType] = useState("All");
+  const bottomSheetModalRef = useRef<BottomSheet>(null);
   const [model, setModel] = useState(false);
+  const snapPoints = useMemo(() => ["45%"], []);
 
+  const notificationAlert = useSelector(
+    (state) => state.auth
+  )?.notificationAlert;
+  const dispatch = useDispatch();
+  console.log("notificationAlert", notificationAlert);
   const topBarData = ["all", "following"];
   const filterData = [
     { value: "Online", filter: "online" },
@@ -65,7 +79,7 @@ const SearchScreen = ({ navigation }: any) => {
     { value: "Popular", filter: "popular" },
   ];
 
-  console.log("filterTwo", filterTwo,"filterThree", filterThree);
+  console.log("filterTwo", filterTwo, "filterThree", filterThree);
 
   useEffect(() => {
     getUserData();
@@ -89,8 +103,6 @@ const SearchScreen = ({ navigation }: any) => {
         // if(response.data.result.data.length>0){
         //   const filteredUsers = response.data.result.data.filter(user => !user.blockers.length>0);
         //   setAllUsers(filteredUsers);
-
-
 
         // }
 
@@ -122,6 +134,26 @@ const SearchScreen = ({ navigation }: any) => {
     //   }
     // });
   };
+
+  const profileType = [
+    "All",
+    "Actor",
+    "Athlete",
+    "Bodybuilder",
+    "Comedian",
+    "Fighter",
+    "Filmmaker",
+    "Founder",
+    "Influencer",
+    "Model",
+    "Musician",
+    "Podcaster",
+    "Rapper",
+    "Reality Star",
+    "Streamer",
+    "YouTuber",
+    "Other",
+  ];
 
   const renderUsers = ({ item, index }) => {
     console.log("ckbdk", item.id);
@@ -155,7 +187,11 @@ const SearchScreen = ({ navigation }: any) => {
           <View style={{ paddingHorizontal: scale(15) }}>
             <TopHeader
               isSearch={true}
-              onPressNotification={() => navigation.navigate("Notifications")}
+              notificationAlert={notificationAlert}
+              onPressNotification={() => {
+                dispatch(setNotificationAlert(false));
+                navigation.navigate("Notifications");
+              }}
               onPressSetting={() => navigation.navigate("SearchMember")}
             />
           </View>
@@ -215,7 +251,20 @@ const SearchScreen = ({ navigation }: any) => {
               );
             })}
 
-            <Button
+            <TouchableOpacity
+              style={styles.categoryBtn}
+              activeOpacity={0.6}
+              onPress={() => bottomSheetModalRef?.current?.present()}
+            >
+              <NewText color={colors.white} size={14} text={selectedType} />
+              <Spacer width={5} />
+              <Image
+                style={{ width: 17, height: 17 }}
+                source={images.arrowdown}
+              />
+            </TouchableOpacity>
+
+            {/* <Button
               onPress={() => {
                 setModel(!model);
 
@@ -264,7 +313,7 @@ const SearchScreen = ({ navigation }: any) => {
               textColor={colors.white}
               bgColor={model ? "#48B1FF" : colors.primary}
               text={"Models"}
-            />
+            /> */}
           </ScrollView>
         </View>
 
@@ -279,10 +328,10 @@ const SearchScreen = ({ navigation }: any) => {
         </View>
       </SafeAreaView>
 
-      {/* <BottomSheet bottomSheetModalRef={bottomSheetModalRef}>
-        <View style={{ paddingHorizontal: scale(20) }}>
+      <CustomBottomSheet bottomSheetModalRef={bottomSheetModalRef}>
+        <View style={{ paddingHorizontal: scale(20),backgroundColor:colors.primary}}>
           <FlatList
-            data={profileCategories}
+            data={profileType}
             nestedScrollEnabled={true}
             renderItem={({ item, index }) => {
               return (
@@ -290,10 +339,10 @@ const SearchScreen = ({ navigation }: any) => {
                   <FilterCategory
                     item={item}
                     onSelectCatrgory={() => {
-                      setActiveCategory(item);
-                      bottomSheetModalRef?.current?.dismiss();
+                      setSelectedType(item);
+                      bottomSheetModalRef?.current?.close();
                     }}
-                    selectedCategory={activeCategory}
+                    selectedType={selectedType}
                   />
                   <Spacer height={verticalScale(15)} />
                 </>
@@ -302,8 +351,7 @@ const SearchScreen = ({ navigation }: any) => {
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
-      
-      </BottomSheet> */}
+      </CustomBottomSheet>
 
       {showError && (
         <CustomToast
@@ -321,7 +369,7 @@ export default SearchScreen;
 
 const styles = StyleSheet.create({
   categoryBtn: {
-    height: verticalScale(29),
+    height: 32,
     backgroundColor: colors.primary,
     justifyContent: "center",
     alignItems: "center",
