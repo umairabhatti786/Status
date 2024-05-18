@@ -23,7 +23,7 @@ import CustomButton from "../../../components/CustomButton";
 import CustomSearch from "../../../components/CustomSearch";
 import { Spacer } from "../../../components/Spacer";
 import TopBar from "../../../components/TopBar";
-import BottomSheet from "../../../components/BottomSheet";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 import TopHeader from "../../../components/TopHeader";
 import { appStyles } from "../../../utils/AppStyles";
@@ -34,7 +34,10 @@ import Button from "../../../components/Button";
 import Loader from "../../../components/Loader";
 import { useIsFocused } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken, setNotificationAlert } from "../../../redux/reducers/authReducer";
+import {
+  getToken,
+  setNotificationAlert,
+} from "../../../redux/reducers/authReducer";
 import { GetAllUsers } from "../../../api/ApiServices";
 import CustomToast from "../../../components/CustomToast";
 import axios from "axios";
@@ -42,6 +45,7 @@ import { getApiUrl } from "../../../api/Config";
 import { URLS } from "../../../api/baseUrl";
 import FilterCategory from "./FilterCategory";
 import NewText from "../../../components/NewText";
+import CustomBottomSheet from "../../../components/CustomBottomSheet";
 
 const SearchScreen = ({ navigation }: any) => {
   const [activeBar, setActiveBar] = useState("all");
@@ -57,12 +61,16 @@ const SearchScreen = ({ navigation }: any) => {
   const token = useSelector(getToken);
   const [allUsers, setAllUsers] = useState([]);
   const [netpageUrl, setNextPageUrl] = useState();
-  const [selectedType,setSelectedType]=useState("All")
-  const bottomSheetModalRef=useRef()
+  const [selectedType, setSelectedType] = useState("All");
+  const bottomSheetModalRef = useRef<BottomSheet>(null);
   const [model, setModel] = useState(false);
-  const notificationAlert = useSelector((state) => state.auth)?.notificationAlert;
+  const snapPoints = useMemo(() => ["45%"], []);
+
+  const notificationAlert = useSelector(
+    (state) => state.auth
+  )?.notificationAlert;
   const dispatch = useDispatch();
-console.log("notificationAlert",notificationAlert)
+  console.log("notificationAlert", notificationAlert);
   const topBarData = ["all", "following"];
   const filterData = [
     { value: "Online", filter: "online" },
@@ -71,7 +79,7 @@ console.log("notificationAlert",notificationAlert)
     { value: "Popular", filter: "popular" },
   ];
 
-  console.log("filterTwo", filterTwo,"filterThree", filterThree);
+  console.log("filterTwo", filterTwo, "filterThree", filterThree);
 
   useEffect(() => {
     getUserData();
@@ -95,8 +103,6 @@ console.log("notificationAlert",notificationAlert)
         // if(response.data.result.data.length>0){
         //   const filteredUsers = response.data.result.data.filter(user => !user.blockers.length>0);
         //   setAllUsers(filteredUsers);
-
-
 
         // }
 
@@ -129,8 +135,7 @@ console.log("notificationAlert",notificationAlert)
     // });
   };
 
-
-  const profileType=[
+  const profileType = [
     "All",
     "Actor",
     "Athlete",
@@ -148,7 +153,7 @@ console.log("notificationAlert",notificationAlert)
     "Streamer",
     "YouTuber",
     "Other",
-  ]
+  ];
 
   const renderUsers = ({ item, index }) => {
     console.log("ckbdk", item.id);
@@ -183,13 +188,10 @@ console.log("notificationAlert",notificationAlert)
             <TopHeader
               isSearch={true}
               notificationAlert={notificationAlert}
-              onPressNotification={() => 
-                {
-                  dispatch(setNotificationAlert(false))
-                  navigation.navigate("Notifications")
-
-                }
-               }
+              onPressNotification={() => {
+                dispatch(setNotificationAlert(false));
+                navigation.navigate("Notifications");
+              }}
               onPressSetting={() => navigation.navigate("SearchMember")}
             />
           </View>
@@ -250,9 +252,9 @@ console.log("notificationAlert",notificationAlert)
             })}
 
             <TouchableOpacity
-            style={styles.categoryBtn}
-            activeOpacity={0.6}
-            onPress={()=>bottomSheetModalRef.current.open()}
+              style={styles.categoryBtn}
+              activeOpacity={0.6}
+              onPress={() => bottomSheetModalRef?.current?.expand()}
             >
               <NewText color={colors.white} size={14} text={selectedType} />
               <Spacer width={5} />
@@ -260,10 +262,7 @@ console.log("notificationAlert",notificationAlert)
                 style={{ width: 17, height: 17 }}
                 source={images.arrowdown}
               />
-
-
             </TouchableOpacity>
-
 
             {/* <Button
               onPress={() => {
@@ -329,7 +328,7 @@ console.log("notificationAlert",notificationAlert)
         </View>
       </SafeAreaView>
 
-      <BottomSheet bottomSheetModalRef={bottomSheetModalRef}>
+      <CustomBottomSheet bottomSheetModalRef={bottomSheetModalRef}>
         <View style={{ paddingHorizontal: scale(20) }}>
           <FlatList
             data={profileType}
@@ -341,7 +340,7 @@ console.log("notificationAlert",notificationAlert)
                     item={item}
                     onSelectCatrgory={() => {
                       setActiveCategory(item);
-                      bottomSheetModalRef?.current?.dismiss();
+                      bottomSheetModalRef?.current?.close();
                     }}
                     selectedCategory={activeCategory}
                   />
@@ -352,8 +351,7 @@ console.log("notificationAlert",notificationAlert)
             keyExtractor={(item, index) => index.toString()}
           />
         </View>
-      
-      </BottomSheet>
+      </CustomBottomSheet>
 
       {showError && (
         <CustomToast
