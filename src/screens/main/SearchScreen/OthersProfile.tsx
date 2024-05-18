@@ -61,6 +61,7 @@ const OthersProfile = () => {
   const pusher = Pusher.getInstance();
   const route: any = useRoute();
   const id = route?.params?.id;
+let isChannel=route?.params?.isChannel;
   const channelId = route?.params?.channelId;
   const navigation: any = useNavigation();
   const [isWatchList, setIsWatchList] = useState(false);
@@ -75,7 +76,7 @@ const OthersProfile = () => {
   const [newPost, setNewPost] = useState<any>({});
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
-  const [isActiveProfile, setIsActiveProfile] = useState(0);
+  const [isActiveProfile, setIsActiveProfile] = useState("Profile");
   const token = useSelector(getToken);
   const [data, setData] = useState({});
   const [showMessage, setShowMessage] = useState(false);
@@ -109,7 +110,7 @@ const OthersProfile = () => {
   //   if(newPost)
   //   setNewPost([...posts,newPost])
   // }, [newPost])
-
+console.log("isChannel",isChannel)
   const con = async () => {
     console.log("am focused");
     try {
@@ -173,6 +174,14 @@ const OthersProfile = () => {
   }, [isFocused]);
 
   useEffect(() => {
+
+    if(isChannel){
+      setIsActiveProfile("Channel")
+    }
+    else {
+      setIsActiveProfile("Profile")
+      
+    }
     getDetail();
   }, []);
   // console.log("UserID", data?.gif);
@@ -517,14 +526,14 @@ const OthersProfile = () => {
                 return (
                   <CustomButton
                     width={"48.5%"}
-                    onPress={() => setIsActiveProfile(index)}
+                    onPress={() => setIsActiveProfile(item)}
                     text={item}
                     textColor={
-                      isActiveProfile == index ? colors.black : colors.white
+                      isActiveProfile == item ? colors.black : colors.white
                     }
                     height={35}
                     bgColor={
-                      isActiveProfile == index ? colors.grey400 : colors.primary
+                      isActiveProfile == item ? colors.grey400 : colors.primary
                     }
                     borderRadius={8}
                   />
@@ -539,7 +548,7 @@ const OthersProfile = () => {
             /> */}
             </View>
 
-            {isActiveProfile == 0 ? (
+            {isActiveProfile == "Profile" ? (
               <View style={{ flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                   <View

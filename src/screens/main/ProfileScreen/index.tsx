@@ -90,7 +90,6 @@ const ProfileScreen = () => {
   const navigation: any = useNavigation();
   const [isSideBar, setIsBar] = useState(false);
   const [isFollow, setIsFollow] = useState(false);
-  const [isActiveProfile, setIsActiveProfile] = useState(0);
   const focused = useIsFocused();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<any>([]);
@@ -100,6 +99,10 @@ const ProfileScreen = () => {
   const token = useSelector(getToken);
   const [authPosts, setAuthPosts] = useState([]);
   const [giphy,setGiphy]=useState("")
+  const activeBar=useSelector(state=>state.auth)?.profileActiveBar
+  const [isActiveProfile, setIsActiveProfile] = useState("");
+
+
 
 
   const dispatch = useDispatch();
@@ -115,6 +118,7 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     getAuth();
+    setIsActiveProfile(activeBar)
   }, [focused]);
 
   useEffect(() => {
@@ -376,15 +380,16 @@ const ProfileScreen = () => {
                     } else {
                       dispatch(setDisableBottomTab(false));
                     }
-                    setIsActiveProfile(index);
+                    setIsActiveProfile(item);
+
                   }}
                   text={item}
                   textColor={
-                    isActiveProfile == index ? colors.black : colors.white
+                    isActiveProfile == item ? colors.black : colors.white
                   }
                   height={35}
                   bgColor={
-                    isActiveProfile == index ? colors.grey400 : colors.primary
+                    isActiveProfile == item ? colors.grey400 : colors.primary
                   }
                   borderRadius={8}
                 />
@@ -398,7 +403,7 @@ const ProfileScreen = () => {
         height={35}
       /> */}
           </View>
-          {isActiveProfile == 0 ? (
+          {isActiveProfile == "Profile" ? (
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
                 <View

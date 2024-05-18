@@ -7,6 +7,7 @@ export interface AuthState {
   notificationAlert: boolean;
   remember: boolean;
   disableBottomTab:boolean
+  profileActiveBar:string
   isSuccess: boolean;
   proifleGifs: {
     gif1: string;
@@ -21,6 +22,7 @@ export interface AuthState {
 export const initialState: AuthState = {
   user: null,
   token: "",
+  profileActiveBar:"Profile",
   notificationAlert: false,
   remember: true,
   disableBottomTab:false,
@@ -47,6 +49,9 @@ const authSlice = createSlice({
     setDisableBottomTab: (state, { payload }: PayloadAction<SignupState>) => {
       state.disableBottomTab = payload;
     },
+    setProfileActiveBar: (state, { payload }: PayloadAction<SignupState>) => {
+      state.profileActiveBar = payload;
+    },
     setRemember: (state, { payload }: PayloadAction<SignupState>) => {
       state.remember = payload;
     },
@@ -71,7 +76,8 @@ export const {
   setSuccessResponse,
   setIsSuccess,
   setProfileGif,
-  setDisableBottomTab
+  setDisableBottomTab,
+  setProfileActiveBar
 } = authSlice.actions;
 export default authSlice.reducer;
 export const getRemember = (state: RootState) => state?.auth.remember;
