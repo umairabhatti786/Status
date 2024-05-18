@@ -35,6 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getRemember,
   getUserData,
+  setNotificationAlert,
   setRemember,
   setToken,
   setUserData,
@@ -78,12 +79,23 @@ const AppStack = () => {
       (notificationReceivedEvent: any) => {
         let notification = notificationReceivedEvent.getNotification();
         notificationReceivedEvent.complete(notification);
+        console.log("Notighvb",notificationReceivedEvent?.notification?.body)
 
-        // dispatch(setNotificationAlert(true));
+
+        dispatch(setNotificationAlert(true));
       }
     );
     OneSignal.setNotificationOpenedHandler((notification) => {
       console.log("OneSignal: notification opened:", notification);
+      // showMessage({
+      //   message: "Notification",
+      //   description: notification?.body,
+      //   type: "info",
+      //   backgroundColor: "#000",
+      //   duration: 5000,
+      //   floating: true,
+      //   icon: (props) => <FastImage source={images.appIcon} {...props} />,
+      // });
     });
   }, []);
 

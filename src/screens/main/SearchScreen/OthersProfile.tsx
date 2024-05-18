@@ -756,55 +756,51 @@ let isChannel=route?.params?.isChannel;
              />
            </View> */}
 
-                    {data?.gif1 ? (
-                      <View>
-                         <Image
-                        style={{
-                          width: 130,
-                          height: 45,
-                          alignSelf: "flex-end",
-                        }}
-                        source={images.giphy}
-                        resizeMode="contain"
-                      />
-                        </View>
-                     
-                    ) : (
-                      <>
-                        {data?.gif2 ? (
+<View style={appStyles.rowjustify}>
+                    {data?.gif1 && (
+                      <View style={styles.gifhyContainer}>
+                        <Image
+                          style={{ width: "100%", height: "100%" }}
+                          source={{ uri: data?.gif1 }}
+                        />
+
+                        <View
+                          style={{ position: "absolute", right: 5, bottom: 0 }}
+                        >
                           <Image
                             style={{
-                              width: 130,
-                              height: 45,
+                              width: 100,
+                              height: 30,
                               alignSelf: "flex-end",
                             }}
                             source={images.giphy}
                             resizeMode="contain"
                           />
-                        ) : (
-                          <></>
-                        )}
-                      </>
+                        </View>
+                      </View>
                     )}
-
-                    <View style={appStyles.rowjustify}>
-                      {data?.gif1 && (
-                        <View style={styles.gifhyContainer}>
+                    {data?.gif2 && (
+                      <View style={styles.gifhyContainer}>
+                        <Image
+                          style={{ width: "100%", height: "100%" }}
+                          source={{ uri: data?.gif2 }}
+                        />
+                        <View
+                          style={{ position: "absolute", right: 5, bottom: 0 }}
+                        >
                           <Image
-                            style={{ width: "100%", height: "100%" }}
-                            source={{ uri: data?.gif1 }}
+                            style={{
+                              width: 100,
+                              height: 30,
+                              alignSelf: "flex-end",
+                            }}
+                            source={images.giphy}
+                            resizeMode="contain"
                           />
                         </View>
-                      )}
-                      {data?.gif2 && (
-                        <View style={styles.gifhyContainer}>
-                          <Image
-                            style={{ width: "100%", height: "100%" }}
-                            source={{ uri: data?.gif2 }}
-                          />
-                        </View>
-                      )}
-                    </View>
+                      </View>
+                    )}
+                  </View>
 
                     <View
                       style={{

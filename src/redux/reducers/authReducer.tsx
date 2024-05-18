@@ -49,6 +49,9 @@ const authSlice = createSlice({
     setDisableBottomTab: (state, { payload }: PayloadAction<SignupState>) => {
       state.disableBottomTab = payload;
     },
+    setNotificationAlert: (state, { payload }: PayloadAction<SignupState>) => {
+      state.notificationAlert = payload;
+    },
     setProfileActiveBar: (state, { payload }: PayloadAction<SignupState>) => {
       state.profileActiveBar = payload;
     },
@@ -77,7 +80,8 @@ export const {
   setIsSuccess,
   setProfileGif,
   setDisableBottomTab,
-  setProfileActiveBar
+  setProfileActiveBar,
+  setNotificationAlert
 } = authSlice.actions;
 export default authSlice.reducer;
 export const getRemember = (state: RootState) => state?.auth.remember;

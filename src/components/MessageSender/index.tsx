@@ -154,7 +154,6 @@ const MessageSender = ({
     setState({ description: "", imageUrl: "", channelId: channelId });
     setLoading(true);
 
-    // setGiphy("")
     console.log(form);
     CreatePost(form, token, async ({ isSuccess, response }: any) => {
       console.log("data", isSuccess);
@@ -165,6 +164,12 @@ const MessageSender = ({
         console.log(result);
         setIsImageUplaod(false);
         setImageData({});
+        if(giphy){
+          setGiphy("")
+
+
+        }
+
         setAuthPosts([...authPosts, result?.post]);
         setLoading(false);
         // setComments([...comments, result.comment]);
@@ -195,7 +200,11 @@ const MessageSender = ({
     }
     setMsg({ ...msg, message: "", attachment: "" });
     setLoading(true);
-    setGiphy("");
+    if(giphy){
+      setGiphy("");
+
+
+    }
     SendMessage(form, token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
       console.log(response);

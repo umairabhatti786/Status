@@ -461,7 +461,7 @@ const ProfileScreen = () => {
                 </View>
                 <FastImage
                   style={{
-                    width: "94%",
+                    width: "100%",
                     height: verticalScale(350),
                     alignSelf: "center",
                   }}
@@ -593,30 +593,6 @@ const ProfileScreen = () => {
                       </TouchableOpacity>
                     )}
                   </View>
-                  {/* {userData?.gif1 ? (
-                    <Image
-                      style={{ width: 130, height: 45, alignSelf: "flex-end" }}
-                      source={images.giphy}
-                      resizeMode="contain"
-                    />
-                  ) : (
-                    <>
-                      {userData?.gif2 ? (
-                        <Image
-                          style={{
-                            width: 130,
-                            height: 45,
-                            alignSelf: "flex-end",
-                          }}
-                          source={images.giphy}
-                          resizeMode="contain"
-                        />
-                      ) : (
-                        <></>
-                      )}
-                    </>
-                  )} */}
-
                   <View style={appStyles.rowjustify}>
                     {userData?.gif1 && (
                       <View style={styles.gifhyContainer}>

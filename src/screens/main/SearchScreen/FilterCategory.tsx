@@ -14,6 +14,7 @@ import {
 import { scale, verticalScale } from "react-native-size-matters";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
+import NewText from "../../../components/NewText";
 
 
 
@@ -36,7 +37,7 @@ onPress={onSelectCatrgory}
   style={styles.radioButton}>
   <View>{selectedCategory==item && <View style={styles.radioButtonInner} />}</View>
 </TouchableOpacity>
-<CustomText color={colors.white} size={14} text={item} />
+<NewText color={colors.white} size={14} text={item} />
 </TouchableOpacity>
 
   

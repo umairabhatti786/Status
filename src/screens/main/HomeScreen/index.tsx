@@ -21,7 +21,7 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { scale, verticalScale } from "react-native-size-matters";
-import { getToken, getUserData } from "../../../redux/reducers/authReducer";
+import { getToken, getUserData, setNotificationAlert } from "../../../redux/reducers/authReducer";
 import {
   GetFavoriteChannel,
   GetFollowingChannel,
@@ -34,6 +34,8 @@ const HomeScreen = () => {
   const isFocused = useIsFocused();
   const [followingChannels, setFollowingChannels] = useState<any>([]);
   const [favoritesChannels, setFavoritesChannels] = useState<any>([]);
+  const notificationAlert = useSelector((state) => state.auth)?.notificationAlert;
+
   // const token = StorageServices.getItem(TOKEN);
   const dispatch = useDispatch();
   const isSroll = useSelector(getUserData);
@@ -194,7 +196,13 @@ const HomeScreen = () => {
       <View>
         <View style={{ paddingHorizontal: scale(15) }}>
           <TopHeader
-            onPressNotification={() => navigation.navigate("Notifications")}
+          notificationAlert={notificationAlert}
+            onPressNotification={() => {
+              dispatch(setNotificationAlert(false))
+
+              navigation.navigate("Notifications")
+
+            }}
             onPressSetting={() => navigation.navigate("Settings")}
           />
         </View>
