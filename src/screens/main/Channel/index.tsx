@@ -23,6 +23,9 @@ import { Spacer } from "../../../components/Spacer";
 import MessageSender from "../../../components/MessageSender";
 import moment from "moment";
 import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
+import FastImage from "react-native-fast-image";
+import NewText from "../../../components/NewText";
+import ImageViewModal from "../../../components/ImageViewModal";
 
 const Channel = ({
   hideSendMessage,
@@ -36,26 +39,24 @@ const Channel = ({
   const route: any = useRoute();
   const item = route?.params?.item;
   const navigation: any = useNavigation();
-  const [isWatchList, setIsWatchList] = useState(false);
+  const [isViewImage, setIsViewImage] = useState(false);
+
+  const [imageObject, setImageObject] = useState({});
   const [isSideBar, setIsBar] = useState(false);
   const [isFollow, setIsFollow] = useState(false);
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
-  console.log("userData", userData?.wallpaperUrl);
+  console.log("userData", item?.gif);
 
   return (
     <>
       <View style={appStyles.main}>
         <ImageBackground
           style={{ width: "100%", height: windowHeight }}
-          source={
-            userData?.wallpaperUrl
-              ? { uri: userData?.wallpaperUrl }
-              : images.channelbackground
-          }
+          source={userData?.wallpaperUrl ? { uri: userData?.wallpaperUrl } : ""}
         >
-          <View >
+          <View>
             <FlatList
               data={hideSendMessage ? posts : authPosts}
               nestedScrollEnabled={true}
@@ -64,6 +65,8 @@ const Channel = ({
               // //    gap: 100,
               // //  }}
               renderItem={({ item, index }) => {
+                const currentDate = moment();
+                const createdAtDate = moment(item?.created_at);
                 return (
                   <View style={{ paddingBottom: verticalScale(10) }}>
                     <Spacer height={verticalScale(30)} />
@@ -71,9 +74,14 @@ const Channel = ({
                       <CustomText
                         color={colors.grey300}
                         size={15}
+                        text={
+                          createdAtDate.isSame(currentDate, "day")
+                            ? "Today " + createdAtDate.format("hh:mm A")
+                            : createdAtDate.format("dddd hh:mm A")
+                        }
                         // fontFam="Inter-SemiBold"
                         //  style={{ marginLeft: scale(8),backgroundColor:colors.primary }}
-                        text={moment(item?.created_at).format("dddd hh:mm a")}
+                        // text={moment(item?.created_at).format("dddd hh:mm A")}
                       />
                     </View>
                     <View
@@ -83,25 +91,58 @@ const Channel = ({
                         // height:windowHeight/1.5,
                         // height:"50%",
                         backgroundColor: colors.black300,
-                        borderRadius: scale(8),
-                        width: "95%",
+                        borderRadius: scale(10),
+                        width: "90%",
                         alignSelf: "center",
-                        paddingVertical: verticalScale(8),
-                        paddingHorizontal: scale(5),
+                        overflow: "hidden",
+                        // paddingVertical: verticalScale(8),
+                        // paddingHorizontal: scale(5),
                       }}
                     >
-                      <CustomText
-                        color={colors.gray500}
-                        size={15}
-                        fontFam="Inter-Medium"
-                        style={{ marginBottom: verticalScale(8) }}
-                        text={item?.title}
-                      />
-                      {item?.imageUrl ? (
-                        <Image
-                          style={{ width: "100%", height: verticalScale(300) }}
-                          source={{ uri: item?.imageUrl }}
+                      <View
+                        style={{ paddingHorizontal: 10, paddingVertical: 2 }}
+                      >
+                        <NewText
+                          color={colors.gray500}
+                          size={16}
+                          fontFam="Inter-Medium"
+                          // style={{ marginBottom: verticalScale(8) }}
+                          text={item?.title}
                         />
+                      </View>
+
+                      {item?.imageUrl ? (
+                        <TouchableOpacity
+                          activeOpacity={0.9}
+                          onPress={() => {
+                            setImageObject({
+                              uri: item?.imageUrl,
+                              name: item?.title,
+                              description: item?.description,
+                              time: item?.created_at,
+                            });
+                            setIsViewImage(true);
+                          }}
+                          style={{
+                            width: "100%",
+                            height: verticalScale(340),
+                            borderRadius: scale(10),
+                          }}
+                        >
+                          <FastImage
+                            style={{
+                              width: "100%",
+                              height: verticalScale(340),
+                              borderRadius: scale(10),
+                            }}
+                            // source={{ uri: item?.imageUrl }}
+                            source={{
+                              uri: item?.imageUrl,
+                              headers: { Authorization: "AuthToken" },
+                              priority: FastImage.priority.high,
+                            }}
+                          />
+                        </TouchableOpacity>
                       ) : (
                         <></>
                       )}
@@ -115,31 +156,57 @@ const Channel = ({
                       )}
 
                       <CustomText
-                        color={colors.white + "80"}
+                        color={colors.white}
                         size={14}
                         // fontFam="Inter-Medium"
                         style={{
                           marginTop: verticalScale(8),
-                          marginLeft: scale(5),
+                          marginHorizontal: scale(10),
                         }}
                         text={item?.description}
                       />
 
-                      <CustomText
-                        color={colors.white}
-                        size={14}
-                        // fontFam="Inter-Medium"
-                        style={{ marginRight: scale(5), textAlign: "right" }}
-                        text={moment(item?.created_at).format("hh:mm a")}
-                      />
+                      <View
+                        style={{
+                          ...appStyles.row,
+                          alignSelf: "flex-end",
+                          marginRight: 10,
+                          marginBottom: 5,
+                          height: 20,
+                        }}
+                      >
+                        {item?.imageUrl && (
+                          <View style={appStyles.row}>
+                            <Image
+                              style={{
+                                width: 17,
+                                height: 17,
+                                tintColor: colors.grey300,
+                              }}
+                              source={images.eye}
+                            />
+                            <Spacer width={8} />
+                            <NewText
+                              color={colors.grey300}
+                              size={13}
+                              // fontFam="Inter-Medium"
+                              style={{
+                                marginRight: scale(5),
+                                textAlign: "right",
+                              }}
+                              text={"14"}
+                            />
+                          </View>
+                        )}
+                      </View>
                     </View>
                     <View
                       style={{
                         paddingHorizontal: scale(10),
-                        paddingVertical: verticalScale(2),
+                        // paddingVertical: verticalScale(2),
                         position: "absolute",
                         bottom: verticalScale(10),
-                        left: scale(15),
+                        left: scale(25),
                         backgroundColor: colors.black300,
                         alignItems: "center",
                         justifyContent: "center",
@@ -160,11 +227,26 @@ const Channel = ({
                 );
               }}
             />
-          
           </View>
-          
         </ImageBackground>
       </View>
+
+      <ImageViewModal
+        isModalVisible={isViewImage}
+        imageObject={imageObject}
+        // imageData={imageData}
+        // sendMessage={sendMessage}
+        // createPost={createPost}
+        // setState={setState}
+        // state={state}
+        // msg={msg}
+        // setMsg={setMsg}
+        // message={message}
+        // setLoading={setLoading}
+        // loading={loading}
+        // // setActiveChat={setActiveChat}
+        setModalVisible={setIsViewImage}
+      />
     </>
   );
 };

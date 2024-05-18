@@ -110,7 +110,7 @@ let isChannel=route?.params?.isChannel;
   //   if(newPost)
   //   setNewPost([...posts,newPost])
   // }, [newPost])
-console.log("isChannel",isChannel)
+
   const con = async () => {
     console.log("am focused");
     try {
@@ -446,7 +446,7 @@ console.log("isChannel",isChannel)
                   source={{
                     uri: data?.imageUrl,
                     headers: { Authorization: "someAuthToken" },
-                    priority: FastImage.priority.normal,
+                    priority: FastImage.priority.high,
                   }}
                 />
                 <View
@@ -605,7 +605,7 @@ console.log("isChannel",isChannel)
                     source={{
                       uri: data?.imageUrl,
                       headers: { Authorization: "someAuthToken" },
-                      priority: FastImage.priority.normal,
+                      priority: FastImage.priority.high,
                     }}
                   />
                   <View style={appStyles.rowjustify}>

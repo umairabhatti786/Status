@@ -44,7 +44,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
           source={{
             uri: image,
             headers: { Authorization: "someAuthToken" },
-            priority: FastImage.priority.normal,
+            priority: FastImage.priority.high,
           }}
         />
         {item.online && (

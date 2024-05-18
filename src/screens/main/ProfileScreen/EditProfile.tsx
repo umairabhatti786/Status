@@ -531,7 +531,7 @@ const EditProfile = ({ route }: any) => {
                       ? values?.wallpaperUrl?.path
                       : values?.wallpaperUrl,
                     headers: { Authorization: "someAuthToken" },
-                    priority: FastImage.priority.normal,
+                    priority: FastImage.priority.high,
                   }}
                 />
 
@@ -591,7 +591,7 @@ const EditProfile = ({ route }: any) => {
                       ? values?.imageUrl?.path
                       : values?.imageUrl,
                     headers: { Authorization: "someAuthToken" },
-                    priority: FastImage.priority.normal,
+                    priority: FastImage.priority.high,
                   }}
                 />
 

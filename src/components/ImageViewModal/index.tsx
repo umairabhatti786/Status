@@ -26,11 +26,7 @@ import { Spacer } from "../Spacer";
 interface Props {
   isModalVisible?: boolean;
   setModalVisible?: any;
-  children?: React.ReactNode;
-  backdropStyle?: any;
-  paddingTop?: any;
   justifyContent?: any;
-  setActiveChat?: any;
   imageData?: any;
   createPost?: any;
   sendMessage?: any;
@@ -39,18 +35,15 @@ interface Props {
   msg?: any;
   setMsg?: any;
   message?: any;
-  setLoading?: any;
   loading?: any;
+  imageObject?:object
 }
-const ImageUploaderModal: React.FC<Props> = ({
+const ImageViewModal: React.FC<Props> = ({
   isModalVisible,
   setModalVisible,
-  children,
-  backdropStyle,
   justifyContent,
-  paddingTop,
-  setActiveChat,
   imageData,
+  imageObject,
   createPost,
   sendMessage,
   setState,
@@ -58,7 +51,6 @@ const ImageUploaderModal: React.FC<Props> = ({
   msg,
   setMsg,
   message,
-  setLoading,
   loading,
 }) => {
   console.log("imageData", imageData);
@@ -107,7 +99,7 @@ const ImageUploaderModal: React.FC<Props> = ({
         <View style={{ width: "100%", height: "85%" }}>
           <Image
             style={{ width: "100%", height: "100%",position:"absolute",top:0 ,left:0}}
-            source={{ uri: imageData?.uri }}
+            source={{uri:imageObject?.uri}}
           />
 
           <View
@@ -146,7 +138,7 @@ const ImageUploaderModal: React.FC<Props> = ({
           </TouchableOpacity>
         </View>
 
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -208,7 +200,7 @@ const ImageUploaderModal: React.FC<Props> = ({
               />
             </TouchableOpacity>
           )}
-        </View>
+        </View> */}
       </Pressable>
     </Modal>
   );
@@ -228,4 +220,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ImageUploaderModal;
+export default ImageViewModal;

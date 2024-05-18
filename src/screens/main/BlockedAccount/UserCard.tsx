@@ -46,7 +46,7 @@ import NewText from "../../../components/NewText";
 
          style={{ width: scale(52), height: scale(52),borderRadius:scale(8),}} source={{uri:item.imageUrl,
           headers: { Authorization: 'someAuthToken' },
-          priority: FastImage.priority.normal,
+          priority: FastImage.priority.high,
          }}
           />
             

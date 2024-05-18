@@ -27,7 +27,7 @@ const GifContainer = ({item,onPress,selectedGif}:any) => {
       style={{ width: "100%", height: "100%" }}
       source={{ uri: item?.images?.original?.url ,
         headers: { Authorization: 'AuthToken' },
-        priority: FastImage.priority.normal,
+        priority: FastImage.priority.high,
     
       }}
       resizeMode="cover"

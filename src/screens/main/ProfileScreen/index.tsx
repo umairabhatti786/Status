@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   Alert,
+  BackHandler,
   FlatList,
   Image,
   ImageBackground,
@@ -30,7 +31,7 @@ import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import CustomButton from "../../../components/CustomButton";
 import MessagesComponent from "../../../components/MessageComponent";
 import { data, profileComments } from "../../../utils/Data";
-import { scale, verticalScale } from "react-native-size-matters";
+import { s, scale, verticalScale } from "react-native-size-matters";
 import { Spacer } from "../../../components/Spacer";
 import SizeBar from "../../../components/SizeBar";
 import CustomModal from "../../../components/CustomModal";
@@ -127,6 +128,26 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     GetPosts();
+  }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+
+
+      dispatch(setDisableBottomTab(false))
+      navigation.goBack()
+      console.log("goBAckData")
+
+     
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
   }, []);
 
   useEffect(() => {
@@ -315,7 +336,7 @@ const ProfileScreen = () => {
                 source={{
                   uri: userData?.imageUrl,
                   headers: { Authorization: "someAuthToken" },
-                  priority: FastImage.priority.normal,
+                  priority: FastImage.priority.high,
                 }}
               />
               <View
@@ -460,7 +481,7 @@ const ProfileScreen = () => {
                   source={{
                     uri: userData?.imageUrl,
                     headers: { Authorization: "someAuthToken" },
-                    priority: FastImage.priority.normal,
+                    priority: FastImage.priority.high,
                   }}
                 />
 
