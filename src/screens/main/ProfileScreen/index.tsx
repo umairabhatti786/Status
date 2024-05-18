@@ -743,6 +743,8 @@ const ProfileScreen = () => {
                       // bottom={verticalScale(15)}
                       sendImage={images.simplesend}
                       channelId={channelId}
+                      giphy={giphy}
+                      setGiphy={setGiphy}
                       token={token}
                       setAuthPosts={setAuthPosts}
                       authPosts={authPosts}

@@ -77,6 +77,7 @@ const MessageSender = ({
   giphy,
   setGiphy,
 }: Props) => {
+  console.log("ckndkcnd",giphy)
   const navigation: any = useNavigation();
   const [isImageUplaod, setIsImageUplaod] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -147,9 +148,9 @@ const MessageSender = ({
       form.append("imageUrl", state.imageUrl);
     }
     // form.append("gif", 'giphy');
-    // if (giphy) {
-    // form.append("gif", giphy);
-    // }
+    if (giphy) {
+    form.append("gif", giphy);
+    }
     setState({ description: "", imageUrl: "", channelId: channelId });
     setLoading(true);
 
