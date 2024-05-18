@@ -254,7 +254,7 @@ const SearchScreen = ({ navigation }: any) => {
             <TouchableOpacity
               style={styles.categoryBtn}
               activeOpacity={0.6}
-              onPress={() => bottomSheetModalRef?.current?.expand()}
+              onPress={() => bottomSheetModalRef?.current?.present()}
             >
               <NewText color={colors.white} size={14} text={selectedType} />
               <Spacer width={5} />
@@ -329,7 +329,7 @@ const SearchScreen = ({ navigation }: any) => {
       </SafeAreaView>
 
       <CustomBottomSheet bottomSheetModalRef={bottomSheetModalRef}>
-        <View style={{ paddingHorizontal: scale(20) }}>
+        <View style={{ paddingHorizontal: scale(20),backgroundColor:colors.primary}}>
           <FlatList
             data={profileType}
             nestedScrollEnabled={true}
@@ -339,10 +339,10 @@ const SearchScreen = ({ navigation }: any) => {
                   <FilterCategory
                     item={item}
                     onSelectCatrgory={() => {
-                      setActiveCategory(item);
+                      setSelectedType(item);
                       bottomSheetModalRef?.current?.close();
                     }}
-                    selectedCategory={activeCategory}
+                    selectedType={selectedType}
                   />
                   <Spacer height={verticalScale(15)} />
                 </>

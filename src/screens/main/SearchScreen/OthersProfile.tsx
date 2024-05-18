@@ -591,7 +591,7 @@ let isChannel=route?.params?.isChannel;
                       numberOfLines={1}
                       fontFam="Inter-Medium"
                       style={{ marginLeft: scale(8), marginRight: scale(10) }}
-                      text={data?.occupation}
+                      text={"Actress, Modal"}
                     />
                   </View>
                   </View>

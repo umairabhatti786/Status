@@ -162,13 +162,14 @@ const MessageSender = ({
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
-        setIsImageUplaod(false);
-        setImageData({});
         if(giphy){
           setGiphy("")
 
 
         }
+        setIsImageUplaod(false);
+        setImageData({});
+      
 
         setAuthPosts([...authPosts, result?.post]);
         setLoading(false);

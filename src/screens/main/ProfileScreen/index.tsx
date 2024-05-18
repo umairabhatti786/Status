@@ -455,7 +455,7 @@ const ProfileScreen = () => {
                       numberOfLines={1}
                       fontFam="Inter-Medium"
                       style={{ marginLeft: scale(8), marginRight: scale(10) }}
-                      text={userData?.occupation}
+                      text={"Actress, Modal"}
                     />
                   </View>
                 </View>

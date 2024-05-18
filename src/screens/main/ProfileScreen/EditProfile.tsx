@@ -61,7 +61,7 @@ import Loader from "../../../components/Loader";
 import ImageCropPicker, {
   Image as ImagePickerType,
 } from "react-native-image-crop-picker";
-import BottomSheet from "../../../components/BottomSheet";
+import CustomBottomSheet from "../../../components/CustomBottomSheet";
 
 GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
 GiphyDialog.configure({
@@ -1095,7 +1095,7 @@ const EditProfile = ({ route }: any) => {
         />
       )}
 
-      <BottomSheet bottomSheetModalRef={bottomSheetModalRef}>
+      <CustomBottomSheet bottomSheetModalRef={bottomSheetModalRef}>
         <View style={{ paddingHorizontal: scale(20), alignItems: "center" }}>
           <View style={{ ...appStyles.rowjustify, width: "100%" }}>
             <NewText
@@ -1163,7 +1163,7 @@ const EditProfile = ({ route }: any) => {
             bgColor={colors.white}
           />
         </View>
-      </BottomSheet>
+      </CustomBottomSheet>
     </>
   );
 };

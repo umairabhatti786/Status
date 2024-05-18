@@ -7,6 +7,7 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
+import { colors } from "../../utils/colors";
 
 
 const CustomBottomSheet = (props: any) => {
@@ -27,10 +28,12 @@ const CustomBottomSheet = (props: any) => {
     ref={bottomSheetModalRef}
     backdropComponent={(props) => <Backdrop {...props} bottomSheetModalRef={bottomSheetModalRef} />}
     snapPoints={snapPoints}
+    backgroundStyle={{backgroundColor:colors.primary}}
     // style={{marginHorizontal:10}}
     onDismiss={props?.onDismiss}
     >
       <BottomSheetScrollView
+
         // contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
