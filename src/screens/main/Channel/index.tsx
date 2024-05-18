@@ -105,6 +105,14 @@ const Channel = ({
                       ) : (
                         <></>
                       )}
+                      {item?.gif ? (
+                        <Image
+                          style={{ width: "100%", height: verticalScale(300) }}
+                          source={{ uri: item?.gif }}
+                        />
+                      ) : (
+                        <></>
+                      )}
 
                       <CustomText
                         color={colors.white + "80"}
