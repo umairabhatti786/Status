@@ -724,6 +724,7 @@ const [postId, setPostId] = useState('');
                     setAuthPosts={setAuthPosts}
                     counter={counter}
                     setCounter={setCounter}
+                    isActiveProfile={isActiveProfile}
                     isEditView={isEditView}
                     setIsEditView={setIsEditView}
                     imageForEdit={imageForEdit}

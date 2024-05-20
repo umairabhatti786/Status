@@ -98,11 +98,12 @@ const Chat = () => {
     trash: false,
   });
   useEffect(() => {
-    
-    if (conversation.length > 0 && flatListRef.current) {
-      flatListRef.current.scrollToEnd({ animated: true });
+    if (isFocused) {
+      if (conversation.length > 0 && flatListRef.current) {
+        flatListRef.current.scrollToEnd({ animated: true });
+      }
     }
-  }, [conversation]);
+  }, [conversation, isFocused]);
 
   const getConversation = async () => {
     let token = await StorageServices.getItem(TOKEN);
@@ -450,7 +451,6 @@ const Chat = () => {
           ref={flatListRef}
           keyExtractor={(item) => item}
           nestedScrollEnabled={true}
-
           // inverted={true}
           // style={{paddingTop:verticalScale(20)}}
           // contentContainerStyle={{

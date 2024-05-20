@@ -893,6 +893,7 @@ const OthersProfile = () => {
                     channelId={channelId}
                     counter={counter}
                     setCounter={setCounter}
+                    isActiveProfile={isActiveProfile}
                   />
                 </View>
               </>
