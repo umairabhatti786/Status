@@ -102,6 +102,10 @@ const ProfileScreen = () => {
   const activeBar = useSelector((state) => state.auth)?.profileActiveBar;
   const [isActiveProfile, setIsActiveProfile] = useState("");
 const [counter, setCounter] = useState(0)
+const [isEditView, setIsEditView] = useState(false);
+const [imageForEdit, setImageForEdit] = useState('');
+const [postId, setPostId] = useState('');
+
 
   const dispatch = useDispatch();
 
@@ -110,6 +114,9 @@ const [counter, setCounter] = useState(0)
     const userInfo = await StorageServices.getItem(AUTH);
     setIsChannelId(userInfo?.channel?.id);
   };
+  useEffect(() => {
+    setImageForEdit(imageForEdit);
+  }, [isEditView]);
   useEffect(() => {
     getChannelId();
   }, []);
@@ -717,6 +724,11 @@ const [counter, setCounter] = useState(0)
                     setAuthPosts={setAuthPosts}
                     counter={counter}
                     setCounter={setCounter}
+                    isEditView={isEditView}
+                    setIsEditView={setIsEditView}
+                    imageForEdit={imageForEdit}
+                    setImageForEdit={setImageForEdit}
+                    setPostId={setPostId}
                   />
 
                   <View>
@@ -730,6 +742,13 @@ const [counter, setCounter] = useState(0)
                       token={token}
                       setAuthPosts={setAuthPosts}
                       authPosts={authPosts}
+                      isEditView={isEditView}
+                      setIsEditView={setIsEditView}
+                      imageForEdit={imageForEdit}
+                    setImageForEdit={setImageForEdit}
+                    postId={postId}
+                    setCounter={setCounter}
+                    counter={counter}
                     />
                   </View>
                 </View>

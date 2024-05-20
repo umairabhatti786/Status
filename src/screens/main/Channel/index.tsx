@@ -43,11 +43,17 @@ const Channel = ({
   setAuthPosts,
   counter,
   setCounter,
+  isEditView,
+  setIsEditView,
+  imageForEdit,
+  setImageForEdit,
+  setPostId,
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
   const navigation: any = useNavigation();
   const [isViewImage, setIsViewImage] = useState(false);
+  
   const [scroll, setScroll] = useState(false);
   const flatListRef = useRef(null);
   const isFocused = useIsFocused();
@@ -147,12 +153,15 @@ const Channel = ({
                             }}
                           >
                             {!item?.gif&&
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>{
+                              setPostId(item.id)
+                              setIsEditView(true)
+                            }}>
                             <NewText
                               color={colors.gray500}
                               size={16}
                               fontFam="Inter-Medium"
-                              // style={{ marginBottom: verticalScale(8) }}
+                              
                               text={"Edit"}
                             />
                           </TouchableOpacity>
@@ -365,6 +374,7 @@ const Channel = ({
         // // setActiveChat={setActiveChat}
         setModalVisible={setIsViewImage}
       />
+      
     </>
   );
 };

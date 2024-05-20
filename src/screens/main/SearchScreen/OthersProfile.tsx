@@ -367,7 +367,7 @@ const OthersProfile = () => {
   };
 
   const renderChatList = ({ item }: any) => {
-    console.log("kncdknc", item);
+    // console.log("kncdknc", item);
     return (
       <MessagesComponent
         comments={true}

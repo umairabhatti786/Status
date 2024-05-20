@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomText from "../CustomText";
 import { appStyles } from "../../utils/AppStyles";
 import { scale, verticalScale } from "react-native-size-matters";
@@ -21,12 +21,13 @@ import {
   StorageServices,
   TOKEN,
 } from "../../utils/hooks/StorageServices";
-import { CreatePost, SendMessage } from "../../api/ApiServices";
+import { CreatePost, SendMessage, UpdatePost } from "../../api/ApiServices";
 import { usePermissions } from "../../utils/Permissions";
 import ImagePicker from "react-native-image-crop-picker";
 import { openSettings } from "react-native-permissions";
 import { useNavigation } from "@react-navigation/native";
 import ImageUploaderModal from "../ImageUploaderModal";
+import EditImageUploaderModal from "../EditImageUploaderModal";
 
 type Props = {
   name?: string;
@@ -55,6 +56,13 @@ type Props = {
   setGiphy?: any;
   notShow?: boolean;
   onGiphyPress?: () => void;
+  isEditView?: any;
+  setIsEditView?: any;
+  imageForEdit?: any;
+  setImageForEdit?: any;
+  postId?: any;
+  counter?: any;
+  setCounter?: any;
 };
 
 const MessageSender = ({
@@ -76,6 +84,13 @@ const MessageSender = ({
   onGiphyPress,
   giphy,
   setGiphy,
+  isEditView,
+  setIsEditView,
+  imageForEdit,
+  setImageForEdit,
+  postId,
+  counter,
+  setCounter,
 }: Props) => {
   // console.log("ckndkcnd",giphy)
   const navigation: any = useNavigation();
@@ -95,7 +110,59 @@ const MessageSender = ({
     attachment: "",
   });
   const { requestGalleryPermission } = usePermissions();
-  const onOpenGallery = async (isPicture: any) => {
+
+  useEffect(() => {
+    if (isEditView) {
+      onOpenGalleryForEdit();
+    }
+  }, [isEditView]);
+
+  const onOpenGalleryForEdit = async () => {
+    // console.log("ISpucvibdv", isPicture);
+    setImageForEdit(true);
+    let gallerypermission = await requestGalleryPermission();
+    if (gallerypermission == "granted" || gallerypermission == "limited") {
+      ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        mediaType: "photo",
+        forceJpg: true,
+      }).then(async (result) => {
+        if (result) {
+          const fileName = result?.path?.split("/").pop();
+          let data = {
+            ...result,
+            fileName: fileName,
+            name: fileName,
+            size: result?.size,
+            height: result?.height,
+            type: result?.mime,
+            uri: result?.path,
+            width: result?.width,
+          };
+
+          if (isEditView) {
+            setImageForEdit(data);
+          }
+
+          // setTimeout(() => {
+          //   setIsImageUplaod(true);
+          // }, 500);
+          // console.log(data);
+        }
+      });
+    } else {
+      if (gallerypermission == "blocked") {
+        if (Platform.OS == "ios") {
+          openSettings();
+        } else {
+          Linking.openSettings();
+        }
+      }
+    }
+  };
+
+  const onOpenGallery = async () => {
     // console.log("ISpucvibdv", isPicture);
     setIsImageUplaod(true);
     let gallerypermission = await requestGalleryPermission();
@@ -123,6 +190,10 @@ const MessageSender = ({
             : setState({ ...state, imageUrl: data });
           setImageData(data);
 
+          if (isEditView) {
+            setImageForEdit(data);
+          }
+
           // setTimeout(() => {
           //   setIsImageUplaod(true);
           // }, 500);
@@ -140,6 +211,39 @@ const MessageSender = ({
     }
   };
 
+  const EditPost = async () => {
+    let form = new FormData();
+    form.append("description", state.description);
+    form.append("id", postId);
+    if (imageForEdit) {
+      form.append("imageUrl", imageForEdit);
+    }
+    setState({ description: "", imageUrl: "", channelId: channelId });
+    setLoading(true);
+
+    console.log(form);
+    UpdatePost(form, token, async ({ isSuccess, response }: any) => {
+      console.log("data", isSuccess);
+      console.log("response", response);
+
+      let result = JSON.parse(response);
+      if (result.status) {
+        console.log(result);
+        setCounter(counter+1)
+        setIsEditView(false);
+        setImageForEdit('')
+        setLoading(false);
+
+        // setAuthPosts([...authPosts, result?.post]);
+        // setComments([...comments, result.comment]);
+        // setLoading2(false);
+      } else {
+        setLoading(false);
+        // Alert.alert("Alert!", "Something went wrong");
+        console.log("Something went wrong", result);
+      }
+    });
+  };
   const createPost = async () => {
     let form = new FormData();
     form.append("description", state.description);
@@ -149,7 +253,7 @@ const MessageSender = ({
     }
     // form.append("gif", 'giphy');
     if (giphy) {
-    form.append("gif", giphy);
+      form.append("gif", giphy);
     }
     setState({ description: "", imageUrl: "", channelId: channelId });
     setLoading(true);
@@ -162,14 +266,11 @@ const MessageSender = ({
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
-        if(giphy){
-          setGiphy("")
-
-
+        if (giphy) {
+          setGiphy("");
         }
         setIsImageUplaod(false);
         setImageData({});
-      
 
         setAuthPosts([...authPosts, result?.post]);
         setLoading(false);
@@ -201,7 +302,7 @@ const MessageSender = ({
     }
     setMsg({ ...msg, message: "", attachment: "" });
     setLoading(true);
-    if(giphy){
+    if (giphy) {
       setGiphy("");
     }
     SendMessage(form, token, async ({ isSuccess, response }: any) => {
@@ -214,8 +315,8 @@ const MessageSender = ({
         setImageData({});
         setLoading(false);
 
-        if(result?.message?.senderId==msg.senderId){
-          setConversation([...conversation,result?.message])
+        if (result?.message?.senderId == msg.senderId) {
+          setConversation([...conversation, result?.message]);
         }
         // console.log('result?.posts',result?.posts?.data)
         if (newChat) {
@@ -347,6 +448,21 @@ const MessageSender = ({
         loading={loading}
         // setActiveChat={setActiveChat}
         setModalVisible={setIsImageUplaod}
+      />
+      <EditImageUploaderModal
+        isModalVisible={isEditView}
+        setModalVisible={setIsEditView}
+        imageData={imageForEdit}
+        sendMessage={sendMessage}
+        createPost={EditPost}
+        setState={setState}
+        state={state}
+        msg={msg}
+        setMsg={setMsg}
+        message={message}
+        setLoading={setLoading}
+        loading={loading}
+        // setActiveChat={setActiveChat}
       />
     </>
   );
