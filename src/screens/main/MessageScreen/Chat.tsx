@@ -305,7 +305,7 @@ const Chat = () => {
         name={item?.sender?.name}
         image={{ uri: item?.sender?.imageUrl }}
         message={item?.message}
-        time={moment(item?.created_at).format("hh:mm a")}
+        time={moment(item?.created_at).format("h:mm a")}
         chatDate={item?.chatDate}
         attachments={item?.attachments}
         gif={item?.gif}

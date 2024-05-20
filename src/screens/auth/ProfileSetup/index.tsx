@@ -322,6 +322,7 @@ const ProfileSetup = ({ route }: props) => {
 
             <Input label="Display Name"
               placeholder="Enter your name or handle"
+              maxLength={50}
               value={values.name}
               onChangeText={(txt: string) => {
                 setValues({ ...values, name: txt });
