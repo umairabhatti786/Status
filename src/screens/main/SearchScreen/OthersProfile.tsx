@@ -36,6 +36,7 @@ import Channel from "../Channel";
 import FastImage from "react-native-fast-image";
 import NewText from "../../../components/NewText";
 import {
+  AddRemoveViews,
   Blocked,
   CreateComment,
   Favorite,
@@ -61,7 +62,7 @@ const OthersProfile = () => {
   const pusher = Pusher.getInstance();
   const route: any = useRoute();
   const id = route?.params?.id;
-let isChannel=route?.params?.isChannel;
+  let isChannel = route?.params?.isChannel;
   const channelId = route?.params?.channelId;
   const navigation: any = useNavigation();
   const [isWatchList, setIsWatchList] = useState(false);
@@ -85,6 +86,8 @@ let isChannel=route?.params?.isChannel;
   const isFocused = useIsFocused();
   const [loading2, setLoading2] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [counter, setCounter] = useState(0);
+  const [counter1, setCounter1] = useState(0);
 
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
 
@@ -102,7 +105,7 @@ let isChannel=route?.params?.isChannel;
   // }
 
   useEffect(() => {
-    // if (newComment) 
+    // if (newComment)
     setComments([...comments, newComment]);
   }, [newComment]);
 
@@ -120,7 +123,7 @@ let isChannel=route?.params?.isChannel;
         // onConnectionStateChange,
       });
       // console.log('init')
-       await pusher.subscribe({
+      await pusher.subscribe({
         channelName: "commentsChannel_" + id,
         onEvent: (event: PusherEvent) => {
           // console.log("channelUpdates_"+JSON.stringify(route?.params))
@@ -174,13 +177,10 @@ let isChannel=route?.params?.isChannel;
   }, [isFocused]);
 
   useEffect(() => {
-
-    if(isChannel){
-      setIsActiveProfile("Channel")
-    }
-    else {
-      setIsActiveProfile("Profile")
-      
+    if (isChannel) {
+      setIsActiveProfile("Channel");
+    } else {
+      setIsActiveProfile("Profile");
     }
     getDetail();
   }, []);
@@ -192,7 +192,7 @@ let isChannel=route?.params?.isChannel;
 
   useEffect(() => {
     if (isFocused) GetPosts();
-  }, [isFocused]);
+  }, [isFocused, counter1]);
 
   const GetPosts = async () => {
     GetStatus(id, token, async ({ isSuccess, response }: any) => {
@@ -202,6 +202,21 @@ let isChannel=route?.params?.isChannel;
       if (result.status) {
         // console.log(result?.posts?.data)
         setPosts(result?.posts?.data);
+        result?.posts?.data.map(async (p: any,index:any) => {
+          let user = await StorageServices.getItem(AUTH);
+          let data = { user_id: user.id, post_id: p.id };
+          
+          AddRemoveViews(data, token, async ({ isSuccess, response }: any) => {
+            let result = JSON.parse(response);
+            if (result.status) {
+              setCounter1(counter1 + 1);
+            } else {
+              console.log(result);
+              // Alert.alert("Alert!", "Something went wrong",);
+              console.log("Something went wrong");
+            }
+          });
+        });
       } else {
         console.log(result);
         // Alert.alert("Alert!", "Something went wrong",);
@@ -231,7 +246,6 @@ let isChannel=route?.params?.isChannel;
   };
 
   const submitComment = async () => {
-
     let data = {
       description: comment,
       userId: id,
@@ -248,7 +262,7 @@ let isChannel=route?.params?.isChannel;
       // console.log('result',result);
       if (result.status) {
         // setComments([...comments, result.comment]);
-        setComment('')
+        setComment("");
         setLoading2(false);
       } else {
         // Alert.alert("Alert!", "Something went wrong");
@@ -353,8 +367,7 @@ let isChannel=route?.params?.isChannel;
   };
 
   const renderChatList = ({ item }: any) => {
-
-    console.log("kncdknc",item)
+    console.log("kncdknc", item);
     return (
       <MessagesComponent
         comments={true}
@@ -402,7 +415,8 @@ let isChannel=route?.params?.isChannel;
     });
   };
 
-  const shortenedText = data?.name?.length > 17 ? data?.name?.substring(0, 16) + "..." : data?.name;
+  const shortenedText =
+    data?.name?.length > 17 ? data?.name?.substring(0, 16) + "..." : data?.name;
 
   return (
     <>
@@ -578,22 +592,22 @@ let isChannel=route?.params?.isChannel;
                     <Spacer width={scale(22)} />
 
                     <View style={{ ...appStyles.row, width: "48%" }}>
-                    <Image
-                      style={{
-                        width: scale(20),
-                        height: scale(20),
-                      }}
-                      source={images.bagicon}
-                    />
-                    <CustomText
-                      color={colors.grey300}
-                      size={15}
-                      numberOfLines={1}
-                      fontFam="Inter-Medium"
-                      style={{ marginLeft: scale(8), marginRight: scale(10) }}
-                      text={"Actress, Modal"}
-                    />
-                  </View>
+                      <Image
+                        style={{
+                          width: scale(20),
+                          height: scale(20),
+                        }}
+                        source={images.bagicon}
+                      />
+                      <CustomText
+                        color={colors.grey300}
+                        size={15}
+                        numberOfLines={1}
+                        fontFam="Inter-Medium"
+                        style={{ marginLeft: scale(8), marginRight: scale(10) }}
+                        text={"Actress, Modal"}
+                      />
+                    </View>
                   </View>
                   <FastImage
                     style={{
@@ -657,9 +671,11 @@ let isChannel=route?.params?.isChannel;
                     </TouchableOpacity>
                     <TouchableOpacity
                       activeOpacity={0.6}
-                      onPress={() =>navigation.navigate("NewMessage",{
-                        user:data
-                      })}
+                      onPress={() =>
+                        navigation.navigate("NewMessage", {
+                          user: data,
+                        })
+                      }
                       style={styles.box}
                     >
                       <Image
@@ -756,51 +772,59 @@ let isChannel=route?.params?.isChannel;
              />
            </View> */}
 
-<View style={appStyles.rowjustify}>
-                    {data?.gif1 && (
-                      <View style={styles.gifhyContainer}>
-                        <Image
-                          style={{ width: "100%", height: "100%" }}
-                          source={{ uri: data?.gif1 }}
-                        />
+                    <View style={appStyles.rowjustify}>
+                      {data?.gif1 && (
+                        <View style={styles.gifhyContainer}>
+                          <Image
+                            style={{ width: "100%", height: "100%" }}
+                            source={{ uri: data?.gif1 }}
+                          />
 
-                        <View
-                          style={{ position: "absolute", right: 5, bottom: 0 }}
-                        >
-                          <Image
+                          <View
                             style={{
-                              width: 100,
-                              height: 30,
-                              alignSelf: "flex-end",
+                              position: "absolute",
+                              right: 5,
+                              bottom: 0,
                             }}
-                            source={images.giphy}
-                            resizeMode="contain"
-                          />
+                          >
+                            <Image
+                              style={{
+                                width: 100,
+                                height: 30,
+                                alignSelf: "flex-end",
+                              }}
+                              source={images.giphy}
+                              resizeMode="contain"
+                            />
+                          </View>
                         </View>
-                      </View>
-                    )}
-                    {data?.gif2 && (
-                      <View style={styles.gifhyContainer}>
-                        <Image
-                          style={{ width: "100%", height: "100%" }}
-                          source={{ uri: data?.gif2 }}
-                        />
-                        <View
-                          style={{ position: "absolute", right: 5, bottom: 0 }}
-                        >
+                      )}
+                      {data?.gif2 && (
+                        <View style={styles.gifhyContainer}>
                           <Image
-                            style={{
-                              width: 100,
-                              height: 30,
-                              alignSelf: "flex-end",
-                            }}
-                            source={images.giphy}
-                            resizeMode="contain"
+                            style={{ width: "100%", height: "100%" }}
+                            source={{ uri: data?.gif2 }}
                           />
+                          <View
+                            style={{
+                              position: "absolute",
+                              right: 5,
+                              bottom: 0,
+                            }}
+                          >
+                            <Image
+                              style={{
+                                width: 100,
+                                height: 30,
+                                alignSelf: "flex-end",
+                              }}
+                              source={images.giphy}
+                              resizeMode="contain"
+                            />
+                          </View>
                         </View>
-                      </View>
-                    )}
-                  </View>
+                      )}
+                    </View>
 
                     <View
                       style={{
@@ -824,7 +848,6 @@ let isChannel=route?.params?.isChannel;
                         placeholderTextColor={colors.gray200}
                         placeholder="Write on my wall"
                         value={comment}
-
                         onChangeText={(text) => setComment(text)}
                       />
                       <TouchableOpacity
@@ -868,6 +891,8 @@ let isChannel=route?.params?.isChannel;
                     posts={posts}
                     hideSendMessage={true}
                     channelId={channelId}
+                    counter={counter}
+                    setCounter={setCounter}
                   />
                 </View>
               </>
@@ -982,7 +1007,7 @@ let isChannel=route?.params?.isChannel;
           "This user will no longer be able to follow, message, or see your profile."
         }
       />
-      
+
       <BlockModal
         isModalVisible={isReportModal}
         setModalVisible={setIsReportModal}

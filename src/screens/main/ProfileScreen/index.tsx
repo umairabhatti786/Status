@@ -101,6 +101,7 @@ const ProfileScreen = () => {
   const [giphy, setGiphy] = useState("");
   const activeBar = useSelector((state) => state.auth)?.profileActiveBar;
   const [isActiveProfile, setIsActiveProfile] = useState("");
+const [counter, setCounter] = useState(0)
 
   const dispatch = useDispatch();
 
@@ -124,7 +125,7 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     GetPosts();
-  }, []);
+  }, [counter]);
 
   useEffect(() => {
     const backAction = () => {
@@ -157,7 +158,8 @@ const ProfileScreen = () => {
       listener.remove();
     };
   }, []);
-  console.log("UserData", userData?.gif);
+  // console.log("UserData", userData?.gif);
+
   const GetPosts = async () => {
     let userInfo = await StorageServices.getItem(AUTH);
     let token = await StorageServices.getItem(TOKEN);
@@ -684,9 +686,11 @@ const ProfileScreen = () => {
 
                   <FlatList
                     data={comments}
+                    nestedScrollEnabled={true}
                     contentContainerStyle={{
                       gap: 7,
                     }}
+                    keyExtractor={(item) => item}
                     renderItem={renderChatList}
                   />
                 </View>
@@ -711,6 +715,8 @@ const ProfileScreen = () => {
                     token={token}
                     authPosts={authPosts}
                     setAuthPosts={setAuthPosts}
+                    counter={counter}
+                    setCounter={setCounter}
                   />
 
                   <View>

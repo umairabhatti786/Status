@@ -2,6 +2,44 @@ import axios from "axios";
 import { client, getApiUrl } from "./Config";
 import { URLS } from "./baseUrl";
 
+export const AddRemoveLikes = async (data: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.ADD_REMOVE_LIKES, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const AddRemoveViews = async (data: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.ADD_REMOVE_VIEWS, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
 export const CreateBlockConversation = async (data: any, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",
@@ -33,6 +71,24 @@ export const CreateArchive = async (data: any, token: any, callback: any) => {
   };
   try {
     fetch(URLS.BASE_URL + URLS.CREATE_ARCHIVE, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const DeletePost = async (postId:any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.DELETE_POST+postId, requestOptions)
       .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
@@ -264,6 +320,26 @@ export const GetChatList = async (token: any, callback: any) => {
   }
 };
 
+export const UpdatePost = async (data: any, token: any, callback: any) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Accept", "application/json");
+  myHeaders.append("Authorization", "Bearer " + token);
+  const requestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: data,
+    redirect: "follow",
+  };
+
+  try {
+    fetch(URLS.BASE_URL + URLS.UPDATE_POST, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
 export const CreatePost = async (data: any, token: any, callback: any) => {
   const myHeaders = new Headers();
   myHeaders.append("Accept", "application/json");

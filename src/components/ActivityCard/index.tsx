@@ -9,16 +9,19 @@ import { scale, verticalScale } from "react-native-size-matters";
 import { appStyles } from "../../utils/AppStyles";
 import CustomButton from "../CustomButton";
 import NewText from "../NewText";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = {
   name?: string;
   image?: any;
+  senderId?: any;
   time?: string;
   comment?: string;
   isShowFollow?: boolean;
 };
-const ActivityCard = ({ image, name, time, comment, isShowFollow }: any) => {
-  const [isFollow, setIsFollow] = useState(false);
+const ActivityCard = ({ image, name, time, comment, isShowFollow,senderId }: any) => {
+  const [isFollow, setIsFollow] = useState(true);
+  const navigation: any = useNavigation();
 
   return (
     <View
@@ -29,7 +32,9 @@ const ActivityCard = ({ image, name, time, comment, isShowFollow }: any) => {
         // paddingRight: 10,
       }}
     >
-      <View style={{ ...appStyles.row, width: windowWidth / 2.3 }}>
+      <TouchableOpacity activeOpacity={0.6} onPress={()=>{
+        navigation.navigate("OthersProfile",{id:senderId});
+      }} style={{ ...appStyles.row, width: windowWidth / 2.3 }}>
         <Image
           style={{
             width: verticalScale(60),
@@ -47,6 +52,7 @@ const ActivityCard = ({ image, name, time, comment, isShowFollow }: any) => {
               size={17}
               fontFam="Poppins-SemiBold"
               fontWeight="700"
+              numberOfLines={1}
             />
           </View>
 
@@ -67,7 +73,7 @@ const ActivityCard = ({ image, name, time, comment, isShowFollow }: any) => {
             {/* <CustomText color={colors.white} size={14} text={time} /> */}
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
       {/* {isShowFollow&&(
           <CustomButton
           text={isFollow?"Follow":"Following"}

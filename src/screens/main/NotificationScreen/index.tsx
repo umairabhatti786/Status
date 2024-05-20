@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   SafeAreaView,
@@ -31,6 +32,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 const Notifications = () => {
   const navigation: any = useNavigation();
+  const [loading, setLoading] = useState(false);
   const [request, setRequest] = useState(false);
   const isFocused = useIsFocused();
   const [activeFilter, setActiveFilter] = useState(0);
@@ -57,6 +59,7 @@ const Notifications = () => {
   }, [activeFilter]);
 
   const getInNotifications = async () => {
+    setLoading(true)
     GetInNotifications(token, async ({ isSuccess, response }: any) => {
       console.log("data n", isSuccess);
       let result = JSON.parse(response);
@@ -64,9 +67,11 @@ const Notifications = () => {
         console.log(result?.InNotification);
         setData(result?.InNotification);
         setFilter(result?.InNotification);
+        setLoading(false)
         // console.log(result?.posts?.data)
       } else {
         console.log(result);
+        setLoading(false);
         // Alert.alert("Alert!", "Something went wrong",);
         console.log("Something went wrong");
       }
@@ -80,7 +85,8 @@ const Notifications = () => {
   const renderItem = ({ item }: any) => {
     return (
       <View style={{ marginBottom: 20 }}>
-        <ActivityCard
+        <ActivityCard 
+          senderId={item.senderId}
           image={{ uri: item?.imageUrl }}
           time={moment(item?.created_at).format("hh:mm a")}
           name={item?.username}
@@ -141,6 +147,7 @@ const Notifications = () => {
             </View>
           );
         })}
+        {loading&&<ActivityIndicator size={'small'} color={"#fff"}/>}
       </View>
 
       <View style={{ paddingHorizontal: scale(15) }}>

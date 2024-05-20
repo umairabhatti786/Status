@@ -81,7 +81,7 @@ const Chat = () => {
   const route: any = useRoute();
   const item = route.params.item;
   const navigation: any = useNavigation();
-  const flatListRef = useRef<FlatList<any>>();
+  const flatListRef = useRef(null);
   const [loadings, setLoadings] = useState({
     archive: false,
     trash: false,
@@ -98,8 +98,11 @@ const Chat = () => {
     trash: false,
   });
   useEffect(() => {
-    flatListRef?.current?.scrollToEnd();
-  }, []);
+    
+    if (conversation.length > 0 && flatListRef.current) {
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
+  }, [conversation]);
 
   const getConversation = async () => {
     let token = await StorageServices.getItem(TOKEN);
@@ -444,6 +447,10 @@ const Chat = () => {
       <View style={{ height: "90%" }}>
         <FlatList
           data={conversation}
+          ref={flatListRef}
+          keyExtractor={(item) => item}
+          nestedScrollEnabled={true}
+
           // inverted={true}
           // style={{paddingTop:verticalScale(20)}}
           // contentContainerStyle={{

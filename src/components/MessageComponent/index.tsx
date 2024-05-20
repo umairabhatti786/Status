@@ -110,6 +110,7 @@ const MessagesComponent = ({
                 size={16}
                 fontFam="Poppins-SemiBold"
                 fontWeight="700"
+                numberOfLines={1}
               />
               <View
                 style={{
