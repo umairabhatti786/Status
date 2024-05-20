@@ -81,7 +81,7 @@ const Chat = () => {
   const route: any = useRoute();
   const item = route.params.item;
   const navigation: any = useNavigation();
-  const flatListRef = useRef(null);
+  const flatListRefChat:any = useRef(null);
   const [loadings, setLoadings] = useState({
     archive: false,
     trash: false,
@@ -97,13 +97,13 @@ const Chat = () => {
     block: false,
     trash: false,
   });
-  useEffect(() => {
-    if (isFocused) {
-      if (conversation.length > 0 && flatListRef.current) {
-        flatListRef.current.scrollToEnd({ animated: true });
-      }
-    }
-  }, [conversation, isFocused]);
+  // useEffect(() => {
+  //   // setTimeout(() => {
+  //     if (conversation.length > 0 && flatListRef.current) {
+  //       flatListRef.current.scrollToEnd({ animated: true });
+  //     }
+  //   // }, 1000); 
+  // }, [conversation]);
 
   const getConversation = async () => {
     let token = await StorageServices.getItem(TOKEN);
@@ -118,10 +118,12 @@ const Chat = () => {
         let result = JSON.parse(response);
         if (result.status) {
           console.log(result?.conversation?.data);
+          let data =result?.conversation?.data.reverse()
           // console.log('result?.posts',result?.posts?.data)
 
-          setConversation(result?.conversation?.data);
-          await StorageServices.setItem("chatlist", result?.conversation?.data);
+          setConversation(data);
+          // flatListRef.current.scrollToEnd({ animated: true });
+          // await StorageServices.setItem("chatlist", result?.conversation?.data);
         } else {
           // setMsg({...msg,message:''})
           console.log(result);
@@ -172,6 +174,8 @@ const Chat = () => {
           if (!(JSON.parse(event.data).message?.senderId == userData.id)) {
             // setConversation([...conversation,JSON.parse(event.data).message])
             setNewMessage(JSON.parse(event.data).message);
+            flatListRefChat.current.scrollToEnd({ animated: true });
+
           }
           // setConversation([...conversation, JSON.parse(event.data).message]);
           // setComments([...comments,JSON.parse(event.data).comment])
@@ -198,14 +202,14 @@ const Chat = () => {
     }
   }, [isFocused]);
 
-  useEffect(() => {
-    async () => {
-      let chatList = await StorageServices.getItem("chatList");
-      if (chatList) {
-        setConversation(chatList);
-      }
-    };
-  }, [isFocused]);
+  // useEffect(() => {
+  //   async () => {
+  //     let chatList = await StorageServices.getItem("chatList");
+  //     if (chatList) {
+  //       setConversation(chatList);
+  //     }
+  //   };
+  // }, [isFocused]);
 
   useEffect(() => {
     if (isFocused) getConversation();
@@ -448,10 +452,10 @@ const Chat = () => {
       <View style={{ height: "90%" }}>
         <FlatList
           data={conversation}
-          ref={flatListRef}
+          ref={flatListRefChat}
           keyExtractor={(item) => item}
           nestedScrollEnabled={true}
-          // inverted={true}
+          inverted={true}
           // style={{paddingTop:verticalScale(20)}}
           // contentContainerStyle={{
           //   gap: 7,
