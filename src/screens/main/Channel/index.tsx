@@ -52,6 +52,7 @@ const Channel = ({
   imageForEdit,
   setImageForEdit,
   setPostId,
+  isActiveProfile,
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
@@ -78,7 +79,13 @@ const Channel = ({
     if (data.length > 0 && flatListRef.current) {
       flatListRef.current.scrollToEnd({ animated: true });
     }
-  }, [hideSendMessage ? posts : authPosts]);
+  }, [hideSendMessage ? posts : authPosts,]);
+  // useEffect(() => {
+  //   let data = hideSendMessage ? posts : authPosts
+  //   if (data.length > 0 && flatListRef.current) {
+  //     flatListRef.current.scrollToEnd({ animated: true });
+  //   }
+  // }, [isActiveProfile]);
 
   return (
     <>

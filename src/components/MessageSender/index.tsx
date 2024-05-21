@@ -63,6 +63,7 @@ type Props = {
   postId?: any;
   counter?: any;
   setCounter?: any;
+  flatListRefChat?: any;
 };
 
 const MessageSender = ({
@@ -91,6 +92,7 @@ const MessageSender = ({
   postId,
   counter,
   setCounter,
+  flatListRefChat,
 }: Props) => {
   // console.log("ckndkcnd",giphy)
   const navigation: any = useNavigation();
@@ -316,7 +318,10 @@ const MessageSender = ({
         setLoading(false);
 
         if (result?.message?.senderId == msg.senderId) {
-          setConversation([...conversation, result?.message]);
+          let data = conversation
+          data.unshift(result?.message);
+          setConversation(data);
+          flatListRefChat.current.scrollToEnd({ animated: true });
         }
         // console.log('result?.posts',result?.posts?.data)
         if (newChat) {
