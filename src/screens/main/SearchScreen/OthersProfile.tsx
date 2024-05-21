@@ -150,10 +150,11 @@ const OthersProfile = () => {
           console.log("channelUpdates_", JSON.parse(event.data).post);
           // let newPostList= [posts,JSON.parse(event.data).post];
           let post = JSON.parse(event.data).post;
+          let data = [post, ...posts];
+          setPosts(data);
           // if(post.id){
           //   setNewPost(post)
           // }
-          // setPosts([...posts, post]);
           // setNewPost(JSON.parse(event.data).post);
         },
       });
