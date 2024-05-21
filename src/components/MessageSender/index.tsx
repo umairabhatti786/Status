@@ -93,6 +93,7 @@ const MessageSender = ({
   counter,
   setCounter,
   flatListRefChat,
+  flatListRefPosts,
 }: Props) => {
   // console.log("ckndkcnd",giphy)
   const navigation: any = useNavigation();
@@ -273,14 +274,14 @@ const MessageSender = ({
         }
         setIsImageUplaod(false);
         setImageData({});
-
-        setAuthPosts([...authPosts, result?.post]);
+        let data = [result?.post,...authPosts]
+        setAuthPosts(data);
         setLoading(false);
-        // setComments([...comments, result.comment]);
-        // setLoading2(false);
+        setTimeout(() => {
+          flatListRefPosts?.current?.scrollToEnd({ animated: true });
+        }, 500);
       } else {
         setLoading(false);
-        // Alert.alert("Alert!", "Something went wrong");
         console.log("Something went wrong", result);
       }
     });
@@ -316,19 +317,22 @@ const MessageSender = ({
         setIsImageUplaod(false);
         setImageData({});
         setLoading(false);
-
-        if (result?.message?.senderId == msg.senderId) {
-          let data = conversation
-          data.unshift(result?.message);
-          setConversation(data);
-          flatListRefChat.current.scrollToEnd({ animated: true });
-        }
+        
         // console.log('result?.posts',result?.posts?.data)
         if (newChat) {
           // navigation.navigate('MessageScreen');
           navigation.navigate("MessageScreen", {
             item: receiver,
           });
+        }
+        if (result?.message?.senderId == msg.senderId) {
+          let data = [result?.message,...conversation]
+          // data.unshift(result?.message);
+          setConversation(data);
+
+          setTimeout(() => {
+            flatListRefChat?.current?.scrollToEnd({ animated: true });
+          }, 500);
         }
 
         // setConversation([...conversation,result?.message]);

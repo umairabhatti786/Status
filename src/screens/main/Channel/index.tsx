@@ -49,6 +49,8 @@ const Channel = ({
   setImageForEdit,
   setPostId,
   isActiveProfile,
+  flatListRefPosts,
+  flatListRefOtherPosts,
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
@@ -56,7 +58,6 @@ const Channel = ({
   const [isViewImage, setIsViewImage] = useState(false);
   
   const [scroll, setScroll] = useState(false);
-  const flatListRef = useRef(null);
   const isFocused = useIsFocused();
   const [imageObject, setImageObject] = useState({});
   const [isSideBar, setIsBar] = useState(false);
@@ -70,12 +71,13 @@ const Channel = ({
   //   console.log(item.id)
   //   // AddRemoveLikes()
   // }
-  useEffect(() => {
-    let data = hideSendMessage ? posts : authPosts
-    if (data.length > 0 && flatListRef.current) {
-      flatListRef.current.scrollToEnd({ animated: true });
-    }
-  }, [hideSendMessage ? posts : authPosts,]);
+  // useEffect(() => {
+  //   let data = hideSendMessage ? posts : authPosts
+  //   if (data.length > 0 && flatListRef.current) {
+  //     flatListRef.current.scrollToEnd({ animated: true });
+  //   }
+  // }, [hideSendMessage ? posts : authPosts,]);
+
   // useEffect(() => {
   //   let data = hideSendMessage ? posts : authPosts
   //   if (data.length > 0 && flatListRef.current) {
@@ -95,9 +97,10 @@ const Channel = ({
             <FlatList
               data={hideSendMessage ? posts : authPosts}
               nestedScrollEnabled={true}
-              ref={flatListRef}
+              ref={hideSendMessage?flatListRefOtherPosts:flatListRefPosts}
               keyExtractor={(item) => item}
               style={{ marginBottom: verticalScale(180) }}
+              inverted={true}
               // //  contentContainerStyle={{
               // //    gap: 100,
               // //  }}

@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState, version } from "react";
+import React, { useEffect, useRef, useState, version } from "react";
 import { appStyles } from "../../../utils/AppStyles";
 import CustomText from "../../../components/CustomText";
 import { colors } from "../../../utils/colors";
@@ -88,6 +88,7 @@ const OthersProfile = () => {
   const [loading, setLoading] = useState(false);
   const [counter, setCounter] = useState(0);
   const [counter1, setCounter1] = useState(0);
+  const flatListRefOtherPosts:any = useRef(null);
 
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
 
@@ -201,7 +202,10 @@ const OthersProfile = () => {
       let result = JSON.parse(response);
       if (result.status) {
         // console.log(result?.posts?.data)
-        setPosts(result?.posts?.data);
+        let data =result?.posts?.data.reverse()
+        setPosts(data);
+
+        //adding Views
         result?.posts?.data.map(async (p: any,index:any) => {
           let user = await StorageServices.getItem(AUTH);
           let data = { user_id: user.id, post_id: p.id };
@@ -894,6 +898,8 @@ const OthersProfile = () => {
                     counter={counter}
                     setCounter={setCounter}
                     isActiveProfile={isActiveProfile}
+                    flatListRefOtherPosts={flatListRefOtherPosts}
+
                   />
                 </View>
               </>

@@ -17,7 +17,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState, version, useEffect } from "react";
+import React, { useState, version, useEffect, useRef } from "react";
 import { appStyles } from "../../../utils/AppStyles";
 import CustomText from "../../../components/CustomText";
 import { colors } from "../../../utils/colors";
@@ -105,6 +105,8 @@ const [counter, setCounter] = useState(0)
 const [isEditView, setIsEditView] = useState(false);
 const [imageForEdit, setImageForEdit] = useState('');
 const [postId, setPostId] = useState('');
+const flatListRefPosts:any = useRef(null);
+
 
 
   const dispatch = useDispatch();
@@ -167,6 +169,14 @@ const [postId, setPostId] = useState('');
   }, []);
   // console.log("UserData", userData?.gif);
 
+  // useEffect(() => {
+  //   if(authPosts.length){
+
+  //     flatListRefPosts?.current?.scrollToEnd({ animated: true });
+  //   }
+  // }, [authPosts])
+  
+
   const GetPosts = async () => {
     let userInfo = await StorageServices.getItem(AUTH);
     let token = await StorageServices.getItem(TOKEN);
@@ -176,7 +186,9 @@ const [postId, setPostId] = useState('');
       let result = JSON.parse(response);
       if (result.status) {
         // console.log('result?.posts',result?.posts?.data)
-        setAuthPosts(result?.posts?.data);
+        let data =result?.posts?.data.reverse()
+        // setPosts(data);
+        setAuthPosts(data);
       } else {
         console.log(result);
         // Alert.alert("Alert!", "Something went wrong",);
@@ -730,6 +742,8 @@ const [postId, setPostId] = useState('');
                     imageForEdit={imageForEdit}
                     setImageForEdit={setImageForEdit}
                     setPostId={setPostId}
+                    flatListRefPosts={flatListRefPosts}
+
                   />
 
                   <View>
