@@ -79,7 +79,7 @@ GiphyDialog.configure({ theme });
 const Chat = () => {
   const pusher = Pusher.getInstance();
   const route: any = useRoute();
-  const item = route.params.item;
+  const item = route?.params?.item;
   const navigation: any = useNavigation();
   const flatListRefChat: any = useRef(null);
   const [loadings, setLoadings] = useState({
@@ -110,7 +110,7 @@ const Chat = () => {
 
     // console.log(item.id)
     GetConversation(
-      { conversationId: item.id },
+      { conversationId: item?.id },
       token,
       async ({ isSuccess, response }: any) => {
         console.log("data c", isSuccess);
@@ -351,13 +351,13 @@ const Chat = () => {
           <TouchableOpacity
             style={appStyles.row}
             activeOpacity={0.6}
-            // onPress={()=>{
-            //   console.log("#Knkcndc",item)
-            //     navigation.navigate("OthersProfile", {
-            //   id: item?.receiverId,
-            // })
+            onPress={()=>{
+              // console.log("#Knkcndc",item)
+                navigation.navigate("OthersProfile", {
+              id: item?.user1?.id || item?.user2?.id ,
+            })
 
-            // }}
+            }}
           >
             <Image
               style={{

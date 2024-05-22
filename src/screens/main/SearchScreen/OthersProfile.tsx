@@ -41,6 +41,7 @@ import {
   CreateComment,
   Favorite,
   Follow,
+  GetConversationIfExist,
   GetStatus,
   GetUserComment,
   getUserDetail,
@@ -88,7 +89,7 @@ const OthersProfile = () => {
   const [loading, setLoading] = useState(false);
   const [counter, setCounter] = useState(0);
   const [counter1, setCounter1] = useState(0);
-  const flatListRefOtherPosts:any = useRef(null);
+  const flatListRefOtherPosts: any = useRef(null);
 
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
 
@@ -203,14 +204,14 @@ const OthersProfile = () => {
       let result = JSON.parse(response);
       if (result.status) {
         // console.log(result?.posts?.data)
-        let data =result?.posts?.data.reverse()
+        let data = result?.posts?.data.reverse();
         setPosts(data);
 
         //adding Views
-        result?.posts?.data.map(async (p: any,index:any) => {
+        result?.posts?.data.map(async (p: any, index: any) => {
           let user = await StorageServices.getItem(AUTH);
           let data = { user_id: user.id, post_id: p.id };
-          
+
           AddRemoveViews(data, token, async ({ isSuccess, response }: any) => {
             let result = JSON.parse(response);
             if (result.status) {
@@ -369,6 +370,36 @@ const OthersProfile = () => {
         Alert.alert("Alert!", "Network Error.");
       }
     });
+  };
+
+  const handleNewMesssage = async () => {
+    let user = await StorageServices.getItem(AUTH);
+    let body = { senderId: user.id, receiverId: id };
+    // console.log(body);
+    GetConversationIfExist(
+      body,
+      token,
+      async ({ isSuccess, response }: any) => {
+        if (isSuccess) {
+          let result = JSON.parse(response);
+          console.log("GetConversationIfExist", result);
+
+          if (result?.exist) {
+            navigation.navigate("ChatScreen",{
+              item:result?.conversation
+            });
+          } else {
+            navigation.navigate("NewMessage", {
+              user: data,
+            });
+          }
+        } else {
+          // setLoading(false);
+
+          Alert.alert("Alert!", "Network Error.");
+        }
+      }
+    );
   };
 
   const renderChatList = ({ item }: any) => {
@@ -676,11 +707,7 @@ const OthersProfile = () => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       activeOpacity={0.6}
-                      onPress={() =>
-                        navigation.navigate("NewMessage", {
-                          user: data,
-                        })
-                      }
+                      onPress={handleNewMesssage}
                       style={styles.box}
                     >
                       <Image
@@ -900,7 +927,6 @@ const OthersProfile = () => {
                     setCounter={setCounter}
                     isActiveProfile={isActiveProfile}
                     flatListRefOtherPosts={flatListRefOtherPosts}
-
                   />
                 </View>
               </>
