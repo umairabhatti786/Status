@@ -3,6 +3,7 @@ import {
   Alert,
   FlatList,
   Image,
+  Keyboard,
   Platform,
   ScrollView,
   StatusBar,
@@ -90,6 +91,8 @@ const Chat = () => {
   const [conversation, setConversation] = useState<any>([]);
   const [NewMessage, setNewMessage] = useState<any>({});
   const isFocused = useIsFocused();
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
   const userData = useSelector(getUserData);
   const [giphy, setGiphy] = useState("");
   const [state, setState] = useState({
@@ -214,6 +217,25 @@ const Chat = () => {
     if (isFocused) getConversation();
   }, [isFocused]);
 
+  useEffect(() => {
+    const KeyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setIsKeyboardVisible(true);
+      }
+    );
+    const KeyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setIsKeyboardVisible(false);
+      }
+    );
+    return () => {
+      KeyboardDidHideListener.remove();
+      KeyboardDidShowListener.remove();
+    };
+  }, []);
+
   const handleArchive = async () => {
     let user = await StorageServices.getItem(AUTH);
     let conversationId = item.id;
@@ -319,7 +341,7 @@ const Chat = () => {
 
   return (
     <View style={appStyles.main}>
-      <StatusBar backgroundColor="#000" barStyle="light-content" />
+      <StatusBar backgroundColor="#1D2029" barStyle="light-content" />
 
       <View style={styles.header}>
         <View
@@ -471,6 +493,7 @@ const Chat = () => {
           data={conversation}
           ref={flatListRefChat}
           keyExtractor={(item) => item}
+          style={{marginBottom: isKeyboardVisible? 40:15}}
           // nestedScrollEnabled={true}
           inverted={true}
           // style={{paddingTop:verticalScale(20)}}

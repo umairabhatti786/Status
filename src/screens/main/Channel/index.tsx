@@ -55,6 +55,7 @@ const Channel = ({
   isActiveProfile,
   flatListRefPosts,
   flatListRefOtherPosts,
+  isKeyboardVisible
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
@@ -91,44 +92,44 @@ const Channel = ({
 
   return (
     <>
-      <View style={appStyles.main}>
-        <ImageBackground
-          style={{ width: "100%", height: windowHeight }}
+      <View style={{backgroundColor:colors.black,flex:0.9}}>
+        <Image
+          style={{ width: "100%", height: windowHeight,position:"absolute", }}
           source={userData?.wallpaperUrl ? { uri: userData?.wallpaperUrl } : ""}
-        >
-          <View>
+        />
+       
             <FlatList
               data={hideSendMessage ? posts : authPosts}
               nestedScrollEnabled={true}
               ref={hideSendMessage?flatListRefOtherPosts:flatListRefPosts}
               keyExtractor={(item) => item}
-              style={{ marginBottom: verticalScale(180) }}
+              style={{ marginBottom: isKeyboardVisible?verticalScale(25) :0}}
               inverted={true}
-              // //  contentContainerStyle={{
-              // //    gap: 100,
-              // //  }}
-              ListEmptyComponent={() => {
-                return (
-                  <View
-                    style={{
-                      height: windowHeight / 1.5,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "60%",
-                      alignSelf: "center",
-                    }}
-                  >
-                    <NewText
-                      color={colors.gray500}
-                      size={17}
-                      fontFam="Inter-Medium"
-                      lineHeight={26}
-                      style={{ textAlign: "center" }}
-                      text={"This user has not posted any updates yet."}
-                    />
-                  </View>
-                );
-              }}
+              //  contentContainerStyle={{
+              //    flex:5
+              //  }}
+              // ListEmptyComponent={() => {
+              //   return (
+              //     <View
+              //       style={{
+              //         height: windowHeight / 1.5,
+              //         alignItems: "center",
+              //         justifyContent: "center",
+              //         width: "60%",
+              //         alignSelf: "center",
+              //       }}
+              //     >
+              //       <NewText
+              //         color={colors.gray500}
+              //         size={17}
+              //         fontFam="Inter-Medium"
+              //         lineHeight={26}
+              //         style={{ textAlign: "center" }}
+              //         text={"This user has not posted any updates yet."}
+              //       />
+              //     </View>
+              //   );
+              // }}
               renderItem={({ item, index }) => {
                 const currentDate = moment();
                 const createdAtDate = moment(item?.created_at);
@@ -413,8 +414,7 @@ const Channel = ({
                 );
               }}
             />
-          </View>
-        </ImageBackground>
+        {/* </ImageBackground> */}
       </View>
 
       <ImageViewModal

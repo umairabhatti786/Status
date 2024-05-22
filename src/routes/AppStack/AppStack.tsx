@@ -47,6 +47,8 @@ import {
   TOKEN,
 } from "../../utils/hooks/StorageServices";
 import OneSignal from "react-native-onesignal";
+import ChannelScreen from "../../screens/main/ChannelScreen";
+import OtherUserChannel from "../../screens/main/OtherUserChannel";
 
 const AppStack = () => {
   const Stack = createStackNavigator();
@@ -123,6 +125,7 @@ const AppStack = () => {
           <Stack.Screen name={"LostPassword"} component={LostPassword} />
           <Stack.Screen name={"ResetPassword"} component={ResetPassword} />
 
+
           <Stack.Screen
             name={"ConfirmationCode"}
             component={ConfirmationCode}
@@ -142,6 +145,9 @@ const AppStack = () => {
           <Stack.Screen name={"ProfileScreen"} component={ProfileScreen} />
           <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
           <Stack.Screen name={"OthersProfile"} component={OthersProfile} />
+          <Stack.Screen name={"ChannelScreen"} component={ChannelScreen} />
+          <Stack.Screen name={"OtherUserChannel"} component={OtherUserChannel} />
+
 
           <Stack.Screen name={"AddStatus"} component={AddStatus} />
           <Stack.Screen name={"ChatScreen"} component={Chat} />

@@ -406,12 +406,24 @@ const flatListRefPosts:any = useRef(null);
                 <CustomButton
                   width={"48.5%"}
                   onPress={() => {
-                    if (item == "Channel") {
-                      dispatch(setDisableBottomTab(true));
-                    } else {
-                      dispatch(setDisableBottomTab(false));
+                    if(item=="Channel"){
+                                    dispatch(setDisableBottomTab(true));
+
+                      navigation.navigate("ChannelScreen")
+
+                      return
+
                     }
-                    setIsActiveProfile(item);
+                                   dispatch(setDisableBottomTab(false));
+
+                     setIsActiveProfile(item);
+
+                    // if (item == "Channel") {
+                    //   dispatch(setDisableBottomTab(true));
+                    // } else {
+                    //   dispatch(setDisableBottomTab(false));
+                    // }
+                    // setIsActiveProfile(item);
                   }}
                   text={item}
                   textColor={
