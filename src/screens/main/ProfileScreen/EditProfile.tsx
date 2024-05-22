@@ -876,6 +876,8 @@ const EditProfile = ({ route }: any) => {
               label="Display Name"
               value={values.name}
               placeholder="Name"
+              maxLength={50}
+
               color={colors.white}
               fontWeight="600"
               onChangeText={(txt: string) => {

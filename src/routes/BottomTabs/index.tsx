@@ -25,6 +25,7 @@ import {
 } from "../../redux/reducers/authReducer";
 import NewMessage from "../../screens/main/NewMessage";
 import { useNavigation } from "@react-navigation/native";
+import ChannelScreen from "../../screens/main/ChannelScreen";
 
 const BottomTab = ({}: any) => {
   const Bottom = createBottomTabNavigator();
@@ -124,10 +125,10 @@ const BottomTab = ({}: any) => {
         }}
       />
       <Bottom.Screen
-        name="AddChat"
+        name="ChannelScreen"
         // component={AddStatus}
         // component={ProfileScreen}
-        component={ProfileScreen}
+        component={ChannelScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => {
@@ -135,7 +136,7 @@ const BottomTab = ({}: any) => {
               <TouchableOpacity
                 onPress={() => {
                   dispatch(setProfileActiveBar("Channel"));
-                  navigation.navigate("AddChat"); // Navigate to the Profile screen
+                  navigation.navigate("ChannelScreen"); // Navigate to the Profile screen
 
                   setTimeout(() => {
                     dispatch(setDisableBottomTab(true));

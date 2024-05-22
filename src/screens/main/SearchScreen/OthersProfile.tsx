@@ -576,7 +576,21 @@ const OthersProfile = () => {
                 return (
                   <CustomButton
                     width={"48.5%"}
-                    onPress={() => setIsActiveProfile(item)}
+                    onPress={() => 
+
+                      {
+                        if(item=="Channel"){
+                          navigation.navigate("OtherUserChannel", {
+                            id: id,
+
+                          })
+
+                          return
+                        }
+                        setIsActiveProfile(item)}
+
+                      }
+                      
                     text={item}
                     textColor={
                       isActiveProfile == item ? colors.black : colors.white

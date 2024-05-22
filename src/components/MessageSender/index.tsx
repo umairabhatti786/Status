@@ -448,7 +448,7 @@ const MessageSender = ({
         >
           <Image
             source={sendImage || images.sendmessage}
-            style={{ width: scale(25), height: scale(25) }}
+            style={{ width: scale(25), height: scale(25),marginLeft:8 }}
             resizeMode="contain"
           />
         </TouchableOpacity>

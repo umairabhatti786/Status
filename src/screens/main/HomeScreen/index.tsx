@@ -165,7 +165,7 @@ const HomeScreen = () => {
       <FriendList
         disabled={false}
         onPress={() =>
-          navigation.navigate("OthersProfile", {
+          navigation.navigate("OtherUserChannel", {
             item: item,
             id: item?.id,
             channelId: item?.channel?.id,

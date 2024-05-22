@@ -16,7 +16,11 @@ import { appStyles } from "../../../utils/AppStyles";
 import CustomText from "../../../components/CustomText";
 import { colors } from "../../../utils/colors";
 import { images } from "../../../assets/images";
-import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useIsFocused,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import CustomButton from "../../../components/CustomButton";
 import { scale, verticalScale } from "react-native-size-matters";
@@ -51,12 +55,13 @@ const Channel = ({
   isActiveProfile,
   flatListRefPosts,
   flatListRefOtherPosts,
+  isKeyboardVisible
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
   const navigation: any = useNavigation();
   const [isViewImage, setIsViewImage] = useState(false);
-  
+
   const [scroll, setScroll] = useState(false);
   const isFocused = useIsFocused();
   const [imageObject, setImageObject] = useState({});
@@ -85,28 +90,53 @@ const Channel = ({
   //   }
   // }, [isActiveProfile]);
 
- 
   return (
     <>
-      <View style={appStyles.main}>
-        <ImageBackground
-          style={{ width: "100%", height: windowHeight }}
+      <View style={{backgroundColor:colors.black,flex:0.9}}>
+        <Image
+          style={{ width: "100%", height: windowHeight,position:"absolute", }}
           source={userData?.wallpaperUrl ? { uri: userData?.wallpaperUrl } : ""}
-        >
-          <View>
+        />
+       
             <FlatList
               data={hideSendMessage ? posts : authPosts}
               nestedScrollEnabled={true}
               ref={hideSendMessage?flatListRefOtherPosts:flatListRefPosts}
               keyExtractor={(item) => item}
-              style={{ marginBottom: verticalScale(180) }}
+              style={{ marginBottom: isKeyboardVisible?verticalScale(25) :0}}
               inverted={true}
-              // //  contentContainerStyle={{
-              // //    gap: 100,
-              // //  }}
+              //  contentContainerStyle={{
+              //    flex:5
+              //  }}
+              // ListEmptyComponent={() => {
+              //   return (
+              //     <View
+              //       style={{
+              //         height: windowHeight / 1.5,
+              //         alignItems: "center",
+              //         justifyContent: "center",
+              //         width: "60%",
+              //         alignSelf: "center",
+              //       }}
+              //     >
+              //       <NewText
+              //         color={colors.gray500}
+              //         size={17}
+              //         fontFam="Inter-Medium"
+              //         lineHeight={26}
+              //         style={{ textAlign: "center" }}
+              //         text={"This user has not posted any updates yet."}
+              //       />
+              //     </View>
+              //   );
+              // }}
               renderItem={({ item, index }) => {
                 const currentDate = moment();
                 const createdAtDate = moment(item?.created_at);
+                const shortenedText =
+                  item?.title?.length > 30
+                    ? item?.title?.substring(0, 29)
+                    : item?.title;
                 return (
                   <View style={{ paddingBottom: verticalScale(10) }}>
                     <Spacer height={verticalScale(30)} />
@@ -116,8 +146,8 @@ const Channel = ({
                         size={15}
                         text={
                           createdAtDate.isSame(currentDate, "day")
-                            ? "Today " + createdAtDate.format("hh:mm A")
-                            : createdAtDate.format("dddd hh:mm A")
+                            ? "Today " + createdAtDate.format("h:mm A")
+                            : createdAtDate.format("dddd h:mm A")
                         }
                         // fontFam="Inter-SemiBold"
                         //  style={{ marginLeft: scale(8),backgroundColor:colors.primary }}
@@ -152,7 +182,7 @@ const Channel = ({
                           size={16}
                           fontFam="Inter-Medium"
                           // style={{ marginBottom: verticalScale(8) }}
-                          text={item?.title}
+                          text={shortenedText}
                           numberOfLines={1}
                         />
                         {userData && (
@@ -162,45 +192,65 @@ const Channel = ({
                               justifyContent: "space-between",
                             }}
                           >
-                            {!item?.gif&&
-                            <TouchableOpacity onPress={()=>{
-                              setPostId(item.id)
-                              setIsEditView(true)
-                            }}>
-                            <NewText
-                              color={colors.gray500}
-                              size={16}
-                              fontFam="Inter-Medium"
-                              
-                              text={"Edit"}
-                            />
-                          </TouchableOpacity>
-                            }
+                            {!item?.gif && (
+                              <TouchableOpacity
+                                onPress={() => {
+                                  setPostId(item.id);
+                                  setIsEditView(true);
+                                }}
+                              >
+                                <NewText
+                                  color={colors.gray500}
+                                  size={16}
+                                  fontFam="Inter-Medium"
+                                  text={"Edit"}
+                                />
+                              </TouchableOpacity>
+                            )}
                             <Spacer width={10} />
-                            <TouchableOpacity onPress={()=>{
-                             
-                              Alert.alert(
-                                'Delete Post',
-                                'Are you sure!', // <- this part is optional, you can pass an empty string
-                                [
-                                  {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                                  {text: 'Delete', onPress: async() => {
-                                    let token = await StorageServices.getItem(TOKEN);
-                                    DeletePost(item.id,token,async ({ isSuccess, response }: any) => {
-                                      let result = JSON.parse(response);
-                            if (result.status) {
-                              setCounter(counter + 1);
-                            } else {
-                              console.log(result);
-                              // Alert.alert("Alert!", "Something went wrong",);
-                              console.log("Something went wrong");
-                            }})
-                                  }},
-                                ],
-                                {cancelable: false},
-                              );
-                              
-                            }}>
+                            <TouchableOpacity
+                              onPress={() => {
+                                Alert.alert(
+                                  "Delete Post",
+                                  "Are you sure!", // <- this part is optional, you can pass an empty string
+                                  [
+                                    {
+                                      text: "Cancel",
+                                      onPress: () =>
+                                        console.log("Cancel Pressed"),
+                                      style: "cancel",
+                                    },
+                                    {
+                                      text: "Delete",
+                                      onPress: async () => {
+                                        let token =
+                                          await StorageServices.getItem(TOKEN);
+                                        DeletePost(
+                                          item.id,
+                                          token,
+                                          async ({
+                                            isSuccess,
+                                            response,
+                                          }: any) => {
+                                            let result = JSON.parse(response);
+                                            if (result.status) {
+                                              setCounter(counter + 1);
+                                            } else {
+                                              console.log(result);
+                                              // Alert.alert("Alert!", "Something went wrong",);
+                                              console.log(
+                                                "Something went wrong"
+                                              );
+                                            }
+                                          }
+                                        );
+                                      },
+                                    },
+                                  ],
+                                  { cancelable: false }
+                                );
+                              }}
+                            >
                               <NewText
                                 color={colors.gray500}
                                 size={16}
@@ -309,12 +359,13 @@ const Channel = ({
                               marginRight: scale(5),
                               textAlign: "right",
                             }}
-                            text={moment(item?.created_at).format("hh:mm A")}
+                            text={moment(item?.created_at).format("h:mm A")}
                           />
                         </View>
                       </View>
                     </View>
                     <TouchableOpacity
+                      activeOpacity={0.6}
                       onPress={async () => {
                         let user = await StorageServices.getItem(AUTH);
                         let token = await StorageServices.getItem(TOKEN);
@@ -338,7 +389,7 @@ const Channel = ({
                         );
                       }}
                       style={{
-                        paddingHorizontal: scale(10),
+                        paddingHorizontal: scale(8),
                         // paddingVertical: verticalScale(2),
                         position: "absolute",
                         bottom: verticalScale(10),
@@ -363,8 +414,7 @@ const Channel = ({
                 );
               }}
             />
-          </View>
-        </ImageBackground>
+        {/* </ImageBackground> */}
       </View>
 
       <ImageViewModal
@@ -384,7 +434,6 @@ const Channel = ({
         // // setActiveChat={setActiveChat}
         setModalVisible={setIsViewImage}
       />
-      
     </>
   );
 };
