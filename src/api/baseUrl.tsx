@@ -39,6 +39,7 @@ export const URLS = {
   SEARCH_MESSAGES: "searchMessages/",
   Get_CHAT_LIST: "getChatList",
   GET_CONVERSATION: "getConversation",
+  GET_CONVERSATION_IF_EXIST: "getConversationIfExist",
   DELETE_CONVERSATION: "deleteConversation/",
   CREATE_ARCHIVE: "createArchive",
   GET_ARCHIVE: "getArchive/",

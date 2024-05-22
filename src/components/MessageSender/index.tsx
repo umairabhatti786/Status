@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Linking,
   Platform,
@@ -64,6 +65,7 @@ type Props = {
   counter?: any;
   setCounter?: any;
   flatListRefChat?: any;
+  flatListRefPosts?: any;
 };
 
 const MessageSender = ({
@@ -232,9 +234,9 @@ const MessageSender = ({
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
-        setCounter(counter+1)
+        setCounter(counter + 1);
         setIsEditView(false);
-        setImageForEdit('')
+        setImageForEdit("");
         setLoading(false);
 
         // setAuthPosts([...authPosts, result?.post]);
@@ -248,106 +250,114 @@ const MessageSender = ({
     });
   };
   const createPost = async () => {
-    let form = new FormData();
-    form.append("description", state.description);
-    form.append("channelId", state.channelId);
-    if (state.imageUrl) {
-      form.append("imageUrl", state.imageUrl);
-    }
-    // form.append("gif", 'giphy');
-    if (giphy) {
-      form.append("gif", giphy);
-    }
-    setState({ description: "", imageUrl: "", channelId: channelId });
-    setLoading(true);
-
-    console.log(form);
-    CreatePost(form, token, async ({ isSuccess, response }: any) => {
-      console.log("data", isSuccess);
-      console.log("response", response);
-
-      let result = JSON.parse(response);
-      if (result.status) {
-        console.log(result);
-        if (giphy) {
-          setGiphy("");
-        }
-        setIsImageUplaod(false);
-        setImageData({});
-        let data = [result?.post,...authPosts]
-        setAuthPosts(data);
-        setLoading(false);
-        setTimeout(() => {
-          flatListRefPosts?.current?.scrollToEnd({ animated: true });
-        }, 500);
-      } else {
-        setLoading(false);
-        console.log("Something went wrong", result);
+    if (state.description.length <= 0) {
+      Alert.alert("Alert", "Text must not empty");
+    } else {
+      let form = new FormData();
+      form.append("description", state.description);
+      form.append("channelId", state.channelId);
+      if (state.imageUrl) {
+        form.append("imageUrl", state.imageUrl);
       }
-    });
+      // form.append("gif", 'giphy');
+      if (giphy) {
+        form.append("gif", giphy);
+      }
+      setState({ description: "", imageUrl: "", channelId: channelId });
+      setLoading(true);
+
+      console.log(form);
+      CreatePost(form, token, async ({ isSuccess, response }: any) => {
+        console.log("data", isSuccess);
+        console.log("response", response);
+
+        let result = JSON.parse(response);
+        if (result.status) {
+          console.log(result);
+          if (giphy) {
+            setGiphy("");
+          }
+          setIsImageUplaod(false);
+          setImageData({});
+          let data = [result?.post, ...authPosts];
+          setAuthPosts(data);
+          setLoading(false);
+          setTimeout(() => {
+            flatListRefPosts?.current?.scrollToEnd({ animated: true });
+          }, 500);
+        } else {
+          setLoading(false);
+          console.log("Something went wrong", result);
+        }
+      });
+    }
   };
 
   // console.log(state,token);
 
   const sendMessage = async () => {
-    let token = await StorageServices.getItem(TOKEN);
-    let form = new FormData();
-    form.append("senderId", msg.senderId);
-    form.append("receiverId", msg.receiverId);
-    if (msg.message) {
-      form.append("message", msg.message);
-    }
-    if (msg.attachment) {
-      form.append("attachment", msg.attachment);
-    }
-    if (giphy) {
-      form.append("gif", giphy);
-    }
-    setMsg({ ...msg, message: "", attachment: "" });
-    setLoading(true);
-    if (giphy) {
-      setGiphy("");
-    }
-    SendMessage(form, token, async ({ isSuccess, response }: any) => {
-      console.log("data p", isSuccess);
-      console.log(response);
-      let result = JSON.parse(response);
-      if (result.status) {
-        console.log(result);
-        setIsImageUplaod(false);
-        setImageData({});
-        setLoading(false);
-        
-        // console.log('result?.posts',result?.posts?.data)
-        if (newChat) {
-          // navigation.navigate('MessageScreen');
-          navigation.navigate("MessageScreen", {
-            item: receiver,
-          });
-        }
-        if (result?.message?.senderId == msg.senderId) {
-          let data = [result?.message,...conversation]
-          // data.unshift(result?.message);
-          setConversation(data);
-
-          setTimeout(() => {
-            flatListRefChat?.current?.scrollToEnd({ animated: true });
-          }, 500);
-        }
-
-        // setConversation([...conversation,result?.message]);
-      } else {
-        setMsg({ ...msg, message: "", attachment: "" });
-        setLoading(false);
-        console.log(result);
-        // Alert.alert("Alert!", "Something went wrong",);
-        console.log("Something went wrong");
+    if (msg.message.length <= 0) {
+      Alert.alert("Alert", "Text must not empty");
+    } else {
+      let token = await StorageServices.getItem(TOKEN);
+      let form = new FormData();
+      form.append("senderId", msg.senderId);
+      form.append("receiverId", msg.receiverId);
+      if (msg.message) {
+        form.append("message", msg.message);
       }
-    });
-    // SendMessage()
+      if (msg.attachment) {
+        form.append("attachment", msg.attachment);
+      }
+      if (giphy) {
+        form.append("gif", giphy);
+      }
+      setMsg({ ...msg, message: "", attachment: "" });
+      setLoading(true);
+      if (giphy) {
+        setGiphy("");
+      }
+      SendMessage(form, token, async ({ isSuccess, response }: any) => {
+        console.log("data p", isSuccess);
+        console.log(response);
+        let result = JSON.parse(response);
+        if (result.status) {
+          console.log(result);
+          setIsImageUplaod(false);
+          setImageData({});
+          setLoading(false);
+
+          // console.log('result?.posts',result?.posts?.data)
+          if (newChat) {
+            // navigation.navigate('MessageScreen');
+            navigation.navigate("MessageScreen", {
+              item: receiver,
+            });
+          }
+          if (result?.message?.senderId == msg.senderId) {
+            let data = [result?.message, ...conversation];
+            // data.unshift(result?.message);
+            setConversation(data);
+
+            setTimeout(() => {
+              flatListRefChat?.current?.scrollToEnd({ animated: true });
+            }, 500);
+          }
+
+          // setConversation([...conversation,result?.message]);
+        } else {
+          setMsg({ ...msg, message: "", attachment: "" });
+          setLoading(false);
+          console.log(result);
+          // Alert.alert("Alert!", "Something went wrong",);
+          console.log("Something went wrong");
+        }
+      });
+      // SendMessage()
+    }
   };
   return (
-    <>
+  
       <View
         style={{
           flexDirection: "row",
@@ -442,7 +452,6 @@ const MessageSender = ({
             resizeMode="contain"
           />
         </TouchableOpacity>
-      </View>
       <ImageUploaderModal
         isModalVisible={isImageUplaod}
         imageData={imageData}
@@ -473,7 +482,8 @@ const MessageSender = ({
         loading={loading}
         // setActiveChat={setActiveChat}
       />
-    </>
+      </View>
+    
   );
 };
 

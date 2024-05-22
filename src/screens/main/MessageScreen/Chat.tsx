@@ -79,9 +79,9 @@ GiphyDialog.configure({ theme });
 const Chat = () => {
   const pusher = Pusher.getInstance();
   const route: any = useRoute();
-  const item = route.params.item;
+  const item = route?.params?.item;
   const navigation: any = useNavigation();
-  const flatListRefChat:any = useRef(null);
+  const flatListRefChat: any = useRef(null);
   const [loadings, setLoadings] = useState({
     archive: false,
     trash: false,
@@ -102,7 +102,7 @@ const Chat = () => {
   //     if (conversation.length > 0 && flatListRef.current) {
   //       flatListRef.current.scrollToEnd({ animated: true });
   //     }
-  //   // }, 1000); 
+  //   // }, 1000);
   // }, [conversation]);
 
   const getConversation = async () => {
@@ -110,7 +110,7 @@ const Chat = () => {
 
     // console.log(item.id)
     GetConversation(
-      { conversationId: item.id },
+      { conversationId: item?.id },
       token,
       async ({ isSuccess, response }: any) => {
         console.log("data c", isSuccess);
@@ -118,7 +118,7 @@ const Chat = () => {
         let result = JSON.parse(response);
         if (result.status) {
           console.log(result?.conversation?.data);
-          let data =result?.conversation?.data.reverse()
+          let data = result?.conversation?.data.reverse();
           // console.log('result?.posts',result?.posts?.data)
 
           setConversation(data);
@@ -175,7 +175,6 @@ const Chat = () => {
             // setConversation([...conversation,JSON.parse(event.data).message])
             setNewMessage(JSON.parse(event.data).message);
             flatListRefChat.current.scrollToEnd({ animated: true });
-
           }
           // setConversation([...conversation, JSON.parse(event.data).message]);
           // setComments([...comments,JSON.parse(event.data).comment])
@@ -352,13 +351,13 @@ const Chat = () => {
           <TouchableOpacity
             style={appStyles.row}
             activeOpacity={0.6}
-            // onPress={()=>{
-            //   console.log("#Knkcndc",item)
-            //     navigation.navigate("OthersProfile", {
-            //   id: item?.receiverId,
-            // })
+            onPress={()=>{
+              // console.log("#Knkcndc",item)
+                navigation.navigate("OthersProfile", {
+              id: item?.user1?.id || item?.user2?.id ,
+            })
 
-            // }}
+            }}
           >
             <Image
               style={{
@@ -449,12 +448,30 @@ const Chat = () => {
           {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
         </View>
       </View>
-      <View style={{ height: "90%" }}>
+
+      {/* <View style={{ backgroundColor: "red",flex:0.9 }}>
+        <ScrollView >
+        
+        </ScrollView>
+        <View style={{ backgroundColor: "green", height: 100 }}></View>
+      </View>
+      <View
+        style={{
+          backgroundColor: "brown",
+          height: 100,
+          width: "100%",
+          position: "absolute",
+          zIndex: 100,
+          bottom: 0,
+        }}
+      ></View> */}
+      {/* <View></View> */}
+      <View style={{flex:0.9 }}>
         <FlatList
           data={conversation}
           ref={flatListRefChat}
           keyExtractor={(item) => item}
-          nestedScrollEnabled={true}
+          // nestedScrollEnabled={true}
           inverted={true}
           // style={{paddingTop:verticalScale(20)}}
           // contentContainerStyle={{
@@ -465,7 +482,8 @@ const Chat = () => {
           renderItem={renderChatList}
           // style={{ transform: [{ scaleY: -1 }] }}
         />
-        <View>
+        </View>
+        {/* <View> */}
           <MessageSender
             placeholder="write a message"
             message={"chat"}
@@ -477,8 +495,8 @@ const Chat = () => {
             receiverId={item?.user1?.id || item?.user2?.id}
             authId={userData.id}
           />
-        </View>
-      </View>
+        {/* </View> */}
+      {/* </View> */}
     </View>
   );
 };
