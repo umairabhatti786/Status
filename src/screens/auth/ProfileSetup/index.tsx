@@ -340,7 +340,7 @@ const ProfileSetup = ({ route }: props) => {
               <Input
                 label="Your Location"
                 leftSource={images.location}
-                placeholder="Enter where you live for your profile"
+                placeholder="Type your location"
                 value={values.location}
                 onChangeText={onSearch}
               />

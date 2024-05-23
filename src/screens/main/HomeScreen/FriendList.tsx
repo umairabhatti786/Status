@@ -17,7 +17,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 import { appStyles } from "../../../utils/AppStyles";
 import moment from "moment";
 import NewText from "../../../components/NewText";
-import { capitalizeFirstLetter } from "../../../utils/CommonFun";
+import { capitalizeFirstLetter, dateFormat } from "../../../utils/CommonFun";
 export const windowWidth = Dimensions.get("window").width;
 
 const FriendList = ({ item, onPress, disabled }: any) => {
@@ -99,9 +99,11 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               />
               {item?.channel?.last_post != "null" ? (
                 <NewText
-                  text={moment(item?.channel?.last_post?.created_at).format(
-                    "hh:mm a"
-                  )}
+                  text={dateFormat(item?.channel?.last_post?.created_at)
+                    
+                    
+              
+                 }
                   color={"#FFFFFF"}
                   size={12}
                   style={{marginTop:4}}

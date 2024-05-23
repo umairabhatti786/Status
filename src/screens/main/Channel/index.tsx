@@ -306,10 +306,27 @@ const Channel = ({
                         <></>
                       )}
                       {item?.gif ? (
-                        <Image
+                        <View>
+                           <Image
                           style={{ width: "100%", height: verticalScale(300) }}
                           source={{ uri: item?.gif }}
                         />
+
+<View
+                          style={{ position: "absolute", right: 8, bottom: 0 }}
+                        >
+                          <Image
+                            style={{
+                              width: 110,
+                              height: 35,
+                              alignSelf: "flex-end",
+                            }}
+                            source={images.giphy}
+                            resizeMode="contain"
+                          />
+                        </View>
+                          </View>
+                       
                       ) : (
                         <></>
                       )}
@@ -357,7 +374,7 @@ const Channel = ({
                             }}
                             text={item?.views_count}
                           />
-                          <Spacer width={10} />
+                          {/* <Spacer width={10} />
                           <NewText
                             color={colors.grey300}
                             size={13}
@@ -367,7 +384,7 @@ const Channel = ({
                               textAlign: "right",
                             }}
                             text={moment(item?.created_at).format("h:mm A")}
-                          />
+                          /> */}
                         </View>
                       </View>
                     </View>

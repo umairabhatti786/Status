@@ -204,7 +204,7 @@ const EditImageUploaderModal: React.FC<Props> = ({
             }}
           >
             <TextInput
-              value={editPostData.description}
+              value={editPostData?.description}
               onChangeText={(text) =>
                 setEditPostData({...editPostData,description:text})
               }
