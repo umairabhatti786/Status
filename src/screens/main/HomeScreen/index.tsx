@@ -136,7 +136,9 @@ const HomeScreen = () => {
 
       let result = JSON.parse(response);
       if (result.status) {
-        setFavoritesChannels(result.channel.favorites);
+        let newestUp=result?.channel?.favorites?.sort((a:any,b:any)=> b?.channel?.lastPostId-a?.channel?.lastPostId)
+
+        setFavoritesChannels(newestUp);
         // setComments([...comments, result.comment]);
         // setLoading2(false);
       } else {
