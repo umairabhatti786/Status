@@ -119,7 +119,8 @@ const HomeScreen = () => {
       let result = JSON.parse(response);
       if (result.status) {
         // console.log('result.channel.following',result.channel.following)
-        setFollowingChannels(result.channel.following);
+        let newestUp=result?.channel?.following?.sort((a:any,b:any)=> b?.channel?.lastPostId-a?.channel?.lastPostId)
+        setFollowingChannels(newestUp);
         // setComments([...comments, result.comment]);
         // setLoading2(false);
       } else {

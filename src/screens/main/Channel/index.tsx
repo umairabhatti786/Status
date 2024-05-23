@@ -55,7 +55,9 @@ const Channel = ({
   isActiveProfile,
   flatListRefPosts,
   flatListRefOtherPosts,
-  isKeyboardVisible
+  isKeyboardVisible,
+  editPostData,
+  setEditPostData
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
@@ -195,6 +197,11 @@ const Channel = ({
                             {!item?.gif && (
                               <TouchableOpacity
                                 onPress={() => {
+                                  setEditPostData({
+                                    description:item?.description,
+                                    imageUrl:item?.imageUrl,
+                                    gif:item?.gif,
+                                  })
                                   setPostId(item.id);
                                   setIsEditView(true);
                                 }}

@@ -41,6 +41,11 @@ interface Props {
   message?: any;
   setLoading?: any;
   loading?: any;
+  editPostData?: any;
+  setEditPostData?: any;
+  onOpenGalleryForEdit?: any;
+  imageForEdit?: any;
+  setImageForEdit?: any;
 }
 const EditImageUploaderModal: React.FC<Props> = ({
   isModalVisible,
@@ -60,6 +65,11 @@ const EditImageUploaderModal: React.FC<Props> = ({
   message,
   setLoading,
   loading,
+  editPostData,
+  setEditPostData,
+  onOpenGalleryForEdit,
+  imageForEdit,
+  setImageForEdit,
 }) => {
   // console.log("imageData", imageData);
   const windowWidth = useWindowDimensions().width;
@@ -104,17 +114,33 @@ const EditImageUploaderModal: React.FC<Props> = ({
           borderColor: "#8A8A8A",
         }}
       >
-        <View style={{ width: "100%", height: "85%" }}>
-          {imageData?
+        <TouchableOpacity onPress={onOpenGalleryForEdit} style={{ width: "100%", height: "85%" }}>
+          {editPostData?.imageUrl?
+
+            <Image
+              style={{ width: "100%", height: "100%"}}
+              source={{ uri: editPostData.imageUrl }}
+            />
+
+          :
+          imageForEdit?.uri?
+
           <Image
-            style={{ width: "100%", height: "100%",position:"absolute",top:0 ,left:0}}
-            source={{ uri: imageData?.uri }}
-          />:
-          <CustomText
-          size={20}
-          text={"No Image is Selected"}
-          color="#fff"
-          />
+          style={{ width: "100%", height: "100%"}}
+          // resizeMode={imageForEdit?.uri?'contain':"cover"}
+          source={{ uri: imageForEdit?.uri}}
+        />
+        :
+        <Image
+        style={{ width: "100%", height: "100%",tintColor:'#fff'}}
+        resizeMode={'contain'}
+        source={{ uri:'https://cdn-icons-png.flaticon.com/512/4211/4211763.png' }}
+      />
+          // <CustomText
+          // size={20}
+          // text={"No Image is Selected"}
+          // color="#fff"
+          // />
           
         }
 
@@ -131,6 +157,7 @@ const EditImageUploaderModal: React.FC<Props> = ({
           <TouchableOpacity
             activeOpacity={0.6}
             onPress={() => {
+              setImageForEdit("")
               setModalVisible(false);
             }}
             style={{
@@ -152,7 +179,7 @@ const EditImageUploaderModal: React.FC<Props> = ({
               source={images.crossicon}
             />
           </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
 
         <View
           style={{
@@ -177,11 +204,9 @@ const EditImageUploaderModal: React.FC<Props> = ({
             }}
           >
             <TextInput
-              value={message ? msg.message : state.description}
+              value={editPostData.description}
               onChangeText={(text) =>
-                message
-                  ? setMsg({ ...msg, message: text })
-                  : setState({ ...state, description: text })
+                setEditPostData({...editPostData,description:text})
               }
               style={{
                 marginLeft: 12,

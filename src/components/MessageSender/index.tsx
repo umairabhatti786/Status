@@ -66,6 +66,8 @@ type Props = {
   setCounter?: any;
   flatListRefChat?: any;
   flatListRefPosts?: any;
+  editPostData?: any;
+  setEditPostData?: any;
 };
 
 const MessageSender = ({
@@ -96,6 +98,8 @@ const MessageSender = ({
   setCounter,
   flatListRefChat,
   flatListRefPosts,
+  editPostData,
+  setEditPostData,
 }: Props) => {
   // console.log("ckndkcnd",giphy)
   const navigation: any = useNavigation();
@@ -118,13 +122,13 @@ const MessageSender = ({
 
   useEffect(() => {
     if (isEditView) {
-      onOpenGalleryForEdit();
+      // onOpenGalleryForEdit();
     }
   }, [isEditView]);
 
   const onOpenGalleryForEdit = async () => {
     // console.log("ISpucvibdv", isPicture);
-    setImageForEdit(true);
+    // setImageForEdit(true);
     let gallerypermission = await requestGalleryPermission();
     if (gallerypermission == "granted" || gallerypermission == "limited") {
       ImagePicker.openPicker({
@@ -218,7 +222,7 @@ const MessageSender = ({
 
   const EditPost = async () => {
     let form = new FormData();
-    form.append("description", state.description);
+    form.append("description", editPostData?.description);
     form.append("id", postId);
     if (imageForEdit) {
       form.append("imageUrl", imageForEdit);
@@ -251,7 +255,8 @@ const MessageSender = ({
   };
   const createPost = async () => {
     if (state.description.length <= 0) {
-      Alert.alert("Alert", "Text must not empty");
+      // Alert.alert("Alert", "Text must not empty");
+      console.log('Text must not empty')
     } else {
       let form = new FormData();
       form.append("description", state.description);
@@ -297,7 +302,8 @@ const MessageSender = ({
 
   const sendMessage = async () => {
     if (msg.message.length <= 0) {
-      Alert.alert("Alert", "Text must not empty");
+      console.log('Text must not empty')
+      // Alert.alert("Alert", "Text must not empty");
     } else {
       let token = await StorageServices.getItem(TOKEN);
       let form = new FormData();
@@ -480,6 +486,11 @@ const MessageSender = ({
         message={message}
         setLoading={setLoading}
         loading={loading}
+        editPostData={editPostData}
+        setEditPostData={setEditPostData}
+        onOpenGalleryForEdit={onOpenGalleryForEdit}
+        imageForEdit={imageForEdit}
+        setImageForEdit={setImageForEdit}
         // setActiveChat={setActiveChat}
       />
       </View>

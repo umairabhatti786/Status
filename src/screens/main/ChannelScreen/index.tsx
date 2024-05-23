@@ -108,6 +108,11 @@ const ChannelScreen = () => {
   const [postId, setPostId] = useState("");
   const flatListRefPosts: any = useRef(null);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [editPostData, setEditPostData] = useState({
+    description:'',
+    imageUrl:'',
+    gif:'',
+  })
 
   const dispatch = useDispatch();
 
@@ -158,6 +163,9 @@ const ChannelScreen = () => {
       setGiphy(e.media.url);
 
       GiphyDialog.hide();
+      
+      // SendMessage()
+    
     };
     const listener = GiphyDialog.addListener(
       GiphyDialogEvent.MediaSelected,
@@ -449,6 +457,9 @@ const ChannelScreen = () => {
                 setImageForEdit={setImageForEdit}
                 setPostId={setPostId}
                 flatListRefPosts={flatListRefPosts}
+                editPostData={editPostData}
+                setEditPostData={setEditPostData}
+
               />
 
               <View>
@@ -469,6 +480,8 @@ const ChannelScreen = () => {
                   postId={postId}
                   setCounter={setCounter}
                   counter={counter}
+                  editPostData={editPostData}
+                setEditPostData={setEditPostData}
                 />
               </View>
             </View>
