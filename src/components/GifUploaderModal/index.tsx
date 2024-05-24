@@ -171,8 +171,12 @@ const GifUploaderModal: React.FC<Props> = ({
             }}
           >
             <TextInput
-              value={state.description}
-              onChangeText={(text) =>setState({ ...state, description: text })}
+              value={message ? msg.message : state.description}
+              onChangeText={(text) =>
+                message
+                  ? setMsg({ ...msg, message: text })
+                  : setState({ ...state, description: text })
+              }
               style={{
                 marginLeft: 12,
                 color: colors.white,
@@ -188,8 +192,8 @@ const GifUploaderModal: React.FC<Props> = ({
             <ActivityIndicator size={"small"} color={'#fff'} />
           ) : (
             <TouchableOpacity
-              onPress={createPost}
-              activeOpacity={0.6}
+            onPress={message ? sendMessage : createPost}
+            activeOpacity={0.6}
               style={{
                 width: scale(45),
                 height: scale(45),

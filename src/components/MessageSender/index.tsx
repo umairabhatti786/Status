@@ -259,10 +259,8 @@ const MessageSender = ({
     });
   };
   const createPost = async () => {
-    if (state.description.length <= 0) {
-      // Alert.alert("Alert", "Text must not empty");
-      console.log('Text must not empty')
-    } else {
+    if (state.description.length > 0 ||isImageUplaod||isGifView) {
+
       let form = new FormData();
       form.append("description", state.description);
       form.append("channelId", state.channelId);
@@ -307,10 +305,7 @@ const MessageSender = ({
   // console.log(state,token);
 
   const sendMessage = async () => {
-    if (msg.message.length <= 0) {
-      console.log('Text must not empty')
-      // Alert.alert("Alert", "Text must not empty");
-    } else {
+    
       let token = await StorageServices.getItem(TOKEN);
       let form = new FormData();
       form.append("senderId", msg.senderId);
@@ -366,7 +361,7 @@ const MessageSender = ({
         }
       });
       // SendMessage()
-    }
+    // }
   };
   return (
   
