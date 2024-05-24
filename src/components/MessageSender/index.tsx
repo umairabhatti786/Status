@@ -29,6 +29,7 @@ import { openSettings } from "react-native-permissions";
 import { useNavigation } from "@react-navigation/native";
 import ImageUploaderModal from "../ImageUploaderModal";
 import EditImageUploaderModal from "../EditImageUploaderModal";
+import GifUploaderModal from "../GifUploaderModal";
 
 type Props = {
   name?: string;
@@ -68,6 +69,8 @@ type Props = {
   flatListRefPosts?: any;
   editPostData?: any;
   setEditPostData?: any;
+  isGifView?: any;
+  setIsGifView?: any;
 };
 
 const MessageSender = ({
@@ -100,6 +103,8 @@ const MessageSender = ({
   flatListRefPosts,
   editPostData,
   setEditPostData,
+  isGifView,
+  setIsGifView,
 }: Props) => {
   // console.log("ckndkcnd",giphy)
   const navigation: any = useNavigation();
@@ -270,6 +275,7 @@ const MessageSender = ({
       }
       setState({ description: "", imageUrl: "", channelId: channelId });
       setLoading(true);
+      setIsGifView(false)
 
       console.log(form);
       CreatePost(form, token, async ({ isSuccess, response }: any) => {
@@ -491,6 +497,22 @@ const MessageSender = ({
         onOpenGalleryForEdit={onOpenGalleryForEdit}
         imageForEdit={imageForEdit}
         setImageForEdit={setImageForEdit}
+        // setActiveChat={setActiveChat}
+      />
+      <GifUploaderModal
+        isModalVisible={isGifView}
+        setModalVisible={setIsGifView}
+        giphy={giphy}
+        imageData={imageData}
+        sendMessage={sendMessage}
+        createPost={createPost}
+        setState={setState}
+        state={state}
+        msg={msg}
+        setMsg={setMsg}
+        message={message}
+        setLoading={setLoading}
+        loading={loading}
         // setActiveChat={setActiveChat}
       />
       </View>
