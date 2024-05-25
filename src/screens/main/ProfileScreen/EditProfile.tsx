@@ -863,7 +863,7 @@ const EditProfile = ({ route }: any) => {
               setValue={setModel}
               value={model}
               //   data={data}
-              data={modelData.map((item, _index) => {
+              data={profileType.map((item, _index) => {
                 return {
                   id: item?.id,
                   label: item?.value,

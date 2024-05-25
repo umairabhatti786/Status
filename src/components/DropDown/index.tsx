@@ -7,6 +7,7 @@ import CustomText from '../CustomText'
 import { windowWidth } from '../../utils/Dimensions'
 import { images } from '../../assets/images'
 import sizeHelper from '../../utils/helpers/sizeHelper'
+import NewText from '../NewText'
 
 const DropDown = ({
   data,
@@ -41,12 +42,14 @@ const DropDown = ({
           ...styles.dropdown,
           width: dropWidth || '100%',
           borderWidth: borderWidth || 1,
+          
           // backgroundColor:"red"
         }}
         containerStyle={{
           backgroundColor: colors.primary,
           minHeight: verticalScale(100),
           borderWidth: -1,
+        
 
           width:"88%",
           borderBottomLeftRadius:scale(5),
@@ -59,7 +62,7 @@ const DropDown = ({
         // itemContainerStyle={{borderRadius:10,borderBottomWidth:1,borderColor:colors.placeholdeColor,marginVertical:5}}
 
         selectedTextStyle={{
-          fontSize:verticalScale(16),
+          fontSize:15,
           color: colors.white,
         }}
         inputSearchStyle={styles.inputSearchStyle}
@@ -77,10 +80,10 @@ const DropDown = ({
                 backgroundColor:colors.primary
               }}
             >
-              <CustomText
+              <NewText
                 text={item.label}
                 fontWeight={'400'}
-                size={16}
+                size={15}
                 color={colors.white}
               />
             </View>

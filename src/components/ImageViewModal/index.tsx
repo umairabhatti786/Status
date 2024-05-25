@@ -1,5 +1,5 @@
 import { BlurView, VibrancyView } from "@react-native-community/blur";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -13,6 +13,7 @@ import {
   TextInput,
   ActivityIndicator,
   Keyboard,
+  Animated,
 } from "react-native";
 import Modal from "react-native-modal";
 import { scale, verticalScale } from "react-native-size-matters";
@@ -56,19 +57,63 @@ const ImageViewModal: React.FC<Props> = ({
   loading,
 }) => {
   console.log("imageData", imageData);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [hideImage, setShowImage] = useState(true);
+  const simpleScale = useRef(new Animated. Value (1)). current;
+  const translateX = useRef(new Animated. Value(0) ).current;
+  const translateY = useRef(new Animated.Value(0)) .current;
   const windowWidth = useWindowDimensions().width;
   const createdAtDate = moment(imageObject.time);
 const currentDate = moment();
 
+useEffect(() => {
+  Animated.timing(fadeAnim, {
+    toValue: 1,
+    duration: 0,
+    useNativeDriver: true,
+  }).start();
+}, [isModalVisible]);
+
 // Check if the created_at date is today
 const isToday = createdAtDate.isSame(currentDate, 'day');
+
+const onPinchEvent=Animated.event([{
+  nativeEvent:{simpleScale}
+
+}],{useNativeDriver:true})
+
+const onPanEvent=Animated.event([{
+  nativeEvent:{translateX:translateX,
+    translateY:translateY
+  }
+
+}],{useNativeDriver:true})
 
 // Format the date differently based on whether it's today or not
 const formattedDate = isToday
   ? 'Today at ' + createdAtDate.format('hh:mm A')
   : createdAtDate.format('MMM D [at] hh:mm A');
 
+  const HandlePress = () => {
+    if (hideImage) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 100,
+        useNativeDriver: true,
+      }).start();
+      setShowImage(false);
+    } else {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 100,
+        useNativeDriver: true,
+      }).start();
+      setShowImage(true);
+    }
+  };
   return (
+
+    
     <Modal
       style={{
         ...styles.modalContainer,
@@ -92,9 +137,9 @@ const formattedDate = isToday
         ></Pressable>
       }
     >
-      <View
+      <Pressable
         onPress={() => {
-          Keyboard.dismiss();
+          HandlePress()
         }}
         style={{
           width: "101%",
@@ -103,13 +148,13 @@ const formattedDate = isToday
          
         }}
       >
-        <View>
-          <View
+          <Animated.View
             style={{
               flexDirection: "row",
               alignItems: "center",
               paddingHorizontal: scale(20),
               paddingVertical: verticalScale(5),
+              opacity: fadeAnim 
             }}
           >
             <TouchableOpacity
@@ -157,8 +202,7 @@ const formattedDate = isToday
                 text={formattedDate}
               />
             </View>
-          </View>
-        </View>
+          </Animated.View>
         <View style={{ width: "100%", height: "75%" }}>
           <Image
             style={{
@@ -181,9 +225,29 @@ const formattedDate = isToday
           />
         </View>
 
-        <View></View>
+        <Animated.View
+            style={{
+              alignSelf: "center",
+              opacity: fadeAnim,
 
-     <View
+              height: "15%",
+              width: "100%",
+              justifyContent:"center",
+              padding:15,
+            }}
+          >
+
+<NewText
+                color={colors.white}
+                size={15}
+                numberOfLines={3}
+                // style={{ textAlign:"center" }}
+                text={imageObject.description}
+              />
+            </Animated.View>
+
+
+     {/* <View
           style={{
             // flexDirection: "row",
             // alignItems: "center",
@@ -202,8 +266,8 @@ const formattedDate = isToday
                 text={imageObject.description}
               />
          
-        </View> 
-      </View>
+        </View>  */}
+      </Pressable>
     </Modal>
   );
 };
