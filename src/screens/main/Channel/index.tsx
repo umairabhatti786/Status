@@ -36,6 +36,7 @@ import FastImage from "react-native-fast-image";
 import NewText from "../../../components/NewText";
 import ImageViewModal from "../../../components/ImageViewModal";
 import { AddRemoveLikes, DeletePost } from "../../../api/ApiServices";
+import LikeButton from "../../../components/LikeButton/LikeButton";
 
 const Channel = ({
   hideSendMessage,
@@ -388,52 +389,33 @@ const Channel = ({
                         </View>
                       </View>
                     </View>
-                    <TouchableOpacity
-                      activeOpacity={0.6}
-                      onPress={async () => {
-                        let user = await StorageServices.getItem(AUTH);
-                        let token = await StorageServices.getItem(TOKEN);
-                        let data = { user_id: user.id, post_id: item.id };
-                        console.log(data, token);
-                        AddRemoveLikes(
-                          data,
-                          token,
-                          async ({ isSuccess, response }: any) => {
-                            console.log("data l", isSuccess);
+                    <LikeButton
+                    isLiked={item?.likes?.length?true:false}
+                    likes_count={item?.likes_count}
+                    onPress={async () => {
+                      let user = await StorageServices.getItem(AUTH);
+                      let token = await StorageServices.getItem(TOKEN);
+                      let data = { user_id: user.id, post_id: item.id };
+                      console.log(data, token);
+                      AddRemoveLikes(
+                        data,
+                        token,
+                        async ({ isSuccess, response }: any) => {
+                          console.log("data l", isSuccess);
 
-                            let result = JSON.parse(response);
-                            if (result.status) {
-                              setCounter(counter + 1);
-                            } else {
-                              console.log(result);
-                              // Alert.alert("Alert!", "Something went wrong",);
-                              console.log("Something went wrong");
-                            }
+                          let result = JSON.parse(response);
+                          if (result.status) {
+                            setCounter(counter + 1);
+                          } else {
+                            console.log(result);
+                            // Alert.alert("Alert!", "Something went wrong",);
+                            console.log("Something went wrong");
                           }
-                        );
-                      }}
-                      style={{
-                        paddingHorizontal: scale(8),
-                        // paddingVertical: verticalScale(2),
-                        position: "absolute",
-                        bottom: verticalScale(10),
-                        left: scale(25),
-                        backgroundColor: colors.black300,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderRadius: scale(20),
-                        borderWidth: 1,
-                        borderColor: colors.black,
-                      }}
-                    >
-                      <CustomText
-                        color={colors.grey300}
-                        size={15}
-                        // fontFam="Inter-Medium"
-                        style={{ letterSpacing: 3 }}
-                        text={"❤️" + "  " + item?.likes_count}
-                      />
-                    </TouchableOpacity>
+                        }
+                      );
+                    }}
+                    />
+                    
                   </View>
                 );
               }}

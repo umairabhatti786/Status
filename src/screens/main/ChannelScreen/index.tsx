@@ -103,6 +103,7 @@ const ChannelScreen = () => {
   const activeBar = useSelector((state) => state.auth)?.profileActiveBar;
   const [isActiveProfile, setIsActiveProfile] = useState("");
   const [counter, setCounter] = useState(0);
+  const [isGifView, setIsGifView] = useState(false);
   const [isEditView, setIsEditView] = useState(false);
   const [imageForEdit, setImageForEdit] = useState("");
   const [postId, setPostId] = useState("");
@@ -162,9 +163,10 @@ const ChannelScreen = () => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
       setGiphy(e.media.url);
 
+      setIsGifView(true)
       GiphyDialog.hide();
-      
       // SendMessage()
+      console.log(isGifView)
     
     };
     const listener = GiphyDialog.addListener(
@@ -481,7 +483,9 @@ const ChannelScreen = () => {
                   setCounter={setCounter}
                   counter={counter}
                   editPostData={editPostData}
-                setEditPostData={setEditPostData}
+                  setEditPostData={setEditPostData}
+                  isGifView={isGifView}
+                  setIsGifView={setIsGifView}
                 />
               </View>
             </View>

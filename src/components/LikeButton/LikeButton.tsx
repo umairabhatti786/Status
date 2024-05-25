@@ -5,9 +5,9 @@ import { scale, verticalScale } from "react-native-size-matters";
 import { colors } from "../../utils/colors";
 import CustomText from "../CustomText";
 
-const LikeButton = ({ likes_count, onPress }: any) => {
+const LikeButton = ({ likes_count, onPress,isLiked }: any) => {
   const [likes, setLikes] = useState(likes_count);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(isLiked);
   return (
     <TouchableOpacity
       onPress={() => {

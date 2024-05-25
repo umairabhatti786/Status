@@ -29,6 +29,7 @@ import { openSettings } from "react-native-permissions";
 import { useNavigation } from "@react-navigation/native";
 import ImageUploaderModal from "../ImageUploaderModal";
 import EditImageUploaderModal from "../EditImageUploaderModal";
+import GifUploaderModal from "../GifUploaderModal";
 
 type Props = {
   name?: string;
@@ -68,6 +69,8 @@ type Props = {
   flatListRefPosts?: any;
   editPostData?: any;
   setEditPostData?: any;
+  isGifView?: any;
+  setIsGifView?: any;
 };
 
 const MessageSender = ({
@@ -100,6 +103,8 @@ const MessageSender = ({
   flatListRefPosts,
   editPostData,
   setEditPostData,
+  isGifView,
+  setIsGifView,
 }: Props) => {
   // console.log("ckndkcnd",giphy)
   const navigation: any = useNavigation();
@@ -254,10 +259,8 @@ const MessageSender = ({
     });
   };
   const createPost = async () => {
-    if (state.description.length <= 0) {
-      // Alert.alert("Alert", "Text must not empty");
-      console.log('Text must not empty')
-    } else {
+    if (state.description.length > 0 ||isImageUplaod||isGifView) {
+
       let form = new FormData();
       form.append("description", state.description);
       form.append("channelId", state.channelId);
@@ -270,6 +273,7 @@ const MessageSender = ({
       }
       setState({ description: "", imageUrl: "", channelId: channelId });
       setLoading(true);
+      setIsGifView(false)
 
       console.log(form);
       CreatePost(form, token, async ({ isSuccess, response }: any) => {
@@ -301,10 +305,7 @@ const MessageSender = ({
   // console.log(state,token);
 
   const sendMessage = async () => {
-    if (msg.message.length <= 0) {
-      console.log('Text must not empty')
-      // Alert.alert("Alert", "Text must not empty");
-    } else {
+    
       let token = await StorageServices.getItem(TOKEN);
       let form = new FormData();
       form.append("senderId", msg.senderId);
@@ -360,7 +361,7 @@ const MessageSender = ({
         }
       });
       // SendMessage()
-    }
+    // }
   };
   return (
   
@@ -491,6 +492,22 @@ const MessageSender = ({
         onOpenGalleryForEdit={onOpenGalleryForEdit}
         imageForEdit={imageForEdit}
         setImageForEdit={setImageForEdit}
+        // setActiveChat={setActiveChat}
+      />
+      <GifUploaderModal
+        isModalVisible={isGifView}
+        setModalVisible={setIsGifView}
+        giphy={giphy}
+        imageData={imageData}
+        sendMessage={sendMessage}
+        createPost={createPost}
+        setState={setState}
+        state={state}
+        msg={msg}
+        setMsg={setMsg}
+        message={message}
+        setLoading={setLoading}
+        loading={loading}
         // setActiveChat={setActiveChat}
       />
       </View>
