@@ -300,14 +300,14 @@ const OtherUserChannel = () => {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  paddingVertical: verticalScale(5),
+                  // paddingVertical: verticalScale(5),
                 }}
               >
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={{
                     width: scale(30),
-                    height: scale(35),
+                    height: scale(25),
                     alignItems: "flex-start",
                     justifyContent: "center",
                   }}
@@ -413,6 +413,8 @@ const OtherUserChannel = () => {
                 <Channel
                   posts={posts}
                   hideSendMessage={true}
+                  userData={data}
+
                   channelId={channelId}
                   counter={counter}
                   setCounter={setCounter}

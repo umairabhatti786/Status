@@ -454,7 +454,7 @@ const MessageSender = ({
           }}
         >
           <Image
-            source={sendImage || images.sendmessage}
+            source={ images.simplesend}
             style={{ width: scale(25), height: scale(25),marginLeft:8 }}
             resizeMode="contain"
           />

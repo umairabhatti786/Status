@@ -100,14 +100,12 @@ const ProfileScreen = () => {
   const [authPosts, setAuthPosts] = useState([]);
   const [giphy, setGiphy] = useState("");
   const activeBar = useSelector((state) => state.auth)?.profileActiveBar;
-  const [isActiveProfile, setIsActiveProfile] = useState("");
-const [counter, setCounter] = useState(0)
-const [isEditView, setIsEditView] = useState(false);
-const [imageForEdit, setImageForEdit] = useState('');
-const [postId, setPostId] = useState('');
-const flatListRefPosts:any = useRef(null);
-
-
+  const [isActiveProfile, setIsActiveProfile] = useState("Profile");
+  const [counter, setCounter] = useState(0);
+  const [isEditView, setIsEditView] = useState(false);
+  const [imageForEdit, setImageForEdit] = useState("");
+  const [postId, setPostId] = useState("");
+  const flatListRefPosts: any = useRef(null);
 
   const dispatch = useDispatch();
 
@@ -116,6 +114,8 @@ const flatListRefPosts:any = useRef(null);
     const userInfo = await StorageServices.getItem(AUTH);
     setIsChannelId(userInfo?.channel?.id);
   };
+
+  console.log("UserData", userData);
   useEffect(() => {
     setImageForEdit(imageForEdit);
   }, [isEditView]);
@@ -125,7 +125,7 @@ const flatListRefPosts:any = useRef(null);
 
   useEffect(() => {
     getAuth();
-    setIsActiveProfile(activeBar);
+    // setIsActiveProfile(activeBar);
   }, [focused]);
 
   useEffect(() => {
@@ -175,7 +175,6 @@ const flatListRefPosts:any = useRef(null);
   //     flatListRefPosts?.current?.scrollToEnd({ animated: true });
   //   }
   // }, [authPosts])
-  
 
   const GetPosts = async () => {
     let userInfo = await StorageServices.getItem(AUTH);
@@ -186,7 +185,7 @@ const flatListRefPosts:any = useRef(null);
       let result = JSON.parse(response);
       if (result.status) {
         // console.log('result?.posts',result?.posts?.data)
-        let data =result?.posts?.data.reverse()
+        let data = result?.posts?.data.reverse();
         // setPosts(data);
         setAuthPosts(data);
       } else {
@@ -406,24 +405,16 @@ const flatListRefPosts:any = useRef(null);
                 <CustomButton
                   width={"48.5%"}
                   onPress={() => {
-                    if(item=="Channel"){
-                                    dispatch(setDisableBottomTab(true));
+                    if (item == "Channel") {
+                      dispatch(setDisableBottomTab(true));
 
-                      navigation.navigate("ChannelScreen")
+                      navigation.navigate("AuthChannel");
 
-                      return
-
+                      return;
                     }
-                                   dispatch(setDisableBottomTab(false));
+                    dispatch(setDisableBottomTab(false));
 
-                     setIsActiveProfile(item);
-
-                    // if (item == "Channel") {
-                    //   dispatch(setDisableBottomTab(true));
-                    // } else {
-                    //   dispatch(setDisableBottomTab(false));
-                    // }
-                    // setIsActiveProfile(item);
+                    setIsActiveProfile(item);
                   }}
                   text={item}
                   textColor={
@@ -488,7 +479,7 @@ const flatListRefPosts:any = useRef(null);
                       numberOfLines={1}
                       fontFam="Inter-Medium"
                       style={{ marginLeft: scale(8), marginRight: scale(10) }}
-                      text={"Actress, Modal"}
+                      text={userData?.occupation}
                     />
                   </View>
                 </View>
@@ -755,7 +746,6 @@ const flatListRefPosts:any = useRef(null);
                     setImageForEdit={setImageForEdit}
                     setPostId={setPostId}
                     flatListRefPosts={flatListRefPosts}
-
                   />
 
                   <View>
@@ -772,10 +762,10 @@ const flatListRefPosts:any = useRef(null);
                       isEditView={isEditView}
                       setIsEditView={setIsEditView}
                       imageForEdit={imageForEdit}
-                    setImageForEdit={setImageForEdit}
-                    postId={postId}
-                    setCounter={setCounter}
-                    counter={counter}
+                      setImageForEdit={setImageForEdit}
+                      postId={postId}
+                      setCounter={setCounter}
+                      counter={counter}
                     />
                   </View>
                 </View>

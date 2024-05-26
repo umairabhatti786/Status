@@ -5,11 +5,12 @@ import { scale, verticalScale } from "react-native-size-matters";
 import { colors } from "../../utils/colors";
 import CustomText from "../CustomText";
 
-const LikeButton = ({ likes_count, onPress,isLiked }: any) => {
+const LikeButton = ({ likes_count, onPress, isLiked }: any) => {
   const [likes, setLikes] = useState(likes_count);
   const [liked, setLiked] = useState(isLiked);
   return (
     <TouchableOpacity
+      activeOpacity={1}
       onPress={() => {
         if (liked) {
           setLiked(false);
@@ -21,13 +22,15 @@ const LikeButton = ({ likes_count, onPress,isLiked }: any) => {
         onPress();
       }}
       style={{
-        paddingHorizontal: scale(10),
+        // paddingHorizontal: scale(10),
         // paddingVertical: verticalScale(2),
         position: "absolute",
-        bottom: verticalScale(10),
+        bottom: verticalScale(0),
         left: scale(25),
         backgroundColor: colors.black300,
         alignItems: "center",
+        width: 70,
+        height: 32,
         justifyContent: "center",
         borderRadius: scale(20),
         borderWidth: 1,
@@ -36,9 +39,9 @@ const LikeButton = ({ likes_count, onPress,isLiked }: any) => {
     >
       <CustomText
         color={colors.grey300}
-        size={15}
-        // fontFam="Inter-Medium"
-        style={{ letterSpacing: 3 }}
+        size={13}
+        fontFam="Inter-Medium"
+        // style={{ letterSpacing: 3 }}
         text={"❤️" + "  " + likes}
       />
     </TouchableOpacity>

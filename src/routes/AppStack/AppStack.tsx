@@ -141,7 +141,7 @@ const AppStack = () => {
           <Stack.Screen name={"HomeScreen"} component={HomeScreen} />
           {/* <Stack.Screen name={"NewMessage"} component={NewMessage} /> */}
 
-          <Stack.Screen name={"MessageScreen"} component={MessageScreen} />
+          {/* <Stack.Screen name={"MessageScreen"} component={MessageScreen} /> */}
           <Stack.Screen name={"ProfileScreen"} component={ProfileScreen} />
           <Stack.Screen name={"SearchScreen"} component={SearchScreen} />
           <Stack.Screen name={"OthersProfile"} component={OthersProfile} />

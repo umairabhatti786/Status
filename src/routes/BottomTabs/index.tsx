@@ -26,6 +26,7 @@ import {
 import NewMessage from "../../screens/main/NewMessage";
 import { useNavigation } from "@react-navigation/native";
 import ChannelScreen from "../../screens/main/ChannelScreen";
+import ProfileStack from "../ProfileStack";
 
 const BottomTab = ({}: any) => {
   const Bottom = createBottomTabNavigator();
@@ -198,8 +199,8 @@ const BottomTab = ({}: any) => {
         }}
       />
       <Bottom.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="ProfileStack"
+        component={ProfileStack}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => {
@@ -207,9 +208,8 @@ const BottomTab = ({}: any) => {
               <TouchableOpacity
                 onPress={() => {
                   dispatch(setDisableBottomTab(false));
-
-                  dispatch(setProfileActiveBar("Profile"));
-                  navigation.navigate("Profile"); // Navigate to the Profile screen
+                  // dispatch(setProfileActiveBar("Profile"));
+                  navigation.navigate("ProfileStack"); // Navigate to the Profile screen
                 }}
                 style={{
                   ...style?.itemStyle,

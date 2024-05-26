@@ -101,14 +101,14 @@ const NewMessage = () => {
       <StatusBar backgroundColor={colors.black300} barStyle="light-content" />
 
       <View style={styles.header}>
-        <View style={{ width: "30%" }} />
+        <View style={{ width: "33%" }} />
 
-        <View style={{ width: "40%" }}>
+        <View style={{ width: "33%" ,alignItems:"center"}}>
           <NewText
             fontWeight="600"
             color={colors.white}
             fontFam="Poppins-Medium"
-            size={17}
+            size={15}
             text={"New Message"}
           />
         </View>
@@ -125,7 +125,7 @@ const NewMessage = () => {
             // fontWeight="600"
             color={colors.white}
             // fontFam="Poppins-Medium"
-            size={16}
+            size={14}
             text={"Cancel"}
           />
         </TouchableOpacity>
