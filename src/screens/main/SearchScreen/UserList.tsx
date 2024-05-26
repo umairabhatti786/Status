@@ -47,7 +47,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
             priority: FastImage.priority.high,
           }}
         />
-        {item.online && (
+        {item.isOnline && (
           <View
             style={{
               width: scale(8),
