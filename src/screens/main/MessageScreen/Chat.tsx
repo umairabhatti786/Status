@@ -60,6 +60,9 @@ import {
   PusherChannel,
   PusherEvent,
 } from "@pusher/pusher-websocket-react-native";
+import DeleteModal from "./DeleteModal";
+import NewText from "../../../components/NewText";
+import FastImage from "react-native-fast-image";
 GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
 GiphyDialog.configure({
   mediaTypeConfig: [
@@ -96,6 +99,7 @@ const Chat = () => {
 
   const userData = useSelector(getUserData);
   const [giphy, setGiphy] = useState("");
+  const [isDeleteVisible, setIsDeleteVisible] = useState(false);
   const [state, setState] = useState({
     archive: false,
     block: false,
@@ -128,7 +132,13 @@ const Chat = () => {
           setConversation(data);
           data.map((c: any) => {
             if (!c?.read_at) {
-              ReadMessage(c?.id, token, async ({ isSuccess, response }: any) => {console.log(response)});
+              ReadMessage(
+                c?.id,
+                token,
+                async ({ isSuccess, response }: any) => {
+                  console.log(response);
+                }
+              );
             }
           });
           // flatListRef.current.scrollToEnd({ animated: true });
@@ -222,7 +232,6 @@ const Chat = () => {
   useEffect(() => {
     if (isFocused) {
       getConversation();
-     
     }
   }, [isFocused]);
 
@@ -324,8 +333,6 @@ const Chat = () => {
     );
   };
 
- 
-
   const imagePicker = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -340,7 +347,7 @@ const Chat = () => {
     return (
       <InboxComponent
         name={item?.sender?.name}
-        image={ item?.sender?.imageUrl }
+        image={item?.sender?.imageUrl}
         message={item?.message}
         time={moment(item?.created_at).format("h:mm a")}
         chatDate={item?.chatDate}
@@ -391,7 +398,7 @@ const Chat = () => {
               });
             }}
           >
-            <Image
+            <FastImage
               style={{
                 width: scale(37),
                 height: scale(37),
@@ -402,19 +409,26 @@ const Chat = () => {
             <View
               style={{
                 marginHorizontal: scale(7),
+                // backgroundColor:"red",
+                // width:"55%"
                 // paddingBottom: verticalScale(5),
               }}
             >
-              <CustomText
+              <NewText
                 color={colors.white}
                 size={17}
+                numberOfLines={1}
                 // style={{ marginTop: verticalScale(5) }}
-                text={item?.user1?.name || item?.user2?.name}
-              />
-              <CustomText
+                text={
+                  (item?.user1?.name || item?.user2?.name)?.length > 17
+                    ? `${(item?.user1?.name || item?.user2?.name).substring(0, 16)}...`
+                    : item?.user1?.name || item?.user2?.name
+                }
+                              />
+              <NewText
                 // fontWeight="700"
                 color={colors.white}
-                size={13}
+                size={14}
                 style={{ marginTop: verticalScale(-4) }}
                 text={`${
                   item?.user1?.followers_count || item?.user2?.followers_count
@@ -463,7 +477,10 @@ const Chat = () => {
             {loadings.trash ? (
               <ActivityIndicator size={"small"} color={"#fff"} />
             ) : (
-              <TouchableOpacity activeOpacity={0.6} onPress={handleTrash}>
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => setIsDeleteVisible(true)}
+              >
                 <Image
                   style={{
                     width: scale(17),
@@ -528,6 +545,15 @@ const Chat = () => {
         receiverId={item?.user1?.id || item?.user2?.id}
         authId={userData.id}
       />
+      <DeleteModal
+        isModalVisible={isDeleteVisible}
+        setModalVisible={setIsDeleteVisible}
+        onDelete={() => {
+          setIsDeleteVisible(false);
+          handleTrash();
+        }}
+      />
+
       {/* </View> */}
       {/* </View> */}
     </View>

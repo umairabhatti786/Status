@@ -10,16 +10,18 @@ interface Props {
     backdropStyle?: any
     paddingTop?:any
     justifyContent?:any
+    modalBackgroundColor?:any
 }
 
-const CustomModal: React.FC<Props> = ({ isModalVisible, setModalVisible, children, backdropStyle,justifyContent,paddingTop }) => {
+const CustomModal: React.FC<Props> = ({ isModalVisible, setModalVisible, children, backdropStyle,justifyContent,paddingTop,modalBackgroundColor }) => {
     const windowWidth = useWindowDimensions().width;
 
     return (
         <Modal
             style={{...styles.modalContainer,
                 justifyContent: justifyContent ||"flex-start",
-                paddingTop:paddingTop || "50%"
+                paddingTop:paddingTop || "50%",
+                backgroundColor:modalBackgroundColor
             }}
             animationIn='slideInUp'
             animationOut='slideOutDown'

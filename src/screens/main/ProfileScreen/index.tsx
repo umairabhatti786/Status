@@ -313,8 +313,8 @@ const ProfileScreen = () => {
     );
   };
   const shortenedText =
-    userData?.name?.length > 17
-      ? userData?.name?.substring(0, 16) + "..."
+    userData?.name?.length > 20
+      ? userData?.name?.substring(0, 19) + "..."
       : userData?.name;
 
   return (
