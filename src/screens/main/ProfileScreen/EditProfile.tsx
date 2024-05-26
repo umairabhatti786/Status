@@ -120,7 +120,7 @@ const EditProfile = ({ route }: any) => {
 
   console.log("selectedMedia1", userData);
 
-  const [model, setModel] = useState(userData?.isModel == false ? "NO" : "YES");
+  const [profileType, setProfileType] = useState(userData?.profileType?userData?.profileType:"");
 
   const [values, setValues] = useState({
     wallComments: userData?.wallComments,
@@ -133,6 +133,7 @@ const EditProfile = ({ route }: any) => {
     birthday: userData?.birthday ? userData.birthday : "",
     occupation: userData?.occupation ? userData?.occupation : "",
     link: userData?.link ? userData?.link : "",
+    profileType:userData?.profileType?userData?.profileType:"",
     // gif2: userData?.gif2 ? userData?.gif2 : "",
     location: userData?.location ? userData?.location : "",
     lat: userData?.lat ? userData?.lat : "",
@@ -168,7 +169,7 @@ const EditProfile = ({ route }: any) => {
     },
   ];
 
-  const profileType=[
+  const profileTypeData=[
     {
       id: 1,
       label:  "All",
@@ -473,6 +474,7 @@ const EditProfile = ({ route }: any) => {
     form.append("link", values.link);
     form.append("bio", values?.bio);
     form.append("isModel",1);
+    form.append("profileType",profileType)
     form.append("wallpaperUrl", values.wallpaperUrl);
     form.append(
       "gif1",
@@ -860,16 +862,17 @@ const EditProfile = ({ route }: any) => {
             <DropDown
               placeholder={"Make a Selection"}
               dropWidth={"100%"}
-              setValue={setModel}
-              value={model}
+              setValue={setProfileType}
+              value={profileType}
               //   data={data}
-              data={profileType.map((item, _index) => {
+              data={profileTypeData.map((item, _index) => {
                 return {
                   id: item?.id,
                   label: item?.value,
                   value: item?.value,
                 };
               })}
+              
             />
             {/* <Spacer height={verticalScale(10)}/> */}
             <Input
