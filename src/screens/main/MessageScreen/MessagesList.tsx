@@ -37,7 +37,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
             width: scale(7.5),
             height: scale(7.5),
             borderRadius: 999,
-            backgroundColor: item?.isOnline ? colors.sky : "transparent",
+            backgroundColor: !item?.last_message?.read_at ? colors.sky : "transparent",
             marginRight: verticalScale(15),
             alignSelf: "center",
           }}

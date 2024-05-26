@@ -41,6 +41,7 @@ import {
   CreateBlockConversation,
   DELETE_CONVERSATION,
   GetConversation,
+  ReadMessage,
 } from "../../../api/ApiServices";
 import {
   GiphyContentType,
@@ -125,6 +126,11 @@ const Chat = () => {
           // console.log('result?.posts',result?.posts?.data)
 
           setConversation(data);
+          data.map((c: any) => {
+            if (!c?.read_at) {
+              ReadMessage(c?.id, token, async ({ isSuccess, response }: any) => {console.log(response)});
+            }
+          });
           // flatListRef.current.scrollToEnd({ animated: true });
           // await StorageServices.setItem("chatlist", result?.conversation?.data);
         } else {
@@ -214,7 +220,10 @@ const Chat = () => {
   // }, [isFocused]);
 
   useEffect(() => {
-    if (isFocused) getConversation();
+    if (isFocused) {
+      getConversation();
+     
+    }
   }, [isFocused]);
 
   useEffect(() => {
@@ -315,6 +324,8 @@ const Chat = () => {
     );
   };
 
+ 
+
   const imagePicker = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -373,12 +384,11 @@ const Chat = () => {
           <TouchableOpacity
             style={appStyles.row}
             activeOpacity={0.6}
-            onPress={()=>{
+            onPress={() => {
               // console.log("#Knkcndc",item)
-                navigation.navigate("OthersProfile", {
-              id: item?.user1?.id || item?.user2?.id ,
-            })
-
+              navigation.navigate("OthersProfile", {
+                id: item?.user1?.id || item?.user2?.id,
+              });
             }}
           >
             <Image
@@ -488,12 +498,12 @@ const Chat = () => {
         }}
       ></View> */}
       {/* <View></View> */}
-      <View style={{flex:0.9 }}>
+      <View style={{ flex: 0.9 }}>
         <FlatList
           data={conversation}
           ref={flatListRefChat}
           keyExtractor={(item) => item}
-          style={{marginBottom: isKeyboardVisible? 40:15}}
+          style={{ marginBottom: isKeyboardVisible ? 40 : 15 }}
           // nestedScrollEnabled={true}
           inverted={true}
           // style={{paddingTop:verticalScale(20)}}
@@ -505,20 +515,20 @@ const Chat = () => {
           renderItem={renderChatList}
           // style={{ transform: [{ scaleY: -1 }] }}
         />
-        </View>
-        {/* <View> */}
-          <MessageSender
-            placeholder="write a message"
-            message={"chat"}
-            onGiphyPress={() => GiphyDialog.show()}
-            giphy={giphy}
-            setGiphy={setGiphy}
-            setConversation={setConversation}
-            conversation={conversation}
-            receiverId={item?.user1?.id || item?.user2?.id}
-            authId={userData.id}
-          />
-        {/* </View> */}
+      </View>
+      {/* <View> */}
+      <MessageSender
+        placeholder="write a message"
+        message={"chat"}
+        onGiphyPress={() => GiphyDialog.show()}
+        giphy={giphy}
+        setGiphy={setGiphy}
+        setConversation={setConversation}
+        conversation={conversation}
+        receiverId={item?.user1?.id || item?.user2?.id}
+        authId={userData.id}
+      />
+      {/* </View> */}
       {/* </View> */}
     </View>
   );

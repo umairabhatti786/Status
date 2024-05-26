@@ -78,6 +78,24 @@ export const CreateArchive = async (data: any, token: any, callback: any) => {
     return { isSuccess: false, error: error };
   }
 };
+export const ReadMessage = async (msgId:any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.READ_MESSAGE+msgId, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
 export const DeletePost = async (postId:any, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",

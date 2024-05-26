@@ -36,6 +36,7 @@ export const URLS = {
   ADD_REMOVE_VIEWS: "addRemoveViews",
   ADD_REMOVE_LIKES: "addRemoveLikes",
   SEND_MESSAGE: "sendMessage",
+  READ_MESSAGE: "readMessage/",
   SEARCH_MESSAGES: "searchMessages/",
   Get_CHAT_LIST: "getChatList",
   GET_CONVERSATION: "getConversation",

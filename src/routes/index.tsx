@@ -12,10 +12,11 @@ import {
 } from "@react-navigation/native";
 
 import AppStack from "./AppStack/AppStack";
-import { AUTH, StorageServices } from "../utils/hooks/StorageServices";
+import { AUTH, StorageServices, TOKEN } from "../utils/hooks/StorageServices";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserData, setUserData } from "../redux/reducers/authReducer";
 import SplashScreen from "react-native-splash-screen";
+import { UserProfileSetup } from "../api/ApiServices";
 
 
 const RootNavigator = () => {
@@ -55,12 +56,20 @@ const RootNavigator = () => {
     };
   }, []);
 
-  const performOnBackground=()=>{
+  const performOnBackground=async()=>{
     console.log("performOnBackground")
+    let token = await StorageServices.getItem(TOKEN);
+    let form = new FormData();
+    form.append("isOnline", 0);
+    UserProfileSetup(form, token, async ({ isSuccess, response }: any) => {})
   }
 
-  const performOnForeground=()=>{
+  const performOnForeground=async()=>{
     console.log("performOnForeground")
+    let token = await StorageServices.getItem(TOKEN);
+    let form = new FormData();
+    form.append("isOnline", 1);
+    UserProfileSetup(form, token, async ({ isSuccess, response }: any) => {})
 
 
   }
