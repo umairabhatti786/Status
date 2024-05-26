@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
-  StatusBar
+  StatusBar,
+  AppState
  
 } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -29,6 +30,40 @@ const RootNavigator = () => {
     return () => clearTimeout(timer); // Clear the timer if the component unmounts
   }, []);
 
+  useEffect(() => {
+    const handleAppStateChange = async (nextAppState) => {
+      if (nextAppState === 'active') {
+        // The app has come to the foreground (started or resumed)
+        console.log('App has come to the foreground');
+      performOnForeground()
+
+        // Perform any action you want on app start or resume
+      } else if (nextAppState === 'background') {
+        // The app is going to the background
+        console.log('App has gone to the background');
+        // Perform any action you want on app background
+         performOnBackground();
+      }
+    };
+
+    AppState.addEventListener('change', handleAppStateChange);
+
+    // Perform any action you want on app start (initial load)
+
+    return () => {
+      // AppState.removeEventListener('change', handleAppStateChange);
+    };
+  }, []);
+
+  const performOnBackground=()=>{
+    console.log("performOnBackground")
+  }
+
+  const performOnForeground=()=>{
+    console.log("performOnForeground")
+
+
+  }
 
   return  (
     <NavigationContainer>
