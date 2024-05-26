@@ -82,6 +82,7 @@ const Chat = () => {
   const pusher = Pusher.getInstance();
   const route: any = useRoute();
   const item = route?.params?.item;
+  const user = useSelector(getUserData);
   const navigation: any = useNavigation();
   const flatListRefChat: any = useRef(null);
   const [loadings, setLoadings] = useState({
@@ -126,11 +127,14 @@ const Chat = () => {
           // console.log('result?.posts',result?.posts?.data)
 
           setConversation(data);
-          data.map((c: any) => {
-            if (!c?.read_at) {
-              ReadMessage(c?.id, token, async ({ isSuccess, response }: any) => {console.log(response)});
-            }
-          });
+          if((item?.user1?.id || item?.user2?.id)==user.id){
+
+            data.map((c: any) => {
+              if (!c?.read_at) {
+                ReadMessage(c?.id, token, async ({ isSuccess, response }: any) => {console.log(response)});
+              }
+            });
+          }
           // flatListRef.current.scrollToEnd({ animated: true });
           // await StorageServices.setItem("chatlist", result?.conversation?.data);
         } else {
