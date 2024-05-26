@@ -83,7 +83,7 @@ const SearchScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     getUserData();
-  }, [filterTwo, activeBar, filterThree]);
+  }, [filterTwo, activeBar, selectedType]);
   const getUserData = () => {
     setLoading(true);
     const options = {
@@ -93,7 +93,7 @@ const SearchScreen = ({ navigation }: any) => {
         Authorization: "Bearer " + token,
         Accept: "application/json",
       },
-      data: { filter1: activeBar, filter2: filterTwo, filter3: filterThree },
+      data: { filter1: activeBar, filter2: filterTwo, filter3: selectedType=='All'?'': selectedType},
       // data: {filter: f2+"&"+f1}
     };
 

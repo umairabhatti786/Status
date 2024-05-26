@@ -7,10 +7,14 @@ import { images } from "../../../assets/images";
 import { useNavigation } from "@react-navigation/native";
 import { scale, verticalScale } from "react-native-size-matters";
 import moment from "moment";
+import { useSelector } from "react-redux";
+import { getUserData } from "../../../redux/reducers/authReducer";
 export const windowWidth = Dimensions.get("window").width;
 
 const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
   const navigation: any = useNavigation();
+  const user = useSelector(getUserData);
+
   const [favorite, setFavorite] = useState(false);
   return (
     <>
@@ -32,6 +36,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
           // alignItems: "center",
         }}
       >
+        {item?.last_message?.receiverId==user?.id?
         <View
           style={{
             width: scale(7.5),
@@ -41,7 +46,17 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
             marginRight: verticalScale(15),
             alignSelf: "center",
           }}
-        />
+        />:<View
+        style={{
+          width: scale(7.5),
+          height: scale(7.5),
+          borderRadius: 999,
+          backgroundColor: "transparent",
+          marginRight: verticalScale(15),
+          alignSelf: "center",
+        }}
+      />
+        }
         <View style={{ width: scale(65), height: scale(65) }}>
           <Image
             style={{ width: "100%", height: "100%", borderRadius: scale(8) }}
