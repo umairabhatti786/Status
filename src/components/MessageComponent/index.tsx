@@ -6,6 +6,7 @@ import { windowWidth } from "../../utils/Dimensions";
 import { appStyles } from "../../utils/AppStyles";
 import { scale, verticalScale } from "react-native-size-matters";
 import moment from "moment";
+import FastImage from "react-native-fast-image";
 
 type Props = {
   name?: string;
@@ -83,7 +84,7 @@ const MessagesComponent = ({
         activeOpacity={0.6}
         onPress={onPress}
          style={{ width: 62, height: 62 }}>
-          <Image
+          <FastImage
             style={{ width: "100%", height: "100%", borderRadius: scale(5) }}
             source={{ uri: image }}
           />
@@ -101,7 +102,7 @@ const MessagesComponent = ({
               style={{
                 ...appStyles.row,
                 marginTop: verticalScale(-3),
-                width: scale(180),
+                width: "80%",
               }}
             >
               <CustomText

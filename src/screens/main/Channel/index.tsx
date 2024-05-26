@@ -73,7 +73,7 @@ const Channel = ({
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
-  // console.log("userData", item?.gif);
+  console.log("userData", userData?.wallpaperUrl);
   // const handleLike=async()=>{
   //   let data = {user_id:userData.id,post_id:item.id}
   //   console.log(item.id)
@@ -96,9 +96,14 @@ const Channel = ({
   return (
     <>
       <View style={{backgroundColor:colors.black,flex:0.9}}>
-        <Image
+        <FastImage
           style={{ width: "100%", height: windowHeight,position:"absolute", }}
-          source={userData?.wallpaperUrl ? { uri: userData?.wallpaperUrl } : ""}
+          source={{
+            uri: userData?.wallpaperUrl?userData?.wallpaperUrl:null,
+            headers: { Authorization: "someAuthToken" },
+            priority: FastImage.priority.high,
+          }}
+          // source={userData?.wallpaperUrl ? { uri: userData?.wallpaperUrl } : ""}
         />
        
             <FlatList
@@ -368,7 +373,7 @@ const Channel = ({
                           <NewText
                             color={colors.grey300}
                             size={13}
-                            // fontFam="Inter-Medium"
+                            fontFam="Inter-Medium"
                             style={{
                               marginRight: scale(5),
                               textAlign: "right",

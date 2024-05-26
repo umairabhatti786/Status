@@ -5,6 +5,7 @@ import { colors } from "../../utils/colors";
 import { windowWidth } from "../../utils/Dimensions";
 import { appStyles } from "../../utils/AppStyles";
 import { scale, verticalScale } from "react-native-size-matters";
+import FastImage from "react-native-fast-image";
 
 type Props = {
   name?: string;
@@ -79,9 +80,12 @@ const InboxComponent = ({
         }}
       >
         <View style={{ width: 62, height: 62 }}>
-          <Image
+          <FastImage
             style={{ width: "100%", height: "100%", borderRadius: scale(5) }}
-            source={image}
+            source={{   uri: image,
+              headers: { Authorization: "someAuthToken" },
+              priority: FastImage.priority.high,}}
+            // source={image}
           />
         </View>
         <View style={{ marginLeft: scale(12) }}>
@@ -94,11 +98,12 @@ const InboxComponent = ({
               // backgroundColor:"red"
             }}
           >
-            <View style={{ ...appStyles.row, marginTop: verticalScale(-5) }}>
+            <View style={{ ...appStyles.row, marginTop: verticalScale(-5),width:"65%" }}>
               <CustomText
                 text={name}
                 color={colors.white}
                 size={15}
+                numberOfLines={1}
                 fontFam="Poppins-SemiBold"
                 fontWeight="700"
               />
@@ -134,27 +139,32 @@ const InboxComponent = ({
           {/* attachments */}
           {attachments?.[0]?.path && (
             // <View style={{ width: "70%", height: 100 }}>
-            <Image
+            <FastImage
               style={{
                 width: 130,
                 height: 150,
                 borderRadius: scale(5),
               }}
-              resizeMode={"contain"}
-              source={{ uri: attachments?.[0]?.path }}
+              resizeMode={"cover"}
+              source={{   uri: attachments?.[0]?.path ,
+                headers: { Authorization: "someAuthToken" },
+                priority: FastImage.priority.high,}}
+              // source={{ uri: attachments?.[0]?.path }}
             />
             // </View>
           )}
           {gif && (
-            <Image
+            <FastImage
               style={{
                 width: 130,
                 height: 150,
                 alignSelf: "left",
                 borderRadius: scale(5),
               }}
-              source={{ uri: gif }}
-              resizeMode="contain"
+              source={{   uri: gif,
+                headers: { Authorization: "someAuthToken" },
+                priority: FastImage.priority.high,}}      
+                       resizeMode="cover"
             />
           )}
         </View>

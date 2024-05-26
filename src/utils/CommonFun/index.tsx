@@ -24,7 +24,7 @@ export const dateFormat = date => {
     nextDay: '[Tomorrow]',
     nextWeek: 'dddd',
     lastDay: '[Yesterday]',
-    lastWeek: '[Last] dddd',
+    lastWeek: 'dddd',
     sameElse: 'DD MMM YY',
   });
 };

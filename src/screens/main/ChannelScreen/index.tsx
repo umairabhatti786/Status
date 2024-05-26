@@ -354,14 +354,14 @@ const ChannelScreen = () => {
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                paddingVertical: verticalScale(5),
+                // paddingVertical: verticalScale(5),
               }}
             >
               <TouchableOpacity
                 activeOpacity={0.6}
                 style={{
                   width: scale(27),
-                  height: scale(30),
+                  height: scale(25),
                   alignItems: "flex-start",
                   justifyContent: "center",
                   // backgroundColor:"red"

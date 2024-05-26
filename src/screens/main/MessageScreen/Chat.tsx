@@ -340,7 +340,7 @@ const Chat = () => {
     return (
       <InboxComponent
         name={item?.sender?.name}
-        image={{ uri: item?.sender?.imageUrl }}
+        image={ item?.sender?.imageUrl }
         message={item?.message}
         time={moment(item?.created_at).format("h:mm a")}
         chatDate={item?.chatDate}
