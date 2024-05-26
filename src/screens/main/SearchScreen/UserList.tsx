@@ -70,7 +70,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
             justifyContent: "flex-end",
           }}
         >
-          {item.nearby && (
+          {item.distance && (
             <View
               style={{
                 ...appStyles.row,
@@ -84,7 +84,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
                 source={images.location}
               />
 
-              <CustomText text={item.nearby} color={colors.white} />
+              <CustomText text={item.distance} color={colors.white} />
             </View>
           )}
 

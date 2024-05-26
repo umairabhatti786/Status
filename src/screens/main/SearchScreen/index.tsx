@@ -161,6 +161,7 @@ const SearchScreen = ({ navigation }: any) => {
     return (
       <UserList
         name={item.name}
+        distance={item.distance}
         image={item.imageUrl}
         id={item.id}
         onPress={() =>

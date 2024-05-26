@@ -131,14 +131,15 @@ const Chat = () => {
           // console.log('result?.posts',result?.posts?.data)
 
           setConversation(data);
-          if((item?.user1?.id || item?.user2?.id)==user.id){
+          // Alert.alert('',item?.user1?.id || item?.user2?.id,user.id)
+          // if((item?.user1?.id || item?.user2?.id)==user.id){
 
             data.map((c: any) => {
-              if (!c?.read_at) {
+              if (!c?.read_at&&c?.receiverId==user.id) {
                 ReadMessage(c?.id, token, async ({ isSuccess, response }: any) => {console.log(response)});
               }
-            });
-          }
+            }); 
+          // }
           // flatListRef.current.scrollToEnd({ animated: true });
           // await StorageServices.setItem("chatlist", result?.conversation?.data);
         } else {
