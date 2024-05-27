@@ -38,6 +38,7 @@ export const URLS = {
   SEND_MESSAGE: "sendMessage",
   READ_MESSAGE: "readMessage/",
   SEARCH_MESSAGES: "searchMessages/",
+  START_TYPING_CHANNEL: "startTypingChannel",
   Get_CHAT_LIST: "getChatList",
   GET_CONVERSATION: "getConversation",
   GET_CONVERSATION_IF_EXIST: "getConversationIfExist",

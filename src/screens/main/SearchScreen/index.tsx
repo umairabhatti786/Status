@@ -74,7 +74,7 @@ const SearchScreen = ({ navigation }: any) => {
   const topBarData = ["all", "following"];
   const filterData = [
     { value: "Online", filter: "online" },
-    { value: "Nearby", filter: "new" },
+    { value: "Nearby", filter: "nearby" },
     { value: "New", filter: "new" },
     { value: "Popular", filter: "popular" },
   ];
@@ -83,7 +83,7 @@ const SearchScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     getUserData();
-  }, [filterTwo, activeBar, selectedType]);
+  }, [filterTwo, activeBar, filterThree]);
   const getUserData = () => {
     setLoading(true);
     const options = {
@@ -93,7 +93,7 @@ const SearchScreen = ({ navigation }: any) => {
         Authorization: "Bearer " + token,
         Accept: "application/json",
       },
-      data: { filter1: activeBar, filter2: filterTwo, filter3: selectedType=='All'?'': selectedType},
+      data: { filter1: activeBar, filter2: filterTwo, filter3: filterThree },
       // data: {filter: f2+"&"+f1}
     };
 
@@ -109,7 +109,7 @@ const SearchScreen = ({ navigation }: any) => {
         // blockers
         setAllUsers(response.data.result.data);
         setLoading(false);
-        console.log(response.data);
+        console.log(response.data.result.data);
       })
       .catch(function (error) {
         Alert.alert("Alert!", "Network Error.");
@@ -161,7 +161,6 @@ const SearchScreen = ({ navigation }: any) => {
     return (
       <UserList
         name={item.name}
-        distance={item.distance}
         image={item.imageUrl}
         id={item.id}
         onPress={() =>

@@ -85,6 +85,7 @@ const Chat = () => {
   const pusher = Pusher.getInstance();
   const route: any = useRoute();
   const item = route?.params?.item;
+  const receiver = route?.params?.item?.user2 || route?.params?.item?.user2;
   const user = useSelector(getUserData);
   const navigation: any = useNavigation();
   const flatListRefChat: any = useRef(null);
@@ -97,7 +98,7 @@ const Chat = () => {
   const [NewMessage, setNewMessage] = useState<any>({});
   const isFocused = useIsFocused();
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-
+  const [typing, setTyping] = useState(false);
   const userData = useSelector(getUserData);
   const [giphy, setGiphy] = useState("");
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
@@ -134,11 +135,17 @@ const Chat = () => {
           // Alert.alert('',item?.user1?.id || item?.user2?.id,user.id)
           // if((item?.user1?.id || item?.user2?.id)==user.id){
 
-            data.map((c: any) => {
-              if (!c?.read_at&&c?.receiverId==user.id) {
-                ReadMessage(c?.id, token, async ({ isSuccess, response }: any) => {console.log(response)});
-              }
-            }); 
+          data.map((c: any) => {
+            if (!c?.read_at && c?.receiverId == user.id) {
+              ReadMessage(
+                c?.id,
+                token,
+                async ({ isSuccess, response }: any) => {
+                  console.log(response);
+                }
+              );
+            }
+          });
           // }
           // flatListRef.current.scrollToEnd({ animated: true });
           // await StorageServices.setItem("chatlist", result?.conversation?.data);
@@ -181,6 +188,8 @@ const Chat = () => {
         cluster: "mt1",
         // onConnectionStateChange,
       });
+
+      await pusher.connect();
       let channelNumber =
         parseInt(item?.user1?.id || item?.user2?.id) + parseInt(userData.id);
       console.log("channelNumber", channelNumber);
@@ -198,8 +207,20 @@ const Chat = () => {
           // setComments([...comments,JSON.parse(event.data).comment])
         },
       });
+      let TypingChannel = await pusher.subscribe({
+        channelName: "TypingChannel_" + channelNumber,
+        onEvent: (event: PusherEvent) => {
+          if(JSON.parse(event.data).data.user1Id==receiver?.id){
+
+            setTyping(true);
+            setTimeout(() => {
+              setTyping(false);
+            }, 2000);
+          }
+          console.log("TypingChannel", JSON.parse(event.data).data.user2Id);
+        },
+      });
       // await pusher.subscribe({ channelName:'commentsChannel_'+id });
-      await pusher.connect();
     } catch (e) {
       console.log(`ERROR: ${e}`);
     }
@@ -420,10 +441,13 @@ const Chat = () => {
                 // style={{ marginTop: verticalScale(5) }}
                 text={
                   (item?.user1?.name || item?.user2?.name)?.length > 17
-                    ? `${(item?.user1?.name || item?.user2?.name).substring(0, 16)}...`
+                    ? `${(item?.user1?.name || item?.user2?.name).substring(
+                        0,
+                        16
+                      )}...`
                     : item?.user1?.name || item?.user2?.name
                 }
-                              />
+              />
               <NewText
                 // fontWeight="700"
                 color={colors.white}
@@ -531,6 +555,17 @@ const Chat = () => {
           renderItem={renderChatList}
           // style={{ transform: [{ scaleY: -1 }] }}
         />
+        {typing  && (
+          <>
+            <InboxComponent
+              name={receiver?.name}
+              image={receiver?.imageUrl}
+              message={"Typing..."}
+              time={moment().format("h:mm a")}
+            />
+            <Spacer height={20} />
+          </>
+        )}
       </View>
       {/* <View> */}
       <MessageSender

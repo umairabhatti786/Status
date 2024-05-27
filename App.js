@@ -28,6 +28,10 @@ const App = () => {
   // OneSignal.Notifications.addEventListener('click', (event) => {
   //   console.log('OneSignal: notification clicked:', event);
   // });
+
+  // await pusher.trigger({channelName: "my-channel", eventName: "client-my-event", data: {"myName": "Bob"}});
+ 
+  
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Provider store={store}>

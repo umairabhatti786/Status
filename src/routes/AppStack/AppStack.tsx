@@ -49,6 +49,8 @@ import {
 import OneSignal from "react-native-onesignal";
 import ChannelScreen from "../../screens/main/ChannelScreen";
 import OtherUserChannel from "../../screens/main/OtherUserChannel";
+import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
+import { Alert } from "react-native";
 
 const AppStack = () => {
   const Stack = createStackNavigator();
@@ -100,6 +102,8 @@ const AppStack = () => {
       // });
     });
   }, []);
+
+
 
   return (
     <Stack.Navigator

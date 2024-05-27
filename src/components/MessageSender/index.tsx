@@ -22,7 +22,12 @@ import {
   StorageServices,
   TOKEN,
 } from "../../utils/hooks/StorageServices";
-import { CreatePost, SendMessage, UpdatePost } from "../../api/ApiServices";
+import {
+  CreatePost,
+  SendMessage,
+  StartTypingChannel,
+  UpdatePost,
+} from "../../api/ApiServices";
 import { usePermissions } from "../../utils/Permissions";
 import ImagePicker from "react-native-image-crop-picker";
 import { openSettings } from "react-native-permissions";
@@ -259,8 +264,7 @@ const MessageSender = ({
     });
   };
   const createPost = async () => {
-    if (state.description.length > 0 ||isImageUplaod||isGifView) {
-
+    if (state.description.length > 0 || isImageUplaod || isGifView) {
       let form = new FormData();
       form.append("description", state.description);
       form.append("channelId", state.channelId);
@@ -273,7 +277,7 @@ const MessageSender = ({
       }
       setState({ description: "", imageUrl: "", channelId: channelId });
       setLoading(true);
-      setIsGifView(false)
+      setIsGifView(false);
 
       console.log(form);
       CreatePost(form, token, async ({ isSuccess, response }: any) => {
@@ -305,160 +309,169 @@ const MessageSender = ({
   // console.log(state,token);
 
   const sendMessage = async () => {
-    
-      let token = await StorageServices.getItem(TOKEN);
-      let form = new FormData();
-      form.append("senderId", msg.senderId);
-      form.append("receiverId", msg.receiverId);
-      if (msg.message) {
-        form.append("message", msg.message);
-      }
-      if (msg.attachment) {
-        form.append("attachment", msg.attachment);
-      }
-      if (giphy) {
-        form.append("gif", giphy);
-      }
-      setMsg({ ...msg, message: "", attachment: "" });
-      setLoading(true);
-      if (giphy) {
-        setGiphy("");
-      }
-      SendMessage(form, token, async ({ isSuccess, response }: any) => {
-        console.log("data p", isSuccess);
-        console.log(response);
-        let result = JSON.parse(response);
-        if (result.status) {
-          console.log(result);
-          setIsImageUplaod(false);
-          setImageData({});
-          setLoading(false);
+    let token = await StorageServices.getItem(TOKEN);
+    let form = new FormData();
+    form.append("senderId", msg.senderId);
+    form.append("receiverId", msg.receiverId);
+    if (msg.message) {
+      form.append("message", msg.message);
+    }
+    if (msg.attachment) {
+      form.append("attachment", msg.attachment);
+    }
+    if (giphy) {
+      form.append("gif", giphy);
+    }
+    setMsg({ ...msg, message: "", attachment: "" });
+    setLoading(true);
+    if (giphy) {
+      setGiphy("");
+    }
+    SendMessage(form, token, async ({ isSuccess, response }: any) => {
+      console.log("data p", isSuccess);
+      console.log(response);
+      let result = JSON.parse(response);
+      if (result.status) {
+        console.log(result);
+        setIsImageUplaod(false);
+        setImageData({});
+        setLoading(false);
 
-          // console.log('result?.posts',result?.posts?.data)
-          if (newChat) {
-            // navigation.navigate('MessageScreen');
-            navigation.navigate("MessageScreen", {
-              item: receiver,
-            });
-          }
-          if (result?.message?.senderId == msg.senderId) {
-            let data = [result?.message, ...conversation];
-            // data.unshift(result?.message);
-            setConversation(data);
-
-            setTimeout(() => {
-              flatListRefChat?.current?.scrollToEnd({ animated: true });
-            }, 500);
-          }
-
-          // setConversation([...conversation,result?.message]);
-        } else {
-          setMsg({ ...msg, message: "", attachment: "" });
-          setLoading(false);
-          console.log(result);
-          // Alert.alert("Alert!", "Something went wrong",);
-          console.log("Something went wrong");
+        // console.log('result?.posts',result?.posts?.data)
+        if (newChat) {
+          // navigation.navigate('MessageScreen');
+          navigation.navigate("MessageScreen", {
+            item: receiver,
+          });
         }
-      });
-      // SendMessage()
+        if (result?.message?.senderId == msg.senderId) {
+          let data = [result?.message, ...conversation];
+          // data.unshift(result?.message);
+          setConversation(data);
+
+          setTimeout(() => {
+            flatListRefChat?.current?.scrollToEnd({ animated: true });
+          }, 500);
+        }
+
+        // setConversation([...conversation,result?.message]);
+      } else {
+        setMsg({ ...msg, message: "", attachment: "" });
+        setLoading(false);
+        console.log(result);
+        // Alert.alert("Alert!", "Something went wrong",);
+        console.log("Something went wrong");
+      }
+    });
+    // SendMessage()
     // }
   };
+
+  const StartTyping = async () => {
+    let token = await StorageServices.getItem(TOKEN);
+    let body = { user1Id: authId, user2Id: receiverId };
+    console.log(body)
+    StartTypingChannel(body, token, async ({ isSuccess, response }: any) => {
+      console.log(response);
+    });
+  };
   return (
-  
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: "#8A8A8A",
+
+        width: windowWidth,
+        position: "absolute",
+        bottom: bottom || 0,
+        backgroundColor: colors.primary,
+        paddingVertical: verticalScale(10),
+        paddingHorizontal: scale(10),
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
-          borderTopWidth: 1,
-          borderBottomWidth: 1,
-          borderColor: "#8A8A8A",
-
-          width: windowWidth,
-          position: "absolute",
-          bottom: bottom || 0,
-          backgroundColor: colors.primary,
-          paddingVertical: verticalScale(10),
-          paddingHorizontal: scale(10),
+          borderRadius: scale(20),
+          backgroundColor: colors.black,
+          paddingHorizontal: scale(5),
+          paddingVertical: verticalScale(3),
+          width: "82%",
+          alignSelf: "center",
         }}
       >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            borderRadius: scale(20),
-            backgroundColor: colors.black,
-            paddingHorizontal: scale(5),
-            paddingVertical: verticalScale(3),
-            width: "82%",
-            alignSelf: "center",
-          }}
-        >
-          <TextInput
-            value={message ? msg.message : state.description}
-            onChangeText={(text) =>
-              message
-                ? setMsg({ ...msg, message: text })
-                : setState({ ...state, description: text })
-            }
-            style={{
-              marginLeft: 12,
-              color: colors.white,
-              paddingRight: 5,
-              width: notShow ? "90%" : "75%",
-              fontSize: verticalScale(16),
-            }}
-            placeholderTextColor={colors.gray200}
-            placeholder={placeholder || "Write a status update"}
-          />
-          {notShow ? (
-            <></>
-          ) : (
-            <>
-              <TouchableOpacity activeOpacity={0.6} onPress={onGiphyPress}>
-                <Image
-                  source={images.uploadGiphy}
-                  style={{ width: scale(20), height: scale(20) }}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-              <Spacer width={scale(10)} />
-            </>
-          )}
+        <TextInput
+          value={message ? msg.message : state.description}
+          onChangeText={(text) => {
+            message
+              ? setMsg({ ...msg, message: text })
+              : setState({ ...state, description: text });
 
-          {notShow ? (
-            <></>
-          ) : (
-            <>
-              <TouchableOpacity activeOpacity={0.6} onPress={onOpenGallery}>
-                <Image
-                  source={images.attach}
-                  style={{ width: scale(20), height: scale(20) }}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-            </>
-          )}
-        </View>
-
-        <TouchableOpacity
-          onPress={message ? sendMessage : createPost}
-          activeOpacity={0.6}
-          style={{
-            width: scale(45),
-            height: scale(45),
-            borderRadius: scale(45),
-            backgroundColor: colors.sky,
-            alignItems: "center",
-            justifyContent: "center",
+            StartTyping();
           }}
-        >
-          <Image
-            source={ images.simplesend}
-            style={{ width: scale(25), height: scale(25),marginLeft:8 }}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
+          style={{
+            marginLeft: 12,
+            color: colors.white,
+            paddingRight: 5,
+            width: notShow ? "90%" : "75%",
+            fontSize: verticalScale(16),
+          }}
+          placeholderTextColor={colors.gray200}
+          placeholder={placeholder || "Write a status update"}
+        />
+        {notShow ? (
+          <></>
+        ) : (
+          <>
+            <TouchableOpacity activeOpacity={0.6} onPress={onGiphyPress}>
+              <Image
+                source={images.uploadGiphy}
+                style={{ width: scale(20), height: scale(20) }}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <Spacer width={scale(10)} />
+          </>
+        )}
+
+        {notShow ? (
+          <></>
+        ) : (
+          <>
+            <TouchableOpacity activeOpacity={0.6} onPress={onOpenGallery}>
+              <Image
+                source={images.attach}
+                style={{ width: scale(20), height: scale(20) }}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+
+      <TouchableOpacity
+        onPress={message ? sendMessage : createPost}
+        activeOpacity={0.6}
+        style={{
+          width: scale(45),
+          height: scale(45),
+          borderRadius: scale(45),
+          backgroundColor: colors.sky,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Image
+          source={images.simplesend}
+          style={{ width: scale(25), height: scale(25), marginLeft: 8 }}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
       <ImageUploaderModal
         isModalVisible={isImageUplaod}
         imageData={imageData}
@@ -510,8 +523,7 @@ const MessageSender = ({
         loading={loading}
         // setActiveChat={setActiveChat}
       />
-      </View>
-    
+    </View>
   );
 };
 
