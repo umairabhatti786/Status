@@ -3,6 +3,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  Linking,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -16,6 +17,8 @@ import { appStyles } from "../../../utils/AppStyles";
 import CustomText from "../../../components/CustomText";
 import { colors } from "../../../utils/colors";
 import { images } from "../../../assets/images";
+import AutoLink from 'react-native-autolink';
+
 import {
   useIsFocused,
   useNavigation,
@@ -145,6 +148,8 @@ const Channel = ({
                   item?.title?.length > 30
                     ? item?.title?.substring(0, 29)
                     : item?.title;
+                    const userInputText = "He https://www.example.com/ llo, https://www.google.com/ ok bro. Ch https://www.example.com/ eck this link: https://www.example.com/";
+
                 return (
                   <View style={{ paddingBottom: verticalScale(10) }}>
                     <Spacer height={verticalScale(30)} />
@@ -326,6 +331,7 @@ const Channel = ({
                               width: 110,
                               height: 35,
                               alignSelf: "flex-end",
+                      
                             }}
                             source={images.giphy}
                             resizeMode="contain"
@@ -337,16 +343,16 @@ const Channel = ({
                         <></>
                       )}
                       {item?.description && (
-                        <CustomText
-                          color={colors.white}
-                          size={14}
-                          // fontFam="Inter-Medium"
-                          style={{
-                            marginTop: verticalScale(8),
-                            marginHorizontal: scale(10),
-                          }}
+                          <AutoLink
                           text={item?.description}
+                          onPress={(url) => Linking.openURL(url)}
+                          style={styles.descripationText}
+                          linkStyle={styles.descripationLinkText}
+                        
                         />
+
+
+                       
                       )}
 
                       <View
@@ -481,4 +487,20 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: scale(20),
   },
+  descripationText:{
+    fontSize:14,
+    marginTop: verticalScale(8),
+      marginHorizontal: scale(10),
+      fontFamily:"Inter-Medium",
+      color:colors.white
+      
+  },
+  descripationLinkText:{
+    fontSize:14,
+    marginTop: verticalScale(8),
+      marginHorizontal: scale(10),
+      fontFamily:"Inter-Medium",
+      color:colors.sky,
+      textDecorationLine:"underline"
+  }
 });
