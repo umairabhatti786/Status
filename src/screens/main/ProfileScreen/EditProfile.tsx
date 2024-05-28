@@ -140,6 +140,8 @@ const EditProfile = ({ route }: any) => {
     lng: userData?.lng ? userData?.lng : "",
   });
 
+    const [deleteWallImage, setDeleteWallImage] = useState(true)
+
   console.log("GenderValue", values.gender);
 
   useEffect(() => {
@@ -476,6 +478,7 @@ const EditProfile = ({ route }: any) => {
     form.append("isModel",1);
     form.append("profileType",profileType)
     form.append("wallpaperUrl", values.wallpaperUrl);
+    form.append("deleteWallImage", deleteWallImage);
     form.append(
       "gif1",
       nonEmptySelectedGifs[0] == undefined ? "" : nonEmptySelectedGifs[0]
@@ -486,6 +489,7 @@ const EditProfile = ({ route }: any) => {
     );
     form.append("name", values.name);
     form.append("imageUrl", values.imageUrl);
+    // form.append("deleteUserImage", true);
     form.append("location", values?.location);
     form.append("lat", values?.lat);
     form.append("lng", values?.lng);
@@ -637,7 +641,8 @@ const EditProfile = ({ route }: any) => {
                   activeOpacity={0.6}
                   onPress={() => {
                     setValues({ ...values, wallpaperUrl: "" });
-
+                    setDeleteWallImage(true)
+                    // console.log('wallpaperUrl',wallImg)
                     // setSelectedGifs((prevSelectedGifs) =>
                     //   prevSelectedGifs.filter((gi, ind) => gi !== gip)
                     // );

@@ -23,23 +23,19 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
   const [typing, setTyping] = useState(false);
   const pusher = Pusher.getInstance();
 
-  const con = async () => {
-    // console.log("am focused");
-    // let user = await StorageServices.getItem(AUTH);
+  
+  useEffect(() => {
+    pusher.init({
+      apiKey: "e8f7ca7b8515f9bfcbb0",
+      cluster: "mt1",
+      // onConnectionStateChange,
+    });
 
-    try {
-      await pusher.init({
-        apiKey: "e8f7ca7b8515f9bfcbb0",
-        cluster: "mt1",
-        // onConnectionStateChange,
-      });
-
-      await pusher.connect();
-      let channelNumber =
-        parseInt(item?.user1?.id || item?.user2?.id) + parseInt(user.id);
+     pusher.connect();
+      let channelNumber =item?.userId1+item?.userId2;
       console.log("channelNumber", channelNumber);
       console.log("chatChannel_" + channelNumber);
-      let chatChannel = await pusher.subscribe({
+      let chatChannel =  pusher.subscribe({
         channelName: "chatChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
           console.log("chatChannel", JSON.parse(event.data));
@@ -53,7 +49,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
           // setComments([...comments,JSON.parse(event.data).comment])
         },
       });
-      let TypingChannel = await pusher.subscribe({
+      let TypingChannel =  pusher.subscribe({
         channelName: "TypingChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
           if(JSON.parse(event.data).data.user1Id==receiver?.id){
@@ -63,28 +59,18 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
               setTyping(false);
             }, 2000);
           }
-          console.log("TypingChannel", JSON.parse(event.data).data.user2Id);
+          console.log("TypingChannel m", JSON.parse(event.data).data);
         },
       });
-      // await pusher.subscribe({ channelName:'commentsChannel_'+id });
-    } catch (e) {
-      console.log(`ERROR: ${e}`);
-    }
-  };
-  // const unCon = async () => {
-  //   await pusher.unsubscribe({
-  //     channelName:
-  //       "chatChannel_" + (item?.user1?.id || item?.user2?.id) + userData.id,
-  //   });
-  //   await pusher.disconnect();
-  // };
-  useEffect(() => {
-    con();
-    // if (isFocused) {
-    //   con();
-    // } else {
-    //   unCon();
-    // }
+
+    // Cleanup on unmount
+    return () => {
+      // channel.unbind('my-event');
+      
+      pusher.unsubscribe({channelName:"chatChannel_" + item?.userId1+item?.userId2});
+      pusher.unsubscribe({channelName:"TypingChannel_" + item?.userId1+item?.userId2});
+      pusher.disconnect();
+    };
   }, []);
   return (
     <>
