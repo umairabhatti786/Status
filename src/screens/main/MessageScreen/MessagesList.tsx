@@ -32,8 +32,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
     });
 
      pusher.connect();
-      let channelNumber =
-        parseInt(item?.user1?.id || item?.user2?.id) + parseInt(user.id);
+      let channelNumber =item?.userId1+item?.userId2;
       console.log("channelNumber", channelNumber);
       console.log("chatChannel_" + channelNumber);
       let chatChannel =  pusher.subscribe({
@@ -68,8 +67,8 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
     return () => {
       // channel.unbind('my-event');
       
-      pusher.unsubscribe({channelName:"chatChannel_" + parseInt(item?.user1?.id || item?.user2?.id) + parseInt(user.id)});
-      pusher.unsubscribe({channelName:"TypingChannel_" + parseInt(item?.user1?.id || item?.user2?.id) + parseInt(user.id)});
+      pusher.unsubscribe({channelName:"chatChannel_" + item?.userId1+item?.userId2});
+      pusher.unsubscribe({channelName:"TypingChannel_" + item?.userId1+item?.userId2});
       pusher.disconnect();
     };
   }, []);
