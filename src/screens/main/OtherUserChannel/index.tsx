@@ -355,9 +355,8 @@ const OtherUserChannel = () => {
                   />
                 </View>
               </View>
-              <View style={{ ...appStyles.row,}}>
-
-              <TouchableOpacity
+              <View style={{ ...appStyles.row }}>
+                <TouchableOpacity
                   activeOpacity={0.6}
                   style={{
                     width: scale(30),
@@ -365,7 +364,7 @@ const OtherUserChannel = () => {
                     alignItems: "flex-end",
                     justifyContent: "center",
                   }}
-                  // onPress={() => setIsBar(!isSideBar)}
+                  onPress={() => setIsBar(!isSideBar)}
                 >
                   <Image
                     style={{
@@ -378,9 +377,7 @@ const OtherUserChannel = () => {
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
-               
               </View>
-
             </View>
 
             <View
@@ -414,7 +411,6 @@ const OtherUserChannel = () => {
                   posts={posts}
                   hideSendMessage={true}
                   userData={data}
-
                   channelId={channelId}
                   counter={counter}
                   setCounter={setCounter}
@@ -433,7 +429,38 @@ const OtherUserChannel = () => {
         // paddingHorizontal={5}
         // paddingVertical={5}
         isModalVisible={isSideBar}
-      ></SizeBar>
+      >
+        <View>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            style={{
+              height: 30,
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => {
+              setIsBar(false);
+              setTimeout(() => {
+
+                navigation.navigate("OthersProfile", {
+                  id: data?.id,
+                })
+       
+              }, 200);
+            }}
+          >
+            <CustomText
+              color={"#F9FFFF"}
+              size={15}
+              style={{ marginBottom: verticalScale(10) }}
+              // fontFam="Inter-Medium"
+              // style={{ marginLeft: scale(8) }}
+              text={"ViewProfile"}
+            />
+          </TouchableOpacity>
+        </View>
+      </SizeBar>
 
       {showMessage && (
         <CustomToast

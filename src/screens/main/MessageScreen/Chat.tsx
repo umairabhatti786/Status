@@ -107,6 +107,7 @@ const Chat = () => {
     block: false,
     trash: false,
   });
+  console.log("typingDaya",typing)
   // useEffect(() => {
   //   // setTimeout(() => {
   //     if (conversation.length > 0 && flatListRef.current) {

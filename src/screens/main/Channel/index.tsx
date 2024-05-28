@@ -17,7 +17,7 @@ import { appStyles } from "../../../utils/AppStyles";
 import CustomText from "../../../components/CustomText";
 import { colors } from "../../../utils/colors";
 import { images } from "../../../assets/images";
-import AutoLink from 'react-native-autolink';
+import AutoLink from "react-native-autolink";
 
 import {
   useIsFocused,
@@ -61,7 +61,7 @@ const Channel = ({
   flatListRefOtherPosts,
   isKeyboardVisible,
   editPostData,
-  setEditPostData
+  setEditPostData,
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
@@ -98,295 +98,285 @@ const Channel = ({
 
   return (
     <>
-      <View style={{backgroundColor:colors.black,flex:0.9}}>
+      <View style={{ backgroundColor: colors.black, flex: 0.9 }}>
         <FastImage
-          style={{ width: "100%", height: windowHeight,position:"absolute", }}
+          style={{ width: "100%", height: windowHeight, position: "absolute" }}
           source={{
-            uri: userData?.wallpaperUrl?userData?.wallpaperUrl:null,
+            uri: userData?.wallpaperUrl ? userData?.wallpaperUrl : null,
             headers: { Authorization: "someAuthToken" },
             priority: FastImage.priority.high,
           }}
           // source={userData?.wallpaperUrl ? { uri: userData?.wallpaperUrl } : ""}
         />
-       
-            <FlatList
-              data={hideSendMessage ? posts : authPosts}
-              nestedScrollEnabled={true}
-              ref={hideSendMessage?flatListRefOtherPosts:flatListRefPosts}
-              keyExtractor={(item) => item}
-              style={{ marginBottom: isKeyboardVisible?verticalScale(25) :0}}
-              inverted={true}
-              //  contentContainerStyle={{
-              //    flex:5
-              //  }}
-              // ListEmptyComponent={() => {
-              //   return (
-              //     <View
-              //       style={{
-              //         height: windowHeight / 1.5,
-              //         alignItems: "center",
-              //         justifyContent: "center",
-              //         width: "60%",
-              //         alignSelf: "center",
-              //       }}
-              //     >
-              //       <NewText
-              //         color={colors.gray500}
-              //         size={17}
-              //         fontFam="Inter-Medium"
-              //         lineHeight={26}
-              //         style={{ textAlign: "center" }}
-              //         text={"This user has not posted any updates yet."}
-              //       />
-              //     </View>
-              //   );
-              // }}
-              renderItem={({ item, index }) => {
-                const currentDate = moment();
-                const createdAtDate = moment(item?.created_at);
-                const shortenedText =
-                  item?.title?.length > 30
-                    ? item?.title?.substring(0, 29)
-                    : item?.title;
-                    const userInputText = "He https://www.example.com/ llo, https://www.google.com/ ok bro. Ch https://www.example.com/ eck this link: https://www.example.com/";
 
-                return (
-                  <View style={{ paddingBottom: verticalScale(10) }}>
-                    <Spacer height={verticalScale(30)} />
-                    <View style={styles.timeContainer}>
-                      <CustomText
-                        color={colors.grey300}
-                        size={15}
-                        text={
-                          createdAtDate.isSame(currentDate, "day")
-                            ? "Today " + createdAtDate.format("h:mm A")
-                            : createdAtDate.format("dddd h:mm A")
-                        }
-                        // fontFam="Inter-SemiBold"
-                        //  style={{ marginLeft: scale(8),backgroundColor:colors.primary }}
-                        // text={moment(item?.created_at).format("dddd hh:mm A")}
-                      />
-                    </View>
-                    <View
-                      style={{
-                        // marginHorizontal: scale(15),
-                        marginVertical: verticalScale(10),
-                        // height:windowHeight/1.5,
-                        // height:"50%",
-                        backgroundColor: colors.black300,
-                        borderRadius: scale(10),
-                        width: "90%",
-                        alignSelf: "center",
-                        overflow: "hidden",
-                        // paddingVertical: verticalScale(8),
-                        // paddingHorizontal: scale(5),
-                      }}
-                    >
+        <FlatList
+          data={hideSendMessage ? posts : authPosts}
+          nestedScrollEnabled={true}
+          ref={hideSendMessage ? flatListRefOtherPosts : flatListRefPosts}
+          keyExtractor={(item) => item}
+          style={{ marginBottom: isKeyboardVisible ? verticalScale(25) : 0 }}
+          inverted={true}
+          //  contentContainerStyle={{
+          //    flex:5
+          //  }}
+          // ListEmptyComponent={() => {
+          //   return (
+          //     <View
+          //       style={{
+          //         height: windowHeight / 1.5,
+          //         alignItems: "center",
+          //         justifyContent: "center",
+          //         width: "60%",
+          //         alignSelf: "center",
+          //       }}
+          //     >
+          //       <NewText
+          //         color={colors.gray500}
+          //         size={17}
+          //         fontFam="Inter-Medium"
+          //         lineHeight={26}
+          //         style={{ textAlign: "center" }}
+          //         text={"This user has not posted any updates yet."}
+          //       />
+          //     </View>
+          //   );
+          // }}
+          renderItem={({ item, index }) => {
+            const currentDate = moment();
+            const createdAtDate = moment(item?.created_at);
+            const shortenedText =
+              item?.title?.length > 30
+                ? item?.title?.substring(0, 29)
+                : item?.title;
+            const userInputText =
+              "He https://www.example.com/ llo, https://www.google.com/ ok bro. Ch https://www.example.com/ eck this link: https://www.example.com/";
+
+            return (
+              <View style={{ paddingBottom: verticalScale(10) }}>
+                <Spacer height={verticalScale(30)} />
+                <View style={styles.timeContainer}>
+                  <CustomText
+                    color={colors.grey300}
+                    size={15}
+                    text={
+                      createdAtDate.isSame(currentDate, "day")
+                        ? "Today " + createdAtDate.format("h:mm A")
+                        : createdAtDate.format("dddd h:mm A")
+                    }
+                    // fontFam="Inter-SemiBold"
+                    //  style={{ marginLeft: scale(8),backgroundColor:colors.primary }}
+                    // text={moment(item?.created_at).format("dddd hh:mm A")}
+                  />
+                </View>
+                <View
+                  style={{
+                    // marginHorizontal: scale(15),
+                    marginVertical: verticalScale(10),
+                    // height:windowHeight/1.5,
+                    // height:"50%",
+                    backgroundColor: colors.black300,
+                    borderRadius: scale(10),
+                    width: "90%",
+                    alignSelf: "center",
+                    overflow: "hidden",
+                    // paddingVertical: verticalScale(8),
+                    // paddingHorizontal: scale(5),
+                  }}
+                >
+                  <View
+                    style={{
+                      paddingHorizontal: 10,
+                      paddingVertical: 2,
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <NewText
+                      color={colors.gray500}
+                      size={16}
+                      fontFam="Inter-Medium"
+                      // style={{ marginBottom: verticalScale(8) }}
+                      text={shortenedText}
+                      numberOfLines={1}
+                    />
+                    {userData && (
                       <View
                         style={{
-                          paddingHorizontal: 10,
-                          paddingVertical: 2,
                           flexDirection: "row",
                           justifyContent: "space-between",
                         }}
                       >
-                        <NewText
-                          color={colors.gray500}
-                          size={16}
-                          fontFam="Inter-Medium"
-                          // style={{ marginBottom: verticalScale(8) }}
-                          text={shortenedText}
-                          numberOfLines={1}
-                        />
-                        {userData && (
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              justifyContent: "space-between",
+                        {!item?.gif && (
+                          <TouchableOpacity
+                            onPress={() => {
+                              setEditPostData({
+                                description: item?.description,
+                                imageUrl: item?.imageUrl,
+                                gif: item?.gif,
+                              });
+                              setPostId(item.id);
+                              setIsEditView(true);
                             }}
                           >
-                            {!item?.gif && (
-                              <TouchableOpacity
-                                onPress={() => {
-                                  setEditPostData({
-                                    description:item?.description,
-                                    imageUrl:item?.imageUrl,
-                                    gif:item?.gif,
-                                  })
-                                  setPostId(item.id);
-                                  setIsEditView(true);
-                                }}
-                              >
-                                <NewText
-                                  color={colors.gray500}
-                                  size={16}
-                                  fontFam="Inter-Medium"
-                                  text={"Edit"}
-                                />
-                              </TouchableOpacity>
-                            )}
-                            <Spacer width={10} />
-                            <TouchableOpacity
-                              onPress={() => {
-                                Alert.alert(
-                                  "Delete Post",
-                                  "Are you sure!", // <- this part is optional, you can pass an empty string
-                                  [
-                                    {
-                                      text: "Cancel",
-                                      onPress: () =>
-                                        console.log("Cancel Pressed"),
-                                      style: "cancel",
-                                    },
-                                    {
-                                      text: "Delete",
-                                      onPress: async () => {
-                                        let token =
-                                          await StorageServices.getItem(TOKEN);
-                                        DeletePost(
-                                          item.id,
-                                          token,
-                                          async ({
-                                            isSuccess,
-                                            response,
-                                          }: any) => {
-                                            let result = JSON.parse(response);
-                                            if (result.status) {
-                                              setCounter(counter + 1);
-                                            } else {
-                                              console.log(result);
-                                              // Alert.alert("Alert!", "Something went wrong",);
-                                              console.log(
-                                                "Something went wrong"
-                                              );
-                                            }
-                                          }
-                                        );
-                                      },
-                                    },
-                                  ],
-                                  { cancelable: false }
-                                );
-                              }}
-                            >
-                              <NewText
-                                color={colors.gray500}
-                                size={16}
-                                fontFam="Inter-Medium"
-                                // style={{ marginBottom: verticalScale(8) }}
-                                text={"Delete"}
-                              />
-                            </TouchableOpacity>
-                          </View>
+                            <NewText
+                              color={colors.gray500}
+                              size={16}
+                              fontFam="Inter-Medium"
+                              text={"Edit"}
+                            />
+                          </TouchableOpacity>
                         )}
-                      </View>
-
-                      {item?.imageUrl ? (
+                        <Spacer width={10} />
                         <TouchableOpacity
-                          activeOpacity={0.9}
                           onPress={() => {
-                            setImageObject({
-                              uri: item?.imageUrl,
-                              name: item?.title,
-                              description: item?.description,
-                              time: item?.created_at,
-                            });
-                            setIsViewImage(true);
-                          }}
-                          style={{
-                            width: "100%",
-                            height: verticalScale(340),
-                            borderRadius: scale(10),
+                            Alert.alert(
+                              "Delete Post",
+                              "Are you sure!", // <- this part is optional, you can pass an empty string
+                              [
+                                {
+                                  text: "Cancel",
+                                  onPress: () => console.log("Cancel Pressed"),
+                                  style: "cancel",
+                                },
+                                {
+                                  text: "Delete",
+                                  onPress: async () => {
+                                    let token = await StorageServices.getItem(
+                                      TOKEN
+                                    );
+                                    DeletePost(
+                                      item.id,
+                                      token,
+                                      async ({ isSuccess, response }: any) => {
+                                        let result = JSON.parse(response);
+                                        if (result.status) {
+                                          setCounter(counter + 1);
+                                        } else {
+                                          console.log(result);
+                                          // Alert.alert("Alert!", "Something went wrong",);
+                                          console.log("Something went wrong");
+                                        }
+                                      }
+                                    );
+                                  },
+                                },
+                              ],
+                              { cancelable: false }
+                            );
                           }}
                         >
-                          <FastImage
-                            style={{
-                              width: "100%",
-                              height: verticalScale(340),
-                              borderRadius: scale(10),
-                            }}
-                            // source={{ uri: item?.imageUrl }}
-                            source={{
-                              uri: item?.imageUrl,
-                              headers: { Authorization: "AuthToken" },
-                              priority: FastImage.priority.high,
-                            }}
+                          <NewText
+                            color={colors.gray500}
+                            size={16}
+                            fontFam="Inter-Medium"
+                            // style={{ marginBottom: verticalScale(8) }}
+                            text={"Delete"}
                           />
                         </TouchableOpacity>
-                      ) : (
-                        <></>
-                      )}
-                      {item?.gif ? (
-                        <View>
-                           <Image
-                          style={{ width: "100%", height: verticalScale(300) }}
-                          source={{ uri: item?.gif }}
-                        />
+                      </View>
+                    )}
+                  </View>
 
-<View
-                          style={{ position: "absolute", right: 8, bottom: 0 }}
-                        >
-                          <Image
-                            style={{
-                              width: 110,
-                              height: 35,
-                              alignSelf: "flex-end",
-                      
-                            }}
-                            source={images.giphy}
-                            resizeMode="contain"
-                          />
-                        </View>
-                          </View>
-                       
-                      ) : (
-                        <></>
-                      )}
-                      {item?.description && (
-                          <AutoLink
-                          text={item?.description}
-                          onPress={(url) => Linking.openURL(url)}
-                          style={styles.descripationText}
-                          linkStyle={styles.descripationLinkText}
-                        
-                        />
-
-
-                       
-                      )}
+                  {item?.imageUrl ? (
+                    <TouchableOpacity
+                      activeOpacity={0.9}
+                      onPress={() => {
+                        setImageObject({
+                          uri: item?.imageUrl,
+                          name: item?.title,
+                          description: item?.description,
+                          time: item?.created_at,
+                        });
+                        setIsViewImage(true);
+                      }}
+                      style={{
+                        width: "100%",
+                        height: verticalScale(340),
+                        borderRadius: scale(10),
+                      }}
+                    >
+                      <FastImage
+                        style={{
+                          width: "100%",
+                          height: verticalScale(340),
+                          borderRadius: scale(10),
+                        }}
+                        // source={{ uri: item?.imageUrl }}
+                        source={{
+                          uri: item?.imageUrl,
+                          headers: { Authorization: "AuthToken" },
+                          priority: FastImage.priority.high,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <></>
+                  )}
+                  {item?.gif ? (
+                    <View>
+                      <Image
+                        style={{ width: "100%", height: verticalScale(300) }}
+                        source={{ uri: item?.gif }}
+                      />
 
                       <View
-                        style={{
-                          ...appStyles.row,
-                          alignSelf: "flex-end",
-                          marginRight: 10,
-                          marginBottom: 5,
-                          height: 20,
-                        }}
+                        style={{ position: "absolute", right: 8, bottom: 0 }}
                       >
-                        {/* {item?.imageUrl && (
+                        <Image
+                          style={{
+                            width: 110,
+                            height: 35,
+                            alignSelf: "flex-end",
+                          }}
+                          source={images.giphy}
+                          resizeMode="contain"
+                        />
+                      </View>
+                    </View>
+                  ) : (
+                    <></>
+                  )}
+                  {item?.description && (
+                    <AutoLink
+                      text={item?.description}
+                      onPress={(url) => Linking.openURL(url)}
+                      style={styles.descripationText}
+                      linkStyle={styles.descripationLinkText}
+                    />
+                  )}
+
+                  <View
+                    style={{
+                      ...appStyles.row,
+                      alignSelf: "flex-end",
+                      marginRight: 10,
+                      marginBottom: 5,
+                      height: 20,
+                    }}
+                  >
+                    {/* {item?.imageUrl && (
                         )} */}
-                        <View style={appStyles.row}>
-                          <Image
-                            style={{
-                              width: 17,
-                              height: 17,
-                              tintColor: colors.grey300,
-                            }}
-                            source={images.eye}
-                          />
-                          <Spacer width={8} />
-                          <NewText
-                            color={colors.grey300}
-                            size={13}
-                            fontFam="Inter-Medium"
-                            style={{
-                              marginRight: scale(5),
-                              textAlign: "right",
-                            }}
-                            text={item?.views_count}
-                          />
-                          {/* <Spacer width={10} />
+                    <View style={appStyles.row}>
+                      <Image
+                        style={{
+                          width: 17,
+                          height: 17,
+                          tintColor: colors.grey300,
+                        }}
+                        source={images.eye}
+                      />
+                      <Spacer width={8} />
+                      <NewText
+                        color={colors.grey300}
+                        size={13}
+                        fontFam="Inter-Medium"
+                        style={{
+                          marginRight: scale(5),
+                          textAlign: "right",
+                        }}
+                        text={item?.views_count}
+                      />
+                      {/* <Spacer width={10} />
                           <NewText
                             color={colors.grey300}
                             size={13}
@@ -397,40 +387,39 @@ const Channel = ({
                             }}
                             text={moment(item?.created_at).format("h:mm A")}
                           /> */}
-                        </View>
-                      </View>
                     </View>
-                    <LikeButton
-                    isLiked={item?.likes?.length?true:false}
-                    likes_count={item?.likes_count}
-                    onPress={async () => {
-                      let user = await StorageServices.getItem(AUTH);
-                      let token = await StorageServices.getItem(TOKEN);
-                      let data = { user_id: user.id, post_id: item.id };
-                      console.log(data, token);
-                      AddRemoveLikes(
-                        data,
-                        token,
-                        async ({ isSuccess, response }: any) => {
-                          console.log("data l", isSuccess);
-
-                          let result = JSON.parse(response);
-                          if (result.status) {
-                            setCounter(counter + 1);
-                          } else {
-                            console.log(result);
-                            // Alert.alert("Alert!", "Something went wrong",);
-                            console.log("Something went wrong");
-                          }
-                        }
-                      );
-                    }}
-                    />
-                    
                   </View>
-                );
-              }}
-            />
+                </View>
+                <LikeButton
+                  isLiked={item?.likes?.length ? true : false}
+                  likes_count={item?.likes_count}
+                  onPress={async () => {
+                    let user = await StorageServices.getItem(AUTH);
+                    let token = await StorageServices.getItem(TOKEN);
+                    let data = { user_id: user.id, post_id: item.id };
+                    console.log(data, token);
+                    AddRemoveLikes(
+                      data,
+                      token,
+                      async ({ isSuccess, response }: any) => {
+                        console.log("data l", isSuccess);
+
+                        let result = JSON.parse(response);
+                        if (result.status) {
+                          setCounter(counter + 1);
+                        } else {
+                          console.log(result);
+                          // Alert.alert("Alert!", "Something went wrong",);
+                          console.log("Something went wrong");
+                        }
+                      }
+                    );
+                  }}
+                />
+              </View>
+            );
+          }}
+        />
         {/* </ImageBackground> */}
       </View>
 
@@ -487,20 +476,20 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: scale(20),
   },
-  descripationText:{
-    fontSize:14,
+  descripationText: {
+    fontSize: 14,
     marginTop: verticalScale(8),
-      marginHorizontal: scale(10),
-      fontFamily:"Inter-Medium",
-      color:colors.white
-      
+    marginHorizontal: scale(10),
+    fontFamily: "Inter-Medium",
+    color: colors.white,
   },
-  descripationLinkText:{
-    fontSize:14,
+  descripationLinkText: {
+    fontSize: 14,
     marginTop: verticalScale(8),
-      marginHorizontal: scale(10),
-      fontFamily:"Inter-Medium",
-      color:colors.sky,
-      textDecorationLine:"underline"
-  }
+    marginHorizontal: scale(10),
+    fontFamily: "Inter-Medium",
+    color: colors.sky,
+    textDecorationLine: "underline",
+    lineHeight:22
+  },
 });
