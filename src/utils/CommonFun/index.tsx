@@ -12,19 +12,25 @@ export function capitalizeFirstLetter(str) {
   }
 
 
-export const dateFormat = date => {
-  const now = moment();
-  const inputDate = moment(date);
-
-  if (now.isSame(inputDate, 'day')) {
-    return inputDate.fromNow(); // Shows "3 minutes ago", "1 hour ago", etc.
-  }
-
-  return inputDate.calendar(null, {
-    nextDay: '[Tomorrow]',
-    nextWeek: 'dddd',
-    lastDay: '[Yesterday]',
-    lastWeek: 'dddd',
-    sameElse: 'DD MMM YY',
-  });
-};
+  export const dateFormat = date => {
+    const now = moment();
+    const inputDate = moment(date);
+  
+    if (now.isSame(inputDate, 'day')) {
+      // Same day: show time difference
+      return inputDate.fromNow(); // Shows "3 minutes ago", "1 hour ago", etc.
+    }
+  
+    if (now.diff(inputDate, 'days') === 1) {
+      // Yesterday: show "Yesterday"
+      return 'Yesterday';
+    }
+  
+    if (now.diff(inputDate, 'days') < 7) {
+      // Within the last week: show day of the week
+      return inputDate.format('dddd');
+    }
+  
+    // Older than a week: show date
+    return inputDate.format('DD MMM YY');
+  };

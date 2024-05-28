@@ -1,4 +1,11 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
 import CustomText from "../CustomText";
 import { colors } from "../../utils/colors";
@@ -6,6 +13,7 @@ import { windowWidth } from "../../utils/Dimensions";
 import { appStyles } from "../../utils/AppStyles";
 import { scale, verticalScale } from "react-native-size-matters";
 import FastImage from "react-native-fast-image";
+import Autolink from "react-native-autolink";
 
 type Props = {
   name?: string;
@@ -82,9 +90,11 @@ const InboxComponent = ({
         <View style={{ width: 62, height: 62 }}>
           <FastImage
             style={{ width: "100%", height: "100%", borderRadius: scale(5) }}
-            source={{   uri: image,
+            source={{
+              uri: image,
               headers: { Authorization: "someAuthToken" },
-              priority: FastImage.priority.high,}}
+              priority: FastImage.priority.high,
+            }}
             // source={image}
           />
         </View>
@@ -98,7 +108,13 @@ const InboxComponent = ({
               // backgroundColor:"red"
             }}
           >
-            <View style={{ ...appStyles.row, marginTop: verticalScale(-5),width:"65%" }}>
+            <View
+              style={{
+                ...appStyles.row,
+                marginTop: verticalScale(-5),
+                width: "65%",
+              }}
+            >
               <CustomText
                 text={name}
                 color={colors.white}
@@ -127,7 +143,17 @@ const InboxComponent = ({
               />
             </View>
           </View>
-          <CustomText
+
+          <Autolink
+            text={message}
+            onPress={(url) => Linking.openURL(url)}
+            style={{
+              ...styles.descripationText,
+              color: profile ? colors.gray500 : colors.white,
+            }}
+            linkStyle={styles.descripationLinkText}
+          />
+          {/* <CustomText
             text={message}
             color={profile ? colors.gray500 : colors.white}
             size={15}
@@ -135,7 +161,7 @@ const InboxComponent = ({
             style={{ width: windowWidth / 1.5 }}
             fontFam="Poppins-Medium"
             fontWeight={profile ? "600" : "500"}
-          />
+          /> */}
           {/* attachments */}
           {attachments?.[0]?.path && (
             // <View style={{ width: "70%", height: 100 }}>
@@ -146,9 +172,11 @@ const InboxComponent = ({
                 borderRadius: scale(5),
               }}
               resizeMode={"cover"}
-              source={{   uri: attachments?.[0]?.path ,
+              source={{
+                uri: attachments?.[0]?.path,
                 headers: { Authorization: "someAuthToken" },
-                priority: FastImage.priority.high,}}
+                priority: FastImage.priority.high,
+              }}
               // source={{ uri: attachments?.[0]?.path }}
             />
             // </View>
@@ -161,10 +189,12 @@ const InboxComponent = ({
                 alignSelf: "left",
                 borderRadius: scale(5),
               }}
-              source={{   uri: gif,
+              source={{
+                uri: gif,
                 headers: { Authorization: "someAuthToken" },
-                priority: FastImage.priority.high,}}      
-                       resizeMode="cover"
+                priority: FastImage.priority.high,
+              }}
+              resizeMode="cover"
             />
           )}
         </View>
@@ -175,4 +205,18 @@ const InboxComponent = ({
 
 export default InboxComponent;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  descripationText: {
+    fontSize: 16,
+    fontFamily: "Inter-Medium",
+    width: windowWidth / 1.5 
+  },
+  descripationLinkText: {
+    fontSize: 16,
+    fontFamily: "Inter-Medium",
+    color: colors.sky,
+    textDecorationLine: "underline",
+    lineHeight: 22,
+    width: windowWidth / 1.5 
+  },
+});

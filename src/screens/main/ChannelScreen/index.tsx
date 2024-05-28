@@ -110,10 +110,10 @@ const ChannelScreen = () => {
   const flatListRefPosts: any = useRef(null);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [editPostData, setEditPostData] = useState({
-    description:'',
-    imageUrl:'',
-    gif:'',
-  })
+    description: "",
+    imageUrl: "",
+    gif: "",
+  });
 
   const dispatch = useDispatch();
 
@@ -163,11 +163,10 @@ const ChannelScreen = () => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
       setGiphy(e.media.url);
 
-      setIsGifView(true)
+      setIsGifView(true);
       GiphyDialog.hide();
       // SendMessage()
-      console.log(isGifView)
-    
+      console.log(isGifView);
     };
     const listener = GiphyDialog.addListener(
       GiphyDialogEvent.MediaSelected,
@@ -416,9 +415,11 @@ const ChannelScreen = () => {
             </View>
             <TouchableOpacity
               activeOpacity={0.6}
-              //   onPress={() =>
-              //     navigation.navigate("EditProfile", { data: userData })
-              //   }
+              onPress={() =>{
+                setIsBar(true)
+
+
+              } }
             >
               <Image
                 style={{
@@ -461,7 +462,6 @@ const ChannelScreen = () => {
                 flatListRefPosts={flatListRefPosts}
                 editPostData={editPostData}
                 setEditPostData={setEditPostData}
-
               />
 
               <View>
@@ -492,6 +492,46 @@ const ChannelScreen = () => {
           </KeyboardAvoidingView>
         </SafeAreaView>
       )}
+
+      <SizeBar
+        setIsModalVisible={setIsBar}
+        top={verticalScale(-15)}
+        right={scale(-8)}
+        // paddingHorizontal={5}
+        // paddingVertical={5}
+        isModalVisible={isSideBar}
+      >
+        <View>
+          <TouchableOpacity
+            activeOpacity={0.6}
+            style={{
+              height: 30,
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={() => {
+              setIsBar(false);
+              dispatch(setDisableBottomTab(false));
+
+              setTimeout(() => {
+                navigation.navigate("ProfileStack", {
+                  id: userData?.id,
+                });
+              }, 200);
+            }}
+          >
+            <CustomText
+              color={"#F9FFFF"}
+              size={15}
+              style={{ marginBottom: verticalScale(10) }}
+              // fontFam="Inter-Medium"
+              // style={{ marginLeft: scale(8) }}
+              text={"ViewProfile"}
+            />
+          </TouchableOpacity>
+        </View>
+      </SizeBar>
     </>
   );
 };
