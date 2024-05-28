@@ -57,6 +57,7 @@ const MessageScreen = ({ navigation }: any) => {
   const renderChatList = ({ item }: any) => {
     return (
       <MessagesList
+      
         item={item}
         handleFavorite={() => handleFavorite(item.id)}
       />

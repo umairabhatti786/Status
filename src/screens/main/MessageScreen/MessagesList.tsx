@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image, Dimensions, TouchableOpacity } from "react-native";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
@@ -9,13 +9,83 @@ import { scale, verticalScale } from "react-native-size-matters";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { getUserData } from "../../../redux/reducers/authReducer";
+import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
+import NewText from "../../../components/NewText";
 export const windowWidth = Dimensions.get("window").width;
 
 const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
   const navigation: any = useNavigation();
   const user = useSelector(getUserData);
+  const [lastMessage, setLastMessage] = useState(item?.last_message)
+  const receiver=item?.user1 || item?.user2
 
   const [favorite, setFavorite] = useState(false);
+  const [typing, setTyping] = useState(false);
+  const pusher = Pusher.getInstance();
+
+  const con = async () => {
+    // console.log("am focused");
+    // let user = await StorageServices.getItem(AUTH);
+
+    try {
+      await pusher.init({
+        apiKey: "e8f7ca7b8515f9bfcbb0",
+        cluster: "mt1",
+        // onConnectionStateChange,
+      });
+
+      await pusher.connect();
+      let channelNumber =
+        parseInt(item?.user1?.id || item?.user2?.id) + parseInt(user.id);
+      console.log("channelNumber", channelNumber);
+      console.log("chatChannel_" + channelNumber);
+      let chatChannel = await pusher.subscribe({
+        channelName: "chatChannel_" + channelNumber,
+        onEvent: (event: PusherEvent) => {
+          console.log("chatChannel", JSON.parse(event.data));
+          setLastMessage(JSON.parse(event.data).message);
+          // if (!(JSON.parse(event.data).message?.senderId == user.id)) {
+            // setConversation([...conversation,JSON.parse(event.data).message])
+            // setNewMessage(JSON.parse(event.data).message);
+            // flatListRefChat.current.scrollToEnd({ animated: true });
+          // }
+          // setConversation([...conversation, JSON.parse(event.data).message]);
+          // setComments([...comments,JSON.parse(event.data).comment])
+        },
+      });
+      let TypingChannel = await pusher.subscribe({
+        channelName: "TypingChannel_" + channelNumber,
+        onEvent: (event: PusherEvent) => {
+          if(JSON.parse(event.data).data.user1Id==receiver?.id){
+
+            setTyping(true);
+            setTimeout(() => {
+              setTyping(false);
+            }, 2000);
+          }
+          console.log("TypingChannel", JSON.parse(event.data).data.user2Id);
+        },
+      });
+      // await pusher.subscribe({ channelName:'commentsChannel_'+id });
+    } catch (e) {
+      console.log(`ERROR: ${e}`);
+    }
+  };
+  // const unCon = async () => {
+  //   await pusher.unsubscribe({
+  //     channelName:
+  //       "chatChannel_" + (item?.user1?.id || item?.user2?.id) + userData.id,
+  //   });
+  //   await pusher.disconnect();
+  // };
+  useEffect(() => {
+    con();
+    // if (isFocused) {
+    //   con();
+    // } else {
+    //   unCon();
+    // }
+  }, []);
   return (
     <>
       <TouchableOpacity
@@ -36,13 +106,13 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
           // alignItems: "center",
         }}
       >
-        {item?.last_message?.receiverId==user?.id?
+        {lastMessage?.receiverId==user?.id?
         <View
           style={{
             width: scale(7.5),
             height: scale(7.5),
             borderRadius: 999,
-            backgroundColor: !item?.last_message?.read_at ? colors.sky : "transparent",
+            backgroundColor: !lastMessage?.read_at ? colors.sky : "transparent",
             marginRight: verticalScale(15),
             alignSelf: "center",
           }}
@@ -82,17 +152,28 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
                 fontWeight="800"
               /> */}
           {/* <Spacer height={5} /> */}
-          <CustomText
-            text={item?.last_message?.message}
-            color={
-              item?.message === "Typing..." ? colors.lightgreen : colors.gray500
-            }
-            size={15}
-            style={{ width: windowWidth / 1.8 }}
-            numberOfLines={2}
-            fontFam="Poppins-Medium"
-            fontWeight="500"
-          />
+          {
+            !typing?
+
+            <CustomText
+              text={lastMessage?.message}
+              color={colors.gray500}
+              size={15}
+              style={{ width: windowWidth / 1.8 }}
+              numberOfLines={2}
+              fontFam="Poppins-Medium"
+              fontWeight="500"
+            />:<></>
+          }
+          {typing?
+          
+          <NewText
+          color={colors.lightgreen}
+          size={16}
+          text={'Typing...'}
+          // label={'Typing...'}
+          />:<></>
+          }
         </View>
         <View
           style={{
@@ -112,7 +193,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
           }}
         >
           <CustomText
-            text={moment(item?.last_message?.created_at).format("h:mm a")}
+            text={moment(lastMessage?.created_at).format("h:mm a")}
             color={colors.gray500}
             size={14}
             fontFam="Poppins-Regular"
