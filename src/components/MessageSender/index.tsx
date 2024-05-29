@@ -309,6 +309,8 @@ const MessageSender = ({
   // console.log(state,token);
 
   const sendMessage = async () => {
+    if (msg.message.length > 0 || isImageUplaod || isGifView) {
+    
     let token = await StorageServices.getItem(TOKEN);
     let form = new FormData();
     form.append("senderId", msg.senderId);
@@ -327,6 +329,7 @@ const MessageSender = ({
     if (giphy) {
       setGiphy("");
     }
+    setIsGifView(false);
     SendMessage(form, token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
       console.log(response);
@@ -364,7 +367,7 @@ const MessageSender = ({
       }
     });
     // SendMessage()
-    // }
+    }
   };
 
   const StartTyping = async () => {
@@ -511,6 +514,7 @@ const MessageSender = ({
         isModalVisible={isGifView}
         setModalVisible={setIsGifView}
         giphy={giphy}
+        setGiphy={setGiphy}
         imageData={imageData}
         sendMessage={sendMessage}
         createPost={createPost}

@@ -102,6 +102,8 @@ const Chat = () => {
   const userData = useSelector(getUserData);
   const [giphy, setGiphy] = useState("");
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
+  const [isGifView, setIsGifView] = useState(false);
+
   const [state, setState] = useState({
     archive: false,
     block: false,
@@ -163,7 +165,7 @@ const Chat = () => {
   useEffect(() => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
       setGiphy(e.media.url);
-
+      setIsGifView(true);
       GiphyDialog.hide();
     };
     const listener = GiphyDialog.addListener(
@@ -179,109 +181,58 @@ const Chat = () => {
     setConversation([...conversation, NewMessage]);
   }, [NewMessage]);
 
-  const con = async () => {
-    // console.log("am focused");
-    // let user = await StorageServices.getItem(AUTH);
+  
 
-    try {
-      await pusher.init({
-        apiKey: "e8f7ca7b8515f9bfcbb0",
-        cluster: "mt1",
-        // onConnectionStateChange,
-      });
-
-      await pusher.connect();
-      let channelNumber =
-        parseInt(item?.user1?.id || item?.user2?.id) + parseInt(userData.id);
-      console.log("channelNumber", channelNumber);
-      console.log("chatChannel_" + channelNumber);
-      let chatChannel = await pusher.subscribe({
-        channelName: "chatChannel_" + channelNumber,
-        onEvent: (event: PusherEvent) => {
-          console.log("chatChannel", JSON.parse(event.data));
-          if (!(JSON.parse(event.data).message?.senderId == userData.id)) {
-            // setConversation([...conversation,JSON.parse(event.data).message])
-            setNewMessage(JSON.parse(event.data).message);
-            flatListRefChat.current.scrollToEnd({ animated: true });
-          }
-          // setConversation([...conversation, JSON.parse(event.data).message]);
-          // setComments([...comments,JSON.parse(event.data).comment])
-        },
-      });
-      let TypingChannel = await pusher.subscribe({
-        channelName: "TypingChannel_" + channelNumber,
-        onEvent: (event: PusherEvent) => {
-          if(JSON.parse(event.data).data.user1Id==parseInt(item?.user1?.id || item?.user2?.id)){
-
-            setTyping(true);
-            setTimeout(() => {
-              setTyping(false);
-            }, 2000);
-          }
-          console.log("TypingChannel", JSON.parse(event.data).data);
-        },
-      });
-      // await pusher.subscribe({ channelName:'commentsChannel_'+id });
-    } catch (e) {
-      console.log(`ERROR: ${e}`);
-    }
-  };
-  const unCon = async () => {
-    await pusher.unsubscribe({
-      channelName:
-        "chatChannel_" + (item?.user1?.id || item?.user2?.id) + userData.id,
+  useEffect(() => {
+     pusher.init({
+      apiKey: "e8f7ca7b8515f9bfcbb0",
+      cluster: "mt1",
+      // onConnectionStateChange,
     });
-    await pusher.disconnect();
-  };
-  // useEffect(() => {
-  //    pusher.init({
-  //     apiKey: "e8f7ca7b8515f9bfcbb0",
-  //     cluster: "mt1",
-  //     // onConnectionStateChange,
-  //   });
 
-  //    pusher.connect();
-  //   let channelNumber =
-  //     parseInt(item?.user1?.id || item?.user2?.id) + parseInt(userData.id);
-  //   console.log("channelNumber", channelNumber);
-  //   console.log("chatChannel_" + channelNumber);
-  //   let chatChannel =  pusher.subscribe({
-  //     channelName: "chatChannel_" + channelNumber,
-  //     onEvent: (event: PusherEvent) => {
-  //       console.log("chatChannel c", JSON.parse(event.data));
-  //       if (!(JSON.parse(event.data).message?.senderId == userData.id)) {
-  //         // setConversation([...conversation,JSON.parse(event.data).message])
-  //         setNewMessage(JSON.parse(event.data).message);
-  //         flatListRefChat.current.scrollToEnd({ animated: true });
-  //       }
-  //       // setConversation([...conversation, JSON.parse(event.data).message]);
-  //       // setComments([...comments,JSON.parse(event.data).comment])
-  //     },
-  //   });
-  //   let TypingChannel =  pusher.subscribe({
-  //     channelName: "TypingChannel_" + channelNumber,
-  //     onEvent: (event: PusherEvent) => {
-  //       if(JSON.parse(event.data).data.user1Id==parseInt(item?.user1?.id || item?.user2?.id)){
+     pusher.connect();
+    let channelNumber =item?.userId1+item?.userId2;
+    console.log("channelNumber", channelNumber);
+    console.log("chatChannel_" + channelNumber);
+    let chatChannel =  pusher.subscribe({
+      channelName: "chatChannel_" + channelNumber,
+      onEvent: (event: PusherEvent) => {
+        console.log("chatChannel c", JSON.parse(event.data));
+        if (!(JSON.parse(event.data).message?.senderId == userData.id)) {
+          // setConversation([...conversation,JSON.parse(event.data).message])
+          setNewMessage(JSON.parse(event.data).message);
+          flatListRefChat.current.scrollToEnd({ animated: true });
+        }
+        // setConversation([...conversation, JSON.parse(event.data).message]);
+        // setComments([...comments,JSON.parse(event.data).comment])
+      },
+    });
+    let TypingChannel =  pusher.subscribe({
+      channelName: "TypingChannel_" + channelNumber,
+      onEvent: (event: PusherEvent) => {
+        if(JSON.parse(event.data).data.user1Id==parseInt(item?.user1?.id || item?.user2?.id)){
 
-  //         setTyping(true);
-  //         setTimeout(() => {
-  //           setTyping(false);
-  //         }, 2000);
-  //       }
-  //       console.log("TypingChannel c", JSON.parse(event.data).data);
-  //     },
-  //   });
+          setTyping(true);
+          setTimeout(() => {
+            setTyping(false);
+          }, 2000);
+        }
+        console.log("TypingChannel c", JSON.parse(event.data).data);
+      },
+    });
 
-  //   // Cleanup on unmount
-  //   return () => {
-  //     // channel.unbind('my-event');
-      
-  //     pusher.unsubscribe({channelName:"chatChannel_" + parseInt(item?.user1?.id || item?.user2?.id) + parseInt(userData.id)});
-  //     pusher.unsubscribe({channelName:"TypingChannel_" + parseInt(item?.user1?.id || item?.user2?.id) + parseInt(userData.id)});
-  //     pusher.disconnect();
-  //   };
     
-  // }, []);
+
+    // Cleanup on unmount
+    return () => {
+      // channel.unbind('my-event');
+      
+      pusher.unsubscribe({channelName:"chatChannel_" + item?.userId1+item?.userId2});
+      pusher.unsubscribe({channelName:"TypingChannel_" + item?.userId1+item?.userId2});
+      pusher.disconnect();
+    };
+    
+  }, []);
 
   // useEffect(() => {
   //   async () => {
@@ -621,6 +572,8 @@ const Chat = () => {
         conversation={conversation}
         receiverId={item?.user1?.id || item?.user2?.id}
         authId={userData.id}
+        isGifView={isGifView}
+        setIsGifView={setIsGifView}
       />
       <DeleteModal
         isModalVisible={isDeleteVisible}

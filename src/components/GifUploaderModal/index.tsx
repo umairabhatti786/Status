@@ -42,6 +42,7 @@ interface Props {
   setLoading?: any;
   loading?: any;
   giphy?: any;
+  setGiphy?: any;
 }
 const GifUploaderModal: React.FC<Props> = ({
   isModalVisible,
@@ -62,6 +63,7 @@ const GifUploaderModal: React.FC<Props> = ({
   setLoading,
   loading,
   giphy,
+  setGiphy,
 }) => {
   // console.log("imageData", imageData);
   const windowWidth = useWindowDimensions().width;
@@ -74,8 +76,14 @@ const GifUploaderModal: React.FC<Props> = ({
       }}
       deviceWidth={windowWidth}
       isVisible={isModalVisible}
-      onBackButtonPress={() => setModalVisible?.(false)}
-      onBackdropPress={() => setModalVisible?.(false)}
+      onBackButtonPress={() => {
+        setModalVisible?.(false)
+        setGiphy("") 
+      }}
+      onBackdropPress={() => {
+        setModalVisible?.(false)
+        setGiphy("")
+      }}
       backdropColor="transparent"
       customBackdrop={
         <Pressable
@@ -86,6 +94,7 @@ const GifUploaderModal: React.FC<Props> = ({
           }}
           onPress={() => {
             setModalVisible?.(false)
+            setGiphy("")
 
           }}
         ></Pressable>
@@ -126,6 +135,7 @@ const GifUploaderModal: React.FC<Props> = ({
             activeOpacity={0.6}
             onPress={() => {
               setModalVisible(false);
+              setGiphy("")
             }}
             style={{
               width: 35,
