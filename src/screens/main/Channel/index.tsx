@@ -62,6 +62,8 @@ const Channel = ({
   isKeyboardVisible,
   editPostData,
   setEditPostData,
+  mainFlex,
+  mainMargin
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
@@ -98,7 +100,7 @@ const Channel = ({
 
   return (
     <>
-      <View style={{ backgroundColor: colors.black, flex: 0.9 }}>
+      <View style={{ backgroundColor: colors.black,flex:mainFlex|| 0.9}}>
         <FastImage
           style={{ width: "100%", height: windowHeight, position: "absolute" }}
           source={{
@@ -114,7 +116,7 @@ const Channel = ({
           nestedScrollEnabled={true}
           ref={hideSendMessage ? flatListRefOtherPosts : flatListRefPosts}
           keyExtractor={(item) => item}
-          style={{ marginBottom: isKeyboardVisible ? verticalScale(25) : 0 }}
+          style={{ marginBottom: mainMargin||isKeyboardVisible ? windowHeight<=630?  verticalScale(50):verticalScale(20) :windowHeight<=630? 20:0, }}
           inverted={true}
           //  contentContainerStyle={{
           //    flex:5

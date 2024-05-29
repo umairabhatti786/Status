@@ -434,8 +434,8 @@ const ChannelScreen = () => {
           </View>
           <KeyboardAvoidingView
             style={{ flex: 1 }}
-            //   behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 100} // Adjust this value as needed
+            enabled={false}
+            // keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 300} // Adjust this value as needed
           >
             <View
               style={{

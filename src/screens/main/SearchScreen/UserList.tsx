@@ -23,7 +23,7 @@ import NewText from "../../../components/NewText";
 
 const UserList = ({ item, name, image, onPress }: any) => {
   const navigation: any = useNavigation();
-  console.log("Popular", item);
+  console.log("item?.distance", item?.distance);
   return (
     <>
       <TouchableOpacity
@@ -70,7 +70,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
             justifyContent: "flex-end",
           }}
         >
-          {item?.distance && (
+          {item?.distance>=0 && (
             <View
               style={{
                 ...appStyles.row,
@@ -84,7 +84,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
                 source={images.location}
               />
 
-              <CustomText text={'item.distance'} color={colors.white} />
+              <CustomText text={item?.distance} color={colors.white} />
             </View>
           )}
 

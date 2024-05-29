@@ -382,8 +382,8 @@ const OtherUserChannel = () => {
 
             <View
               style={{
-                width: "100%",
-                height: windowHeight,
+                flex: 1,
+                justifyContent: "space-between",
                 //   paddingTop: verticalScale(10),
               }}
             >
@@ -411,6 +411,8 @@ const OtherUserChannel = () => {
                   posts={posts}
                   hideSendMessage={true}
                   userData={data}
+                  mainFlex={1}
+                  mainMargin={0}
                   channelId={channelId}
                   counter={counter}
                   setCounter={setCounter}

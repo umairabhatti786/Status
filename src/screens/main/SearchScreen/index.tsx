@@ -107,7 +107,8 @@ const SearchScreen = ({ navigation }: any) => {
         // }
 
         // blockers
-        setAllUsers(response.data.result.data);
+        setAllUsers(response?.data?.result?.data);
+        console.log("ReddcdType", response.data.result.data)
         setLoading(false);
         console.log(response.data.result.data);
       })
@@ -156,13 +157,13 @@ const SearchScreen = ({ navigation }: any) => {
   ];
 
   const renderUsers = ({ item, index }) => {
-    console.log("ckbdk", item.id);
+    // console.log("ckbdk", item.id);
 
     return (
       <UserList
-        name={item.name}
-        image={item.imageUrl}
-        id={item.id}
+        name={item?.name}
+        image={item?.imageUrl}
+        id={item?.id}
         onPress={() =>
           navigation.navigate("OthersProfile", {
             id: item?.id,
@@ -170,7 +171,6 @@ const SearchScreen = ({ navigation }: any) => {
         }
         item={item}
       />
-      // <FriendList item={item}/>
     );
   };
 
@@ -224,13 +224,8 @@ const SearchScreen = ({ navigation }: any) => {
                 <View style={{ marginHorizontal: scale(3) }}>
                   <Button
                     onPress={() => {
-                      if (model) {
-                        setFilterThree(item.filter);
-                        setFilterTwo("");
-                      } else {
-                        setFilterThree("");
-                        setFilterTwo(item.filter);
-                      }
+                      setFilterThree("");
+                      setFilterTwo(item.filter);
 
                       setFilterIndex(index);
                     }}
