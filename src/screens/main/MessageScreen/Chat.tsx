@@ -29,7 +29,7 @@ import { Spacer } from "../../../components/Spacer";
 import MessageSender from "../../../components/MessageSender";
 import InboxComponent from "../../../components/InboxComponent";
 import { useSelector } from "react-redux";
-import { getUserData } from "../../../redux/reducers/authReducer";
+import { getNewMessageR, getTyper, getTypingR, getUserData } from "../../../redux/reducers/authReducer";
 import {
   AUTH,
   StorageServices,
@@ -98,18 +98,34 @@ const Chat = () => {
   const [NewMessage, setNewMessage] = useState<any>({});
   const isFocused = useIsFocused();
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const [typing, setTyping] = useState(false);
+  const [typing, setTyping] = useState();
   const userData = useSelector(getUserData);
   const [giphy, setGiphy] = useState("");
   const [isDeleteVisible, setIsDeleteVisible] = useState(false);
   const [isGifView, setIsGifView] = useState(false);
+  const typingChat = useSelector(getTypingR);
+  const newMessage = useSelector(getNewMessageR);
+  const typer = useSelector(getTyper);
 
   const [state, setState] = useState({
     archive: false,
     block: false,
     trash: false,
   });
-  console.log("typingDaya",typing)
+
+  useEffect(() => {
+    console.log('typingChat',typingChat)
+    console.log('typer',typer)
+  }, [typingChat,typer])
+
+  useEffect(() => {
+    console.log('newMessage',newMessage)
+    setConversation([newMessage,...conversation])
+  }, [newMessage])
+  
+
+ 
+  // console.log("typingDaya",typing)
   // useEffect(() => {
   //   // setTimeout(() => {
   //     if (conversation.length > 0 && flatListRef.current) {
@@ -177,62 +193,62 @@ const Chat = () => {
     };
   }, []);
 
-  useEffect(() => {
-    setConversation([...conversation, NewMessage]);
-  }, [NewMessage]);
+  // useEffect(() => {
+  //   setConversation([...conversation, NewMessage]);
+  // }, [NewMessage]);
 
   
 
-  useEffect(() => {
-     pusher.init({
-      apiKey: "e8f7ca7b8515f9bfcbb0",
-      cluster: "mt1",
-      // onConnectionStateChange,
-    });
+  // useEffect(() => {
+  // pusher.init({
+  //     apiKey: "e8f7ca7b8515f9bfcbb0",
+  //     cluster: "mt1",
+  //     // onConnectionStateChange,
+  //   });
 
-     pusher.connect();
-    let channelNumber =item?.userId1+item?.userId2;
-    console.log("channelNumber", channelNumber);
-    console.log("chatChannel_" + channelNumber);
-    let chatChannel =  pusher.subscribe({
-      channelName: "chatChannel_" + channelNumber,
-      onEvent: (event: PusherEvent) => {
-        console.log("chatChannel c", JSON.parse(event.data));
-        if (!(JSON.parse(event.data).message?.senderId == userData.id)) {
-          // setConversation([...conversation,JSON.parse(event.data).message])
-          setNewMessage(JSON.parse(event.data).message);
-          flatListRefChat.current.scrollToEnd({ animated: true });
-        }
-        // setConversation([...conversation, JSON.parse(event.data).message]);
-        // setComments([...comments,JSON.parse(event.data).comment])
-      },
-    });
-    let TypingChannel =  pusher.subscribe({
-      channelName: "TypingChannel_" + channelNumber,
-      onEvent: (event: PusherEvent) => {
-        if(JSON.parse(event.data).data.user1Id==parseInt(item?.user1?.id || item?.user2?.id)){
+  //    pusher.connect();
+  //   let channelNumber =item?.userId1+item?.userId2;
+  //   console.log("channelNumber", channelNumber);
+  //   console.log("chatChannel_" + channelNumber);
+  //   let chatChannel =  pusher.subscribe({
+  //     channelName: "chatChannel_" + channelNumber,
+  //     onEvent: (event: PusherEvent) => {
+  //       console.log("chatChannel c", JSON.parse(event.data));
+  //       if (!(JSON.parse(event.data).message?.senderId == userData.id)) {
+  //         // setConversation([...conversation,JSON.parse(event.data).message])
+  //         setNewMessage(JSON.parse(event.data).message);
+  //         flatListRefChat.current.scrollToEnd({ animated: true });
+  //       }
+  //       // setConversation([...conversation, JSON.parse(event.data).message]);
+  //       // setComments([...comments,JSON.parse(event.data).comment])
+  //     },
+  //   });
+  //   let TypingChannel =  pusher.subscribe({
+  //     channelName: "TypingChannel_" + channelNumber,
+  //     onEvent: (event: PusherEvent) => {
+  //       if(JSON.parse(event.data).data.user1Id==parseInt(item?.user1?.id || item?.user2?.id)){
 
-          setTyping(true);
-          setTimeout(() => {
-            setTyping(false);
-          }, 2000);
-        }
-        console.log("TypingChannel c", JSON.parse(event.data).data);
-      },
-    });
+  //         setTyping(true);
+  //         setTimeout(() => {
+  //           setTyping(false);
+  //         }, 2000);
+  //       }
+  //       console.log("TypingChannel c", JSON.parse(event.data).data);
+  //     },
+  //   });
 
     
 
-    // Cleanup on unmount
-    return () => {
-      // channel.unbind('my-event');
+  //   // Cleanup on unmount
+  //   return () => {
+  //     // channel.unbind('my-event');
       
-      pusher.unsubscribe({channelName:"chatChannel_" + item?.userId1+item?.userId2});
-      pusher.unsubscribe({channelName:"TypingChannel_" + item?.userId1+item?.userId2});
-      pusher.disconnect();
-    };
+  //     pusher.unsubscribe({channelName:"chatChannel_" + item?.userId1+item?.userId2});
+  //     pusher.unsubscribe({channelName:"TypingChannel_" + item?.userId1+item?.userId2});
+  //     pusher.disconnect();
+  //   };
     
-  }, []);
+  // }, []);
 
   // useEffect(() => {
   //   async () => {
@@ -549,17 +565,23 @@ const Chat = () => {
           renderItem={renderChatList}
           // style={{ transform: [{ scaleY: -1 }] }}
         />
-        {typing  && (
-          <>
-            <InboxComponent
-              name={receiver?.name}
-              image={receiver?.imageUrl}
-              message={"Typing..."}
-              time={moment().format("h:mm a")}
-            />
-            <Spacer height={20} />
-          </>
-        )}
+        {
+          // typer==receiver?.id?
+
+          typingChat&& (
+            <>
+              <InboxComponent
+                name={receiver?.name}
+                image={receiver?.imageUrl}
+                message={"Typing..."}
+                time={moment().format("h:mm a")}
+              />
+              <Spacer height={20} />
+            </>
+          )
+          // :<></>
+        
+        }
       </View>
       {/* <View> */}
       <MessageSender

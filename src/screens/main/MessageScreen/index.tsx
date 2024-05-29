@@ -51,13 +51,13 @@ const MessageScreen = ({ navigation }: any) => {
   const [messagesList, setMessagesList] = useState<any>([]);
   const [chatList, setChatList] = useState<any>([]);
   const [contacts, setContacts] = useState<any>([]);
+
   const isFocused = useIsFocused();
 
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   const renderChatList = ({ item }: any) => {
     return (
       <MessagesList
-      
         item={item}
         handleFavorite={() => handleFavorite(item.id)}
       />
@@ -65,6 +65,7 @@ const MessageScreen = ({ navigation }: any) => {
   };
 
   const getChatList = async () => {
+    // Alert.alert("msg",'msg')
     let token = await StorageServices.getItem(TOKEN);
     setLoading(true);
     setActiveChat("Inbox") 
@@ -79,7 +80,7 @@ const MessageScreen = ({ navigation }: any) => {
         let actChat = result?.chatList?.filter(
           (c: any) => !(c.archive_con.length + c.trash_con.length+c.blocked_con.length)
         );
-        setContacts(actChat);
+        setContacts(actChat); 
         setLoading(false);
         // setAuthPosts(result?.posts?.data);
       } else {

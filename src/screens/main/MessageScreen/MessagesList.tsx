@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, Dimensions, TouchableOpacity } from "react-native";
+import { View, Image, Dimensions, TouchableOpacity, Text } from "react-native";
 import { colors } from "../../../utils/colors";
 import CustomText from "../../../components/CustomText";
 import { Spacer } from "../../../components/Spacer";
@@ -8,22 +8,32 @@ import { useNavigation } from "@react-navigation/native";
 import { scale, verticalScale } from "react-native-size-matters";
 import moment from "moment";
 import { useSelector } from "react-redux";
-import { getUserData } from "../../../redux/reducers/authReducer";
+import { getNewMessageR, getTyper, getUserData, setNewMessageR, setTyper, setTypingR } from "../../../redux/reducers/authReducer";
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
 import NewText from "../../../components/NewText";
+import { useDispatch } from 'react-redux';
+
 export const windowWidth = Dimensions.get("window").width;
 
 const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
   const navigation: any = useNavigation();
   const user = useSelector(getUserData);
-  const [lastMessage, setLastMessage] = useState(item?.last_message)
+  const dispatch = useDispatch()
+  const [lastMessage, setLastMessage] = useState()
   const receiver=item?.user1 || item?.user2
 
   const [favorite, setFavorite] = useState(false);
   const [typing, setTyping] = useState(false);
+  const [typingChat, setTypingChat] = useState(false);
+
   const pusher = Pusher.getInstance();
 
+  useEffect(()=>{
+    setLastMessage(item?.last_message); 
+  },[item?.last_message])
   
+  
+
   useEffect(() => {
     pusher.init({
       apiKey: "e8f7ca7b8515f9bfcbb0",
@@ -40,11 +50,12 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
         onEvent: (event: PusherEvent) => {
           console.log("chatChannel", JSON.parse(event.data));
           setLastMessage(JSON.parse(event.data).message);
-          // if (!(JSON.parse(event.data).message?.senderId == user.id)) {
+          if (!(JSON.parse(event.data).message?.senderId == user.id)) {
+            dispatch(setNewMessageR(JSON.parse(event.data).message))
             // setConversation([...conversation,JSON.parse(event.data).message])
             // setNewMessage(JSON.parse(event.data).message);
             // flatListRefChat.current.scrollToEnd({ animated: true });
-          // }
+          }
           // setConversation([...conversation, JSON.parse(event.data).message]);
           // setComments([...comments,JSON.parse(event.data).comment])
         },
@@ -53,9 +64,12 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
         channelName: "TypingChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
           if(JSON.parse(event.data).data.user1Id==receiver?.id){
-
+            dispatch(setTyper(JSON.parse(event.data).data.user1Id))
+            dispatch(setTypingR(true))
             setTyping(true);
+            //
             setTimeout(() => {
+              dispatch(setTypingR(false))
               setTyping(false);
             }, 2000);
           }
@@ -66,12 +80,14 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
     // Cleanup on unmount
     return () => {
       // channel.unbind('my-event');
-      
+       
       pusher.unsubscribe({channelName:"chatChannel_" + item?.userId1+item?.userId2});
       pusher.unsubscribe({channelName:"TypingChannel_" + item?.userId1+item?.userId2});
       pusher.disconnect();
     };
   }, []);
+
+
   return (
     <>
       <TouchableOpacity
@@ -92,6 +108,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
           // alignItems: "center",
         }}
       >
+        {/* <Text>{typingChat?'typingChat':''}</Text> */}
         {lastMessage?.receiverId==user?.id?
         <View
           style={{

@@ -18,6 +18,9 @@ export interface AuthState {
     label: string;
     text: string;
   };
+  typer:boolean,
+  typing:boolean,
+  newMessage:any
 }
 export const initialState: AuthState = {
   user: null,
@@ -35,6 +38,9 @@ export const initialState: AuthState = {
     gif1: "",
     gif2: "",
   },
+  typer:false,
+  typing:false,
+  newMessage:''
 };
 const authSlice = createSlice({
   name: "auth",
@@ -65,6 +71,15 @@ const authSlice = createSlice({
     setIsSuccess: (state, { payload }: PayloadAction<AuthState>) => {
       state.isSuccess = payload;
     },
+    setTypingR: (state, { payload }: PayloadAction<AuthState>) => {
+      state.typing = payload;
+    },
+    setTyper: (state, { payload }: PayloadAction<AuthState>) => {
+      state.typer = payload;
+    },
+    setNewMessageR: (state, { payload }: PayloadAction<AuthState>) => {
+      state.newMessage = payload;
+    },
     setProfileGif: (state, { payload }: PayloadAction<AuthState>) => {
       state.proifleGifs.gif1 = payload.gif1;
       state.proifleGifs.gif2 = payload.gif2;
@@ -78,6 +93,9 @@ export const {
   setToken,
   setSuccessResponse,
   setIsSuccess,
+  setTypingR,
+  setTyper,
+  setNewMessageR,
   setProfileGif,
   setDisableBottomTab,
   setProfileActiveBar,
@@ -92,5 +110,8 @@ export const getNotificationAlert = (state: RootState) =>
 export const getSuccessResponse = (state: RootState) =>
   state?.auth.successResponse;
 export const getIsSuccess = (state: RootState) => state?.auth.isSuccess;
+export const getTypingR = (state: RootState) => state?.auth.typing;
+export const getTyper = (state: RootState) => state?.auth.typer;
+export const getNewMessageR = (state: RootState) => state?.auth.newMessage;
 
 export const getToken = (state: RootState) => state?.auth.token;
