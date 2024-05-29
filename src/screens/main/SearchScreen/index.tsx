@@ -79,13 +79,15 @@ const SearchScreen = ({ navigation }: any) => {
     { value: "Popular", filter: "popular" },
   ];
 
-  console.log("filterTwo", filterTwo, "filterThree", filterThree);
+  // console.log("filterTwo", filterTwo, "filterThree", filterThree);
 
   useEffect(() => {
     getUserData();
-  }, [filterTwo, activeBar, filterThree]);
+  }, [filterTwo, activeBar, selectedType]);
   const getUserData = () => {
     setLoading(true);
+    // let TwoFs= { filter1: activeBar, filter2: filterTwo, filter3: selectedType=="All"?'':selectedType }
+    // let ThreeFs= { filter1: activeBar, filter2: filterTwo, }
     const options = {
       method: "POST",
       url: getApiUrl(URLS.GET_ALL_USER),
@@ -93,7 +95,7 @@ const SearchScreen = ({ navigation }: any) => {
         Authorization: "Bearer " + token,
         Accept: "application/json",
       },
-      data: { filter1: activeBar, filter2: filterTwo, filter3: filterThree },
+      data: { filter1: activeBar, filter2: filterTwo=="All"?'':filterTwo, },
       // data: {filter: f2+"&"+f1}
     };
 
@@ -335,6 +337,7 @@ const SearchScreen = ({ navigation }: any) => {
                     item={item}
                     onSelectCatrgory={() => {
                       setSelectedType(item);
+                      setFilterTwo(item)
                       bottomSheetModalRef?.current?.close();
                     }}
                     selectedType={selectedType}
