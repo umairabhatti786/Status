@@ -329,7 +329,9 @@ const MessageSender = ({
     if (giphy) {
       setGiphy("");
     }
-    setIsGifView(false);
+    if(!newChat){
+      setIsGifView(false);
+    }
     SendMessage(form, token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
       console.log(response);
