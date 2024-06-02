@@ -338,6 +338,25 @@ export const GetConversation = async (data: any,token: any, callback: any) => {
     return { isSuccess: false, error: error };
   }
 };
+export const GetRefreshConversation = async (token: any,nextUrl:any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    // body: JSON.stringify(data),
+  };
+  try {
+    fetch(nextUrl, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
 export const GetInNotifications = async (token: any, callback: any) => {
   const requestOptions = {
     method: "POST",
@@ -429,6 +448,25 @@ export const GetStatus = async (id: any, token: any, callback: any) => {
   };
   try {
     fetch(URLS.BASE_URL + URLS.GET_STATUS + id, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
+export const LoadMoreStatus = async (nextUrl: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    // body: JSON.stringify(data),
+  };
+  try {
+    fetch(nextUrl, requestOptions)
       .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));

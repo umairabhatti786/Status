@@ -43,8 +43,9 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
 
      pusher.connect();
       let channelNumber =item?.userId1+item?.userId2;
-      console.log("channelNumber", channelNumber);
+      // console.log("channelNumber", channelNumber);
       console.log("chatChannel_" + channelNumber);
+      console.log("TypingChannel_" + channelNumber);
       let chatChannel =  pusher.subscribe({
         channelName: "chatChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
@@ -63,8 +64,8 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
       let TypingChannel =  pusher.subscribe({
         channelName: "TypingChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
-          if(JSON.parse(event.data).data.user1Id==receiver?.id){
-            dispatch(setTyper(JSON.parse(event.data).data.user1Id))
+          if(JSON.parse(event.data).users.user1Id==receiver?.id){
+            dispatch(setTyper(JSON.parse(event.data).users.user1Id))
             dispatch(setTypingR(true))
             setTyping(true);
             //
@@ -73,7 +74,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
               setTyping(false);
             }, 2000);
           }
-          console.log("TypingChannel m", JSON.parse(event.data).data);
+          console.log("TypingChannel m", JSON.parse(event.data).users);
         },
       });
 

@@ -4,6 +4,7 @@ import {
   Image,
   ImageBackground,
   Linking,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -63,7 +64,9 @@ const Channel = ({
   editPostData,
   setEditPostData,
   mainFlex,
-  mainMargin
+  mainMargin,
+  refreshOtherData,
+  refreshAuthData
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
@@ -78,6 +81,7 @@ const Channel = ({
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
+  const [refreshing, setRefreshing] = useState(false)
   console.log("userData", userData?.wallpaperUrl);
   // const handleLike=async()=>{
   //   let data = {user_id:userData.id,post_id:item.id}
@@ -118,6 +122,24 @@ const Channel = ({
           keyExtractor={(item) => item}
           style={{ marginBottom: mainMargin||isKeyboardVisible ? windowHeight<=630?  verticalScale(50):verticalScale(20) :windowHeight<=630? 20:0, }}
           inverted={true}
+          onEndReached={()=>{
+            // setRefreshing(true)
+            // console.log('nextUrl',nextUrl)
+
+            if(hideSendMessage){
+              refreshOtherData(setRefreshing)
+            }else{
+              refreshAuthData(setRefreshing);
+            }
+          }}
+          refreshControl={
+            <RefreshControl
+              
+              colors={["#9Bd35A", "#689F38"]}
+              refreshing={refreshing}
+              onRefresh={()=>{
+              }} />
+            }
           //  contentContainerStyle={{
           //    flex:5
           //  }}

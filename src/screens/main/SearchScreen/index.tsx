@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  RefreshControl,
 } from "react-native";
 import { images } from "../../../assets/images";
 import CustomButton from "../../../components/CustomButton";
@@ -59,18 +60,20 @@ const SearchScreen = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false);
   const focused = useIsFocused();
   const token = useSelector(getToken);
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers]:any = useState([]);
+  const [response, setResponse]:any = useState({});
   const [netpageUrl, setNextPageUrl] = useState();
   const [selectedType, setSelectedType] = useState("All");
   const bottomSheetModalRef = useRef<BottomSheet>(null);
   const [model, setModel] = useState(false);
+  const [refreshing, setRefreshing] = useState(false)
   const snapPoints = useMemo(() => ["45%"], []);
 
   const notificationAlert = useSelector(
     (state) => state.auth
   )?.notificationAlert;
   const dispatch = useDispatch();
-  console.log("notificationAlert", notificationAlert);
+  // console.log("notificationAlert", notificationAlert);
   const topBarData = ["all", "following"];
   const filterData = [
     { value: "Online", filter: "online" },
@@ -84,6 +87,7 @@ const SearchScreen = ({ navigation }: any) => {
   useEffect(() => {
     getUserData();
   }, [filterTwo, activeBar, selectedType]);
+
   const getUserData = () => {
     setLoading(true);
     // let TwoFs= { filter1: activeBar, filter2: filterTwo, filter3: selectedType=="All"?'':selectedType }
@@ -95,6 +99,36 @@ const SearchScreen = ({ navigation }: any) => {
         Authorization: "Bearer " + token,
         Accept: "application/json",
       },
+      data: { filter1: activeBar, filter2: filterTwo, filter3:selectedType},
+      // data: {filter: f2+"&"+f1}
+    };
+
+    axios
+      .request(options)
+      .then(function (response) {
+        let result=response?.data?.result
+        let data=response?.data?.result?.data
+        //check
+        if(activeBar=='all'&&data){
+          setAllUsers(data); 
+          setResponse(result)
+        }
+        setLoading(false);
+      }) 
+      .catch(function (error) {
+        console.log('error',error);
+        // Alert.alert("Alert!", error);
+      });
+  };
+
+  const refreshData = (newUrl:any) => {
+    const options = {
+      method: "POST",
+      url: newUrl,
+      headers: {
+        Authorization: "Bearer " + token,
+        Accept: "application/json",
+      },
       data: { filter1: activeBar, filter2: filterTwo=="All"?'':filterTwo, },
       // data: {filter: f2+"&"+f1}
     };
@@ -102,40 +136,14 @@ const SearchScreen = ({ navigation }: any) => {
     axios
       .request(options)
       .then(function (response) {
-        // if(response.data.result.data.length>0){
-        //   const filteredUsers = response.data.result.data.filter(user => !user.blockers.length>0);
-        //   setAllUsers(filteredUsers);
 
-        // }
-
-        // blockers
-        setAllUsers(response?.data?.result?.data);
-        console.log("ReddcdType", response.data.result.data)
-        setLoading(false);
-        console.log(response.data.result.data);
+        setAllUsers([...allUsers,...response?.data?.result?.data]);
+        setResponse(response?.data?.result)
+        setRefreshing(false);
       })
       .catch(function (error) {
         Alert.alert("Alert!", "Network Error.");
       });
-    // GetAllUsers(param, token, async ({ isSuccess, response }: any) => {
-    //   if (isSuccess) {
-    //     // let result = JSON.parse(response);
-    //     if (response.status) {
-    //       setLoading(false);
-    //       console.log("dataLength", response?.result?.data.length);
-
-    //       setAllUsers(response?.result?.data);
-    //     } else {
-    //       setLoading(false);
-
-    //       Alert.alert("Alert!", "Network Error.");
-    //     }
-    //   } else {
-    //     setLoading(false);
-
-    //     Alert.alert("Alert!", "Network Error.");
-    //   }
-    // });
   };
 
   const profileType = [
@@ -158,7 +166,7 @@ const SearchScreen = ({ navigation }: any) => {
     "Other",
   ];
 
-  const renderUsers = ({ item, index }) => {
+  const renderUsers = ({ item, index }:any) => {
     // console.log("ckbdk", item.id);
 
     return (
@@ -321,6 +329,25 @@ const SearchScreen = ({ navigation }: any) => {
             numColumns={3}
             style={{ marginBottom: verticalScale(155) }}
             renderItem={renderUsers}
+            onEndReached={()=>{
+              setRefreshing(true)
+              // console.log('nextUrl',response?.next_page_url)
+
+              if(response?.next_page_url){
+                refreshData(response?.next_page_url)
+              }else{
+                setRefreshing(false)
+              }
+            }}
+            refreshControl={
+            <RefreshControl
+              
+              colors={["#9Bd35A", "#689F38"]}
+              refreshing={refreshing}
+              onRefresh={()=>{
+              }} />
+            }
+
           />
         </View>
       </SafeAreaView>

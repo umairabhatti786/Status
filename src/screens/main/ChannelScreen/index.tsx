@@ -48,6 +48,7 @@ import {
   GetAuthUser,
   GetStatus,
   GetUserComment,
+  LoadMoreStatus,
 } from "../../../api/ApiServices";
 import NewText from "../../../components/NewText";
 import FastImage from "react-native-fast-image";
@@ -98,7 +99,8 @@ const ChannelScreen = () => {
   const [loading2, setLoading2] = useState(false);
   const [userData, setUserData] = useState<any>();
   const token = useSelector(getToken);
-  const [authPosts, setAuthPosts] = useState([]);
+  const [authPosts, setAuthPosts]:any = useState([]);
+  const [nextUrl, setNextUrl] = useState('');
   const [giphy, setGiphy] = useState("");
   const activeBar = useSelector((state) => state.auth)?.profileActiveBar;
   const [isActiveProfile, setIsActiveProfile] = useState("");
@@ -197,7 +199,34 @@ const ChannelScreen = () => {
     };
   }, []);
 
+  const refreshAuthData = async (setRefreshing:any) => {
+    if(nextUrl){
+
+      // let userInfo = await StorageServices.getItem(AUTH);
+      setRefreshing(true)
+      let token = await StorageServices.getItem(TOKEN);
+      LoadMoreStatus(nextUrl, token, async ({ isSuccess, response }: any) => {
+        console.log("data p", isSuccess);
+  
+        let result = JSON.parse(response);
+        if (result.status) {
+          // console.log('result?.posts',result?.posts?.data)
+          let data = result?.posts?.data.reverse();
+          // setPosts(data);
+          setAuthPosts([...authPosts,...data]);
+          setNextUrl(result?.posts?.next_page_url);
+          setRefreshing(false)
+        } else {
+          setRefreshing(false)
+          console.log(result);
+          // Alert.alert("Alert!", "Something went wrong",);
+          console.log("Something went wrong");
+        }
+      });
+    }
+  };
   const GetPosts = async () => {
+    
     let userInfo = await StorageServices.getItem(AUTH);
     let token = await StorageServices.getItem(TOKEN);
     GetStatus(userInfo?.id, token, async ({ isSuccess, response }: any) => {
@@ -208,7 +237,8 @@ const ChannelScreen = () => {
         // console.log('result?.posts',result?.posts?.data)
         let data = result?.posts?.data.reverse();
         // setPosts(data);
-        setAuthPosts(data);
+        setAuthPosts(result?.posts?.data.reverse());
+        setNextUrl(result?.posts?.next_page_url);
       } else {
         console.log(result);
         // Alert.alert("Alert!", "Something went wrong",);
@@ -462,6 +492,7 @@ const ChannelScreen = () => {
                 flatListRefPosts={flatListRefPosts}
                 editPostData={editPostData}
                 setEditPostData={setEditPostData}
+                refreshAuthData={refreshAuthData}
               />
 
               <View>

@@ -22,7 +22,7 @@ export const windowWidth = Dimensions.get("window").width;
 
 const FriendList = ({ item, onPress, disabled }: any) => {
 
-  console.log("item?.channel?.last_post?.created_at",typeof item?.channel?.last_post)
+  // console.log("item?.channel?.last_post?.created_at",typeof item?.channel?.last_post)
   return (
     <>
       <TouchableOpacity

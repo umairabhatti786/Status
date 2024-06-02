@@ -5,6 +5,7 @@ import {
   Image,
   Keyboard,
   Platform,
+  RefreshControl,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -41,6 +42,7 @@ import {
   CreateBlockConversation,
   DELETE_CONVERSATION,
   GetConversation,
+  GetRefreshConversation,
   ReadMessage,
 } from "../../../api/ApiServices";
 import {
@@ -94,6 +96,7 @@ const Chat = () => {
     trash: false,
     block: false,
   });
+  const [nextUrl, setNextUrl]:any = useState({});
   const [conversation, setConversation] = useState<any>([]);
   const [NewMessage, setNewMessage] = useState<any>({});
   const isFocused = useIsFocused();
@@ -106,6 +109,8 @@ const Chat = () => {
   const typingChat = useSelector(getTypingR);
   const newMessage = useSelector(getNewMessageR);
   const typer = useSelector(getTyper);
+  const [refreshing, setRefreshing] = useState(false)
+
 
   const [state, setState] = useState({
     archive: false,
@@ -147,13 +152,16 @@ const Chat = () => {
         let result = JSON.parse(response);
         if (result.status) {
           console.log(result?.conversation?.data);
+          // let data = result?.conversation?.data.reverse();
           let data = result?.conversation?.data.reverse();
-          // console.log('result?.posts',result?.posts?.data)
 
-          setConversation(data);
+          setConversation(result?.conversation?.data.reverse());
+          setNextUrl(result?.conversation?.next_page_url)
+          // setRefreshing(false);
           // Alert.alert('',item?.user1?.id || item?.user2?.id,user.id)
           // if((item?.user1?.id || item?.user2?.id)==user.id){
-
+          
+          //!
           data.map((c: any) => {
             if (!c?.read_at && c?.receiverId == user.id) {
               ReadMessage(
@@ -165,6 +173,7 @@ const Chat = () => {
               );
             }
           });
+          //!
           // }
           // flatListRef.current.scrollToEnd({ animated: true });
           // await StorageServices.setItem("chatlist", result?.conversation?.data);
@@ -176,6 +185,41 @@ const Chat = () => {
         }
       }
     );
+  };
+  const refreshData = async () => {
+    // console.log('next_page_url',nextUrl)
+    if(nextUrl){
+
+      let token = await StorageServices.getItem(TOKEN);
+      // console.log(item.id)
+      setRefreshing(true)
+      GetRefreshConversation(
+        token,
+        nextUrl,
+        async ({ isSuccess, response }: any) => {
+          console.log("data c", isSuccess);
+          // console.log(msg)
+          let result = JSON.parse(response);
+          if (result.status) {
+            console.log(result?.conversation?.data);
+            let data = result?.conversation?.data.reverse();
+            // console.log('result?.posts',result?.posts?.data)
+            setConversation([...conversation,...result?.conversation?.data.reverse()])
+            setNextUrl(result?.conversation?.next_page_url)
+            setRefreshing(false)
+            // Alert.alert("msg",'check')
+  
+            
+          } else {
+            // setMsg({...msg,message:''})
+            setRefreshing(false)
+            console.log(result);
+            // Alert.alert("Alert!", "Something went wrong",);
+            console.log("Something went wrong");
+          }
+        }
+      );
+    }
   };
   // console.log("giph", giphy);
   useEffect(() => {
@@ -552,18 +596,19 @@ const Chat = () => {
         <FlatList
           data={conversation}
           ref={flatListRefChat}
-          keyExtractor={(item) => item}
+          keyExtractor={(item,index) => index}
           style={{ marginBottom: isKeyboardVisible ? 40 : 15 }}
-          // nestedScrollEnabled={true}
           inverted={true}
-          // style={{paddingTop:verticalScale(20)}}
-          // contentContainerStyle={{
-          //   gap: 7,
-          //   // transform: [{ scaleY: -1 }],
-          // }}
-          // inverted={true}
-          renderItem={renderChatList}
-          // style={{ transform: [{ scaleY: -1 }] }}
+          renderItem={renderChatList} 
+          onEndReached={refreshData}
+          refreshControl={
+            <RefreshControl
+              
+              colors={["#9Bd35A", "#689F38"]}
+              refreshing={refreshing}
+              onRefresh={()=>{
+              }} />
+            }
         />
         {
           // typer==receiver?.id?
