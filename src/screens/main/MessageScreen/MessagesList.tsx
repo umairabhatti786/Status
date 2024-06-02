@@ -24,6 +24,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
 
   const [favorite, setFavorite] = useState(false);
   const [typing, setTyping] = useState(false);
+  const [event, setEvent] = useState<any>({});
   const [typingChat, setTypingChat] = useState(false);
 
   const pusher = Pusher.getInstance();
@@ -31,6 +32,17 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
   useEffect(()=>{
     setLastMessage(item?.last_message); 
   },[item?.last_message])
+
+  // useEffect(() => {
+  //   if(event){
+  //     setTyping(true)
+  //     setTimeout(() => {
+  //       setTyping(false)
+  //     }, 2000); 
+
+  //   }
+  // }, [event])
+  
   
   
 
@@ -65,6 +77,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
         channelName: "TypingChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
           if(JSON.parse(event.data).users.user1Id==receiver?.id){
+            setEvent(JSON.parse(event.data).users)
             dispatch(setTyper(JSON.parse(event.data).users.user1Id))
             dispatch(setTypingR(true))
             setTyping(true);

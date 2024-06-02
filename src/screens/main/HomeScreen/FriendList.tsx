@@ -99,13 +99,9 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                   marginRight:scale(5)
                 }}
               />
-              {item?.channel?.last_post != "null" ? (
+              {item?.channel?.last_post ? (
                 <NewText
-                  text={dateFormat(item?.channel?.last_post?.created_at)
-                    
-                    
-              
-                 }
+                  text={dateFormat(item?.channel?.last_post?.created_at)}
                   color={"#FFFFFF"}
                   size={12}
                   style={{marginTop:4}}
