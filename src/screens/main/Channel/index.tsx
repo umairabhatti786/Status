@@ -138,7 +138,8 @@ const Channel = ({
               colors={["#9Bd35A", "#689F38"]}
               refreshing={refreshing}
               onRefresh={()=>{
-              }} />
+              }}
+               />
             }
           //  contentContainerStyle={{
           //    flex:5

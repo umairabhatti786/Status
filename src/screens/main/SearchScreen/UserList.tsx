@@ -84,7 +84,9 @@ const UserList = ({ item, name, image, onPress }: any) => {
                 source={images.location}
               />
 
-              <CustomText text={item?.distance} color={colors.white} />
+              <CustomText text={`${item?.distance.toFixed(2)}mi`} 
+              fontWeight="600"
+              color={colors.white} />
             </View>
           )}
 

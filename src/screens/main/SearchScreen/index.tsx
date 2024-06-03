@@ -81,7 +81,7 @@ const SearchScreen = ({ navigation }: any) => {
     { value: "New", filter: "new" },
     { value: "Popular", filter: "popular" },
   ];
-
+console.log("activeBar",activeBar)
   // console.log("filterTwo", filterTwo, "filterThree", filterThree);
 
   useEffect(() => {

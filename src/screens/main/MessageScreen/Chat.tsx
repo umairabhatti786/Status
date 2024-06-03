@@ -65,6 +65,9 @@ import {
 import DeleteModal from "./DeleteModal";
 import NewText from "../../../components/NewText";
 import FastImage from "react-native-fast-image";
+import { windowHeight } from "../../../utils/Dimensions";
+import LottieView from 'lottie-react-native';
+
 GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
 GiphyDialog.configure({
   mediaTypeConfig: [
@@ -596,8 +599,9 @@ const Chat = () => {
         <FlatList
           data={conversation}
           ref={flatListRefChat}
-          keyExtractor={(item,index) => index}
-          style={{ marginBottom: isKeyboardVisible ? 40 : 15 }}
+          keyExtractor={(item,index) => item.id}
+          style={{ marginBottom:isKeyboardVisible ? windowHeight<=630?  55:40 :windowHeight<=630? 30:10, }}
+
           inverted={true}
           renderItem={renderChatList} 
           onEndReached={refreshData}
@@ -610,24 +614,45 @@ const Chat = () => {
               }} />
             }
         />
-        {
+       
+      </View>
+      {
           // typer==receiver?.id?
 
           typingChat&& (
             <>
-              <InboxComponent
+            <View style={{...appStyles.row,marginLeft:10,gap:10}}>
+            <View style={{ width: 62, height: 62 }}>
+          <FastImage
+            style={{ width: "100%", height: "100%", borderRadius: scale(5) }}
+            source={{
+              uri: receiver?.imageUrl,
+              headers: { Authorization: "someAuthToken" },
+              priority: FastImage.priority.high,
+            }}
+            // source={image}
+          />
+        </View>
+        <LottieView
+        style={{height:60,width:60}}
+        source={require("../../../assets/json/typing.json")}
+        autoPlay
+        speed={1}
+      />
+
+            </View>
+              {/* <InboxComponent
                 name={receiver?.name}
                 image={receiver?.imageUrl}
                 message={"Typing..."}
                 time={moment().format("h:mm a")}
-              />
+              /> */}
               <Spacer height={20} />
             </>
           )
           // :<></>
         
         }
-      </View>
       {/* <View> */}
       <MessageSender
         placeholder="write a message"
