@@ -23,7 +23,7 @@ import NewText from "../../../components/NewText";
 
 const UserList = ({ item, name, image, onPress }: any) => {
   const navigation: any = useNavigation();
-  console.log("item?.distance", item?.distance);
+  // console.log("item?.distance", item?.distance);
   return (
     <>
       <TouchableOpacity
@@ -47,7 +47,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
             priority: FastImage.priority.high,
           }}
         />
-        {item.isOnline && (
+        {item?.isOnline && (
           <View
             style={{
               width: scale(8),
@@ -84,7 +84,9 @@ const UserList = ({ item, name, image, onPress }: any) => {
                 source={images.location}
               />
 
-              <CustomText text={item?.distance} color={colors.white} />
+              <CustomText text={`${item?.distance.toFixed(2)}mi`} 
+              fontWeight="600"
+              color={colors.white} />
             </View>
           )}
 

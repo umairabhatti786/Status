@@ -5,6 +5,7 @@ import {
   Image,
   Keyboard,
   Platform,
+  RefreshControl,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -41,6 +42,7 @@ import {
   CreateBlockConversation,
   DELETE_CONVERSATION,
   GetConversation,
+  GetRefreshConversation,
   ReadMessage,
 } from "../../../api/ApiServices";
 import {
@@ -63,6 +65,9 @@ import {
 import DeleteModal from "./DeleteModal";
 import NewText from "../../../components/NewText";
 import FastImage from "react-native-fast-image";
+import { windowHeight } from "../../../utils/Dimensions";
+import LottieView from 'lottie-react-native';
+
 GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
 GiphyDialog.configure({
   mediaTypeConfig: [
@@ -94,6 +99,7 @@ const Chat = () => {
     trash: false,
     block: false,
   });
+  const [nextUrl, setNextUrl]:any = useState({});
   const [conversation, setConversation] = useState<any>([]);
   const [NewMessage, setNewMessage] = useState<any>({});
   const isFocused = useIsFocused();
@@ -106,6 +112,8 @@ const Chat = () => {
   const typingChat = useSelector(getTypingR);
   const newMessage = useSelector(getNewMessageR);
   const typer = useSelector(getTyper);
+  const [refreshing, setRefreshing] = useState(false)
+
 
   const [state, setState] = useState({
     archive: false,
@@ -147,13 +155,16 @@ const Chat = () => {
         let result = JSON.parse(response);
         if (result.status) {
           console.log(result?.conversation?.data);
+          // let data = result?.conversation?.data.reverse();
           let data = result?.conversation?.data.reverse();
-          // console.log('result?.posts',result?.posts?.data)
 
-          setConversation(data);
+          setConversation(result?.conversation?.data.reverse());
+          setNextUrl(result?.conversation?.next_page_url)
+          // setRefreshing(false);
           // Alert.alert('',item?.user1?.id || item?.user2?.id,user.id)
           // if((item?.user1?.id || item?.user2?.id)==user.id){
-
+          
+          //!
           data.map((c: any) => {
             if (!c?.read_at && c?.receiverId == user.id) {
               ReadMessage(
@@ -165,6 +176,7 @@ const Chat = () => {
               );
             }
           });
+          //!
           // }
           // flatListRef.current.scrollToEnd({ animated: true });
           // await StorageServices.setItem("chatlist", result?.conversation?.data);
@@ -176,6 +188,41 @@ const Chat = () => {
         }
       }
     );
+  };
+  const refreshData = async () => {
+    // console.log('next_page_url',nextUrl)
+    if(nextUrl){
+
+      let token = await StorageServices.getItem(TOKEN);
+      // console.log(item.id)
+      setRefreshing(true)
+      GetRefreshConversation(
+        token,
+        nextUrl,
+        async ({ isSuccess, response }: any) => {
+          console.log("data c", isSuccess);
+          // console.log(msg)
+          let result = JSON.parse(response);
+          if (result.status) {
+            console.log(result?.conversation?.data);
+            let data = result?.conversation?.data.reverse();
+            // console.log('result?.posts',result?.posts?.data)
+            setConversation([...conversation,...result?.conversation?.data.reverse()])
+            setNextUrl(result?.conversation?.next_page_url)
+            setRefreshing(false)
+            // Alert.alert("msg",'check')
+  
+            
+          } else {
+            // setMsg({...msg,message:''})
+            setRefreshing(false)
+            console.log(result);
+            // Alert.alert("Alert!", "Something went wrong",);
+            console.log("Something went wrong");
+          }
+        }
+      );
+    }
   };
   // console.log("giph", giphy);
   useEffect(() => {
@@ -552,37 +599,60 @@ const Chat = () => {
         <FlatList
           data={conversation}
           ref={flatListRefChat}
-          keyExtractor={(item) => item}
-          style={{ marginBottom: isKeyboardVisible ? 40 : 15 }}
-          // nestedScrollEnabled={true}
+          keyExtractor={(item,index) => item.id}
+          style={{ marginBottom:isKeyboardVisible ? windowHeight<=630?  55:40 :windowHeight<=630? 30:10, }}
+
           inverted={true}
-          // style={{paddingTop:verticalScale(20)}}
-          // contentContainerStyle={{
-          //   gap: 7,
-          //   // transform: [{ scaleY: -1 }],
-          // }}
-          // inverted={true}
-          renderItem={renderChatList}
-          // style={{ transform: [{ scaleY: -1 }] }}
+          renderItem={renderChatList} 
+          onEndReached={refreshData}
+          refreshControl={
+            <RefreshControl
+              
+              colors={["#9Bd35A", "#689F38"]}
+              refreshing={refreshing}
+              onRefresh={()=>{
+              }} />
+            }
         />
-        {
+       
+      </View>
+      {
           // typer==receiver?.id?
 
           typingChat&& (
             <>
-              <InboxComponent
+            <View style={{...appStyles.row,marginLeft:10,gap:10}}>
+            <View style={{ width: 62, height: 62 }}>
+          <FastImage
+            style={{ width: "100%", height: "100%", borderRadius: scale(5) }}
+            source={{
+              uri: receiver?.imageUrl,
+              headers: { Authorization: "someAuthToken" },
+              priority: FastImage.priority.high,
+            }}
+            // source={image}
+          />
+        </View>
+        <LottieView
+        style={{height:60,width:60}}
+        source={require("../../../assets/json/typing.json")}
+        autoPlay
+        speed={1}
+      />
+
+            </View>
+              {/* <InboxComponent
                 name={receiver?.name}
                 image={receiver?.imageUrl}
                 message={"Typing..."}
                 time={moment().format("h:mm a")}
-              />
+              /> */}
               <Spacer height={20} />
             </>
           )
           // :<></>
         
         }
-      </View>
       {/* <View> */}
       <MessageSender
         placeholder="write a message"

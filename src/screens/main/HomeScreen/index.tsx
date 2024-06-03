@@ -40,7 +40,7 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   const isSroll = useSelector(getUserData);
 
-  console.log("isSroll", isSroll);
+  // console.log("isSroll", isSroll);
 
   const topBarData = ["Following", "Favorites"];
 

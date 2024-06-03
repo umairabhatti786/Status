@@ -45,6 +45,7 @@ import {
   GetConversationIfExist,
   GetStatus,
   GetUserComment,
+  LoadMoreStatus,
   getUserDetail,
   isFollowing,
 } from "../../../api/ApiServices";
@@ -77,6 +78,7 @@ const OtherUserChannel = () => {
   const [comments, setComments] = useState<any>([]);
   const [newComment, setNewComment] = useState<any>({});
   const [posts, setPosts] = useState<any>([]);
+  const [nextUrl, setNextUrl] = useState('');
   const [newPost, setNewPost] = useState<any>({});
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
@@ -203,7 +205,8 @@ const OtherUserChannel = () => {
       if (result.status) {
         // console.log(result?.posts?.data)
         let data = result?.posts?.data.reverse();
-        setPosts(data);
+        setPosts(result?.posts?.data.reverse());
+        setNextUrl(result?.posts?.next_page_url);
 
         //adding Views
         result?.posts?.data.map(async (p: any, index: any) => {
@@ -213,7 +216,7 @@ const OtherUserChannel = () => {
           AddRemoveViews(data, token, async ({ isSuccess, response }: any) => {
             let result = JSON.parse(response);
             if (result.status) {
-              setCounter1(counter1 + 1);
+              // setCounter1(counter1 + 1);
             } else {
               console.log(result);
               // Alert.alert("Alert!", "Something went wrong",);
@@ -227,6 +230,31 @@ const OtherUserChannel = () => {
         console.log("Something went wrong");
       }
     });
+  };
+  const refreshOtherData = async (setRefreshing:any) => {
+    // console.log(nextUrl)
+    if(nextUrl){
+      setRefreshing(true)
+      LoadMoreStatus(nextUrl, token, async ({ isSuccess, response }: any) => {
+        console.log("data p", isSuccess);
+  
+        let result = JSON.parse(response);
+        if (result.status) {
+          // console.log(result?.posts?.data)
+          let data = result?.posts?.data.reverse();
+          setPosts([...posts,...data]);
+          setNextUrl(result?.posts?.next_page_url);
+  
+          setRefreshing(false)
+        } else {
+          setRefreshing(false)
+          console.log(result);
+          // Alert.alert("Alert!", "Something went wrong",);
+          console.log("Something went wrong");
+        }
+      });
+
+    }
   };
 
   // const getUserComment = async () => {
@@ -418,6 +446,7 @@ const OtherUserChannel = () => {
                   setCounter={setCounter}
                   isActiveProfile={isActiveProfile}
                   flatListRefOtherPosts={flatListRefOtherPosts}
+                  refreshOtherData={refreshOtherData}
                 />
               )}
             </View>

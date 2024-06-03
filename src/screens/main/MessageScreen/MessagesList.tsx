@@ -24,6 +24,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
 
   const [favorite, setFavorite] = useState(false);
   const [typing, setTyping] = useState(false);
+  const [event, setEvent] = useState<any>({});
   const [typingChat, setTypingChat] = useState(false);
 
   const pusher = Pusher.getInstance();
@@ -31,6 +32,17 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
   useEffect(()=>{
     setLastMessage(item?.last_message); 
   },[item?.last_message])
+
+  // useEffect(() => {
+  //   if(event){
+  //     setTyping(true)
+  //     setTimeout(() => {
+  //       setTyping(false)
+  //     }, 2000); 
+
+  //   }
+  // }, [event])
+  
   
   
 
@@ -43,8 +55,9 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
 
      pusher.connect();
       let channelNumber =item?.userId1+item?.userId2;
-      console.log("channelNumber", channelNumber);
+      // console.log("channelNumber", channelNumber);
       console.log("chatChannel_" + channelNumber);
+      console.log("TypingChannel_" + channelNumber);
       let chatChannel =  pusher.subscribe({
         channelName: "chatChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
@@ -63,8 +76,9 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
       let TypingChannel =  pusher.subscribe({
         channelName: "TypingChannel_" + channelNumber,
         onEvent: (event: PusherEvent) => {
-          if(JSON.parse(event.data).data.user1Id==receiver?.id){
-            dispatch(setTyper(JSON.parse(event.data).data.user1Id))
+          if(JSON.parse(event.data).users.user1Id==receiver?.id){
+            setEvent(JSON.parse(event.data).users)
+            dispatch(setTyper(JSON.parse(event.data).users.user1Id))
             dispatch(setTypingR(true))
             setTyping(true);
             //
@@ -73,7 +87,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
               setTyping(false);
             }, 2000);
           }
-          console.log("TypingChannel m", JSON.parse(event.data).data);
+          console.log("TypingChannel m", JSON.parse(event.data).users);
         },
       });
 
