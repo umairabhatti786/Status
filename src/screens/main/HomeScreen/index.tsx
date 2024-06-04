@@ -21,7 +21,11 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { scale, verticalScale } from "react-native-size-matters";
-import { getToken, getUserData, setNotificationAlert } from "../../../redux/reducers/authReducer";
+import {
+  getToken,
+  getUserData,
+  setNotificationAlert,
+} from "../../../redux/reducers/authReducer";
 import {
   GetFavoriteChannel,
   GetFollowingChannel,
@@ -34,7 +38,9 @@ const HomeScreen = () => {
   const isFocused = useIsFocused();
   const [followingChannels, setFollowingChannels] = useState<any>([]);
   const [favoritesChannels, setFavoritesChannels] = useState<any>([]);
-  const notificationAlert = useSelector((state) => state.auth)?.notificationAlert;
+  const notificationAlert = useSelector(
+    (state) => state.auth
+  )?.notificationAlert;
 
   // const token = StorageServices.getItem(TOKEN);
   const dispatch = useDispatch();
@@ -119,7 +125,9 @@ const HomeScreen = () => {
       let result = JSON.parse(response);
       if (result.status) {
         // console.log('result.channel.following',result.channel.following)
-        let newestUp=result?.channel?.following?.sort((a:any,b:any)=> b?.channel?.lastPostId-a?.channel?.lastPostId)
+        let newestUp = result?.channel?.following?.sort(
+          (a: any, b: any) => b?.channel?.lastPostId - a?.channel?.lastPostId
+        );
         setFollowingChannels(newestUp);
         // setComments([...comments, result.comment]);
         // setLoading2(false);
@@ -136,7 +144,9 @@ const HomeScreen = () => {
 
       let result = JSON.parse(response);
       if (result.status) {
-        let newestUp=result?.channel?.favorites?.sort((a:any,b:any)=> b?.channel?.lastPostId-a?.channel?.lastPostId)
+        let newestUp = result?.channel?.favorites?.sort(
+          (a: any, b: any) => b?.channel?.lastPostId - a?.channel?.lastPostId
+        );
 
         setFavoritesChannels(newestUp);
         // setComments([...comments, result.comment]);
@@ -164,7 +174,7 @@ const HomeScreen = () => {
   // };
 
   const renderChatList = ({ item, index }: any) => {
-    return (
+    return item?.channel?.lastPostId ? (
       <FriendList
         disabled={false}
         onPress={() =>
@@ -172,12 +182,14 @@ const HomeScreen = () => {
             item: item,
             id: item?.id,
             channelId: item?.channel?.id,
-            isChannel:true
+            isChannel: true,
           })
         }
         item={item}
         // id={item.id}
       />
+    ) : (
+      <></>
     );
   };
   // const onScroll = async  (x: any) => {
@@ -199,12 +211,11 @@ const HomeScreen = () => {
       <View>
         <View style={{ paddingHorizontal: scale(15) }}>
           <TopHeader
-          notificationAlert={notificationAlert}
+            notificationAlert={notificationAlert}
             onPressNotification={() => {
-              dispatch(setNotificationAlert(false))
+              dispatch(setNotificationAlert(false));
 
-              navigation.navigate("Notifications")
-
+              navigation.navigate("Notifications");
             }}
             onPressSetting={() => navigation.navigate("Settings")}
           />
