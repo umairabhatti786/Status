@@ -114,10 +114,9 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               )}
             </View>
 
-            {/* <Spacer height={verticalScale(6)} /> */}
-            {/* {item?.channel?.last_post != "null" ? ( */}
+            {item?.channel?.last_post != "null" ? (
               <CustomText
-                text={"d kds dks kxs kx sk  cdk cdk c"}
+                text={item?.channel?.last_post?.description}
                 color={colors.gray500}
                 size={15}
                 lineHeight={21}
@@ -127,10 +126,10 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                 // fontFam="Poppins-Medium"
                 fontWeight="600"
               />
-            {/* ) : (
+            ) : (
               <></>
-            )} */}
-            {/* <Spacer height={verticalScale(6)} /> */}
+            )}
+
 
            
           </View>
