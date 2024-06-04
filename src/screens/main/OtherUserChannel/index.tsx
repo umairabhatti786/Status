@@ -90,7 +90,7 @@ const OtherUserChannel = () => {
   const [toastColor, setToastColor] = useState(colors.red);
   const isFocused = useIsFocused();
   const [loading2, setLoading2] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [counter, setCounter] = useState(0);
   const [counter1, setCounter1] = useState(0);
   const flatListRefOtherPosts: any = useRef(null);
@@ -184,6 +184,10 @@ const OtherUserChannel = () => {
   // }, [isFocused]);
 
   useEffect(() => {
+    if (isFocused) GetPosts();
+  }, [isFocused, counter1]);
+
+  useEffect(() => {
     //   if (isChannel) {
     //     setIsActiveProfile("Channel");
     //   } else {
@@ -193,11 +197,10 @@ const OtherUserChannel = () => {
   }, []);
   // console.log("UserID", data?.gif);
 
-  useEffect(() => {
-    if (isFocused) GetPosts();
-  }, [isFocused, counter1]);
+
 
   const GetPosts = async () => {
+
     GetStatus(id, token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
 
@@ -207,6 +210,7 @@ const OtherUserChannel = () => {
         let data = result?.posts?.data.reverse();
         setPosts(result?.posts?.data.reverse());
         setNextUrl(result?.posts?.next_page_url);
+        setLoading(false)
 
         //adding Views
         result?.posts?.data.map(async (p: any, index: any) => {
@@ -219,6 +223,7 @@ const OtherUserChannel = () => {
               // setCounter1(counter1 + 1);
             } else {
               console.log(result);
+              setLoading(false)
               // Alert.alert("Alert!", "Something went wrong",);
               console.log("Something went wrong");
             }
@@ -226,6 +231,7 @@ const OtherUserChannel = () => {
         });
       } else {
         console.log(result);
+        setLoading(false)
         // Alert.alert("Alert!", "Something went wrong",);
         console.log("Something went wrong");
       }
@@ -278,7 +284,7 @@ const OtherUserChannel = () => {
   // };
 
   const getDetail = () => {
-    setLoading(true);
+    // setLoading(true);
     let params = {
       id: id,
     };
@@ -290,12 +296,12 @@ const OtherUserChannel = () => {
         console.log("user", result);
         setData(result?.user);
         if (result?.user?.followers.length > 0) {
-          setIsFollow(true);
+          // setIsFollow(true);
         }
         if (result?.user?.favoritee.length > 0) {
           setIsFavorite(true);
         }
-        setLoading(false);
+        // setLoading(false);
 
         //   if (result?.) {
         //     setIsFollow(true)
@@ -437,6 +443,7 @@ const OtherUserChannel = () => {
               ) : (
                 <Channel
                   posts={posts}
+                  disableEditAndDelete={true}
                   hideSendMessage={true}
                   userData={data}
                   mainFlex={1}

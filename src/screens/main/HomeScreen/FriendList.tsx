@@ -73,7 +73,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
           <View
             style={{
               paddingLeft: scale(15),
-              width: item.postimg ? scale(187) : scale(250),
+              width: item?.channel?.last_post?.imageUrl ? scale(190) : scale(250),
             }}
           >
             {/* size={15}
@@ -96,7 +96,8 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                   borderRadius: 999,
                   backgroundColor: colors.white,
                   marginLeft: scale(10),
-                  marginRight:scale(5)
+                  marginRight:scale(5),
+                  marginTop:2
                 }}
               />
               {item?.channel?.last_post ? (
@@ -114,21 +115,21 @@ const FriendList = ({ item, onPress, disabled }: any) => {
             </View>
 
             {/* <Spacer height={verticalScale(6)} /> */}
-            {item?.channel?.last_post != "null" ? (
+            {/* {item?.channel?.last_post != "null" ? ( */}
               <CustomText
-                text={item?.channel?.last_post?.description}
+                text={"d kds dks kxs kx sk  cdk cdk c"}
                 color={colors.gray500}
                 size={15}
                 lineHeight={21}
                 fontFam="Inter-Medium"
                 numberOfLines={2}
-                style={{ marginVertical: verticalScale(5) }}
+                style={{ marginVertical: verticalScale(5), }}
                 // fontFam="Poppins-Medium"
                 fontWeight="600"
               />
-            ) : (
+            {/* ) : (
               <></>
-            )}
+            )} */}
             {/* <Spacer height={verticalScale(6)} /> */}
 
            
@@ -139,8 +140,8 @@ const FriendList = ({ item, onPress, disabled }: any) => {
             style={{
               alignItems: "flex-end",
               justifyContent: "space-between",
-              paddingRight: scale(7),
-              paddingTop: verticalScale(5),
+              paddingRight: 5,
+              paddingTop: 14,
               paddingBottom: verticalScale(5),
               position: "absolute",
               alignSelf: "center",

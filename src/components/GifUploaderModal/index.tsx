@@ -214,8 +214,8 @@ const GifUploaderModal: React.FC<Props> = ({
               }}
             >
               <Image
-                source={images.sendmessage}
-                style={{ width: scale(25), height: scale(25) }}
+                source={images.simplesend}
+                style={{ width: scale(25), height: scale(25), marginLeft: 8  }}
                 resizeMode="contain"
               />
             </TouchableOpacity>

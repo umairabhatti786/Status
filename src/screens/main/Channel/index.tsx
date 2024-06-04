@@ -66,7 +66,8 @@ const Channel = ({
   mainFlex,
   mainMargin,
   refreshOtherData,
-  refreshAuthData
+  refreshAuthData,
+  disableEditAndDelete
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
@@ -224,7 +225,7 @@ const Channel = ({
                       text={shortenedText}
                       numberOfLines={1}
                     />
-                    {userData && (
+                    {!disableEditAndDelete && (
                       <View
                         style={{
                           flexDirection: "row",
