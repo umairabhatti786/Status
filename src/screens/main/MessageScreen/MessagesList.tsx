@@ -21,6 +21,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
   const dispatch = useDispatch()
   const [lastMessage, setLastMessage] = useState()
   const receiver=item?.user1 || item?.user2
+  const [isStar,setIsStar]=useState(false)
 
   const [favorite, setFavorite] = useState(false);
   const [typing, setTyping] = useState(false);
@@ -186,7 +187,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
           
           <NewText
           color={colors.lightgreen}
-          size={16}
+          size={15}
           text={'Typing...'}
           // label={'Typing...'}
           />:<></>

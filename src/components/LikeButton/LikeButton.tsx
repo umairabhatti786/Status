@@ -39,10 +39,10 @@ const LikeButton = ({ likes_count, onPress, isLiked }: any) => {
       }}
     >
       <View style={{...appStyles.row,}}>
-        <View style={{width:30,}}>
+        <View style={{width:25,}}>
         <CustomText
         // color={liked?"#00AFF0":colors.grey300}
-        size={liked?14:13}
+        size={13}
         fontFam="Inter-Medium"
         // style={{ width:30}}
         text={liked?"💙" :"🩶"}
