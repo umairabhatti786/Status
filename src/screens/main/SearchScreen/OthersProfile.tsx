@@ -655,7 +655,7 @@ const OthersProfile = () => {
                         numberOfLines={1}
                         fontFam="Inter-Medium"
                         style={{ marginLeft: scale(8), marginRight: scale(10) }}
-                        text={"Actress, Modal"}
+                        text={data?.profileType}
                       />
                     </View>
                   </View>
