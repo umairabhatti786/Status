@@ -443,7 +443,7 @@ const ProfileScreen = () => {
                   style={{
                     ...appStyles.row,
                     paddingBottom: verticalScale(5),
-                    paddingHorizontal: scale(20),
+                    paddingHorizontal: scale(10),
                   }}
                 >
                   <View style={{ ...appStyles.row, width: "46%" }}>
@@ -460,12 +460,12 @@ const ProfileScreen = () => {
                       numberOfLines={1}
                       fontFam="Inter-Medium"
                       style={{ marginLeft: scale(8) }}
-                      text={userData?.location}
+                      text={userData.location}
                     />
                   </View>
                   <Spacer width={scale(22)} />
 
-                  <View style={{ ...appStyles.row, width: "48%" }}>
+                  <View style={{ ...appStyles.row, width: "46%", }}>
                     <Image
                       style={{
                         width: scale(20),

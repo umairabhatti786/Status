@@ -980,6 +980,12 @@ const EditProfile = ({ route }: any) => {
               /> */}
             </View>
             <View>
+            {isPredictionList && (
+                <PredictionList
+                  onAddressPress={(i) => onPressLocationAddress(i)}
+                  Addresses={predictionData}
+                />
+              )}
               <Input
                 label="Your Current Location"
                 // labelSize={15}
@@ -990,12 +996,7 @@ const EditProfile = ({ route }: any) => {
                 fontWeight="600"
                 marginTop={"7%"}
               />
-              {isPredictionList && (
-                <PredictionList
-                  onAddressPress={(i) => onPressLocationAddress(i)}
-                  Addresses={predictionData}
-                />
-              )}
+             
             </View>
 
             <Input
