@@ -167,40 +167,41 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                 <></>
               )}
             </View>
-            {/* <CustomText
-              text={item.time}
-              color={colors.gray500}
-              size={verticalScale(12)}
-              fontFam="Poppins-Regular"
-              //   fontWeight="500"
-            />
-            {item.count && (
-              <>
-              <Spacer  height={verticalScale(10)}/>
-               <View
-                style={{
-                  width: scale(25),
-                  height:scale(25),
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius:scale(25),
-                  padding:scale(2),
-                  backgroundColor: colors.black,
-                }}
-              >
-                <CustomText
-                  text={item.count}
-                  color={colors.white}
-                  // size={verticalScale(10)}
-                  fontFam="Poppins-Regular"
-                  //   fontWeight="500"
+          </View>
+        )}
+        {item?.channel?.last_post?.gif && (
+          <View
+            style={{
+              alignItems: "flex-end",
+              justifyContent: "space-between",
+              paddingRight: 5,
+              paddingTop: 14,
+              paddingBottom: verticalScale(5),
+              position: "absolute",
+              alignSelf: "center",
+              right: scale(5),
+              top: "20%",
+
+              // backgroundColor:"red"
+            }}
+          >
+            <View
+              style={{ width: verticalScale(55), height: verticalScale(55) }}
+            >
+              {item?.channel?.last_post?.gif ? (
+                <Image
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: scale(5),
+                    overflow: "hidden",
+                  }}
+                  source={{ uri: item?.channel?.last_post?.gif}}
                 />
-              </View>
-              </>
-  
-              
-             
-            )} */}
+              ) : (
+                <></>
+              )}
+            </View>
           </View>
         )}
       </TouchableOpacity>
