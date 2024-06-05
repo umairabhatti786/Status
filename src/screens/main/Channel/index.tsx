@@ -171,9 +171,9 @@ const Channel = ({
             const currentDate = moment();
             const createdAtDate = moment(item?.created_at);
             const shortenedText =
-              item?.title?.length > 30
-                ? item?.title?.substring(0, 29)
-                : item?.title;
+              item?.author?.name?.length > 30
+                ? item?.author?.name?.substring(0, 29)
+                : item?.author?.name;
             const userInputText =
               "He https://www.example.com/ llo, https://www.google.com/ ok bro. Ch https://www.example.com/ eck this link: https://www.example.com/";
 
