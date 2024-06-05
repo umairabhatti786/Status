@@ -187,7 +187,9 @@ console.log("activeBar",activeBar)
         isOnline={item?.isOnline}
         distance={item?.distance}
         followersCount={item?.followers_count}
-        // item={item}
+        profileType={item?.profileType}
+        createdAt={item?.created_at}
+        filterTwo={filterTwo}
       />
     );
   };

@@ -20,14 +20,26 @@ import { scale, verticalScale } from "react-native-size-matters";
 export const windowWidth = Dimensions.get("window").width;
 import FastImage from "react-native-fast-image";
 import NewText from "../../../components/NewText";
+import { dateFormat } from "../../../utils/CommonFun";
 
-const UserList = ({ item, name, image, onPress,isOnline,distance,followersCount }: any) => {
+const UserList = ({
+  item,
+  name,
+  image,
+  onPress,
+  isOnline,
+  distance,
+  followersCount,
+  profileType,
+  createdAt,
+  filterTwo,
+}: any) => {
   const navigation: any = useNavigation();
   // console.log("item?.distance", item?.distance);
   return (
     <>
       <TouchableOpacity
-        onPress={onPress} 
+        onPress={onPress}
         activeOpacity={0.6}
         style={{
           width: "32.8%",
@@ -47,7 +59,7 @@ const UserList = ({ item, name, image, onPress,isOnline,distance,followersCount 
             priority: FastImage.priority.high,
           }}
         />
-        {isOnline==1 ? (
+        {isOnline == 1 ? (
           <View
             style={{
               width: scale(8),
@@ -59,7 +71,9 @@ const UserList = ({ item, name, image, onPress,isOnline,distance,followersCount 
               left: 10,
             }}
           ></View>
-        ):<></>}
+        ) : (
+          <></>
+        )}
 
         <View
           style={{
@@ -70,7 +84,7 @@ const UserList = ({ item, name, image, onPress,isOnline,distance,followersCount 
             justifyContent: "flex-end",
           }}
         >
-          {distance>0 ? (
+          {filterTwo== 'nearby' ? (
             <View
               style={{
                 ...appStyles.row,
@@ -84,13 +98,17 @@ const UserList = ({ item, name, image, onPress,isOnline,distance,followersCount 
                 source={images.location}
               />
 
-              <CustomText text={`${distance.toFixed(2)}mi`} 
-              fontWeight="600"
-              color={colors.white} />
+              <CustomText
+                text={`${distance?.toFixed(2)}mi`}
+                fontWeight="600"
+                color={colors.white}
+              />
             </View>
-          ):<></>}
-
-          <View style={{ ...appStyles.row, paddingHorizontal: scale(10) }}>
+          ) : (
+            <></>
+          )}
+{filterTwo=='popular'?
+<View style={{ ...appStyles.row, paddingHorizontal: scale(10) }}>
             <Image
               style={{ width: 15, height: 15 }}
               resizeMode="contain"
@@ -103,11 +121,60 @@ const UserList = ({ item, name, image, onPress,isOnline,distance,followersCount 
               color={colors.white}
               style={{ marginLeft: 5, paddingTop: 4 }}
             />
-          </View>
+          </View>:<></>
+}
+          
+          {isOnline == 1 ? (
+            <View style={{ height: 17 }}>
+              <View
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: 23,
+                  backgroundColor: `rgba(0, 0, 0, 0.4)`, // Apply opacity to the background color
+                  opacity: 0.4,
+                }}
+              />
+              <NewText
+                fontFam="Poppins-Bold"
+                fontWeight="bold"
+                text={profileType}
+                numberOfLines={1}
+                size={11.5}
+                style={{ marginLeft: 10 }}
+                color={colors.white}
+              />
+            </View>
+          ) : (
+            <></>
+          )}
+          {filterTwo == 'new' ? (
+            <View style={{ height: 17 }}>
+              <View
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: 23,
+                  backgroundColor: `rgba(0, 0, 0, 0.4)`, // Apply opacity to the background color
+                  opacity: 0.4,
+                }}
+              />
+              <NewText
+                fontFam="Poppins-Bold"
+                fontWeight="bold"
+                text={dateFormat(createdAt)}
+                numberOfLines={1}
+                size={11.5}
+                style={{ marginLeft: 10 }}
+                color={colors.white}
+              />
+            </View>
+          ) : (
+            <></>
+          )}
 
           <View style={{ height: 17 }}>
-
-          <View
+            <View
               style={{
                 position: "absolute",
                 width: "100%",
@@ -125,7 +192,6 @@ const UserList = ({ item, name, image, onPress,isOnline,distance,followersCount 
               style={{ marginLeft: 10 }}
               color={colors.white}
             />
-           
           </View>
         </View>
       </TouchableOpacity>
