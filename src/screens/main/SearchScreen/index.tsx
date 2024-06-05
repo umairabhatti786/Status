@@ -84,9 +84,10 @@ const SearchScreen = ({ navigation }: any) => {
 console.log("activeBar",activeBar)
   // console.log("filterTwo", filterTwo, "filterThree", filterThree);
 
-  useEffect(() => {
-    getUserData();
-  }, [filterTwo, activeBar, selectedType]);
+  useEffect(() => {  
+    getUserData(); 
+    // console.log(activeBar,filterTwo,selectedType)
+  }, [activeBar,filterTwo , selectedType]);
 
   const getUserData = () => {
     setLoading(true);
@@ -99,7 +100,7 @@ console.log("activeBar",activeBar)
         Authorization: "Bearer " + token,
         Accept: "application/json",
       },
-      data: { filter1: activeBar, filter2: filterTwo, filter3:selectedType},
+      data: { filter1: activeBar, filter2: filterTwo, filter3:selectedType=='All'?'noFilter':selectedType},
       // data: {filter: f2+"&"+f1}
     };
 
@@ -107,14 +108,18 @@ console.log("activeBar",activeBar)
       .request(options)
       .then(function (response) {
         let result=response?.data?.result
-        let data=response?.data?.result?.data
+        let data:any=response?.data?.result?.data
         //check
-        if(activeBar=='all'&&data){
+        if(response?.data?.results){   
+          // console.log(data)
           setAllUsers(data); 
-          setResponse(result)
-        }
-        setLoading(false);
-      }) 
+          setResponse(result) 
+        }else{ 
+          setAllUsers([]);
+          setResponse('')
+        }  
+        setLoading(false);  
+      })   
       .catch(function (error) {
         console.log('error',error);
         // Alert.alert("Alert!", error);
@@ -179,7 +184,10 @@ console.log("activeBar",activeBar)
             id: item?.id,
           })
         }
-        item={item}
+        isOnline={item?.isOnline}
+        distance={item?.distance}
+        followersCount={item?.followers_count}
+        // item={item}
       />
     );
   };
@@ -364,7 +372,7 @@ console.log("activeBar",activeBar)
                     item={item}
                     onSelectCatrgory={() => {
                       setSelectedType(item);
-                      setFilterTwo(item)
+                      // setFilterTwo(item)
                       bottomSheetModalRef?.current?.close();
                     }}
                     selectedType={selectedType}

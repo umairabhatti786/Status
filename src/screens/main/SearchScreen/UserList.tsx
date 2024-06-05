@@ -21,13 +21,13 @@ export const windowWidth = Dimensions.get("window").width;
 import FastImage from "react-native-fast-image";
 import NewText from "../../../components/NewText";
 
-const UserList = ({ item, name, image, onPress }: any) => {
+const UserList = ({ item, name, image, onPress,isOnline,distance,followersCount }: any) => {
   const navigation: any = useNavigation();
   // console.log("item?.distance", item?.distance);
   return (
     <>
       <TouchableOpacity
-        onPress={onPress}
+        onPress={onPress} 
         activeOpacity={0.6}
         style={{
           width: "32.8%",
@@ -47,7 +47,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
             priority: FastImage.priority.high,
           }}
         />
-        {item?.isOnline && (
+        {isOnline==1 ? (
           <View
             style={{
               width: scale(8),
@@ -59,7 +59,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
               left: 10,
             }}
           ></View>
-        )}
+        ):<></>}
 
         <View
           style={{
@@ -70,7 +70,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
             justifyContent: "flex-end",
           }}
         >
-          {item?.distance>=0 && (
+          {distance>0 ? (
             <View
               style={{
                 ...appStyles.row,
@@ -84,11 +84,11 @@ const UserList = ({ item, name, image, onPress }: any) => {
                 source={images.location}
               />
 
-              <CustomText text={`${item?.distance.toFixed(2)}mi`} 
+              <CustomText text={`${distance.toFixed(2)}mi`} 
               fontWeight="600"
               color={colors.white} />
             </View>
-          )}
+          ):<></>}
 
           <View style={{ ...appStyles.row, paddingHorizontal: scale(10) }}>
             <Image
@@ -98,7 +98,7 @@ const UserList = ({ item, name, image, onPress }: any) => {
             />
 
             <CustomText
-              text={item?.followers_count}
+              text={followersCount}
               fontFam="Poppins-Medium"
               color={colors.white}
               style={{ marginLeft: 5, paddingTop: 4 }}
