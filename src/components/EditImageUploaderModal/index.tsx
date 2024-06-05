@@ -115,20 +115,21 @@ const EditImageUploaderModal: React.FC<Props> = ({
         }}
       >
         <TouchableOpacity onPress={onOpenGalleryForEdit} style={{ width: "100%", height: "85%" }}>
-          {editPostData?.imageUrl?
+          {
+          // editPostData?.imageUrl?
 
-            <Image
-              style={{ width: "100%", height: "100%"}}
-              source={{ uri: editPostData.imageUrl }}
-            />
+          //   <Image
+          //     style={{ width: "100%", height: "100%"}}
+          //     source={{ uri: editPostData.imageUrl }}
+          //   />
 
-          :
-          imageForEdit?.uri?
+          // :
+          imageForEdit?.uri||editPostData?.imageUrl?
 
           <Image
           style={{ width: "100%", height: "100%"}}
           // resizeMode={imageForEdit?.uri?'contain':"cover"}
-          source={{ uri: imageForEdit?.uri}}
+          source={{ uri: imageForEdit?.uri||editPostData?.imageUrl}}
         />
         :
         <Image
