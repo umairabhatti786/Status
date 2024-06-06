@@ -11,6 +11,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import {
+  GiphyContentType,
+  GiphyDialog,
+  GiphyDialogEvent,
+  GiphyDialogMediaSelectEventHandler,
+  GiphyMedia,
+  GiphySDK,
+  GiphyTheme,
+  GiphyThemePreset,
+} from "@giphy/react-native-sdk";
 import React, { useEffect, useState } from "react";
 import { appStyles } from "../../../utils/AppStyles";
 import { colors } from "../../../utils/colors";
@@ -38,12 +48,49 @@ const NewMessage = () => {
   const navigation: any = useNavigation();
   const [selectedUser, setSelectedUser] = useState<any>();
   const [search, setSearch] = useState("");
+  const [giphy, setGiphy] = useState("");
+  const [isGifView, setIsGifView] = useState(false);
+
   const [isSearch, setIsSearch] = useState(true);
   const [conversation, setConversation] = useState<any>([]);
   const userData = useSelector(getUserData);
   const [usersList, setUsersList] = useState([]);
   const user = route?.params?.user;
   const isFocused = useIsFocused();
+
+  GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
+GiphyDialog.configure({
+  mediaTypeConfig: [
+    GiphyContentType.Emoji,
+    GiphyContentType.Gif,
+    GiphyContentType.Sticker,
+    GiphyContentType.Text,
+  ],
+  showConfirmationScreen: true,
+});
+const theme: GiphyTheme = {
+  preset: GiphyThemePreset.Light,
+  backgroundColor: colors.black300,
+  cellCornerRadius: 12,
+  defaultTextColor: colors.white,
+};
+GiphyDialog.configure({ theme });
+
+useEffect(() => {
+  const handler: GiphyDialogMediaSelectEventHandler = (e) => {
+    setGiphy(e.media.url);
+    setIsGifView(true);
+    GiphyDialog.hide();
+  };
+  const listener = GiphyDialog.addListener(
+    GiphyDialogEvent.MediaSelected,
+    handler
+  );
+  return () => {
+    listener.remove();
+  };
+}, []);
+
 
   const onSearchUsers = async (text: string) => {
     console.log("Input text:", text);
@@ -307,14 +354,19 @@ const NewMessage = () => {
       {selectedUser && (
         <MessageSender
           message={"chat"}
-          notShow={true}
+          // notShow={true}
           placeholder={"Write a message"}
           // setConversation={setConversation}
           // conversation={conversation}
+          onGiphyPress={() => GiphyDialog.show()}
+        giphy={giphy}
+        setGiphy={setGiphy}
           receiver={selectedUser}
           newChat={true}
           receiverId={selectedUser?.id}
           authId={userData.id}
+          isGifView={isGifView}
+        setIsGifView={setIsGifView}
         />
       )}
     </Pressable>
