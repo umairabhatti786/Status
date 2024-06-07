@@ -213,7 +213,7 @@ const ChannelScreen = () => {
           // console.log('result?.posts',result?.posts?.data)
           let data = result?.posts?.data.reverse();
           // setPosts(data);
-          setAuthPosts([...authPosts,...data]);
+          setAuthPosts([...authPosts,...result?.posts?.data.reverse()]);
           setNextUrl(result?.posts?.next_page_url);
           setRefreshing(false)
         } else {
