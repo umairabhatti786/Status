@@ -119,6 +119,7 @@ const ProfileScreen = () => {
   useEffect(() => {
     setImageForEdit(imageForEdit);
   }, [isEditView]);
+
   useEffect(() => {
     getChannelId();
   }, []);
@@ -129,8 +130,8 @@ const ProfileScreen = () => {
   }, [focused]);
 
   useEffect(() => {
-    getUserComment();
-  }, []);
+    if (focused) getUserComment();
+  }, [focused]);
 
   useEffect(() => {
     GetPosts();
