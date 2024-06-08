@@ -114,7 +114,7 @@ const EditImageUploaderModal: React.FC<Props> = ({
           borderColor: "#8A8A8A",
         }}
       >
-        <TouchableOpacity onPress={onOpenGalleryForEdit} style={{ width: "100%", height: "85%" }}>
+        <TouchableOpacity onPress={editPostData?.gif?()=>{}:onOpenGalleryForEdit} style={{ width: "100%", height: "85%" }}>
           {
           // editPostData?.imageUrl?
 
@@ -124,12 +124,12 @@ const EditImageUploaderModal: React.FC<Props> = ({
           //   />
 
           // :
-          imageForEdit?.uri||editPostData?.imageUrl?
+          imageForEdit?.uri||editPostData?.imageUrl||editPostData?.gif?
 
           <Image
           style={{ width: "100%", height: "100%"}}
           // resizeMode={imageForEdit?.uri?'contain':"cover"}
-          source={{ uri: imageForEdit?.uri||editPostData?.imageUrl}}
+          source={{ uri: imageForEdit?.uri||editPostData?.imageUrl||editPostData?.gif}}
         />
         :
         <Image

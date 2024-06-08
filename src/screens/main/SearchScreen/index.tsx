@@ -126,29 +126,37 @@ console.log("activeBar",activeBar)
       });
   };
 
-  const refreshData = (newUrl:any) => {
-    const options = {
-      method: "POST",
-      url: newUrl,
-      headers: {
-        Authorization: "Bearer " + token,
-        Accept: "application/json",
-      },
-      data: { filter1: activeBar, filter2: filterTwo=="All"?'':filterTwo, },
-      // data: {filter: f2+"&"+f1}
-    };
+  const refreshData = () => {
 
-    axios
-      .request(options)
-      .then(function (response) {
+    // console.log('nextUrl',response?.next_page_url)
+    
+    if(response?.next_page_url){
+                setRefreshing(true)
 
-        setAllUsers([...allUsers,...response?.data?.result?.data]);
-        setResponse(response?.data?.result)
-        setRefreshing(false);
-      })
-      .catch(function (error) {
-        Alert.alert("Alert!", "Network Error.");
-      });
+                const options = {
+                  method: "POST",
+                  url: response?.next_page_url,
+                  headers: {
+                    Authorization: "Bearer " + token,
+                    Accept: "application/json",
+                  },
+                  data: { filter1: activeBar, filter2: filterTwo, filter3:selectedType=='All'?'noFilter':selectedType},
+                  // data: {filter: f2+"&"+f1}
+                };
+            
+                axios
+                  .request(options)
+                  .then(function (response) {
+            
+                    setAllUsers([...allUsers,...response?.data?.result?.data]);
+                    setResponse(response?.data?.result)
+                    setRefreshing(false);
+                  })
+                  .catch(function (error) {
+                    setRefreshing(false)
+                    Alert.alert("Alert!", "Network Error.");
+                  });
+              }
   };
 
   const profileType = [
@@ -339,16 +347,7 @@ console.log("activeBar",activeBar)
             numColumns={3}
             style={{ marginBottom: verticalScale(155) }}
             renderItem={renderUsers}
-            onEndReached={()=>{
-              setRefreshing(true)
-              // console.log('nextUrl',response?.next_page_url)
-
-              if(response?.next_page_url){
-                refreshData(response?.next_page_url)
-              }else{
-                setRefreshing(false)
-              }
-            }}
+            onEndReached={refreshData}
             refreshControl={
             <RefreshControl
               

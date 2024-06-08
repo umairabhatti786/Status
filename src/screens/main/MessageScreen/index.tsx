@@ -64,33 +64,7 @@ const MessageScreen = ({ navigation }: any) => {
     );
   };
 
-  const getChatList = async () => {
-    // Alert.alert("msg",'msg')
-    let token = await StorageServices.getItem(TOKEN);
-    setLoading(true);
-    setActiveChat("Inbox") 
-    GetChatList(token, async ({ isSuccess, response }: any) => {
-      console.log("data p", isSuccess);
-
-      let result = JSON.parse(response);
-      if (result.status) {
-        console.log(result);
-
-        setChatList(result?.chatList);
-        let actChat = result?.chatList?.filter(
-          (c: any) => !(c.archive_con.length + c.trash_con.length+c.blocked_con.length)
-        );
-        setContacts(actChat); 
-        setLoading(false);
-        // setAuthPosts(result?.posts?.data);
-      } else {
-        console.log(result);
-        setLoading(false);
-        // Alert.alert("Alert!", "Something went wrong",);
-        console.log("Something went wrong");
-      }
-    });
-  };
+ 
 
   const getUserFavoriteConversation = async () => {
     let token = await StorageServices.getItem(TOKEN);
@@ -168,16 +142,44 @@ const MessageScreen = ({ navigation }: any) => {
     );
   };
 
+  const getChatList = async () => {
+    // Alert.alert("msg",'msg')
+    let token = await StorageServices.getItem(TOKEN);
+    setLoading(true);
+    setActiveChat("Inbox") 
+    GetChatList(token, async ({ isSuccess, response }: any) => {
+      console.log("data p", isSuccess);
+
+      let result = JSON.parse(response);
+      if (result.status) {
+        console.log(result);
+
+        setChatList(result?.chatList);
+        let actChat = result?.chatList?.filter(
+          (c: any) => !(c.archive_con.length + c.trash_con.length+c.blocked_con.length)
+        );
+        setContacts(actChat); 
+        setLoading(false);
+        // setAuthPosts(result?.posts?.data);
+      } else {
+        console.log(result);
+        setLoading(false);
+        // Alert.alert("Alert!", "Something went wrong",);
+        console.log("Something went wrong");
+      }
+    });
+  };
+
   useEffect(() => {
     if (isFocused) getChatList();
   }, [isFocused,counter]);
 
   useEffect(() => {
-    if (isFocused) {
+    // if (isFocused) {
       console.log(activeChat);
       if (activeChat === "Inbox") {
         let actChat = chatList?.filter(
-          (c: any) => !(c.archive_con.length + c.trash_con.length)
+          (c: any) => !(c.archive_con.length + c.trash_con.length+c.blocked_con.length)
         );
         setContacts(actChat);
       } else if (activeChat === "Starred") {
@@ -193,8 +195,8 @@ const MessageScreen = ({ navigation }: any) => {
         setContacts(trashCon);
         // getUserTrashConversation();
       }
-    }
-  }, [isFocused, activeChat]);
+    // }
+  }, [ activeChat]);
 
   const handleSearch = async (text: any) => {
     setSearch(text);

@@ -232,7 +232,7 @@ const Channel = ({
                           justifyContent: "space-between",
                         }}
                       >
-                        {!item?.gif && (
+                        {/* {!item?.gif && ( */}
                           <TouchableOpacity
                             onPress={() => {
                               setEditPostData({
@@ -251,7 +251,7 @@ const Channel = ({
                               text={"Edit"}
                             />
                           </TouchableOpacity>
-                        )}
+                        {/* )} */}
                         <Spacer width={10} />
                         <TouchableOpacity
                           onPress={() => {
