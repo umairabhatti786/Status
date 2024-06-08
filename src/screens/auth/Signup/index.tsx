@@ -43,9 +43,9 @@ const Signup = () => {
   const [toastColor, setToastColor] = useState(colors.red);
   const [deveiceId, setDeviceId] = useState();
 
-  useEffect(() => {
-    getDeviceId();
-  }, []);
+  // useEffect(() => {
+  //   getDeviceId();
+  // }, []);
 
   const getDeviceId = async () => {
     let deviceState = await OneSignal.getDeviceState();
@@ -60,13 +60,15 @@ const Signup = () => {
 
   const OnSignup = async () => {
     const viladResponse = SignupForm(values, setShowError, setError);
+    let deviceState = await OneSignal.getDeviceState();
+
 
     if (viladResponse) {
 
       const data = {
         email: values.email,
         password: values.password,
-        deviceId: deveiceId,
+        deviceId: deviceState?.userId,
       };
       setLoading(true);
 

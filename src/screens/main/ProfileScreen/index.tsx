@@ -460,7 +460,7 @@ const ProfileScreen = () => {
                       numberOfLines={1}
                       fontFam="Inter-Medium"
                       style={{ marginLeft: scale(8) }}
-                      text={userData.location}
+                      text={userData?.location}
                     />
                   </View>
                   <Spacer width={scale(22)} />

@@ -18,10 +18,10 @@ import { appStyles } from "../../../utils/AppStyles";
 import moment from "moment";
 import NewText from "../../../components/NewText";
 import { capitalizeFirstLetter, dateFormat } from "../../../utils/CommonFun";
+import FastImage from "react-native-fast-image";
 export const windowWidth = Dimensions.get("window").width;
 
 const FriendList = ({ item, onPress, disabled }: any) => {
-
   // console.log("item?.channel?.last_post?.created_at",typeof item?.channel?.last_post)
   return (
     <>
@@ -73,7 +73,9 @@ const FriendList = ({ item, onPress, disabled }: any) => {
           <View
             style={{
               paddingLeft: scale(15),
-              width: item?.channel?.last_post?.imageUrl ? scale(190) : scale(250),
+              width: item?.channel?.last_post?.imageUrl
+                ? scale(190)
+                : scale(250),
             }}
           >
             {/* size={15}
@@ -86,7 +88,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                 color={colors.white}
                 size={16}
                 fontFam="Poppins-SemiBold"
-                fontWeight="800"
+                fontWeight="700"
               />
 
               <View
@@ -94,18 +96,18 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                   width: scale(4),
                   height: scale(4),
                   borderRadius: 999,
-                  backgroundColor: colors.white,
+                  backgroundColor: "#999999",
                   marginLeft: scale(10),
-                  marginRight:scale(5),
-                  marginTop:2
+                  marginRight: scale(5),
+                  marginTop: 2,
                 }}
               />
               {item?.channel?.last_post ? (
                 <NewText
                   text={dateFormat(item?.channel?.last_post?.created_at)}
-                  color={"#FFFFFF"}
+                  color={"#999999"}
                   size={12}
-                  style={{marginTop:4}}
+                  style={{ marginTop: 4 }}
                   // fontFam="Poppins-Medium"
                   fontWeight="400"
                 />
@@ -122,16 +124,13 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                 lineHeight={21}
                 fontFam="Inter-Medium"
                 numberOfLines={2}
-                style={{ marginVertical: verticalScale(5), }}
+                style={{ marginVertical: verticalScale(5) }}
                 // fontFam="Poppins-Medium"
                 fontWeight="600"
               />
             ) : (
               <></>
             )}
-
-
-           
           </View>
         </View>
         {item?.channel?.last_post?.imageUrl && (
@@ -154,14 +153,21 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               style={{ width: verticalScale(55), height: verticalScale(55) }}
             >
               {item?.channel?.last_post != "null" ? (
-                <Image
+
+                
+                <FastImage
                   style={{
                     width: "100%",
                     height: "100%",
                     borderRadius: scale(5),
                     overflow: "hidden",
                   }}
-                  source={{ uri: item?.channel?.last_post?.imageUrl }}
+                  source={{
+                    uri: item?.channel?.last_post?.imageUrl ,
+                    headers: { Authorization: "someAuthToken" },
+                    priority: FastImage.priority.high,
+                  }}
+                  // source={{ uri: item?.channel?.last_post?.imageUrl }}
                 />
               ) : (
                 <></>
@@ -186,7 +192,13 @@ const FriendList = ({ item, onPress, disabled }: any) => {
             }}
           >
             <View
-              style={{ width: verticalScale(55), height: verticalScale(55) }}
+              style={{
+                width: verticalScale(55),
+                height: verticalScale(55),
+                borderRadius: scale(5),
+                overflow: "hidden",
+
+              }}
             >
               {item?.channel?.last_post?.gif ? (
                 <Image
@@ -194,9 +206,8 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                     width: "100%",
                     height: "100%",
                     borderRadius: scale(5),
-                    overflow: "hidden",
                   }}
-                  source={{ uri: item?.channel?.last_post?.gif}}
+                  source={{ uri: item?.channel?.last_post?.gif }}
                 />
               ) : (
                 <></>
