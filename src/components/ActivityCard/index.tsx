@@ -22,6 +22,11 @@ type Props = {
 const ActivityCard = ({ image, name, time, comment, isShowFollow,senderId }: any) => {
   const [isFollow, setIsFollow] = useState(true);
   const navigation: any = useNavigation();
+  const shortenedName =
+name?.length > 30
+  ? name?.substring(0, 29) + "..."
+  : name;
+
 
   return (
     <View
@@ -34,11 +39,11 @@ const ActivityCard = ({ image, name, time, comment, isShowFollow,senderId }: any
     >
       <TouchableOpacity activeOpacity={0.6} onPress={()=>{
         navigation.navigate("OthersProfile",{id:senderId});
-      }} style={{ ...appStyles.row, width: windowWidth / 2,backgroundColor:"red" }}>
+      }} style={{ ...appStyles.row, width: windowWidth / 1.5, }}>
         <Image
           style={{
-            width: verticalScale(60),
-            height: verticalScale(60),
+            width: verticalScale(55),
+            height: verticalScale(55),
             borderRadius:scale(10)
             // width: 64, height: 64
           }}
@@ -47,7 +52,7 @@ const ActivityCard = ({ image, name, time, comment, isShowFollow,senderId }: any
         <View style={{ marginLeft: scale(15) }}>
           <View>
             <NewText
-              text={name}
+              text={shortenedName}
               color={colors.white}
               size={16}
               fontFam="Poppins-SemiBold"
@@ -56,7 +61,7 @@ const ActivityCard = ({ image, name, time, comment, isShowFollow,senderId }: any
             />
           </View>
 
-          {/* <Spacer height={5} /> */}
+          <Spacer height={7} />
           <View style={{ flexDirection: "row" }}>
             <NewText
               lineHeight={21}

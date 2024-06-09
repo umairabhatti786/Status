@@ -180,16 +180,29 @@ const Channel = ({
               <View style={{ paddingBottom: verticalScale(10) }}>
                 <Spacer height={verticalScale(30)} />
                 <View style={styles.timeContainer}>
+                <CustomText
+                    color={colors.grey300}
+                    size={15}
+                    text={
+                      createdAtDate.isSame(currentDate, "day")
+                        ? "Today "
+                        : createdAtDate.format("dddd")
+                    }
+                    // fontFam="Inter-SemiBold"
+                    //  style={{ marginLeft: scale(8),backgroundColor:colors.primary }}
+                    // text={moment(item?.created_at).format("dddd hh:mm A")}
+                  />
+                  
                   <CustomText
                     color={colors.grey300}
                     size={15}
                     text={
                       createdAtDate.isSame(currentDate, "day")
-                        ? "Today " + createdAtDate.format("h:mm A")
-                        : createdAtDate.format("dddd h:mm A")
+                        ? createdAtDate.format("h:mm A")
+                        : createdAtDate.format("h:mm A")
                     }
                     // fontFam="Inter-SemiBold"
-                    //  style={{ marginLeft: scale(8),backgroundColor:colors.primary }}
+                     style={{ marginTop: 3,}}
                     // text={moment(item?.created_at).format("dddd hh:mm A")}
                   />
                 </View>
@@ -500,6 +513,8 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(2),
     alignSelf: "center",
     borderRadius: scale(20),
+    flexDirection:"row",
+    gap:5
   },
   descripationText: {
     fontSize: 14,
