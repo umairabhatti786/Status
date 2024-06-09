@@ -136,7 +136,7 @@ useEffect(() => {
   };
 
   useEffect(() => {
-    console.log(user)
+    console.log(user);
     if (isFocused && user) {
       setSearch(user.name);
       setSelectedUser(user);
@@ -148,23 +148,36 @@ useEffect(() => {
       <StatusBar backgroundColor={colors.black300} barStyle="light-content" />
 
       <View style={styles.header}>
-        <View style={{ width: "33%" }} />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={{
+            width: scale(30),
+            height: scale(35),
+            alignItems: "flex-start",
+            justifyContent: "center",
+          }}
+          onPress={() => navigation.goBack()}
+        >
+          <Image
+            style={{ width: scale(18), height: scale(25) }}
+            source={images.back200}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
 
-        <View style={{ width: "33%" ,alignItems:"center"}}>
+        <View style={{ alignItems: "center" }}>
           <NewText
             fontWeight="600"
             color={colors.white}
             fontFam="Poppins-Medium"
-            size={15}
+            size={14}
             text={"New Message"}
           />
         </View>
 
         <TouchableOpacity
           style={{
-            width: "30%",
             alignItems: "flex-end",
-            // paddingRight: scale(10),
           }}
           onPress={() => navigation.goBack()}
         >

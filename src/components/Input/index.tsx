@@ -127,14 +127,14 @@ const Input = ({
             style={{
               justifyContent: "center",
               alignItems: "center",
-              marginRight: 10,
+              // marginRight: 10,
             }}
           >
             <Image
               source={leftSource}
               style={{
-                width: 25,
-                height: 25,
+                width: 22,
+                height: 22,
                 tintColor: "#CCCCCC",
               }}
               resizeMode={"contain"}

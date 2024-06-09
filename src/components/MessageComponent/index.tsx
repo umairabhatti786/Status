@@ -35,6 +35,12 @@ const MessagesComponent = ({
   onDelete,
   onPress
 }: Props) => {
+let nameData="umair abbas bhatti 719 @gmail.com"
+  const shortenedName =
+  name?.length > 20
+    ? name?.substring(0, 21)
+    : name;
+
   return (
     <View>
       {chatDate && (
@@ -102,11 +108,17 @@ const MessagesComponent = ({
               style={{
                 ...appStyles.row,
                 marginTop: verticalScale(-3),
-                width: "80%",
+                width: "95%",
               }}
             >
+
+{/* const shortenedText =
+              item?.author?.name?.length > 30
+                ? item?.author?.name?.substring(0, 29)
+                : item?.author?.name; */}
+
               <CustomText
-                text={name}
+                text={shortenedName}
                 color={colors.white}
                 size={16}
                 fontFam="Poppins-SemiBold"
@@ -145,20 +157,21 @@ const MessagesComponent = ({
             fontWeight={profile ? "600" : "500"}
           />
         </View>
-        {onDelete ? (
+         {onDelete ? (
           <TouchableOpacity
             onPress={onDelete}
             style={{
               width: scale(70),
-              height: verticalScale(60),
+              // height: verticalScale(60),
               paddingTop: 3,
               alignItems: "flex-end",
               justifyContent: "space-between",
               marginRight: scale(5),
+              alignSelf:"flex-end",
               position: "absolute",
               // backgroundColor:"red",
               right: scale(10),
-              top: verticalScale(5),
+              bottom:0,
 
               // paddingBottom: 5,
               // backgroundColor:"red"
@@ -167,13 +180,13 @@ const MessagesComponent = ({
             <CustomText
               text={"Delete"}
               color={colors.grey300}
-              size={14}
+              size={13}
               fontFam="Poppins-Regular"
             />
           </TouchableOpacity>
         ) : (
           <></>
-        )}
+        )} 
       </View>
     </View>
   );

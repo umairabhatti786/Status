@@ -18,7 +18,18 @@ export function capitalizeFirstLetter(str) {
   
     if (now.isSame(inputDate, 'day')) {
       // Same day: show time difference
-      return inputDate.fromNow(); // Shows "3 minutes ago", "1 hour ago", etc.
+      const duration = moment.duration(now.diff(inputDate));
+      const hours = duration.hours();
+      const minutes = duration.minutes();
+      console.log("hours",hours)
+  
+      if (hours > 0) {
+        return `${hours}h ago`;
+      }
+      if (minutes > 0) {
+        return `${minutes}m ago`;
+      }
+      return 'few second ago';
     }
   
     if (now.diff(inputDate, 'days') === 1) {

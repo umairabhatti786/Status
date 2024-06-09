@@ -195,7 +195,7 @@ const GifUploaderModal: React.FC<Props> = ({
                 fontSize: verticalScale(16),
               }}
               placeholderTextColor={colors.gray200}
-              placeholder={"Write a status update"}
+              placeholder={"write a message"}
             />
           </View>
           {loading ? (

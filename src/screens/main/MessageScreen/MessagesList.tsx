@@ -29,7 +29,7 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
   const [typingChat, setTypingChat] = useState(false);
 
   const pusher = Pusher.getInstance();
-
+console.log("lastMessage",lastMessage)
   useEffect(()=>{
     setLastMessage(item?.last_message); 
   },[item?.last_message])

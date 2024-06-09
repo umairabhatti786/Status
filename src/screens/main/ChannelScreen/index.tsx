@@ -364,8 +364,8 @@ const ChannelScreen = () => {
     );
   };
   const shortenedText =
-    userData?.name?.length > 17
-      ? userData?.name?.substring(0, 16) + "..."
+    userData?.name?.length > 30
+      ? userData?.name?.substring(0, 29) + "..."
       : userData?.name;
 
   return (
@@ -408,6 +408,20 @@ const ChannelScreen = () => {
                 />
               </TouchableOpacity>
               <Spacer width={5} />
+              <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => {
+                setIsBar(false);
+                dispatch(setDisableBottomTab(false));
+  
+                setTimeout(() => {
+                  navigation.navigate("ProfileStack", {
+                    id: userData?.id,
+                  });
+                }, 200);
+              }}
+              // onPress={()=>navigation.navigate("ProfileStack")}
+              >
 
               <FastImage
                 style={{
@@ -421,6 +435,9 @@ const ChannelScreen = () => {
                   priority: FastImage.priority.high,
                 }}
               />
+
+              </TouchableOpacity>
+
               <View
                 style={{
                   marginHorizontal: scale(7),
@@ -443,7 +460,7 @@ const ChannelScreen = () => {
                 />
               </View>
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               activeOpacity={0.6}
               onPress={() =>{
                 setIsBar(true)
@@ -459,7 +476,7 @@ const ChannelScreen = () => {
                 }}
                 source={images.dot}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
           </View>
           <KeyboardAvoidingView
@@ -524,7 +541,7 @@ const ChannelScreen = () => {
         </SafeAreaView>
       )}
 
-      <SizeBar
+      {/* <SizeBar
         setIsModalVisible={setIsBar}
         top={verticalScale(-15)}
         right={scale(-8)}
@@ -562,7 +579,7 @@ const ChannelScreen = () => {
             />
           </TouchableOpacity>
         </View>
-      </SizeBar>
+      </SizeBar> */}
     </>
   );
 };

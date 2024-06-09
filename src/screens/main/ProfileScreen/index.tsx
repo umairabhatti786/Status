@@ -115,7 +115,7 @@ const ProfileScreen = () => {
     setIsChannelId(userInfo?.channel?.id);
   };
 
-  console.log("UserData", userData);
+  console.log("UserDatatype", typeof  userData?.wallComments);
   useEffect(() => {
     setImageForEdit(imageForEdit);
   }, [isEditView]);
@@ -263,7 +263,7 @@ const ProfileScreen = () => {
       if (result.status) {
         setComment("");
 
-        setComments([...comments, result.comment]);
+        setComments([result.comment,...comments, ]);
         setLoading2(false);
       } else {
         // Alert.alert("Alert!", "Something went wrong");
@@ -444,7 +444,7 @@ const ProfileScreen = () => {
                   style={{
                     ...appStyles.row,
                     paddingBottom: verticalScale(5),
-                    paddingHorizontal: scale(20),
+                    paddingHorizontal: scale(10),
                   }}
                 >
                   <View style={{ ...appStyles.row, width: "46%" }}>
@@ -466,7 +466,7 @@ const ProfileScreen = () => {
                   </View>
                   <Spacer width={scale(22)} />
 
-                  <View style={{ ...appStyles.row, width: "48%" }}>
+                  <View style={{ ...appStyles.row, width: "46%", }}>
                     <Image
                       style={{
                         width: scale(20),
@@ -663,49 +663,55 @@ const ProfileScreen = () => {
                       </View>
                     )}
                   </View>
-
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      paddingHorizontal: 20,
-                      borderWidth: 1,
-                      borderColor: colors.gray200,
-                      // paddingVertical:verticalScale(5),
-                      borderRadius: 10,
-                      marginVertical: verticalScale(10),
-                    }}
-                  >
-                    <TextInput
+                  {
+                    userData?.wallComments&&(
+                      <View
                       style={{
-                        color: colors.gray200,
-                        width: "90%",
-                        fontSize: verticalScale(15),
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        paddingHorizontal: 20,
+                        borderWidth: 1,
+                        borderColor: colors.gray200,
+                        // paddingVertical:verticalScale(5),
+                        borderRadius: 10,
+                        marginVertical: verticalScale(10),
                       }}
-                      placeholderTextColor={colors.gray200}
-                      placeholder="Write on my wall"
-                      onChangeText={(text) => setComment(text)}
-                      value={comment}
-                    />
-
-                    <TouchableOpacity
-                      activeOpacity={0.7}
-                      onPress={submitComment}
                     >
-                      {loading2 ? (
-                        <ActivityIndicator
-                          size={"small"}
-                          color={colors.white}
-                        />
-                      ) : (
-                        <Image
-                          style={{ tintColor: colors.gray200 }}
-                          source={images.send}
-                        />
-                      )}
-                    </TouchableOpacity>
-                  </View>
+                      <TextInput
+                        style={{
+                          color: colors.gray200,
+                          width: "90%",
+                          fontSize: verticalScale(15),
+                        }}
+                        placeholderTextColor={colors.gray200}
+                        placeholder="Write on my wall"
+                        onChangeText={(text) => setComment(text)}
+                        value={comment}
+                      />
+  
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={submitComment}
+                      >
+                        {loading2 ? (
+                          <ActivityIndicator
+                            size={"small"}
+                            color={colors.white}
+                          />
+                        ) : (
+                          <Image
+                            style={{ tintColor: colors.gray200 }}
+                            source={images.send}
+                          />
+                        )}
+                      </TouchableOpacity>
+                    </View>
+
+                    )
+                  }
+
+               
 
                   <FlatList
                     data={comments}

@@ -90,9 +90,16 @@ const onPanEvent=Animated.event([{
 }],{useNativeDriver:true})
 
 // Format the date differently based on whether it's today or not
-const formattedDate = isToday
-  ? 'Today at ' + createdAtDate.format('hh:mm A')
-  : createdAtDate.format('MMM D [at] hh:mm A');
+const formattedDate=createdAtDate.isSame(currentDate, "day")
+? "Today at " +createdAtDate.format('MMM D [at] h:mm A')
+: createdAtDate.format("dddd h:mm A")
+// const formattedDate = isToday
+//   ? 'Today at ' + createdAtDate.format('hh:mm A')
+//   : createdAtDate.format('MMM D [at] hh:mm A');
+const shortenedName =
+imageObject?.name?.length > 30
+  ? imageObject?.name?.substring(0, 29) + "..."
+  : imageObject?.name;
 
   const HandlePress = () => {
     if (hideImage) {
@@ -165,8 +172,8 @@ const formattedDate = isToday
 
               }}
               style={{
-                width: scale(30),
-                height: scale(30),
+                width: scale(40),
+                height: scale(40),
                 // alignItems:"center",
                 justifyContent: "center",
               }}
@@ -183,9 +190,9 @@ const formattedDate = isToday
 
             <View
               style={{
-                marginHorizontal: scale(7),
+                marginRight: scale(7),
                 paddingBottom: verticalScale(5),
-                width: windowWidth / 2.5,
+                width: windowWidth / 2,
               }}
             >
               <NewText
@@ -193,7 +200,7 @@ const formattedDate = isToday
                 size={18}
                 numberOfLines={1}
                 style={{ marginTop: verticalScale(5) }}
-                text={imageObject.name}
+                text={shortenedName}
               />
               <NewText
                 color={colors.white}

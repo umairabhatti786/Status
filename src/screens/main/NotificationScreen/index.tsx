@@ -152,7 +152,9 @@ const Notifications = () => {
 
       <View style={{ paddingHorizontal: scale(15) }}>
         {/* <Spacer height={25} /> */}
-        <FlatList data={filter} renderItem={renderItem} />
+        <FlatList data={filter}
+        style={{marginBottom:50}}
+         renderItem={renderItem} />
       </View>
     </View>
   );

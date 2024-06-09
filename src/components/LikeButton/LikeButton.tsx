@@ -9,6 +9,7 @@ import { appStyles } from "../../utils/AppStyles";
 const LikeButton = ({ likes_count, onPress, isLiked }: any) => {
   const [likes, setLikes] = useState(likes_count);
   const [liked, setLiked] = useState(isLiked);
+  console.log("likes",likes)
   return (
     <TouchableOpacity
       activeOpacity={1}
