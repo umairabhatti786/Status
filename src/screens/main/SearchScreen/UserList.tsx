@@ -84,7 +84,7 @@ const UserList = ({
             justifyContent: "flex-end",
           }}
         >
-          {filterTwo== 'nearby' ? (
+          {/* {filterTwo == "nearby" ? (
             <View
               style={{
                 ...appStyles.row,
@@ -106,49 +106,27 @@ const UserList = ({
             </View>
           ) : (
             <></>
-          )}
-{filterTwo=='popular'?
-<View style={{ ...appStyles.row, paddingHorizontal: scale(10) }}>
-            <Image
-              style={{ width: 15, height: 15 }}
-              resizeMode="contain"
-              source={images.users}
-            />
-
-            <CustomText
-              text={followersCount}
-              fontFam="Poppins-Medium"
-              color={colors.white}
-              style={{ marginLeft: 5, paddingTop: 4 }}
-            />
-          </View>:<></>
-}
-          
-          {isOnline == 1 ? (
-            <View style={{ height: 17 }}>
-              <View
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: 23,
-                  backgroundColor: `rgba(0, 0, 0, 0.4)`, // Apply opacity to the background color
-                  opacity: 0.4,
-                }}
+          )} */}
+          {/* {filterTwo == "popular" ? (
+            <View style={{ ...appStyles.row, paddingHorizontal: scale(10) }}>
+              <Image
+                style={{ width: 15, height: 15 }}
+                resizeMode="contain"
+                source={images.users}
               />
-              <NewText
-                fontFam="Poppins-Bold"
-                fontWeight="bold"
-                text={profileType}
-                numberOfLines={1}
-                size={11.5}
-                style={{ marginLeft: 10 }}
+
+              <CustomText
+                text={followersCount}
+                fontFam="Poppins-Medium"
                 color={colors.white}
+                style={{ marginLeft: 5, paddingTop: 4 }}
               />
             </View>
           ) : (
             <></>
-          )}
-          {filterTwo == 'new' ? (
+          )} */}
+
+          {filterTwo == "new" ? (
             <View style={{ height: 17 }}>
               <View
                 style={{
@@ -173,23 +151,84 @@ const UserList = ({
             <></>
           )}
 
-          <View style={{ height: 17 }}>
-            <View
+          <View
+            style={{
+              justifyContent: "center",
+              marginBottom: -2,
+              backgroundColor: `rgba(0, 0, 0, 0.2)`, // Apply opacity to the background color
+            }}
+          >
+            {/* <View
               style={{
                 position: "absolute",
                 width: "100%",
-                height: 23,
-                backgroundColor: `rgba(0, 0, 0, 0.4)`, // Apply opacity to the background color
-                opacity: 0.4,
+                paddingVertical: 10,
+                height:100,
+
+                // opacity: 0.4,
               }}
-            />
+            /> */}
+
+            {filterTwo == "online" && (
+              <View>
+                <NewText
+                  fontFam="Poppins-Bold"
+                  fontWeight="bold"
+                  text={profileType}
+                  numberOfLines={1}
+                  size={11.5}
+                  style={{ marginLeft: 10 }}
+                  color={colors.white}
+                />
+              </View>
+            )}
+
+             {filterTwo == "nearby" && (
+              <View>
+                <NewText
+               fontFam="Inter-Medium"
+               fontWeight="600"
+                  text={`${distance?.toFixed(2)}mi`}
+                  numberOfLines={1}
+                  size={11.5}
+                  style={{ marginLeft: 10 }}
+                  color={colors.white}
+                />
+              </View>
+            )}
+            {filterTwo == "popular" && (
+              <View>
+                <NewText
+                  fontFam="Inter-Medium"
+                  fontWeight="600"
+                  text={`${followersCount} followers`}
+                  numberOfLines={1}
+                  size={11.5}
+                  style={{ marginLeft: 10 }}
+                  color={colors.white}
+                />
+              </View>
+            )}
+ {filterTwo == "new" && (
+              <View>
+                <NewText
+                  fontFam="Inter-Medium"
+                  fontWeight="600"
+                  text={dateFormat(createdAt)}
+                  numberOfLines={1}
+                  size={11.5}
+                  style={{ marginLeft: 10 }}
+                  color={colors.white}
+                />
+              </View>
+            )}
             <NewText
-              fontFam="Poppins-Bold"
-              fontWeight="bold"
+              fontFam="Inter-Medium"
+              fontWeight="600"
               text={name}
               numberOfLines={1}
               size={11.5}
-              style={{ marginLeft: 10 }}
+              style={{ marginLeft: 10, marginBottom: 4 }}
               color={colors.white}
             />
           </View>

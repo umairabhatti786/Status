@@ -236,7 +236,7 @@ const EditImageUploaderModal: React.FC<Props> = ({
               }}
             >
               <Image
-                source={images.sendmessage}
+                source={images.simplesend}
                 style={{ width: scale(25), height: scale(25) }}
                 resizeMode="contain"
               />

@@ -34,6 +34,7 @@ import Loader from "../../../components/Loader";
 import { useDispatch } from "react-redux";
 import { AUTH, REMEMBER, StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
 import { setRemember, setToken, setUserData } from "../../../redux/reducers/authReducer";
+import OneSignal from "react-native-onesignal";
 
 const Login = () => {
   const navigation: any = useNavigation();
@@ -50,7 +51,9 @@ const Login = () => {
     password: "",
   });
 
-  const onLogin = () => {
+  const onLogin = async () => {
+    let deviceState = await OneSignal.getDeviceState();
+
     if (!values?.email) {
       setError("Email is required");
       setShowError(true);
@@ -91,6 +94,8 @@ const Login = () => {
     const data = {
       email: values.email,
       password: values.password,
+      deviceId: deviceState?.userId,
+
     };
 
     UserLogin(data, async ({ isSuccess, response }: any) => {
