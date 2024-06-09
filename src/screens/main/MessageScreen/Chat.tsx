@@ -113,6 +113,8 @@ const Chat = () => {
   const newMessage = useSelector(getNewMessageR);
   const typer = useSelector(getTyper);
   const [refreshing, setRefreshing] = useState(false)
+  const [imageObject, setImageObject] = useState({});
+
 
 
   const [state, setState] = useState({
@@ -426,7 +428,8 @@ const Chat = () => {
         name={item?.sender?.name}
         image={item?.sender?.imageUrl}
         message={item?.message}
-        time={moment(item?.created_at).format("h:mm a")}
+        time={item?.created_at}
+        // time={moment(item?.created_at).format("h:mm a")}
         chatDate={item?.chatDate}
         attachments={item?.attachments}
         gif={item?.gif}

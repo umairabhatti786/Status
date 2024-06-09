@@ -34,7 +34,7 @@ const ActivityCard = ({ image, name, time, comment, isShowFollow,senderId }: any
     >
       <TouchableOpacity activeOpacity={0.6} onPress={()=>{
         navigation.navigate("OthersProfile",{id:senderId});
-      }} style={{ ...appStyles.row, width: windowWidth / 2.3 }}>
+      }} style={{ ...appStyles.row, width: windowWidth / 2,backgroundColor:"red" }}>
         <Image
           style={{
             width: verticalScale(60),
@@ -49,7 +49,7 @@ const ActivityCard = ({ image, name, time, comment, isShowFollow,senderId }: any
             <NewText
               text={name}
               color={colors.white}
-              size={17}
+              size={16}
               fontFam="Poppins-SemiBold"
               fontWeight="700"
               numberOfLines={1}

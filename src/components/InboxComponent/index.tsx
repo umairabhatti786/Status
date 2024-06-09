@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import CustomText from "../CustomText";
 import { colors } from "../../utils/colors";
 import { windowWidth } from "../../utils/Dimensions";
@@ -14,6 +14,8 @@ import { appStyles } from "../../utils/AppStyles";
 import { scale, verticalScale } from "react-native-size-matters";
 import FastImage from "react-native-fast-image";
 import Autolink from "react-native-autolink";
+import moment from "moment";
+import ImageViewModal from "../ImageViewModal";
 
 type Props = {
   name?: string;
@@ -42,8 +44,13 @@ const InboxComponent = ({
   edit,
   onEdit,
 }: Props) => {
+  const [imageObject, setImageObject] = useState({});
+  const [isViewImage, setIsViewImage] = useState(false);
+
+
   return (
-    <View>
+    <>
+      <View>
       {chatDate && (
         <View
           style={{
@@ -135,7 +142,7 @@ const InboxComponent = ({
               />
 
               <CustomText
-                text={time}
+                text={moment(time).format("h:mm a")}
                 color={colors.lightgray}
                 size={13}
                 style={{ marginTop: verticalScale(4) }}
@@ -164,7 +171,18 @@ const InboxComponent = ({
           /> */}
           {/* attachments */}
           {attachments?.[0]?.path && (
-            // <View style={{ width: "70%", height: 100 }}>
+            <TouchableOpacity 
+            activeOpacity={0.6}
+            onPress={() => {
+              setImageObject({
+                uri: attachments?.[0]?.path,
+                name: name,
+                description:message,
+                time:time,
+              });
+              setIsViewImage(true);
+            }}
+            >
             <FastImage
               style={{
                 width: 130,
@@ -179,7 +197,7 @@ const InboxComponent = ({
               }}
               // source={{ uri: attachments?.[0]?.path }}
             />
-            // </View>
+            </TouchableOpacity>
           )}
           {gif && (
             <FastImage
@@ -200,6 +218,26 @@ const InboxComponent = ({
         </View>
       </View>
     </View>
+
+<ImageViewModal
+isModalVisible={isViewImage}
+imageObject={imageObject}
+// imageData={imageData}
+
+// sendMessage={sendMessage}
+// createPost={createPost}
+// setState={setState}
+// state={state}
+// msg={msg}
+// setMsg={setMsg}
+// message={message}
+// setLoading={setLoading}
+// loading={loading}
+// // setActiveChat={setActiveChat}
+setModalVisible={setIsViewImage}
+/>
+    </>
+  
   );
 };
 

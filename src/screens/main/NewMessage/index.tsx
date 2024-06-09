@@ -170,7 +170,7 @@ useEffect(() => {
             fontWeight="600"
             color={colors.white}
             fontFam="Poppins-Medium"
-            size={15}
+            size={14}
             text={"New Message"}
           />
         </View>

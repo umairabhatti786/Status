@@ -452,7 +452,7 @@ const OthersProfile = () => {
   };
 
   const shortenedText =
-    data?.name?.length > 17 ? data?.name?.substring(0, 16) + "..." : data?.name;
+    data?.name?.length > 30 ? data?.name?.substring(0, 29) + "..." : data?.name;
 
   return (
     <>
@@ -466,7 +466,8 @@ const OthersProfile = () => {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  paddingHorizontal: scale(20),
+                  paddingLeft:20,
+                  // paddingHorizontal: scale(20),
                   paddingVertical: verticalScale(5),
                 }}
               >
@@ -501,9 +502,9 @@ const OthersProfile = () => {
                 />
                 <View
                   style={{
-                    marginHorizontal: scale(7),
+                    marginLeft: scale(7),
                     paddingBottom: verticalScale(5),
-                    width: windowWidth / 2.5,
+                    width: windowWidth / 2,
                   }}
                 >
                   <NewText
@@ -522,7 +523,7 @@ const OthersProfile = () => {
                   />
                 </View>
               </View>
-              <View style={{ ...appStyles.row, paddingRight: scale(10) }}>
+              <View style={{ ...appStyles.row,  }}>
                 {isFollow ? (
                   <></>
                 ) : (
@@ -543,7 +544,7 @@ const OthersProfile = () => {
                   activeOpacity={0.6}
                   style={{
                     width: scale(30),
-                    height: scale(35),
+                    height: scale(50),
                     alignItems: "flex-end",
                     justifyContent: "center",
                   }}
@@ -655,7 +656,7 @@ const OthersProfile = () => {
                         numberOfLines={1}
                         fontFam="Inter-Medium"
                         style={{ marginLeft: scale(8), marginRight: scale(10) }}
-                        text={data?.profileType}
+                        text={data?.occupation}
                       />
                     </View>
                   </View>
@@ -871,48 +872,54 @@ const OthersProfile = () => {
                         </View>
                       )}
                     </View>
-
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        paddingHorizontal: 20,
-                        borderWidth: 1,
-                        borderColor: colors.gray200,
-                        // paddingVertical:verticalScale(5),
-                        borderRadius: 10,
-                        marginVertical: verticalScale(10),
-                      }}
-                    >
-                      <TextInput
+                    {
+                       data?.wallComments&&(
+                        <View
                         style={{
-                          color: colors.gray200,
-                          width: "90%",
-                          fontSize: verticalScale(15),
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          paddingHorizontal: 20,
+                          borderWidth: 1,
+                          borderColor: colors.gray200,
+                          // paddingVertical:verticalScale(5),
+                          borderRadius: 10,
+                          marginVertical: verticalScale(10),
                         }}
-                        placeholderTextColor={colors.gray200}
-                        placeholder="Write on my wall"
-                        value={comment}
-                        onChangeText={(text) => setComment(text)}
-                      />
-                      <TouchableOpacity
-                        activeOpacity={0.7}
-                        onPress={submitComment}
                       >
-                        {loading2 ? (
-                          <ActivityIndicator
-                            size={"small"}
-                            color={colors.white}
-                          />
-                        ) : (
-                          <Image
-                            style={{ tintColor: colors.gray200 }}
-                            source={images.send}
-                          />
-                        )}
-                      </TouchableOpacity>
-                    </View>
+                        <TextInput
+                          style={{
+                            color: colors.gray200,
+                            width: "90%",
+                            fontSize: verticalScale(15),
+                          }}
+                          placeholderTextColor={colors.gray200}
+                          placeholder="Write on my wall"
+                          value={comment}
+                          onChangeText={(text) => setComment(text)}
+                        />
+                        <TouchableOpacity
+                          activeOpacity={0.7}
+                          onPress={submitComment}
+                        >
+                          {loading2 ? (
+                            <ActivityIndicator
+                              size={"small"}
+                              color={colors.white}
+                            />
+                          ) : (
+                            <Image
+                              style={{ tintColor: colors.gray200 }}
+                              source={images.send}
+                            />
+                          )}
+                        </TouchableOpacity>
+                      </View>
+
+                       )
+                    }
+
+                 
                     {/* public comments */}
                     <FlatList
                       data={comments}
