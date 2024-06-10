@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { scale, verticalScale } from "react-native-size-matters";
 import moment from "moment";
 import { useSelector } from "react-redux";
-import { getNewMessageR, getTyper, getUserData, setNewMessageR, setTyper, setTypingR } from "../../../redux/reducers/authReducer";
+import { getNewMessageR, getTyper, getUserData, setNewMessageR, setNotificationAlert, setTyper, setTypingR } from "../../../redux/reducers/authReducer";
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
 import NewText from "../../../components/NewText";
 import { useDispatch } from 'react-redux';
@@ -107,9 +107,14 @@ console.log("lastMessage",lastMessage)
     <>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("ChatScreen", {
-            item: item,
-          })
+          {
+            dispatch(setNotificationAlert(false))
+            navigation.navigate("ChatScreen", {
+              item: item,
+            })
+
+          }
+          
         }
         activeOpacity={0.7}
         style={{

@@ -87,7 +87,7 @@ console.log("activeBar",activeBar)
   useEffect(() => {  
     getUserData(); 
     // console.log(activeBar,filterTwo,selectedType)
-  }, [activeBar,filterTwo , selectedType]);
+  }, [activeBar,filterTwo , selectedType,focused]);
 
   const getUserData = () => {
     setLoading(true);
@@ -342,22 +342,28 @@ console.log("activeBar",activeBar)
 
         {/* <Spacer height={10} /> */}
         <View>
-          <FlatList
-            data={allUsers}
-            numColumns={3}
-            style={{ marginBottom: verticalScale(155) }}
-            renderItem={renderUsers}
-            onEndReached={refreshData}
-            refreshControl={
-            <RefreshControl
-              
-              colors={["#9Bd35A", "#689F38"]}
-              refreshing={refreshing}
-              onRefresh={()=>{
-              }} />
-            }
+          {
+            !loading&&(
+              <FlatList
+              data={allUsers}
+              numColumns={3}
+              style={{ marginBottom: verticalScale(155) }}
+              renderItem={renderUsers}
+              onEndReached={refreshData}
+              refreshControl={
+              <RefreshControl
+                
+                colors={["#9Bd35A", "#689F38"]}
+                refreshing={refreshing}
+                onRefresh={()=>{
+                }} />
+              }
+  
+            />
 
-          />
+            )
+          }
+        
         </View>
       </SafeAreaView>
 

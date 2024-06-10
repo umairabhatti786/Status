@@ -133,7 +133,7 @@ const UserList = ({
                   position: "absolute",
                   width: "100%",
                   height: 23,
-                  backgroundColor: `rgba(0, 0, 0, 0.4)`, // Apply opacity to the background color
+                  backgroundColor: `rgba(0, 0, 0, 0.5)`, // Apply opacity to the background color
                   opacity: 0.4,
                 }}
               />

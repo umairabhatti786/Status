@@ -31,6 +31,9 @@ import ProfileStack from "../ProfileStack";
 const BottomTab = ({}: any) => {
   const Bottom = createBottomTabNavigator();
   const isDisableTab = useSelector((state) => state.auth)?.disableBottomTab;
+  const notificationAlert = useSelector(
+    (state) => state?.auth
+  )?.notificationAlert;
 
   const dispatch = useDispatch();
 
@@ -39,6 +42,10 @@ const BottomTab = ({}: any) => {
   const navigation = useNavigation();
 
   // useEffect()
+
+  const Dot = () => (
+    <View style={style.dot} />
+  );
 
   return (
     <Bottom.Navigator
@@ -162,8 +169,16 @@ const BottomTab = ({}: any) => {
       <Bottom.Screen
         name="MessageScreen"
         component={MessageScreen}
+        
         options={{
           headerShown: false,
+          // tabBarBadge: () => <Dot />,
+
+          // ...(notificationAlert && {
+          //   tabBarBadge: () => <Dot />,
+          //   // tabBarBadgeStyle: { backgroundColor: colors.sky,width:5,height:5,borderRadius:999 },
+          // }),
+          
           tabBarIcon: ({ focused }) => {
             return (
               <View
@@ -174,6 +189,13 @@ const BottomTab = ({}: any) => {
                 }}
               >
                 <View>
+                {/* <Dot /> */}
+                  {
+                    notificationAlert&&(
+                      <Dot />
+                      
+                    )
+                  }
                   <Image
                     source={focused ? images.message : images.message}
                     style={{ height: 20, width: 20, tintColor: colors.white }}
@@ -197,6 +219,8 @@ const BottomTab = ({}: any) => {
             );
           },
         }}
+
+        
       />
       <Bottom.Screen
         name="ProfileStack"
@@ -242,5 +266,14 @@ const style = StyleSheet.create({
   },
   text: {
     color: colors.white,
+  },
+  dot: {
+    position: 'absolute',
+    top: -5,
+    right: -5,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: colors.sky,
   },
 });

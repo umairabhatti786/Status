@@ -272,7 +272,7 @@ const Settings = ({ navigation }) => {
           >
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL("https://www.instagram.com/mikeodeaofficial/")
+                Linking.openURL("https://www.instagram.com/mickeyodea/")
               }}
               activeOpacity={0.6}>
               <Image
@@ -282,7 +282,7 @@ const Settings = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL("https://www.youtube.com/channel/UC3NXVxVCFQow6iJSopH5apw")
+                Linking.openURL("https://www.youtube.com/@mickeyodea")
               }}
               activeOpacity={0.6} style={{ marginLeft: "5%" }}>
               <Image
@@ -292,7 +292,7 @@ const Settings = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL("https://twitter.com/mike_odea_")
+                Linking.openURL("https://x.com/mike_odea_")
               }}
               activeOpacity={0.6} style={{ marginLeft: "5%" }}>
               <Image

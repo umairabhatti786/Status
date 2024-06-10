@@ -108,7 +108,7 @@ const OthersProfile = () => {
 
   useEffect(() => {
     // if (newComment)
-    setComments([...comments, newComment]);
+    setComments([ newComment,...comments,]);
   }, [newComment]);
 
   // useEffect(() => {
@@ -241,7 +241,7 @@ const OthersProfile = () => {
       let result = JSON.parse(response);
       if (result.status) {
         // console.log(result.comments.data)
-        setComments(result?.comments?.data);
+        setComments(result?.comments?.data.reverse());
         // setLoading(false);
       } else {
         console.log(result);

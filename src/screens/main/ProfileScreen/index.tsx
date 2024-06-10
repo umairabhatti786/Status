@@ -237,7 +237,7 @@ const ProfileScreen = () => {
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
-        setComments(result?.comments?.data);
+        setComments(result?.comments?.data.reverse());
         // setLoading(false);
       } else {
         // Alert.alert(result);
