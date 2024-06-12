@@ -138,7 +138,7 @@ const ChannelScreen = () => {
 
   useEffect(() => {
     getUserComment();
-  }, []);
+  }, [focused]);
 
   useEffect(() => {
     GetPosts();
