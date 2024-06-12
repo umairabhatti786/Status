@@ -109,6 +109,7 @@ let nameData="umair abbas bhatti 719 @gmail.com"
                 ...appStyles.row,
                 marginTop: verticalScale(-3),
                 width: "95%",
+                gap:7
               }}
             >
 
@@ -125,22 +126,14 @@ let nameData="umair abbas bhatti 719 @gmail.com"
                 fontWeight="700"
                 numberOfLines={1}
               />
-              <View
-                style={{
-                  width: scale(3.5),
-                  height: scale(3.5),
-                  backgroundColor: colors.white,
-                  borderRadius: 999,
-                  marginHorizontal: scale(8),
-                  marginTop: verticalScale(2),
-                }}
-              />
+
+          
 
               <CustomText
-                text={moment(time).format("hh:mm a")}
+                text={moment(time).format("h:mm a")}
                 color={colors.lightgray}
                 size={13}
-                style={{ marginTop: verticalScale(4) }}
+                style={{ marginTop: verticalScale(7) }}
                 fontFam="Poppins-Regular"
               />
             </View>

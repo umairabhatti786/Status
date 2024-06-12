@@ -420,11 +420,19 @@ const Chat = () => {
   };
 
   const renderChatList = ({ item }: any) => {
+    console.log("renderChatList",item)
     return (
       <InboxComponent
+      onImagePress={()=>{
+        navigation.navigate("OthersProfile", {
+          id: item?.sender?.id,
+        })
+
+      }}
         name={item?.sender?.name}
         image={item?.sender?.imageUrl}
         message={item?.message}
+
         time={item?.created_at}
         // time={moment(item?.created_at).format("h:mm a")}
         chatDate={item?.chatDate}
@@ -520,11 +528,11 @@ const Chat = () => {
     );
   };
 
-  return (
-    <View style={appStyles.main}>
-      <StatusBar backgroundColor="#1D2029" barStyle="light-content" />
+  const HeaderComponents=()=>{
 
-      <View style={styles.header}>
+    return(
+
+          <View style={styles.header}>
         <View
           style={{
             flexDirection: "row",
@@ -664,23 +672,17 @@ const Chat = () => {
         </View>
       </View>
 
-      {/* <View style={{ backgroundColor: "red",flex:0.9 }}>
-        <ScrollView >
-        
-        </ScrollView>
-        <View style={{ backgroundColor: "green", height: 100 }}></View>
-      </View>
-      <View
-        style={{
-          backgroundColor: "brown",
-          height: 100,
-          width: "100%",
-          position: "absolute",
-          zIndex: 100,
-          bottom: 0,
-        }}
-      ></View> */}
-      {/* <View></View> */}
+    )
+  }
+
+
+  return (
+    <View style={appStyles.main}>
+      <StatusBar backgroundColor="#1D2029" barStyle="light-content" />
+      <HeaderComponents/>
+
+  
+
       <View style={{ flex: 0.9 }}>
         <FlatList
           data={conversation}

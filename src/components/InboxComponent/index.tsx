@@ -29,6 +29,7 @@ type Props = {
   profile?: boolean;
   edit?: boolean;
   onEdit?: () => void;
+  onImagePress?:()=>void;
 };
 
 const InboxComponent = ({
@@ -42,6 +43,7 @@ const InboxComponent = ({
   profile,
   gif,
   edit,
+  onImagePress,
   onEdit,
 }: Props) => {
   const [imageObject, setImageObject] = useState({});
@@ -94,7 +96,9 @@ const InboxComponent = ({
           borderRadius: 12,
         }}
       >
-        <View style={{ width: 62, height: 62 }}>
+        <TouchableOpacity 
+        onPress={onImagePress}
+        style={{ width: 62, height: 62 }}>
           <FastImage
             style={{ width: "100%", height: "100%", borderRadius: scale(5) }}
             source={{
@@ -104,7 +108,7 @@ const InboxComponent = ({
             }}
             // source={image}
           />
-        </View>
+        </TouchableOpacity>
         <View style={{ marginLeft: scale(12) }}>
           <View
             style={{

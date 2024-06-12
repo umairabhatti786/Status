@@ -88,7 +88,7 @@ const Notifications = () => {
         <ActivityCard 
           senderId={item.senderId}
           image={{ uri: item?.imageUrl }}
-          time={moment(item?.created_at).format("hh:mm a")}
+          time={moment(item?.created_at).format("h:mm a")}
           name={item?.username}
           isShowFollow={item?.forFollow ? item?.description : ""}
           comment={item?.description}

@@ -17,7 +17,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 import { appStyles } from "../../../utils/AppStyles";
 import moment from "moment";
 import NewText from "../../../components/NewText";
-import { capitalizeFirstLetter, dateFormat } from "../../../utils/CommonFun";
+import { capitalizeFirstLetter, dateFormat, formatTimeDifference } from "../../../utils/CommonFun";
 import FastImage from "react-native-fast-image";
 export const windowWidth = Dimensions.get("window").width;
 
@@ -73,7 +73,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
           <View
             style={{
               paddingLeft: scale(15),
-              width: item?.channel?.last_post?.imageUrl
+              width: item?.channel?.last_post?.imageUrl ||item?.channel?.last_post?.gif
                 ? scale(190)
                 : scale(250),
             }}
@@ -82,7 +82,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                 fontFam="Poppins-Bold"
                 fontWeight="800 */}
 
-            <View style={appStyles.row}>
+<View style={{...appStyles.row,gap:8,width:scale(170)}}>
               <CustomText
                 text={capitalizeFirstLetter(item?.name)}
                 color={colors.white}
@@ -91,23 +91,13 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                 fontWeight="700"
               />
 
-              <View
-                style={{
-                  width: scale(4),
-                  height: scale(4),
-                  borderRadius: 999,
-                  backgroundColor: "#999999",
-                  marginLeft: scale(10),
-                  marginRight: scale(5),
-                  marginTop: 2,
-                }}
-              />
+           
               {item?.channel?.last_post ? (
                 <NewText
-                  text={dateFormat(item?.channel?.last_post?.created_at)}
+                  text={formatTimeDifference(item?.channel?.last_post?.created_at)}
                   color={"#999999"}
                   size={12}
-                  style={{ marginTop: 4 }}
+                  style={{ marginTop: 7 }}
                   // fontFam="Poppins-Medium"
                   fontWeight="400"
                 />
@@ -124,7 +114,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                 lineHeight={21}
                 fontFam="Inter-Medium"
                 numberOfLines={2}
-                style={{ marginVertical: verticalScale(5) }}
+                style={{ marginBottom: verticalScale(5) }}
                 // fontFam="Poppins-Medium"
                 fontWeight="600"
               />
@@ -139,18 +129,20 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               alignItems: "flex-end",
               justifyContent: "space-between",
               paddingRight: 5,
-              paddingTop: 14,
+              // paddingTop: 14,
               paddingBottom: verticalScale(5),
               position: "absolute",
               alignSelf: "center",
               right: scale(5),
-              top: "20%",
+              top:22,
+
+              
 
               // backgroundColor:"red"
             }}
           >
             <View
-              style={{ width: verticalScale(55), height: verticalScale(55) }}
+              style={{ width: verticalScale(52), height: verticalScale(52) }}
             >
               {item?.channel?.last_post != "null" ? (
 
@@ -181,20 +173,20 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               alignItems: "flex-end",
               justifyContent: "space-between",
               paddingRight: 5,
-              paddingTop: 14,
+              // paddingTop: 14,
               paddingBottom: verticalScale(5),
               position: "absolute",
               alignSelf: "center",
               right: scale(5),
-              top: "20%",
+              top:22,
 
               // backgroundColor:"red"
             }}
           >
             <View
               style={{
-                width: verticalScale(55),
-                height: verticalScale(55),
+                width: verticalScale(52),
+                height: verticalScale(52),
                 borderRadius: scale(5),
                 overflow: "hidden",
 

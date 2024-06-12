@@ -51,22 +51,22 @@ import CustomBottomSheet from "../../../components/CustomBottomSheet";
 const SearchScreen = ({ navigation }: any) => {
   const [activeBar, setActiveBar] = useState("all");
   const [activeFilter, setActiveFilter] = useState<string>("all");
-  const [filterIndex, setFilterIndex] = useState<number>();
+  const [filterIndex, setFilterIndex] = useState<number>(0);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [filterTwo, setFilterTwo] = useState("");
+  const [filterTwo, setFilterTwo] = useState("online");
   const [filterThree, setFilterThree] = useState("");
   const [showError, setShowError] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const focused = useIsFocused();
   const token = useSelector(getToken);
-  const [allUsers, setAllUsers]:any = useState([]);
-  const [response, setResponse]:any = useState({});
+  const [allUsers, setAllUsers]: any = useState([]);
+  const [response, setResponse]: any = useState({});
   const [netpageUrl, setNextPageUrl] = useState();
   const [selectedType, setSelectedType] = useState("All");
   const bottomSheetModalRef = useRef<BottomSheet>(null);
   const [model, setModel] = useState(false);
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
   const snapPoints = useMemo(() => ["45%"], []);
 
   const notificationAlert = useSelector(
@@ -75,19 +75,26 @@ const SearchScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
   // console.log("notificationAlert", notificationAlert);
   const topBarData = ["all", "following"];
-  const filterData = [
-    { value: "Online", filter: "online" },
-    { value: "Nearby", filter: "nearby" },
-    { value: "New", filter: "new" },
-    { value: "Popular", filter: "popular" },
-  ];
-console.log("activeBar",activeBar)
+  // const filterData = [
+  //   { value: "Online", filter: "online" ,isActive:true},
+  //   { value: "Nearby", filter: "nearby",isActive:false },
+  //   { value: "New", filter: "new",isActive:false },
+  //   { value: "Popular", filter: "popular",isActive:false },
+  // ];
+
+  const [filterData, setFilterData] = useState([
+    { value: "Online", filter: "online", isActive: true },
+    { value: "Nearby", filter: "nearby", isActive: false },
+    { value: "New", filter: "new", isActive: false },
+    { value: "Popular", filter: "popular", isActive: false },
+  ]);
+  console.log("activeBar", filterTwo);
   // console.log("filterTwo", filterTwo, "filterThree", filterThree);
 
-  useEffect(() => {  
-    getUserData(); 
+  useEffect(() => {
+    getUserData();
     // console.log(activeBar,filterTwo,selectedType)
-  }, [activeBar,filterTwo , selectedType,focused]);
+  }, [activeBar, filterTwo, selectedType, focused]);
 
   const getUserData = () => {
     setLoading(true);
@@ -100,63 +107,69 @@ console.log("activeBar",activeBar)
         Authorization: "Bearer " + token,
         Accept: "application/json",
       },
-      data: { filter1: activeBar, filter2: filterTwo, filter3:selectedType=='All'?'noFilter':selectedType},
+      data: {
+        filter1: activeBar,
+        filter2: filterTwo,
+        filter3: selectedType == "All" ? "noFilter" : selectedType,
+      },
       // data: {filter: f2+"&"+f1}
     };
 
     axios
       .request(options)
       .then(function (response) {
-        let result=response?.data?.result
-        let data:any=response?.data?.result?.data
+        let result = response?.data?.result;
+        let data: any = response?.data?.result?.data;
         //check
-        if(response?.data?.results){   
+        if (response?.data?.results) {
           // console.log(data)
-          setAllUsers(data); 
-          setResponse(result) 
-        }else{ 
+          setAllUsers(data);
+          setResponse(result);
+        } else {
           setAllUsers([]);
-          setResponse('')
-        }  
-        setLoading(false);  
-      })   
+          setResponse("");
+        }
+        setLoading(false);
+      })
       .catch(function (error) {
-        console.log('error',error);
+        console.log("error", error);
         // Alert.alert("Alert!", error);
       });
   };
 
   const refreshData = () => {
-
     // console.log('nextUrl',response?.next_page_url)
-    
-    if(response?.next_page_url){
-                setRefreshing(true)
 
-                const options = {
-                  method: "POST",
-                  url: response?.next_page_url,
-                  headers: {
-                    Authorization: "Bearer " + token,
-                    Accept: "application/json",
-                  },
-                  data: { filter1: activeBar, filter2: filterTwo, filter3:selectedType=='All'?'noFilter':selectedType},
-                  // data: {filter: f2+"&"+f1}
-                };
-            
-                axios
-                  .request(options)
-                  .then(function (response) {
-            
-                    setAllUsers([...allUsers,...response?.data?.result?.data]);
-                    setResponse(response?.data?.result)
-                    setRefreshing(false);
-                  })
-                  .catch(function (error) {
-                    setRefreshing(false)
-                    Alert.alert("Alert!", "Network Error.");
-                  });
-              }
+    if (response?.next_page_url) {
+      setRefreshing(true);
+
+      const options = {
+        method: "POST",
+        url: response?.next_page_url,
+        headers: {
+          Authorization: "Bearer " + token,
+          Accept: "application/json",
+        },
+        data: {
+          filter1: activeBar,
+          filter2: filterTwo,
+          filter3: selectedType == "All" ? "noFilter" : selectedType,
+        },
+        // data: {filter: f2+"&"+f1}
+      };
+
+      axios
+        .request(options)
+        .then(function (response) {
+          setAllUsers([...allUsers, ...response?.data?.result?.data]);
+          setResponse(response?.data?.result);
+          setRefreshing(false);
+        })
+        .catch(function (error) {
+          setRefreshing(false);
+          Alert.alert("Alert!", "Network Error.");
+        });
+    }
   };
 
   const profileType = [
@@ -179,7 +192,7 @@ console.log("activeBar",activeBar)
     "Other",
   ];
 
-  const renderUsers = ({ item, index }:any) => {
+  const renderUsers = ({ item, index }: any) => {
     // console.log("ckbdk", item.id);
 
     return (
@@ -252,22 +265,34 @@ console.log("activeBar",activeBar)
                 <View style={{ marginHorizontal: scale(3) }}>
                   <Button
                     onPress={() => {
-                      setFilterThree("");
-                      setFilterTwo(item.filter);
+                      const updatedFilterData = filterData.map((data, idx) => {
+                        return idx === index
+                          ? { ...data, isActive: !data.isActive }
+                          : { ...data, isActive: false };
+                      });
 
-                      setFilterIndex(index);
+                      console.log(
+                        "updatesIndex",
+                        updatedFilterData[index]?.isActive
+                      );
+
+                      if (!updatedFilterData[index]?.isActive) {
+                        setFilterTwo("");
+                        setFilterIndex(-1);
+                      } else {
+                        setFilterTwo(item.filter);
+                        setFilterIndex(index);
+                      }
+
+                      setFilterData(updatedFilterData);
                     }}
                     height={32}
                     fontFam={"Inter-Regular"}
                     fontWeight={"400"}
                     paddingHorizontal={8}
                     size={15}
-                    textColor={
-                      filterIndex == index ? colors.black100 : colors.white
-                    }
-                    bgColor={
-                      filterIndex == index ? colors.white : colors.primary
-                    }
+                    textColor={item.isActive ? colors.black100 : colors.white}
+                    bgColor={item.isActive ? colors.white : colors.primary}
                     text={item.value}
                   />
                 </View>
@@ -342,33 +367,32 @@ console.log("activeBar",activeBar)
 
         {/* <Spacer height={10} /> */}
         <View>
-          {
-            !loading&&(
-              <FlatList
+          {!loading && (
+            <FlatList
               data={allUsers}
               numColumns={3}
               style={{ marginBottom: verticalScale(155) }}
               renderItem={renderUsers}
               onEndReached={refreshData}
               refreshControl={
-              <RefreshControl
-                
-                colors={["#9Bd35A", "#689F38"]}
-                refreshing={refreshing}
-                onRefresh={()=>{
-                }} />
+                <RefreshControl
+                  colors={["#9Bd35A", "#689F38"]}
+                  refreshing={refreshing}
+                  onRefresh={() => {}}
+                />
               }
-  
             />
-
-            )
-          }
-        
+          )}
         </View>
       </SafeAreaView>
 
       <CustomBottomSheet bottomSheetModalRef={bottomSheetModalRef}>
-        <View style={{ paddingHorizontal: scale(20),backgroundColor:colors.primary}}>
+        <View
+          style={{
+            paddingHorizontal: scale(20),
+            backgroundColor: colors.primary,
+          }}
+        >
           <FlatList
             data={profileType}
             nestedScrollEnabled={true}

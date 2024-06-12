@@ -41,6 +41,7 @@ import NewText from "../../../components/NewText";
 import ImageViewModal from "../../../components/ImageViewModal";
 import { AddRemoveLikes, DeletePost } from "../../../api/ApiServices";
 import LikeButton from "../../../components/LikeButton/LikeButton";
+import { formatChannelDate } from "../../../utils/CommonFun";
 
 const Channel = ({
   hideSendMessage,
@@ -184,27 +185,14 @@ const Channel = ({
                     color={colors.grey300}
                     size={15}
                     text={
-                      createdAtDate.isSame(currentDate, "day")
-                        ? "Today "
-                        : createdAtDate.format("dddd")
+                   formatChannelDate(createdAtDate)
                     }
                     // fontFam="Inter-SemiBold"
                     //  style={{ marginLeft: scale(8),backgroundColor:colors.primary }}
                     // text={moment(item?.created_at).format("dddd hh:mm A")}
                   />
                   
-                  <CustomText
-                    color={colors.grey300}
-                    size={15}
-                    text={
-                      createdAtDate.isSame(currentDate, "day")
-                        ? createdAtDate.format("h:mm A")
-                        : createdAtDate.format("h:mm A")
-                    }
-                    // fontFam="Inter-SemiBold"
-                     style={{ marginTop: 3,}}
-                    // text={moment(item?.created_at).format("dddd hh:mm A")}
-                  />
+                 
                 </View>
                 <View
                   style={{
@@ -403,7 +391,7 @@ const Channel = ({
                         }}
                         source={images.eye}
                       />
-                      <Spacer width={8} />
+                      <Spacer width={4} />
                       <NewText
                         color={colors.grey300}
                         size={13}
@@ -414,17 +402,17 @@ const Channel = ({
                         }}
                         text={item?.views_count}
                       />
-                      {/* <Spacer width={10} />
+                      <Spacer width={5} />
                           <NewText
                             color={colors.grey300}
                             size={13}
                             // fontFam="Inter-Medium"
                             style={{
-                              marginRight: scale(5),
                               textAlign: "right",
+                              marginTop:1
                             }}
                             text={moment(item?.created_at).format("h:mm A")}
-                          /> */}
+                          />
                     </View>
                   </View>
                 </View>

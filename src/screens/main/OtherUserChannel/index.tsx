@@ -78,7 +78,7 @@ const OtherUserChannel = () => {
   const [comments, setComments] = useState<any>([]);
   const [newComment, setNewComment] = useState<any>({});
   const [posts, setPosts] = useState<any>([]);
-  const [nextUrl, setNextUrl] = useState('');
+  const [nextUrl, setNextUrl] = useState("");
   const [newPost, setNewPost] = useState<any>({});
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
@@ -225,10 +225,7 @@ const OtherUserChannel = () => {
     });
   };
 
-
-
   const GetPosts = async () => {
-
     GetStatus(id, token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
 
@@ -239,9 +236,7 @@ const OtherUserChannel = () => {
         setPosts(result?.posts?.data.reverse());
         setNextUrl(result?.posts?.next_page_url);
         setTimeout(() => {
-          setLoading(false)
-
-          
+          setLoading(false);
         }, 500);
 
         //adding Views
@@ -255,7 +250,7 @@ const OtherUserChannel = () => {
               // setCounter1(counter1 + 1);
             } else {
               console.log(result);
-              setLoading(false)
+              setLoading(false);
               // Alert.alert("Alert!", "Something went wrong",);
               console.log("Something went wrong");
             }
@@ -269,29 +264,28 @@ const OtherUserChannel = () => {
       }
     });
   };
-  const refreshOtherData = async (setRefreshing:any) => {
+  const refreshOtherData = async (setRefreshing: any) => {
     // console.log(nextUrl)
-    if(nextUrl){
-      setRefreshing(true)
+    if (nextUrl) {
+      setRefreshing(true);
       LoadMoreStatus(nextUrl, token, async ({ isSuccess, response }: any) => {
         console.log("data p", isSuccess);
-  
+
         let result = JSON.parse(response);
         if (result.status) {
           // console.log(result?.posts?.data)
           let data = result?.posts?.data.reverse();
-          setPosts([...posts,...data]);
+          setPosts([...posts, ...data]);
           setNextUrl(result?.posts?.next_page_url);
-  
-          setRefreshing(false)
+
+          setRefreshing(false);
         } else {
-          setRefreshing(false)
+          setRefreshing(false);
           console.log(result);
           // Alert.alert("Alert!", "Something went wrong",);
           console.log("Something went wrong");
         }
       });
-
     }
   };
 
@@ -387,7 +381,7 @@ const OtherUserChannel = () => {
   // let name="umair abbas 719 @ gmail .com"
   // console.log("namelibv", name?.length)
   const shortenedText =
-   data.name?.length > 30 ? data.name?.substring(0, 29) + "..." : data.name;
+    data.name?.length > 30 ? data.name?.substring(0, 29) + "..." : data.name;
 
   return (
     <>
@@ -407,7 +401,7 @@ const OtherUserChannel = () => {
                 }}
               >
                 <TouchableOpacity
-                  activeOpacity={0.8}
+                  activeOpacity={0.4}
                   style={{
                     width: scale(30),
                     height: scale(25),
@@ -423,27 +417,34 @@ const OtherUserChannel = () => {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-               onPress={() =>
-                navigation.navigate("OthersProfile", {
-                  id: data?.id,
-                })
-              }
+                  onPress={() =>
+                    navigation.navigate("OthersProfile", {
+                      id: data?.id,
+                    })
+                  }
                 >
-                <FastImage
-                  style={{
-                    width: scale(37),
-                    height: scale(37),
-                    borderRadius: 999,
-                  }}
-                  source={{
-                    uri: data?.imageUrl,
-                    headers: { Authorization: "someAuthToken" },
-                    priority: FastImage.priority.high,
-                  }}
-                />
-                                </TouchableOpacity>
+                  <FastImage
+                    style={{
+                      width: scale(37),
+                      height: scale(37),
+                      borderRadius: 999,
+                    }}
+                    source={{
+                      uri: data?.imageUrl,
+                      headers: { Authorization: "someAuthToken" },
+                      priority: FastImage.priority.high,
+                    }}
+                  />
+                </TouchableOpacity>
 
-                <View
+                <TouchableOpacity
+                                  activeOpacity={0.4}
+
+                  onPress={() =>
+                    navigation.navigate("OthersProfile", {
+                      id: data?.id,
+                    })
+                  }
                   style={{
                     marginLeft: scale(7),
                     paddingBottom: verticalScale(5),
@@ -465,13 +466,10 @@ const OtherUserChannel = () => {
                     style={{ marginTop: verticalScale(-3) }}
                     text={`${data?.followers_count} Followers`}
                   />
-                </View>
-
-
-                
+                </TouchableOpacity>
               </View>
 
-              <View style={{ ...appStyles.row, }}>
+              <View style={{ ...appStyles.row }}>
                 {isFollow ? (
                   <></>
                 ) : (
@@ -627,6 +625,25 @@ const OtherUserChannel = () => {
               activeOpacity={0.6}
               onPress={() => {
                 setIsBar(false);
+                navigation.navigate("OthersProfile", {
+                  id: data?.id,
+                });
+                // onFollow();
+              }}
+            >
+              <CustomText
+                color={"#F9FFFF"}
+                size={15}
+                style={{ marginBottom: verticalScale(10) }}
+                // fontFam="Inter-Medium"
+                // style={{ marginLeft: scale(8) }}
+                text={"View Profile"}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => {
+                setIsBar(false);
                 onFollow();
               }}
             >
@@ -689,7 +706,7 @@ const OtherUserChannel = () => {
         />
       )}
 
-<BlockModal
+      <BlockModal
         isModalVisible={isBlockModal}
         setModalVisible={setIsBlockModal}
         isBlock={"BLOCK"}
@@ -724,8 +741,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     // paddingHorizontal: scale(15),
-    paddingLeft:scale(10),
-
+    paddingLeft: scale(10),
   },
   row: {
     flexDirection: "row",

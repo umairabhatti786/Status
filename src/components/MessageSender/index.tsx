@@ -408,10 +408,12 @@ const MessageSender = ({
           paddingVertical: verticalScale(3),
           width: "82%",
           alignSelf: "center",
+          maxHeight:90,
         }}
       >
         <TextInput
           value={message ? msg.message : state.description}
+          multiline={true}
           onChangeText={(text) => {
             message
               ? setMsg({ ...msg, message: text })
@@ -422,6 +424,7 @@ const MessageSender = ({
           style={{
             marginLeft: 12,
             color: colors.white,
+          
             paddingRight: 5,
             width: notShow ? "90%" : "75%",
             fontSize: verticalScale(16),
