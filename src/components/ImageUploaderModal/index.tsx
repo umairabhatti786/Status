@@ -203,7 +203,18 @@ const ImageUploaderModal: React.FC<Props> = ({
             />
           </View>
           {loading ? (
-            <ActivityIndicator size={"small"} color={colors.black} />
+            <View
+            style={{
+              width: scale(45),
+              height: scale(45),
+              borderRadius: scale(45),
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+            >
+                          <ActivityIndicator size={"small"} color={colors.white} />
+
+              </View>
             ) : (
             <TouchableOpacity
               onPress={message ? sendMessage : createPost}

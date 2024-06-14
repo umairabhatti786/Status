@@ -55,6 +55,8 @@ const Channel = ({
   setCounter,
   isEditView,
   setIsEditView,
+  setIsEditTextView,
+  isEditTextView,
   imageForEdit,
   setImageForEdit,
   setPostId,
@@ -68,7 +70,7 @@ const Channel = ({
   mainMargin,
   refreshOtherData,
   refreshAuthData,
-  disableEditAndDelete
+  disableEditAndDelete,
 }: any) => {
   const route: any = useRoute();
   // const item = route?.params?.item;
@@ -83,7 +85,7 @@ const Channel = ({
   const [isBlockModal, setIsBlockModal] = useState(false);
   const [isReportModal, setIsReportModal] = useState(false);
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
   console.log("userData", userData?.wallpaperUrl);
   // const handleLike=async()=>{
   //   let data = {user_id:userData.id,post_id:item.id}
@@ -106,7 +108,7 @@ const Channel = ({
 
   return (
     <>
-      <View style={{ backgroundColor: colors.black,flex:1}}>
+      <View style={{ backgroundColor: colors.black, flex: 1 }}>
         <FastImage
           style={{ width: "100%", height: windowHeight, position: "absolute" }}
           source={{
@@ -124,25 +126,23 @@ const Channel = ({
           keyExtractor={(item) => item}
           style={{ marginBottom: 5 }}
           inverted={true}
-          onEndReached={()=>{
+          onEndReached={() => {
             // setRefreshing(true)
             // console.log('nextUrl',nextUrl)
 
-            if(hideSendMessage){
-              refreshOtherData(setRefreshing)
-            }else{
+            if (hideSendMessage) {
+              refreshOtherData(setRefreshing);
+            } else {
               refreshAuthData(setRefreshing);
             }
           }}
           refreshControl={
             <RefreshControl
-              
               colors={["#9Bd35A", "#689F38"]}
               refreshing={refreshing}
-              onRefresh={()=>{
-              }}
-               />
-            }
+              onRefresh={() => {}}
+            />
+          }
           //  contentContainerStyle={{
           //    flex:5
           //  }}
@@ -176,23 +176,18 @@ const Channel = ({
                 ? item?.author?.name?.substring(0, 29)
                 : item?.author?.name;
 
-
             return (
               <View style={{ paddingBottom: verticalScale(10) }}>
                 <Spacer height={verticalScale(30)} />
                 <View style={styles.timeContainer}>
-                <CustomText
+                  <CustomText
                     color={colors.grey300}
                     size={15}
-                    text={
-                   formatChannelDate(createdAtDate)
-                    }
+                    text={formatChannelDate(createdAtDate)}
                     // fontFam="Inter-SemiBold"
                     //  style={{ marginLeft: scale(8),backgroundColor:colors.primary }}
                     // text={moment(item?.created_at).format("dddd hh:mm A")}
                   />
-                  
-                 
                 </View>
                 <View
                   style={{
@@ -233,24 +228,44 @@ const Channel = ({
                         }}
                       >
                         {/* {!item?.gif && ( */}
-                          <TouchableOpacity
-                            onPress={() => {
-                              setEditPostData({
-                                description: item?.description,
-                                imageUrl: item?.imageUrl,
-                                gif: item?.gif,
-                              });
-                              setPostId(item.id);
+                        <TouchableOpacity
+                          onPress={() => {
+                            setEditPostData({
+                              ...item,
+                              description: item?.description,
+                              imageUrl: item?.imageUrl,
+                              gif: item?.gif,
+                              text:item?.description,
+                            });
+                            setPostId(item.id);
+
+                            if (item?.imageUrl || item?.gif) {
                               setIsEditView(true);
-                            }}
-                          >
-                            <NewText
-                              color={colors.gray500}
-                              size={16}
-                              fontFam="Inter-Medium"
-                              text={"Edit"}
-                            />
-                          </TouchableOpacity>
+                            } else {
+                              setIsEditTextView(true);
+                            }
+
+                            // console.log("Gibdbd",item?.gif.le)
+                            // if(!item?.imageUrl ){
+                            //   setIsEditTextView(true)
+
+                            // }
+                            // else if(!item?.gif){
+                            //   setIsEditTextView(true)
+
+                            // }
+                            // else {
+
+                            // }
+                          }}
+                        >
+                          <NewText
+                            color={colors.gray500}
+                            size={16}
+                            fontFam="Inter-Medium"
+                            text={"Edit"}
+                          />
+                        </TouchableOpacity>
                         {/* )} */}
                         <Spacer width={10} />
                         <TouchableOpacity
@@ -403,16 +418,16 @@ const Channel = ({
                         text={item?.views_count}
                       />
                       <Spacer width={5} />
-                          <NewText
-                            color={colors.grey300}
-                            size={13}
-                            // fontFam="Inter-Medium"
-                            style={{
-                              textAlign: "right",
-                              marginTop:1
-                            }}
-                            text={moment(item?.created_at).format("h:mm A")}
-                          />
+                      <NewText
+                        color={colors.grey300}
+                        size={13}
+                        // fontFam="Inter-Medium"
+                        style={{
+                          textAlign: "right",
+                          marginTop: 1,
+                        }}
+                        text={moment(item?.created_at).format("h:mm A")}
+                      />
                     </View>
                   </View>
                 </View>
@@ -501,8 +516,8 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(2),
     alignSelf: "center",
     borderRadius: scale(20),
-    flexDirection:"row",
-    gap:5
+    flexDirection: "row",
+    gap: 5,
   },
   descripationText: {
     fontSize: 14,
@@ -518,6 +533,6 @@ const styles = StyleSheet.create({
     fontFamily: "Inter-Medium",
     color: colors.sky,
     textDecorationLine: "underline",
-    lineHeight:22
+    lineHeight: 22,
   },
 });

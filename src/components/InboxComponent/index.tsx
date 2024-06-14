@@ -160,7 +160,7 @@ const InboxComponent = ({
             onPress={(url) => Linking.openURL(url)}
             style={{
               ...styles.descripationText,
-              color: profile ? colors.gray500 : colors.white,
+              color:  colors.gray500 
             }}
             linkStyle={styles.descripationLinkText}
           />

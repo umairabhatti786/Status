@@ -27,6 +27,7 @@ import NewMessage from "../../screens/main/NewMessage";
 import { useNavigation } from "@react-navigation/native";
 import ChannelScreen from "../../screens/main/ChannelScreen";
 import ProfileStack from "../ProfileStack";
+import { scale, verticalScale, moderateScale } from "react-native-size-matters";
 
 const BottomTab = ({}: any) => {
   const Bottom = createBottomTabNavigator();
@@ -268,12 +269,23 @@ const style = StyleSheet.create({
     color: colors.white,
   },
   dot: {
-    position: 'absolute',
-    top: -5,
-    right: -5,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
+
+    width: scale(7.5),
+    height: scale(7.5),
+    borderRadius: 999,
     backgroundColor: colors.sky,
+    marginBottom: verticalScale(3),
+    right: scale(-7),
+    top: -4,
+    bottom: verticalScale(9),
+    position: "absolute",
+
+    // position: 'absolute',
+    // top: -5,
+    // right: -5,
+    // width: 10,
+    // height: 10,
+    // borderRadius: 5,
+    // backgroundColor: colors.sky,
   },
 });

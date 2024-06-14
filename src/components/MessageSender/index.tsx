@@ -35,6 +35,7 @@ import { useNavigation } from "@react-navigation/native";
 import ImageUploaderModal from "../ImageUploaderModal";
 import EditImageUploaderModal from "../EditImageUploaderModal";
 import GifUploaderModal from "../GifUploaderModal";
+import EditTextModal from "../EditTextModal";
 
 type Props = {
   name?: string;
@@ -76,6 +77,8 @@ type Props = {
   setEditPostData?: any;
   isGifView?: any;
   setIsGifView?: any;
+  setIsEditTextView?:any
+  isEditTextView?:any
 };
 
 const MessageSender = ({
@@ -99,6 +102,8 @@ const MessageSender = ({
   setGiphy,
   isEditView,
   setIsEditView,
+  setIsEditTextView,
+  isEditTextView,
   imageForEdit,
   setImageForEdit,
   postId,
@@ -250,6 +255,7 @@ const MessageSender = ({
         console.log(result);
         setCounter(counter + 1);
         setIsEditView(false);
+        setIsEditTextView(false)
         setImageForEdit("");
         setLoading(false);
 
@@ -496,6 +502,27 @@ const MessageSender = ({
       <EditImageUploaderModal
         isModalVisible={isEditView}
         setModalVisible={setIsEditView}
+        imageData={imageForEdit}
+        sendMessage={sendMessage}
+        createPost={EditPost}
+        setState={setState}
+        state={state}
+        msg={msg}
+        setMsg={setMsg}
+        message={message}
+        setLoading={setLoading}
+        loading={loading}
+        editPostData={editPostData}
+        setEditPostData={setEditPostData}
+        onOpenGalleryForEdit={onOpenGalleryForEdit}
+        imageForEdit={imageForEdit}
+        setImageForEdit={setImageForEdit}
+        // setActiveChat={setActiveChat}
+      />
+
+<EditTextModal
+        isModalVisible={isEditTextView}
+        setModalVisible={setIsEditTextView}
         imageData={imageForEdit}
         sendMessage={sendMessage}
         createPost={EditPost}

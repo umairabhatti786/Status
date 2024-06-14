@@ -209,7 +209,19 @@ const GifUploaderModal: React.FC<Props> = ({
             />
           </View>
           {loading ? (
-            <ActivityIndicator size={"small"} color={'#fff'} />
+            <View
+            style={{
+              width: scale(45),
+              height: scale(45),
+              borderRadius: scale(45),
+              alignItems: "center",
+              justifyContent: "center",
+
+            }}
+            >
+                          <ActivityIndicator size={"small"} color={'#fff'} />
+
+              </View>
           ) : (
             <TouchableOpacity
             onPress={message ? sendMessage : createPost}

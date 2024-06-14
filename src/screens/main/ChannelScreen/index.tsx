@@ -107,6 +107,8 @@ const ChannelScreen = () => {
   const [counter, setCounter] = useState(0);
   const [isGifView, setIsGifView] = useState(false);
   const [isEditView, setIsEditView] = useState(false);
+  const [isEditTextView, setIsEditTextView] = useState(false);
+
   const [imageForEdit, setImageForEdit] = useState("");
   const [postId, setPostId] = useState("");
   const flatListRefPosts: any = useRef(null);
@@ -115,6 +117,7 @@ const ChannelScreen = () => {
     description: "",
     imageUrl: "",
     gif: "",
+    text:""
   });
 
   const dispatch = useDispatch();
@@ -502,6 +505,8 @@ const ChannelScreen = () => {
                 setCounter={setCounter}
                 isActiveProfile={isActiveProfile}
                 isEditView={isEditView}
+                setIsEditTextView={setIsEditTextView}
+                isEditTextView={isEditTextView}
                 setIsEditView={setIsEditView}
                 imageForEdit={imageForEdit}
                 setImageForEdit={setImageForEdit}
@@ -525,6 +530,8 @@ const ChannelScreen = () => {
                   authPosts={authPosts}
                   isEditView={isEditView}
                   setIsEditView={setIsEditView}
+                  setIsEditTextView={setIsEditTextView}
+                  isEditTextView={isEditTextView}
                   imageForEdit={imageForEdit}
                   setImageForEdit={setImageForEdit}
                   postId={postId}
