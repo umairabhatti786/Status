@@ -21,6 +21,7 @@ export const windowWidth = Dimensions.get("window").width;
 import FastImage from "react-native-fast-image";
 import NewText from "../../../components/NewText";
 import { dateFormat } from "../../../utils/CommonFun";
+import moment from "moment";
 
 const UserList = ({
   item,
@@ -126,7 +127,7 @@ const UserList = ({
             <></>
           )} */}
 
-          {filterTwo == "new" ? (
+          {/* {filterTwo == "new" ? (
             <View style={{ height: 17 }}>
               <View
                 style={{
@@ -149,7 +150,7 @@ const UserList = ({
             </View>
           ) : (
             <></>
-          )}
+          )} */}
 
           <View
             style={{
@@ -171,15 +172,19 @@ const UserList = ({
 
             {filterTwo == "online" && (
               <View>
-                <NewText
-                  fontFam="Poppins-Bold"
-                  fontWeight="bold"
-                  text={profileType}
-                  numberOfLines={1}
-                  size={11.5}
-                  style={{ marginLeft: 10 }}
-                  color={colors.white}
-                />
+                {profileType&&(
+                    <NewText
+                    fontFam="Poppins-Bold"
+                    fontWeight="bold"
+                    text={profileType}
+                    numberOfLines={1}
+                    size={11.5}
+                    style={{ marginLeft: 10 }}
+                    color={colors.white}
+                  />
+
+                )}
+              
               </View>
             )}
 
@@ -209,12 +214,31 @@ const UserList = ({
                 />
               </View>
             )}
+
+{filterTwo == "new" && (
+              <View>
+                {profileType&&(
+                    <NewText
+                    fontFam="Poppins-Bold"
+                    fontWeight="bold"
+                    text={profileType}
+                    numberOfLines={1}
+                    size={11.5}
+                    style={{ marginLeft: 10 }}
+                    color={colors.white}
+                  />
+
+                )}
+              
+              </View>
+            )}
+            
  {filterTwo == "new" && (
               <View>
                 <NewText
                   fontFam="Inter-Medium"
                   fontWeight="600"
-                  text={dateFormat(createdAt)}
+                  text={moment(createdAt).format("MMM DD Y")}
                   numberOfLines={1}
                   size={11.5}
                   style={{ marginLeft: 10 }}

@@ -192,7 +192,7 @@ useEffect(() => {
       </View>
 
       <View
-        style={{ paddingHorizontal: scale(15), paddingTop: verticalScale(20) }}
+        style={{ paddingHorizontal: scale(15), paddingTop: verticalScale(20),flex:1 }}
       >
         <View style={appStyles.rowjustify}>
           <NewText

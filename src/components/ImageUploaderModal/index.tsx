@@ -22,6 +22,7 @@ import { colors } from "../../utils/colors";
 import { appStyles } from "../../utils/AppStyles";
 import CustomLine from "../CustomLine";
 import { Spacer } from "../Spacer";
+import { windowHeight } from "../../utils/Dimensions";
 
 interface Props {
   isModalVisible?: boolean;
@@ -104,9 +105,17 @@ const ImageUploaderModal: React.FC<Props> = ({
           borderColor: "#8A8A8A",
         }}
       >
-        <View style={{ width: "100%", height: "85%" }}>
+        <View style={{ width: "100%", height: "100%" }}>
           <Image
-            style={{ width: "100%", height: "100%",position:"absolute",top:0 ,left:0}}
+          
+            style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              width:windowWidth,
+              height:windowHeight,
+              //  width: "100%", height: "100%",position:"absolute",top:0 ,left:0
+              }}
             source={{ uri: imageData?.uri }}
           />
 
@@ -115,7 +124,7 @@ const ImageUploaderModal: React.FC<Props> = ({
               position: "absolute",
               width: "100%",
               height: "100%",
-              backgroundColor: `rgba(0, 0, 0, 0.4)`, // Apply opacity to the background color
+              backgroundColor: `rgba(0, 0, 0, 0.1)`, // Apply opacity to the background color
               opacity: 0.5,
             }}
           />
@@ -146,13 +155,19 @@ const ImageUploaderModal: React.FC<Props> = ({
           </TouchableOpacity>
         </View>
 
-        <View
+       
+      </Pressable>
+
+      <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
             height:"15%",
-            marginBottom: verticalScale(20),
+            position:"absolute",
+            bottom:20,
+            maxHeight:100,
+            // marginBottom: verticalScale(20),
             paddingHorizontal: 20,
           }}
         >
@@ -163,13 +178,14 @@ const ImageUploaderModal: React.FC<Props> = ({
               borderRadius: 999,
               backgroundColor: colors.black,
               paddingHorizontal: scale(5),
-              paddingVertical: verticalScale(3),
+              // paddingVertical: verticalScale(3),
               width: "82%",
               alignSelf: "center",
             }}
           >
             <TextInput
               value={message ? msg.message : state.description}
+              multiline={true}
               onChangeText={(text) =>
                 message
                   ? setMsg({ ...msg, message: text })
@@ -180,15 +196,15 @@ const ImageUploaderModal: React.FC<Props> = ({
                 color: colors.white,
                 paddingRight: 5,
                 width: "90%",
-                fontSize: verticalScale(16),
+                fontSize:19,
               }}
               placeholderTextColor={colors.gray200}
               placeholder={"Write a message"}
             />
           </View>
           {loading ? (
-            <ActivityIndicator size={"small"} color={'#fff'} />
-          ) : (
+            <ActivityIndicator size={"small"} color={colors.black} />
+            ) : (
             <TouchableOpacity
               onPress={message ? sendMessage : createPost}
               activeOpacity={0.6}
@@ -209,7 +225,6 @@ const ImageUploaderModal: React.FC<Props> = ({
             </TouchableOpacity>
           )}
         </View>
-      </Pressable>
     </Modal>
   );
 };

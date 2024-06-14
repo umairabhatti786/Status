@@ -118,9 +118,9 @@ const EditProfile = ({ route }: any) => {
 
   const userData = route?.params?.data;
 
-  console.log("selectedMedia1", userData);
-
-  const [profileType, setProfileType] = useState(userData?.profileType?userData?.profileType:"");
+  const [profileType, setProfileType] = useState(
+    userData?.profileType ? userData?.profileType : ""
+  );
 
   const [values, setValues] = useState({
     wallComments: userData?.wallComments,
@@ -133,16 +133,14 @@ const EditProfile = ({ route }: any) => {
     birthday: userData?.birthday ? userData.birthday : "",
     occupation: userData?.occupation ? userData?.occupation : "",
     link: userData?.link ? userData?.link : "",
-    profileType:userData?.profileType?userData?.profileType:"",
+    profileType: userData?.profileType ? userData?.profileType : "",
     // gif2: userData?.gif2 ? userData?.gif2 : "",
     location: userData?.location ? userData?.location : "",
     lat: userData?.lat ? userData?.lat : "",
     lng: userData?.lng ? userData?.lng : "",
   });
 
-    const [deleteWallImage, setDeleteWallImage] = useState(true)
-
-  console.log("GenderValue", values.gender);
+  const [deleteWallImage, setDeleteWallImage] = useState(0);
 
   useEffect(() => {
     console.log("profileGifs", profileGifs);
@@ -158,123 +156,103 @@ const EditProfile = ({ route }: any) => {
 
   const { requestGalleryPermission } = usePermissions();
 
-  const modelData = [
+  const profileTypeData = [
     {
       id: 1,
-      label: true,
-      value: "NO",
+      label: "All",
+      value: "All",
     },
     {
       id: 2,
-      label: false,
-      value: "YES",
-    },
-  ];
-
-  const profileTypeData=[
-    {
-      id: 1,
-      label:  "All",
-      value:  "All",
-    },
-    {
-      id: 2,
-      label:  "Actor",
-      value:  "Actor",
+      label: "Actor",
+      value: "Actor",
     },
 
     {
       id: 3,
-      label:  "Athlete",
-      value:  "Athlete",
+      label: "Athlete",
+      value: "Athlete",
     },
     {
       id: 4,
-      label:  "Bodybuilder",
-      value:  "Bodybuilder",
+      label: "Bodybuilder",
+      value: "Bodybuilder",
     },
     {
       id: 5,
-      label:  "Comedian",
-      value:  "Comedian",
+      label: "Comedian",
+      value: "Comedian",
     },
     {
       id: 6,
-      label:  "Fighter",
-      value:  "Fighter",
+      label: "Fighter",
+      value: "Fighter",
     },
 
     {
       id: 7,
-      label:  "Filmmaker",
-      value:  "Filmmaker",
+      label: "Filmmaker",
+      value: "Filmmaker",
     },
     {
       id: 8,
-      label:  "Founder",
-      value:  "Founder",
+      label: "Founder",
+      value: "Founder",
     },
 
     {
       id: 9,
-      label:  "Influencer",
-      value:  "Influencer",
+      label: "Influencer",
+      value: "Influencer",
     },
     {
       id: 10,
-      label:  "Model",
-      value:  "Model",
+      label: "Model",
+      value: "Model",
     },
     {
       id: 11,
-      label:  "Musician",
-      value:  "Musician",
+      label: "Musician",
+      value: "Musician",
     },
     {
       id: 12,
-      label:  "Podcaster",
-      value:  "Podcaster",
+      label: "Podcaster",
+      value: "Podcaster",
     },
     {
       id: 13,
-      label:  "Rapper",
-      value:  "Rapper",
+      label: "Rapper",
+      value: "Rapper",
     },
     {
       id: 14,
-      label:  "Reality Star",
-      value:  "Reality Star",
+      label: "Reality Star",
+      value: "Reality Star",
     },
 
     {
       id: 15,
-      label:  "Streamer",
-      value:  "Streamer",
+      label: "Streamer",
+      value: "Streamer",
     },
     {
       id: 16,
-      label:  "YouTuber",
-      value:  "YouTuber ",
+      label: "YouTuber",
+      value: "YouTuber ",
     },
     {
       id: 16,
-      label:  "Other",
-      value:  "Other ",
+      label: "Other",
+      value: "Other ",
     },
-   
-
-   
-  ]
-
+  ];
 
   useEffect(() => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
-
       setSelectedGifs((prevSelectedGifs) => [...prevSelectedGifs, e.media.url]);
-      
 
       GiphyDialog.hide();
-
     };
     const listener = GiphyDialog.addListener(
       GiphyDialogEvent.MediaSelected,
@@ -475,8 +453,8 @@ const EditProfile = ({ route }: any) => {
     form.append("occupation", values.occupation);
     form.append("link", values.link);
     form.append("bio", values?.bio);
-    form.append("isModel",1);
-    form.append("profileType",profileType)
+    form.append("isModel", 1);
+    form.append("profileType", profileType);
     form.append("wallpaperUrl", values.wallpaperUrl);
     form.append("deleteWallImage", deleteWallImage);
     form.append(
@@ -495,8 +473,9 @@ const EditProfile = ({ route }: any) => {
     form.append("lng", values?.lng);
 
     setLoading(true);
+
     UserProfileSetup(form, token, async ({ isSuccess, response }: any) => {
-      console.log("responseData", response);
+      // console.log("responseData", response);
 
       if (isSuccess) {
         let result = JSON.parse(response);
@@ -505,6 +484,9 @@ const EditProfile = ({ route }: any) => {
           setToastColor(colors.green);
           setError("Profile Updated Successfully");
           dispatch(setUserData(result?.user));
+          console.log("UplcdjbcdjYsr", result?.user);
+
+          console.log("formData", form);
 
           setShowError(true);
           setTimeout(() => {
@@ -641,7 +623,7 @@ const EditProfile = ({ route }: any) => {
                   activeOpacity={0.6}
                   onPress={() => {
                     setValues({ ...values, wallpaperUrl: "" });
-                    setDeleteWallImage(true)
+                    setDeleteWallImage(1);
                     // console.log('wallpaperUrl',wallImg)
                     // setSelectedGifs((prevSelectedGifs) =>
                     //   prevSelectedGifs.filter((gi, ind) => gi !== gip)
@@ -680,7 +662,11 @@ const EditProfile = ({ route }: any) => {
               />
               <Button
                 text={values?.imageUrl ? "Edit" : "Add"}
-                onPress={() => onOpenGallery(true)}
+                onPress={() => {
+                  setDeleteWallImage(1);
+
+                  onOpenGallery(true);
+                }}
                 bgColor={"transparent"}
               />
             </View>
@@ -846,8 +832,6 @@ const EditProfile = ({ route }: any) => {
             }}
           />
           <View style={{ paddingHorizontal: scale(20) }}>
-
-         
             <NewText
               fontWeight="700"
               color={colors.white}
@@ -877,7 +861,6 @@ const EditProfile = ({ route }: any) => {
                   value: item?.value,
                 };
               })}
-              
             />
             {/* <Spacer height={verticalScale(10)}/> */}
             <Input
@@ -885,7 +868,6 @@ const EditProfile = ({ route }: any) => {
               value={values.name}
               placeholder="Name"
               maxLength={50}
-
               color={colors.white}
               fontWeight="600"
               onChangeText={(txt: string) => {
@@ -980,7 +962,7 @@ const EditProfile = ({ route }: any) => {
               /> */}
             </View>
             <View>
-            {isPredictionList && (
+              {isPredictionList && (
                 <PredictionList
                   onAddressPress={(i) => onPressLocationAddress(i)}
                   Addresses={predictionData}
@@ -996,7 +978,6 @@ const EditProfile = ({ route }: any) => {
                 fontWeight="600"
                 marginTop={"7%"}
               />
-             
             </View>
 
             <Input
@@ -1093,8 +1074,6 @@ const EditProfile = ({ route }: any) => {
 
             <Spacer height={20} />
           </View>
-
-        
         </ScrollView>
       </SafeAreaView>
       {showError && (

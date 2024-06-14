@@ -22,6 +22,7 @@ import { colors } from "../../utils/colors";
 import { appStyles } from "../../utils/AppStyles";
 import CustomLine from "../CustomLine";
 import { Spacer } from "../Spacer";
+import { windowHeight } from "../../utils/Dimensions";
 
 interface Props {
   isModalVisible?: boolean;
@@ -115,7 +116,14 @@ const GifUploaderModal: React.FC<Props> = ({
           borderColor: "#8A8A8A",
         }}
       >
-        <View style={{ width: "100%", height: "85%" }}>
+        <View style={{ 
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width:windowWidth,
+            height:windowHeight,
+          // width: "100%", height: "85%"
+           }}>
           <Image
             style={{ width: "100%", height: "100%",position:"absolute",top:0 ,left:0}}
             source={{ uri: giphy }}
@@ -164,8 +172,9 @@ const GifUploaderModal: React.FC<Props> = ({
             alignItems: "center",
             justifyContent: "space-between",
             height:"15%",
-            marginBottom: verticalScale(20),
             paddingHorizontal: 20,
+            position:"absolute",
+            bottom:20
           }}
         >
           <View
@@ -175,12 +184,13 @@ const GifUploaderModal: React.FC<Props> = ({
               borderRadius: 999,
               backgroundColor: colors.black,
               paddingHorizontal: scale(5),
-              paddingVertical: verticalScale(3),
               width: "82%",
               alignSelf: "center",
+              maxHeight:100,
             }}
           >
             <TextInput
+            multiline={true}
               value={message ? msg.message : state.description}
               onChangeText={(text) =>
                 message
@@ -192,7 +202,7 @@ const GifUploaderModal: React.FC<Props> = ({
                 color: colors.white,
                 paddingRight: 5,
                 width: "90%",
-                fontSize: verticalScale(16),
+                fontSize: 19,
               }}
               placeholderTextColor={colors.gray200}
               placeholder={"write a message"}

@@ -389,10 +389,7 @@ const MessageSender = ({
         borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: "#8A8A8A",
-
         width: windowWidth,
-        position: "absolute",
-        bottom: bottom || 0,
         backgroundColor: colors.primary,
         paddingVertical: verticalScale(10),
         paddingHorizontal: scale(10),
@@ -408,7 +405,7 @@ const MessageSender = ({
           paddingVertical: verticalScale(3),
           width: "82%",
           alignSelf: "center",
-          maxHeight:90,
+          maxHeight:100,
         }}
       >
         <TextInput
@@ -427,7 +424,8 @@ const MessageSender = ({
           
             paddingRight: 5,
             width: notShow ? "90%" : "75%",
-            fontSize: verticalScale(16),
+            lineHeight:23,
+            fontSize: 19,
           }}
           placeholderTextColor={colors.gray200}
           placeholder={placeholder || "Write a status update"}

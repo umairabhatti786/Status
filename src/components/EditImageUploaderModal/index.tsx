@@ -22,6 +22,7 @@ import { colors } from "../../utils/colors";
 import { appStyles } from "../../utils/AppStyles";
 import CustomLine from "../CustomLine";
 import { Spacer } from "../Spacer";
+import { windowHeight } from "../../utils/Dimensions";
 
 interface Props {
   isModalVisible?: boolean;
@@ -93,14 +94,15 @@ const EditImageUploaderModal: React.FC<Props> = ({
             backgroundColor: colors.black300,
           }}
           onPress={() => {
-            setModalVisible?.(false)
-
+            setModalVisible?.(false);
           }}
         ></Pressable>
       }
     >
       <Pressable
-      onPress={()=>{Keyboard.dismiss()}}
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
         style={{
           width: "101%",
           height: "100%",
@@ -114,43 +116,64 @@ const EditImageUploaderModal: React.FC<Props> = ({
           borderColor: "#8A8A8A",
         }}
       >
-        <TouchableOpacity onPress={editPostData?.gif?()=>{}:onOpenGalleryForEdit} style={{ width: "100%", height: "85%" }}>
+        <TouchableOpacity
+          onPress={editPostData?.gif ? () => {} : onOpenGalleryForEdit}
+          style={{ width: "100%", height: "85%" }}
+        >
           {
-          // editPostData?.imageUrl?
+            // editPostData?.imageUrl?
 
-          //   <Image
-          //     style={{ width: "100%", height: "100%"}}
-          //     source={{ uri: editPostData.imageUrl }}
-          //   />
+            //   <Image
+            //     style={{ width: "100%", height: "100%"}}
+            //     source={{ uri: editPostData.imageUrl }}
+            //   />
 
-          // :
-          imageForEdit?.uri||editPostData?.imageUrl||editPostData?.gif?
+            // :
+            imageForEdit?.uri || editPostData?.imageUrl || editPostData?.gif ? (
+              <Image
 
-          <Image
-          style={{ width: "100%", height: "100%"}}
-          // resizeMode={imageForEdit?.uri?'contain':"cover"}
-          source={{ uri: imageForEdit?.uri||editPostData?.imageUrl||editPostData?.gif}}
-        />
-        :
-        <Image
-        style={{ width: "100%", height: "100%",tintColor:'#fff'}}
-        resizeMode={'contain'}
-        source={{ uri:'https://cdn-icons-png.flaticon.com/512/4211/4211763.png' }}
-      />
-          // <CustomText
-          // size={20}
-          // text={"No Image is Selected"}
-          // color="#fff"
-          // />
-          
-        }
+              
+
+
+                style={{     position: 'absolute',
+                left: 0,
+                top: 0,
+                width:windowWidth,
+                height:windowHeight,
+                //  width: "100%", height: "100%",position:"absolute",top:0 ,left:0
+                 }}
+                // resizeMode={imageForEdit?.uri?'contain':"cover"}
+                source={{
+                  uri:
+                    imageForEdit?.uri ||
+                    editPostData?.imageUrl ||
+                    editPostData?.gif,
+                }}
+              />
+            ) : (
+              <Image
+                style={{ width: "100%", height: "100%", tintColor: "#fff" }}
+                resizeMode={"contain"}
+                source={{
+                  uri: "https://cdn-icons-png.flaticon.com/512/4211/4211763.png",
+                }}
+              />
+            )
+            // <CustomText
+            // size={20}
+            // text={"No Image is Selected"}
+            // color="#fff"
+            // />
+          }
 
           <View
             style={{
               position: "absolute",
-              width: "100%",
-              height: "100%",
-              backgroundColor: `rgba(0, 0, 0, 0.4)`, // Apply opacity to the background color
+
+              width:windowWidth,
+              height:windowHeight,
+             
+              backgroundColor: `rgba(0, 0, 0, 0.1)`, // Apply opacity to the background color
               opacity: 0.5,
             }}
           />
@@ -158,7 +181,7 @@ const EditImageUploaderModal: React.FC<Props> = ({
           <TouchableOpacity
             activeOpacity={0.6}
             onPress={() => {
-              setImageForEdit("")
+              setImageForEdit("");
               setModalVisible(false);
             }}
             style={{
@@ -187,9 +210,13 @@ const EditImageUploaderModal: React.FC<Props> = ({
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            height:"15%",
-            marginBottom: verticalScale(20),
+            height: "15%",
+            // marginBottom: verticalScale(20),
             paddingHorizontal: 20,
+            position:"absolute",
+            bottom:20
+
+
           }}
         >
           <View
@@ -199,29 +226,32 @@ const EditImageUploaderModal: React.FC<Props> = ({
               borderRadius: 999,
               backgroundColor: colors.black,
               paddingHorizontal: scale(5),
-              paddingVertical: verticalScale(3),
               width: "82%",
               alignSelf: "center",
+              maxHeight:100,
+
+              
             }}
           >
             <TextInput
               value={editPostData?.description}
+              multiline={true}
               onChangeText={(text) =>
-                setEditPostData({...editPostData,description:text})
+                setEditPostData({ ...editPostData, description: text })
               }
               style={{
                 marginLeft: 12,
                 color: colors.white,
                 paddingRight: 5,
                 width: "90%",
-                fontSize: verticalScale(16),
+                fontSize: 19
               }}
               placeholderTextColor={colors.gray200}
               placeholder={"(optional). Post Caption "}
             />
           </View>
           {loading ? (
-            <ActivityIndicator size={"small"} color={'#fff'} />
+            <ActivityIndicator size={"small"} color={colors.black} />
           ) : (
             <TouchableOpacity
               onPress={message ? sendMessage : createPost}
@@ -237,7 +267,7 @@ const EditImageUploaderModal: React.FC<Props> = ({
             >
               <Image
                 source={images.simplesend}
-                style={{ width: scale(25), height: scale(25) }}
+                style={{ width: scale(25), height: scale(25),marginLeft:8 }}
                 resizeMode="contain"
               />
             </TouchableOpacity>

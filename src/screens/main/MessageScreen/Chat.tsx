@@ -683,19 +683,14 @@ const Chat = () => {
 
   
 
-      <View style={{ flex: 0.9 }}>
+      <View style={{ flex: 1 }}>
         <FlatList
           data={conversation}
           ref={flatListRefChat}
           keyExtractor={(item, index) => item.id}
           style={{
-            marginBottom: isKeyboardVisible
-              ? windowHeight <= 630
-                ? 55
-                : 40
-              : windowHeight <= 630
-              ? 30
-              : 10,
+            marginBottom:
+              5,
           }}
           inverted={true}
           renderItem={renderChatList}

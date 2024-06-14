@@ -30,6 +30,7 @@ import { GetInNotifications } from "../../../api/ApiServices";
 import { getToken } from "../../../redux/reducers/authReducer";
 import { useSelector } from "react-redux";
 import moment from "moment";
+import { formatTimeDifference } from "../../../utils/CommonFun";
 const Notifications = () => {
   const navigation: any = useNavigation();
   const [loading, setLoading] = useState(false);
@@ -88,7 +89,7 @@ const Notifications = () => {
         <ActivityCard 
           senderId={item.senderId}
           image={{ uri: item?.imageUrl }}
-          time={moment(item?.created_at).format("h:mm a")}
+          time={  formatTimeDifference(item?.created_at)}
           name={item?.username}
           isShowFollow={item?.forFollow ? item?.description : ""}
           comment={item?.description}

@@ -106,7 +106,7 @@ const Channel = ({
 
   return (
     <>
-      <View style={{ backgroundColor: colors.black,flex:mainFlex|| 0.9}}>
+      <View style={{ backgroundColor: colors.black,flex:1}}>
         <FastImage
           style={{ width: "100%", height: windowHeight, position: "absolute" }}
           source={{
@@ -122,7 +122,7 @@ const Channel = ({
           nestedScrollEnabled={true}
           ref={hideSendMessage ? flatListRefOtherPosts : flatListRefPosts}
           keyExtractor={(item) => item}
-          style={{ marginBottom: mainMargin||isKeyboardVisible ? windowHeight<=630?  verticalScale(50):verticalScale(20) :windowHeight<=630? 20:0, }}
+          style={{ marginBottom: 5 }}
           inverted={true}
           onEndReached={()=>{
             // setRefreshing(true)
