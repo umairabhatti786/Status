@@ -20,9 +20,46 @@ import NewText from "../../../components/NewText";
 import { capitalizeFirstLetter, dateFormat, formatTimeDifference } from "../../../utils/CommonFun";
 import FastImage from "react-native-fast-image";
 export const windowWidth = Dimensions.get("window").width;
+import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
 
-const FriendList = ({ item, onPress, disabled }: any) => {
-  // console.log("item?.channel?.last_post?.created_at",typeof item?.channel?.last_post)
+const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: any) => {
+  const [newPost, setNewPost] = useState(item?.channel?.last_post)
+  const pusher = Pusher.getInstance();
+
+  useEffect(() => {
+    pusher.init({
+      apiKey: "e8f7ca7b8515f9bfcbb0",
+      cluster: "mt1",
+      // onConnectionStateChange,
+    });
+
+     pusher.connect();
+
+       pusher.subscribe({
+        channelName: "channelUpdates_" + channelId,
+        onEvent: (event: PusherEvent) => {
+          // console.log("channelUpdates_", JSON.parse(event.data).post);
+          let post = JSON.parse(event.data).post;
+          setNewPost(post)
+          setCounter(counter+1)
+          // let data = [post, ...posts];
+          // setPosts(data);
+          // if(post.id){
+          //   setNewPost(post)
+          // }
+          // setNewPost(JSON.parse(event.data).post);
+        },
+      });
+     
+
+    // Cleanup on unmount
+    return () => {
+      pusher.unsubscribe({channelName:"channelUpdates_" + channelId});
+      pusher.disconnect();
+    };
+  }, []);
+
+
   return (
     <>
       <TouchableOpacity
@@ -73,7 +110,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
           <View
             style={{
               paddingLeft: scale(15),
-              width: item?.channel?.last_post?.imageUrl ||item?.channel?.last_post?.gif
+              width: newPost?.imageUrl ||newPost?.gif
                 ? scale(190)
                 : scale(250),
             }}
@@ -92,9 +129,9 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               />
 
            
-              {item?.channel?.last_post ? (
+              {newPost ? (
                 <NewText
-                  text={formatTimeDifference(item?.channel?.last_post?.created_at)}
+                  text={formatTimeDifference(newPost?.created_at)}
                   color={"#999999"}
                   size={12}
                   style={{ marginTop: 7 }}
@@ -106,9 +143,9 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               )}
             </View>
 
-            {item?.channel?.last_post != "null" ? (
+            {newPost != "null" ? (
               <CustomText
-                text={item?.channel?.last_post?.description}
+                text={newPost?.description}
                 color={colors.gray500}
                 size={15}
                 lineHeight={21}
@@ -123,7 +160,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
             )}
           </View>
         </View>
-        {item?.channel?.last_post?.imageUrl && (
+        {newPost?.imageUrl && (
           <View
             style={{
               alignItems: "flex-end",
@@ -144,7 +181,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
             <View
               style={{ width: verticalScale(52), height: verticalScale(52) }}
             >
-              {item?.channel?.last_post != "null" ? (
+              {newPost != "null" ? (
 
                 
                 <FastImage
@@ -155,7 +192,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                     overflow: "hidden",
                   }}
                   source={{
-                    uri: item?.channel?.last_post?.imageUrl ,
+                    uri: newPost?.imageUrl ,
                     headers: { Authorization: "someAuthToken" },
                     priority: FastImage.priority.high,
                   }}
@@ -167,7 +204,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
             </View>
           </View>
         )}
-        {item?.channel?.last_post?.gif && (
+        {newPost?.gif && (
           <View
             style={{
               alignItems: "flex-end",
@@ -192,14 +229,14 @@ const FriendList = ({ item, onPress, disabled }: any) => {
 
               }}
             >
-              {item?.channel?.last_post?.gif ? (
+              {newPost?.gif ? (
                 <Image
                   style={{
                     width: "100%",
                     height: "100%",
                     borderRadius: scale(5),
                   }}
-                  source={{ uri: item?.channel?.last_post?.gif }}
+                  source={{ uri: newPost.gif }}
                 />
               ) : (
                 <></>
