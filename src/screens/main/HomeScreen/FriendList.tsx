@@ -17,14 +17,29 @@ import { scale, verticalScale } from "react-native-size-matters";
 import { appStyles } from "../../../utils/AppStyles";
 import moment from "moment";
 import NewText from "../../../components/NewText";
-import { capitalizeFirstLetter, dateFormat, formatTimeDifference } from "../../../utils/CommonFun";
+import {
+  capitalizeFirstLetter,
+  dateFormat,
+  formatTimeDifference,
+} from "../../../utils/CommonFun";
 import FastImage from "react-native-fast-image";
 export const windowWidth = Dimensions.get("window").width;
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
 
-const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: any) => {
-  const [newPost, setNewPost] = useState(item?.channel?.last_post)
+const FriendList = ({
+  item,
+  onPress,
+  disabled,
+  channelId,
+  setCounter,
+  counter,
+}: any) => {
+  const [newPost, setNewPost] = useState(item?.channel?.last_post);
   const pusher = Pusher.getInstance();
+
+  useEffect(()=>{
+    setNewPost(item?.channel?.last_post)
+  },[item?.channel?.last_post])
 
   useEffect(() => {
     pusher.init({
@@ -33,32 +48,30 @@ const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: an
       // onConnectionStateChange,
     });
 
-     pusher.connect();
+    pusher.connect();
 
-       pusher.subscribe({
-        channelName: "channelUpdates_" + channelId,
-        onEvent: (event: PusherEvent) => {
-          // console.log("channelUpdates_", JSON.parse(event.data).post);
-          let post = JSON.parse(event.data).post;
-          setNewPost(post)
-          setCounter(counter+1)
-          // let data = [post, ...posts];
-          // setPosts(data);
-          // if(post.id){
-          //   setNewPost(post)
-          // }
-          // setNewPost(JSON.parse(event.data).post);
-        },
-      });
-     
+    pusher.subscribe({
+      channelName: "channelUpdates_" + channelId,
+      onEvent: (event: PusherEvent) => {
+        // console.log("channelUpdates_", JSON.parse(event.data).post);
+        let post = JSON.parse(event.data).post;
+        setNewPost(post);
+        setCounter(counter + 1);
+        // let data = [post, ...posts];
+        // setPosts(data);
+        // if(post.id){
+        //   setNewPost(post)
+        // }
+        // setNewPost(JSON.parse(event.data).post);
+      },
+    });
 
     // Cleanup on unmount
     return () => {
-      pusher.unsubscribe({channelName:"channelUpdates_" + channelId});
+      pusher.unsubscribe({ channelName: "channelUpdates_" + channelId });
       pusher.disconnect();
     };
   }, []);
-
 
   return (
     <>
@@ -110,16 +123,15 @@ const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: an
           <View
             style={{
               paddingLeft: scale(15),
-              width: newPost?.imageUrl ||newPost?.gif
-                ? scale(190)
-                : scale(250),
+              width:
+                newPost?.imageUrl || newPost?.gif ? scale(190) : scale(250),
             }}
           >
             {/* size={15}
                 fontFam="Poppins-Bold"
                 fontWeight="800 */}
 
-<View style={{...appStyles.row,gap:8,width:scale(170)}}>
+            <View style={{ ...appStyles.row, gap: 8, width: scale(170) }}>
               <CustomText
                 text={capitalizeFirstLetter(item?.name)}
                 color={colors.white}
@@ -128,7 +140,6 @@ const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: an
                 fontWeight="700"
               />
 
-           
               {newPost ? (
                 <NewText
                   text={formatTimeDifference(newPost?.created_at)}
@@ -158,8 +169,24 @@ const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: an
             ) : (
               <></>
             )}
+            <View style={{ flexDirection: "row",alignItems:"center" }}>
+              <View
+                style={{
+                  width: scale(7.5),
+                  height: scale(7.5),
+                  borderRadius: 999,
+                  backgroundColor: !newPost?.read_at
+                    ? colors.sky
+                    : "transparent",
+                  marginRight: verticalScale(5),
+                  // alignSelf: "le",
+                }}
+              />
+              {/* <Text>unread</Text> */}
+            </View>
           </View>
         </View>
+
         {newPost?.imageUrl && (
           <View
             style={{
@@ -171,9 +198,7 @@ const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: an
               position: "absolute",
               alignSelf: "center",
               right: scale(5),
-              top:22,
-
-              
+              top: 22,
 
               // backgroundColor:"red"
             }}
@@ -182,8 +207,6 @@ const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: an
               style={{ width: verticalScale(52), height: verticalScale(52) }}
             >
               {newPost != "null" ? (
-
-                
                 <FastImage
                   style={{
                     width: "100%",
@@ -192,7 +215,7 @@ const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: an
                     overflow: "hidden",
                   }}
                   source={{
-                    uri: newPost?.imageUrl ,
+                    uri: newPost?.imageUrl,
                     headers: { Authorization: "someAuthToken" },
                     priority: FastImage.priority.high,
                   }}
@@ -215,7 +238,7 @@ const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: an
               position: "absolute",
               alignSelf: "center",
               right: scale(5),
-              top:22,
+              top: 22,
 
               // backgroundColor:"red"
             }}
@@ -226,7 +249,6 @@ const FriendList = ({ item, onPress, disabled,channelId,setCounter,counter }: an
                 height: verticalScale(52),
                 borderRadius: scale(5),
                 overflow: "hidden",
-
               }}
             >
               {newPost?.gif ? (
