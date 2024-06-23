@@ -26,7 +26,6 @@ import CustomLine from "../CustomLine";
 import { Spacer } from "../Spacer";
 import NewText from "../NewText";
 import moment from "moment";
-import {ReactNativeZoomableView} from '@openspacelabs/react-native-zoomable-view';
 
 interface Props {
   isModalVisible?: boolean;
@@ -217,32 +216,13 @@ const ImageViewModal: React.FC<Props> = ({
             />
           </View>
         </Animated.View>
-        
         <View style={{ height: "75%", flex: 1 }}>
-
-
-        <ReactNativeZoomableView
-              maxZoom={2}
-              minZoom={1}
-              zoomStep={1}
-              initialZoom={1}
-              bindToBorders={true}
-              contentHeight={undefined}
-              contentWidth={undefined}
-              style={
-                {
-                  // padding: 10,
-                  // backgroundColor: 'red',
-                }
-              }>
-              <Image
+          <Image
         style={[styles.mainImage,]}
         source={{ uri: imageObject?.uri }}
             resizeMode="contain"
             // resizeMethod=""
           />
-            </ReactNativeZoomableView>
-        
 
           <View
             style={{
