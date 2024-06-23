@@ -397,12 +397,13 @@ const Channel = ({
                   >
                     {/* {item?.imageUrl && (
                         )} */}
-                    <View style={appStyles.row}>
+                    <View style={{...appStyles.row,}}>
                       <Image
                         style={{
                           width: 17,
                           height: 17,
                           tintColor: colors.grey300,
+                          // marginTop:2
                         }}
                         source={images.eye}
                       />
@@ -414,6 +415,8 @@ const Channel = ({
                         style={{
                           marginRight: scale(5),
                           textAlign: "right",
+                          // marginTop:2
+
                         }}
                         text={item?.views_count}
                       />
@@ -424,7 +427,7 @@ const Channel = ({
                         // fontFam="Inter-Medium"
                         style={{
                           textAlign: "right",
-                          marginTop: 1,
+                          // marginTop: 1,
                         }}
                         text={moment(item?.created_at).format("h:mm A")}
                       />
@@ -520,19 +523,21 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   descripationText: {
-    fontSize: 14,
+    fontSize: 17,
     marginTop: verticalScale(8),
     marginHorizontal: scale(10),
-    fontFamily: "Inter-Medium",
+    fontFamily: "Inter-Regular",
     color: colors.white,
+    lineHeight: 24,
+
   },
   descripationLinkText: {
-    fontSize: 14,
+    fontSize: 17,
     marginTop: verticalScale(8),
     marginHorizontal: scale(10),
-    fontFamily: "Inter-Medium",
+    fontFamily: "Inter-Regular",
     color: colors.sky,
     textDecorationLine: "underline",
-    lineHeight: 22,
+    lineHeight: 24,
   },
 });

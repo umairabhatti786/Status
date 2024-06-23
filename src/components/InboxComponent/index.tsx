@@ -16,6 +16,7 @@ import FastImage from "react-native-fast-image";
 import Autolink from "react-native-autolink";
 import moment from "moment";
 import ImageViewModal from "../ImageViewModal";
+import { formatTimeDifference } from "../../utils/CommonFun";
 
 type Props = {
   name?: string;
@@ -128,7 +129,7 @@ const InboxComponent = ({
             >
               <CustomText
                 text={name}
-                color={colors.white}
+                color={colors.gray500}
                 size={15}
                 numberOfLines={1}
                 fontFam="Poppins-SemiBold"
@@ -146,7 +147,7 @@ const InboxComponent = ({
               />
 
               <CustomText
-                text={moment(time).format("h:mm a")}
+                text={formatTimeDifference(time)}
                 color={colors.lightgray}
                 size={13}
                 style={{ marginTop: verticalScale(4) }}
@@ -160,7 +161,7 @@ const InboxComponent = ({
             onPress={(url) => Linking.openURL(url)}
             style={{
               ...styles.descripationText,
-              color:  colors.gray500 
+          
             }}
             linkStyle={styles.descripationLinkText}
           />
@@ -251,6 +252,7 @@ const styles = StyleSheet.create({
   descripationText: {
     fontSize: 16,
     fontFamily: "Inter-Medium",
+    color:colors.white,
     width: windowWidth / 1.5 
   },
   descripationLinkText: {

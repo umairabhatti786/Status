@@ -84,14 +84,15 @@ const ImageUploaderModal: React.FC<Props> = ({
             backgroundColor: colors.black300,
           }}
           onPress={() => {
-            setModalVisible?.(false)
-
+            setModalVisible?.(false);
           }}
         ></Pressable>
       }
     >
       <Pressable
-      onPress={()=>{Keyboard.dismiss()}}
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
         style={{
           width: "101%",
           height: "100%",
@@ -100,23 +101,32 @@ const ImageUploaderModal: React.FC<Props> = ({
           borderTopRightRadius: scale(20),
           overflow: "hidden",
           justifyContent: "space-between",
+          flexDirection: "row",
+          alignItems: "flex-end",
 
           borderRightWidth: 1,
           borderColor: "#8A8A8A",
         }}
       >
-        <View style={{ width: "100%", height: "100%" }}>
+        <View
+          style={{
+            width: "100%",
+            height: "100%",
+            flexDirection: "row",
+            alignItems: "flex-end",
+          }}
+        >
           <Image
-          
             style={{
-              position: 'absolute',
+              position: "absolute",
               left: 0,
               top: 0,
-              width:windowWidth,
-              height:windowHeight,
+              width: windowWidth,
+              height: windowHeight,
               //  width: "100%", height: "100%",position:"absolute",top:0 ,left:0
-              }}
+            }}
             source={{ uri: imageData?.uri }}
+            resizeMode="contain"
           />
 
           <View
@@ -153,89 +163,82 @@ const ImageUploaderModal: React.FC<Props> = ({
               source={images.crossicon}
             />
           </TouchableOpacity>
-        </View>
 
-       
-      </Pressable>
-
-      <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height:"15%",
-            position:"absolute",
-            bottom:20,
-            maxHeight:100,
-            // marginBottom: verticalScale(20),
-            paddingHorizontal: 20,
-          }}
-        >
           <View
             style={{
               flexDirection: "row",
               alignItems: "center",
-              borderRadius: 999,
-              backgroundColor: colors.black,
-              paddingHorizontal: scale(5),
-              // paddingVertical: verticalScale(3),
-              width: "82%",
-              alignSelf: "center",
+              justifyContent: "space-between",
+              bottom: 20,
+              paddingHorizontal: 20,
             }}
           >
-            <TextInput
-              value={message ? msg.message : state.description}
-              multiline={true}
-              onChangeText={(text) =>
-                message
-                  ? setMsg({ ...msg, message: text })
-                  : setState({ ...state, description: text })
-              }
-              style={{
-                marginLeft: 12,
-                color: colors.white,
-                paddingRight: 5,
-                width: "90%",
-                fontSize:19,
-              }}
-              placeholderTextColor={colors.gray200}
-              placeholder={"Write a message"}
-            />
-          </View>
-          {loading ? (
             <View
-            style={{
-              width: scale(45),
-              height: scale(45),
-              borderRadius: scale(45),
-              alignItems: "center",
-              justifyContent: "center"
-            }}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                borderRadius: scale(20),
+                backgroundColor: colors.black,
+                paddingHorizontal: scale(5),
+                maxHeight: 130,
+                width: "82%",
+                alignSelf: "center",
+              }}
             >
-                          <ActivityIndicator size={"small"} color={colors.white} />
-
+              <TextInput
+                value={message ? msg.message : state.description}
+                multiline={true}
+                onChangeText={(text) =>
+                  message
+                    ? setMsg({ ...msg, message: text })
+                    : setState({ ...state, description: text })
+                }
+                style={{
+                  marginLeft: 12,
+                  color: colors.white,
+                  paddingRight: 5,
+                  width: "90%",
+                  fontSize: 17,
+                }}
+                placeholderTextColor={colors.gray200}
+                placeholder={"Write a message"}
+              />
+            </View>
+            {loading ? (
+              <View
+                style={{
+                  width: scale(45),
+                  height: scale(45),
+                  borderRadius: scale(45),
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ActivityIndicator size={"small"} color={colors.white} />
               </View>
             ) : (
-            <TouchableOpacity
-              onPress={message ? sendMessage : createPost}
-              activeOpacity={0.6}
-              style={{
-                width: scale(45),
-                height: scale(45),
-                borderRadius: scale(45),
-                backgroundColor: colors.sky,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Image
-                source={images.simplesend}
-                style={{ width: scale(25), height: scale(25), marginLeft: 8  }}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          )}
+              <TouchableOpacity
+                onPress={message ? sendMessage : createPost}
+                activeOpacity={0.6}
+                style={{
+                  width: scale(45),
+                  height: scale(45),
+                  borderRadius: scale(45),
+                  backgroundColor: colors.sky,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Image
+                  source={images.simplesend}
+                  style={{ width: scale(25), height: scale(25), marginLeft: 8 }}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
+      </Pressable>
     </Modal>
   );
 };

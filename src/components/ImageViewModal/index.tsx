@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Keyboard,
   Animated,
+  Dimensions,
 } from "react-native";
 import Modal from "react-native-modal";
 import { scale, verticalScale } from "react-native-size-matters";
@@ -25,6 +26,7 @@ import CustomLine from "../CustomLine";
 import { Spacer } from "../Spacer";
 import NewText from "../NewText";
 import moment from "moment";
+import {ReactNativeZoomableView} from '@openspacelabs/react-native-zoomable-view';
 
 interface Props {
   isModalVisible?: boolean;
@@ -59,47 +61,56 @@ const ImageViewModal: React.FC<Props> = ({
   console.log("imageData", imageData);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [hideImage, setShowImage] = useState(true);
-  const simpleScale = useRef(new Animated. Value (1)). current;
-  const translateX = useRef(new Animated. Value(0) ).current;
-  const translateY = useRef(new Animated.Value(0)) .current;
+  const simpleScale = useRef(new Animated.Value(1)).current;
+  const translateX = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;
   const windowWidth = useWindowDimensions().width;
   const createdAtDate = moment(imageObject.time);
-const currentDate = moment();
+  const currentDate = moment();
 
-useEffect(() => {
-  Animated.timing(fadeAnim, {
-    toValue: 1,
-    duration: 0,
-    useNativeDriver: true,
-  }).start();
-}, [isModalVisible]);
+  const { width, height } = Dimensions.get('window');
 
-// Check if the created_at date is today
-const isToday = createdAtDate.isSame(currentDate, 'day');
 
-const onPinchEvent=Animated.event([{
-  nativeEvent:{simpleScale}
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 0,
+      useNativeDriver: true,
+    }).start();
+  }, [isModalVisible]);
 
-}],{useNativeDriver:true})
+  // Check if the created_at date is today
+  const isToday = createdAtDate.isSame(currentDate, "day");
 
-const onPanEvent=Animated.event([{
-  nativeEvent:{translateX:translateX,
-    translateY:translateY
-  }
+  const onPinchEvent = Animated.event(
+    [
+      {
+        nativeEvent: { simpleScale },
+      },
+    ],
+    { useNativeDriver: true }
+  );
 
-}],{useNativeDriver:true})
+  const onPanEvent = Animated.event(
+    [
+      {
+        nativeEvent: { translateX: translateX, translateY: translateY },
+      },
+    ],
+    { useNativeDriver: true }
+  );
 
-// Format the date differently based on whether it's today or not
-const formattedDate=createdAtDate.isSame(currentDate, "day")
-? "Today at " +createdAtDate.format('MMM D [at] h:mm A')
-: createdAtDate.format("dddd h:mm A")
-// const formattedDate = isToday
-//   ? 'Today at ' + createdAtDate.format('hh:mm A')
-//   : createdAtDate.format('MMM D [at] hh:mm A');
-const shortenedName =
-imageObject?.name?.length > 30
-  ? imageObject?.name?.substring(0, 29) + "..."
-  : imageObject?.name;
+  // Format the date differently based on whether it's today or not
+  const formattedDate = createdAtDate.isSame(currentDate, "day")
+    ? "Today at " + createdAtDate.format("MMM D [at] h:mm A")
+    : createdAtDate.format("dddd h:mm A");
+  // const formattedDate = isToday
+  //   ? 'Today at ' + createdAtDate.format('hh:mm A')
+  //   : createdAtDate.format('MMM D [at] hh:mm A');
+  const shortenedName =
+    imageObject?.name?.length > 30
+      ? imageObject?.name?.substring(0, 29) + "..."
+      : imageObject?.name;
 
   const HandlePress = () => {
     if (hideImage) {
@@ -119,8 +130,6 @@ imageObject?.name?.length > 30
     }
   };
   return (
-
-    
     <Modal
       style={{
         ...styles.modalContainer,
@@ -146,80 +155,94 @@ imageObject?.name?.length > 30
     >
       <Pressable
         onPress={() => {
-          HandlePress()
+          HandlePress();
         }}
         style={{
           width: "101%",
           height: "100%",
           backgroundColor: "#0B0B0B",
-         
         }}
       >
-          <Animated.View
+        <Animated.View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: scale(20),
+            paddingVertical: verticalScale(5),
+            opacity: fadeAnim,
+          }}
+        >
+          <TouchableOpacity
+            activeOpacity={0.6}
+            onPress={() => {
+              setModalVisible?.(false);
+            }}
             style={{
-              flexDirection: "row",
-              alignItems: "center",
-              paddingHorizontal: scale(20),
-              paddingVertical: verticalScale(5),
-              opacity: fadeAnim 
+              width: scale(40),
+              height: scale(40),
+              // alignItems:"center",
+              justifyContent: "center",
             }}
           >
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={()=>{
-                setModalVisible?.(false);
-
-
-              }}
+            <Image
               style={{
-                width: scale(40),
-                height: scale(40),
-                // alignItems:"center",
-                justifyContent: "center",
+                width: 17,
+                height: 17,
+                borderRadius: 999,
               }}
-            >
-              <Image
-                style={{
-                  width: 17,
-                  height: 17,
-                  borderRadius: 999,
-                }}
-                source={images.back}
-              />
-            </TouchableOpacity>
+              source={images.back}
+            />
+          </TouchableOpacity>
 
-            <View
-              style={{
-                marginRight: scale(7),
-                paddingBottom: verticalScale(5),
-                width: windowWidth / 2,
-              }}
-            >
-              <NewText
-                color={colors.white}
-                size={18}
-                numberOfLines={1}
-                style={{ marginTop: verticalScale(5) }}
-                text={shortenedName}
-              />
-              <NewText
-                color={colors.white}
-                size={14}
-                style={{ marginTop: verticalScale(-3) }}
-                text={formattedDate}
-              />
-            </View>
-          </Animated.View>
-        <View style={{ width: "100%", height: "75%" }}>
-          <Image
+          <View
             style={{
-              width: "100%",
-              height: "100%",
-            
+              marginRight: scale(7),
+              paddingBottom: verticalScale(5),
+              width: "90%",
+              // backgroundColor:"red"
             }}
-            resizeMode="cover"
-            source={{ uri: imageObject?.uri }}
+          >
+            <NewText
+              color={colors.white}
+              size={18}
+              numberOfLines={1}
+              style={{ marginTop: verticalScale(5) }}
+              text={shortenedName}
+            />
+            <NewText
+              color={colors.white}
+              size={13}
+              style={{ marginTop: verticalScale(-3) }}
+              text={formattedDate}
+            />
+          </View>
+        </Animated.View>
+        
+        <View style={{ height: "75%", flex: 1 }}>
+
+
+        <ReactNativeZoomableView
+              maxZoom={2}
+              minZoom={1}
+              zoomStep={1}
+              initialZoom={1}
+              bindToBorders={true}
+              contentHeight={undefined}
+              contentWidth={undefined}
+              style={
+                {
+                  // padding: 10,
+                  // backgroundColor: 'red',
+                }
+              }>
+              <Image
+        style={[styles.mainImage,]}
+        source={{ uri: imageObject?.uri }}
+            resizeMode="contain"
+            // resizeMethod=""
           />
+            </ReactNativeZoomableView>
+        
 
           <View
             style={{
@@ -233,28 +256,26 @@ imageObject?.name?.length > 30
         </View>
 
         <Animated.View
-            style={{
-              alignSelf: "center",
-              opacity: fadeAnim,
+          style={{
+            alignSelf: "center",
+            opacity: fadeAnim,
 
-              height: "15%",
-              width: "100%",
-              justifyContent:"center",
-              padding:15,
-            }}
-          >
+            height: "15%",
+            width: "100%",
+            justifyContent: "center",
+            padding: 15,
+          }}
+        >
+          <NewText
+            color={colors.white}
+            size={15}
+            numberOfLines={3}
+            // style={{ textAlign:"center" }}
+            text={imageObject.description}
+          />
+        </Animated.View>
 
-<NewText
-                color={colors.white}
-                size={15}
-                numberOfLines={3}
-                // style={{ textAlign:"center" }}
-                text={imageObject.description}
-              />
-            </Animated.View>
-
-
-     {/* <View
+        {/* <View
           style={{
             // flexDirection: "row",
             // alignItems: "center",
@@ -291,6 +312,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  mainImage:{
+    width: '100%',
+    height: '100%',
+
+  }
 });
 
 export default ImageViewModal;

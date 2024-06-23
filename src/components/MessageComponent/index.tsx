@@ -7,6 +7,7 @@ import { appStyles } from "../../utils/AppStyles";
 import { scale, verticalScale } from "react-native-size-matters";
 import moment from "moment";
 import FastImage from "react-native-fast-image";
+import { formatChannelDate, formatTimeDifference } from "../../utils/CommonFun";
 
 type Props = {
   name?: string;
@@ -120,7 +121,7 @@ let nameData="umair abbas bhatti 719 @gmail.com"
 
               <CustomText
                 text={shortenedName}
-                color={colors.white}
+                color={colors.gray500}
                 size={16}
                 fontFam="Poppins-SemiBold"
                 fontWeight="700"
@@ -130,8 +131,8 @@ let nameData="umair abbas bhatti 719 @gmail.com"
           
 
               <CustomText
-                text={moment(time).format("h:mm a")}
-                color={colors.lightgray}
+                text={formatTimeDifference(time)}
+                color={colors.gray500}
                 size={13}
                 style={{ marginTop: verticalScale(7) }}
                 fontFam="Poppins-Regular"
@@ -140,7 +141,7 @@ let nameData="umair abbas bhatti 719 @gmail.com"
           </View>
           <CustomText
             text={message}
-            color={profile ? colors.gray500 : colors.white}
+            color={ colors.white}
             size={16}
             lineHeight={20}
             style={{ width: windowWidth / 1.8, marginTop: verticalScale(2) }}

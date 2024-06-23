@@ -133,10 +133,10 @@ const EditImageUploaderModal: React.FC<Props> = ({
               <Image
                 style={{
                   position: "absolute",
-                  left: 0,
-                  top: 0,
-                  width: windowWidth,
-                  height: windowHeight,
+              left: 0,
+              top: 0,
+              width: windowWidth,
+              height: windowHeight,
                   //  width: "100%", height: "100%",position:"absolute",top:0 ,left:0
                 }}
                 // resizeMode={imageForEdit?.uri?'contain':"cover"}
@@ -146,6 +146,8 @@ const EditImageUploaderModal: React.FC<Props> = ({
                     editPostData?.imageUrl ||
                     editPostData?.gif,
                 }}
+                resizeMode="contain"
+
               />
             ) : (
               <Image
@@ -207,23 +209,21 @@ const EditImageUploaderModal: React.FC<Props> = ({
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            height: "15%",
-            // marginBottom: verticalScale(20),
-            paddingHorizontal: 20,
-            position: "absolute",
             bottom: 20,
+            paddingHorizontal: 20,
+            position:"absolute"
           }}
         >
           <View
             style={{
               flexDirection: "row",
-              alignItems: "center",
-              borderRadius: 999,
-              backgroundColor: colors.black,
-              paddingHorizontal: scale(5),
-              width: "82%",
-              alignSelf: "center",
-              maxHeight: 100,
+                alignItems: "center",
+                borderRadius: scale(20),
+                backgroundColor: colors.black,
+                paddingHorizontal: scale(5),
+                maxHeight: 130,
+                width: "82%",
+                alignSelf: "center",
             }}
           >
             <TextInput
@@ -237,7 +237,7 @@ const EditImageUploaderModal: React.FC<Props> = ({
                 color: colors.white,
                 paddingRight: 5,
                 width: "90%",
-                fontSize: 19,
+                fontSize: 17,
               }}
               placeholderTextColor={colors.gray200}
               placeholder={"(optional). Post Caption "}
@@ -277,6 +277,8 @@ const EditImageUploaderModal: React.FC<Props> = ({
             </TouchableOpacity>
           )}
         </View>
+
+       
       </Pressable>
     </Modal>
   );

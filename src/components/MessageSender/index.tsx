@@ -411,7 +411,7 @@ const MessageSender = ({
           paddingVertical: verticalScale(3),
           width: "82%",
           alignSelf: "center",
-          maxHeight:100,
+          maxHeight:130,
         }}
       >
         <TextInput
@@ -431,10 +431,10 @@ const MessageSender = ({
             paddingRight: 5,
             width: notShow ? "90%" : "75%",
             lineHeight:23,
-            fontSize: 19,
+            fontSize: 17,
           }}
           placeholderTextColor={colors.gray200}
-          placeholder={placeholder || "Write a status update"}
+          placeholder={placeholder || "Write a update"}
         />
         {notShow ? (
           <></>

@@ -58,23 +58,69 @@ export function capitalizeFirstLetter(str) {
     const diffInWeeks = now.diff(inputDate, 'weeks');
     const diffInMonths = now.diff(inputDate, 'months');
     const diffInYears = now.diff(inputDate, 'years');
+    if (diffInSeconds == 0) {
+      return `1s ago`;
+    }
   
     if (diffInSeconds < 60) {
-      return `${diffInSeconds}s`;
-    } else if (diffInMinutes < 60) {
-      return `${diffInMinutes}m`;
+      return `${diffInSeconds}s ago`;
+    }
+     else if (diffInMinutes < 60) {
+      return `${diffInMinutes}m ago`;
     } else if (diffInHours < 24) {
-      return `${diffInHours}h`;
+      return `${diffInHours}h ago`;
     } else if (diffInDays === 1) {
-      return `1d`;
+      return `1d ago`;
     } else if (diffInDays < 7) {
-      return `${diffInDays}d`;
+      return `${diffInDays}d ago`;
     } else if (diffInWeeks < 4) {
-      return `${diffInWeeks}w`;
+      return `${diffInWeeks}w ago`;
     } else if (diffInMonths < 12) {
-      return `${diffInMonths}mo`;
+      return `${diffInMonths}mo ago`;
     } else {
-      return `${diffInYears}y`;
+      return `${diffInYears}y ago`;
+    }
+  };
+
+  export const formatMessageTime = (date) => {
+    const now = moment();
+    const inputDate = moment(date);
+  
+    const diffInSeconds = now.diff(inputDate, 'seconds');
+    const diffInMinutes = now.diff(inputDate, 'minutes');
+    const diffInHours = now.diff(inputDate, 'hours');
+    const diffInDays = now.diff(inputDate, 'days');
+    const diffInWeeks = now.diff(inputDate, 'weeks');
+    const diffInMonths = now.diff(inputDate, 'months');
+    const diffInYears = now.diff(inputDate, 'years');
+    // if (diffInSeconds == 0) {
+    //   return `1s ago`;
+    // }
+  
+    // if (diffInSeconds < 60) {
+    //   return `${diffInSeconds}s ago`;
+    // }
+    //  else if (diffInMinutes < 60) {
+    //   return `${diffInMinutes}m ago`;
+    // }
+      if (diffInHours < 24) {
+      return inputDate.format("h:mm a");
+    } 
+
+                // text={moment(lastMessage?.created_at).format("h:mm a")}
+
+    
+    else if (diffInDays === 1) {
+      return `1d ago`;
+    }
+     else if (diffInDays < 7) {
+      return `${diffInDays}d ago`;
+    } else if (diffInWeeks < 4) {
+      return `${diffInWeeks}w ago`;
+    } else if (diffInMonths < 12) {
+      return `${diffInMonths}mo ago`;
+    } else {
+      return `${diffInYears}y ago`;
     }
   };
 

@@ -17,7 +17,11 @@ import { scale, verticalScale } from "react-native-size-matters";
 import { appStyles } from "../../../utils/AppStyles";
 import moment from "moment";
 import NewText from "../../../components/NewText";
-import { capitalizeFirstLetter, dateFormat, formatTimeDifference } from "../../../utils/CommonFun";
+import {
+  capitalizeFirstLetter,
+  dateFormat,
+  formatTimeDifference,
+} from "../../../utils/CommonFun";
 import FastImage from "react-native-fast-image";
 export const windowWidth = Dimensions.get("window").width;
 
@@ -30,7 +34,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
         onPress={onPress}
         style={{
           width: "100%",
-          // height: verticalScale(85),
+          height: 79,
           borderRadius: scale(10),
           backgroundColor: "#1D2029",
           padding: scale(6),
@@ -41,8 +45,8 @@ const FriendList = ({ item, onPress, disabled }: any) => {
         <View style={{ flexDirection: "row" }}>
           <View
             style={{
-              width: verticalScale(70),
-              height: verticalScale(75),
+              width: 65,
+              height: 68,
               // marginLeft: scale(3),
             }}
           >
@@ -50,10 +54,11 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius: scale(8),
+                borderRadius: 8,
                 overflow: "hidden",
               }}
               source={{ uri: item?.imageUrl }}
+              resizeMode="cover"
             />
             {/* {item.update && (
             <View
@@ -72,18 +77,28 @@ const FriendList = ({ item, onPress, disabled }: any) => {
 
           <View
             style={{
-              paddingLeft: scale(15),
-              width: item?.channel?.last_post?.imageUrl ||item?.channel?.last_post?.gif
-                ? scale(190)
-                : scale(250),
+              paddingLeft: 12,
+              width:
+                item?.channel?.last_post?.imageUrl ||
+                item?.channel?.last_post?.gif
+                  ? scale(190)
+                  : scale(250),
+              // backgroundColor:"red",
             }}
           >
             {/* size={15}
                 fontFam="Poppins-Bold"
                 fontWeight="800 */}
 
-<View style={{...appStyles.row,gap:8,width:scale(170)}}>
-              <CustomText
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 8,
+                width: scale(170),
+                paddingTop: -7,
+              }}
+            >
+              <NewText
                 text={capitalizeFirstLetter(item?.name)}
                 color={colors.white}
                 size={16}
@@ -91,15 +106,16 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                 fontWeight="700"
               />
 
-           
               {item?.channel?.last_post ? (
                 <NewText
-                  text={formatTimeDifference(item?.channel?.last_post?.created_at)}
+                  text={formatTimeDifference(
+                    item?.channel?.last_post?.created_at
+                  )}
                   color={"#999999"}
                   size={12}
-                  style={{ marginTop: 7 }}
-                  // fontFam="Poppins-Medium"
-                  fontWeight="400"
+                  style={{ marginTop: 3 }}
+                  fontFam="Poppins-Medium"
+                  fontWeight="500"
                 />
               ) : (
                 <></>
@@ -107,14 +123,14 @@ const FriendList = ({ item, onPress, disabled }: any) => {
             </View>
 
             {item?.channel?.last_post != "null" ? (
-              <CustomText
+              <NewText
                 text={item?.channel?.last_post?.description}
                 color={colors.gray500}
                 size={15}
-                lineHeight={21}
+                lineHeight={17}
                 fontFam="Inter-Medium"
                 numberOfLines={2}
-                style={{ marginBottom: verticalScale(5) }}
+                style={{ marginTop: 3}}
                 // fontFam="Poppins-Medium"
                 fontWeight="600"
               />
@@ -134,19 +150,15 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               position: "absolute",
               alignSelf: "center",
               right: scale(5),
-              top:22,
-
-              
+              top: 22,
 
               // backgroundColor:"red"
             }}
           >
             <View
-              style={{ width: verticalScale(52), height: verticalScale(52) }}
+              style={{ width: 50, height: 50 }}
             >
               {item?.channel?.last_post != "null" ? (
-
-                
                 <FastImage
                   style={{
                     width: "100%",
@@ -155,7 +167,7 @@ const FriendList = ({ item, onPress, disabled }: any) => {
                     overflow: "hidden",
                   }}
                   source={{
-                    uri: item?.channel?.last_post?.imageUrl ,
+                    uri: item?.channel?.last_post?.imageUrl,
                     headers: { Authorization: "someAuthToken" },
                     priority: FastImage.priority.high,
                   }}
@@ -178,18 +190,17 @@ const FriendList = ({ item, onPress, disabled }: any) => {
               position: "absolute",
               alignSelf: "center",
               right: scale(5),
-              top:22,
+              top: 22,
 
               // backgroundColor:"red"
             }}
           >
             <View
               style={{
-                width: verticalScale(52),
-                height: verticalScale(52),
+                width: 50,
+                height: 50,
                 borderRadius: scale(5),
                 overflow: "hidden",
-
               }}
             >
               {item?.channel?.last_post?.gif ? (

@@ -12,6 +12,7 @@ import { getNewMessageR, getTyper, getUserData, setNewMessageR, setNotificationA
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
 import NewText from "../../../components/NewText";
 import { useDispatch } from 'react-redux';
+import { formatMessageTime } from "../../../utils/CommonFun";
 
 export const windowWidth = Dimensions.get("window").width;
 
@@ -161,7 +162,7 @@ console.log("lastMessage",lastMessage)
           <View style={{ flexDirection: "row" }}>
             <CustomText
               text={item?.user1?.name || item?.user2?.name}
-              color={colors.white}
+              color={colors.gray500}
               size={15}
               fontFam="Poppins-Bold"
               fontWeight="800"
@@ -180,7 +181,7 @@ console.log("lastMessage",lastMessage)
 
             <CustomText
               text={lastMessage?.message}
-              color={colors.gray500}
+              color={lastMessage?.receiverId==user?.id?!lastMessage?.read_at?  colors.white:colors.gray500:colors.gray500}
               size={15}
               style={{ width: windowWidth / 1.8 }}
               numberOfLines={2}
@@ -215,8 +216,20 @@ console.log("lastMessage",lastMessage)
             // backgroundColor:"red"
           }}
         >
+
+{/* {lastMessage?.receiverId==user?.id?
+        <View
+          style={{
+            width: scale(7.5),
+            height: scale(7.5),
+            borderRadius: 999,
+            backgroundColor: !lastMessage?.read_at ? colors.sky : "transparent",
+            marginRight: verticalScale(15),
+            alignSelf: "center",
+          }} */}
           <CustomText
-            text={moment(lastMessage?.created_at).format("h:mm a")}
+          text={formatMessageTime(lastMessage?.created_at)}
+            // text={moment(lastMessage?.created_at).format("h:mm a")}
             color={colors.gray500}
             size={14}
             fontFam="Poppins-Regular"

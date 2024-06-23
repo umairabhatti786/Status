@@ -111,21 +111,21 @@ const GifUploaderModal: React.FC<Props> = ({
           borderTopRightRadius: scale(20),
           overflow: "hidden",
           justifyContent: "space-between",
+          flexDirection:"row",
+          alignItems:"flex-end",
 
           borderRightWidth: 1,
           borderColor: "#8A8A8A",
         }}
       >
-        <View style={{ 
+      
+          <Image
+            style={{ width: "100%", 
             position: 'absolute',
             left: 0,
             top: 0,
-            width:windowWidth,
             height:windowHeight,
-          // width: "100%", height: "85%"
-           }}>
-          <Image
-            style={{ width: "100%", height: "100%",position:"absolute",top:0 ,left:0}}
+          }}
             source={{ uri: giphy }}
           />
 
@@ -164,29 +164,26 @@ const GifUploaderModal: React.FC<Props> = ({
               source={images.crossicon}
             />
           </TouchableOpacity>
-        </View>
 
-        <View
+          <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "space-between",
-            height:"15%",
+            bottom: 20,
             paddingHorizontal: 20,
-            position:"absolute",
-            bottom:20
           }}
         >
           <View
             style={{
               flexDirection: "row",
-              alignItems: "center",
-              borderRadius: 999,
-              backgroundColor: colors.black,
-              paddingHorizontal: scale(5),
-              width: "82%",
-              alignSelf: "center",
-              maxHeight:100,
+                alignItems: "center",
+                borderRadius: scale(20),
+                backgroundColor: colors.black,
+                paddingHorizontal: scale(5),
+                maxHeight: 130,
+                width: "82%",
+                alignSelf: "center",
             }}
           >
             <TextInput
@@ -199,10 +196,10 @@ const GifUploaderModal: React.FC<Props> = ({
               }
               style={{
                 marginLeft: 12,
-                color: colors.white,
-                paddingRight: 5,
-                width: "90%",
-                fontSize: 19,
+                  color: colors.white,
+                  paddingRight: 5,
+                  width: "90%",
+                  fontSize: 17,
               }}
               placeholderTextColor={colors.gray200}
               placeholder={"write a message"}
@@ -243,6 +240,9 @@ const GifUploaderModal: React.FC<Props> = ({
             </TouchableOpacity>
           )}
         </View>
+  
+
+       
       </Pressable>
     </Modal>
   );

@@ -62,20 +62,34 @@ name?.length > 30
           </View>
 
           <Spacer height={7} />
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row",alignItems:"center" }}>
+             
+        
             <NewText
               lineHeight={21}
-              // style={{
-              //   paddingVertical: 5,
-              // }}
-              // style={{backgroundColor:"red"}}
+            
 
               size={15}
               color={colors.white}
-              label={" " + time}
               text={comment}
             />
-            {/* <CustomText color={colors.white} size={14} text={time} /> */}
+             <View
+                style={{
+                  width: scale(3.5),
+                  height: scale(3.5),
+                  backgroundColor: colors.white,
+                  borderRadius: 999,
+                  marginHorizontal: scale(6),
+                  marginTop: verticalScale(2),
+                }}
+              />
+
+<NewText
+              lineHeight={21}
+              size={15}
+              color={colors.white}
+              text={time}
+            />
           </View>
         </View>
       </TouchableOpacity>
