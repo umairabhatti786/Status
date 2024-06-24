@@ -46,6 +46,7 @@ import {
   GetStatus,
   GetUserComment,
   LoadMoreStatus,
+  ReadPost,
   getUserDetail,
   isFollowing,
 } from "../../../api/ApiServices";
@@ -183,6 +184,8 @@ const OtherUserChannel = () => {
   //   }
   // }, [isFocused]);
 
+  
+
   useEffect(() => {
     if (isFocused) GetPosts();
   }, [isFocused, counter1]);
@@ -239,6 +242,19 @@ const OtherUserChannel = () => {
           setLoading(false);
         }, 500);
 
+        //!---->
+        result?.posts?.data.map((p: any) => {
+          if (!p?.read_at) {
+            ReadPost(
+              p?.id,
+              token,
+              async ({ isSuccess, response }: any) => {
+                console.log(response);
+              }
+            );
+          }
+        });
+
         //adding Views
         result?.posts?.data.map(async (p: any, index: any) => {
           let user = await StorageServices.getItem(AUTH);
@@ -255,6 +271,7 @@ const OtherUserChannel = () => {
               console.log("Something went wrong");
             }
           });
+          
         });
       } else {
         console.log(result);

@@ -38,6 +38,7 @@ const HomeScreen = () => {
   const isFocused = useIsFocused();
   const [followingChannels, setFollowingChannels] = useState<any>([]);
   const [favoritesChannels, setFavoritesChannels] = useState<any>([]);
+  const [counter, setCounter] = useState(0)
   const notificationAlert = useSelector(
     (state) => state.auth
   )?.notificationAlert;
@@ -117,6 +118,19 @@ const HomeScreen = () => {
     GetFavoriteChannels();
   }, [isFocused]);
 
+  useEffect(() => {
+    let new1 = followingChannels?.sort(
+      (a: any, b: any) => b?.channel?.lastPostId - a?.channel?.lastPostId
+    );
+    let new2 =favoritesChannels?.sort(
+      (a: any, b: any) => b?.channel?.lastPostId - a?.channel?.lastPostId
+      );
+      
+    setFollowingChannels(new1);
+    setFavoritesChannels(new2);
+    console.log(counter)
+  }, [counter]);
+
   const GetFollowingChannels = async () => {
     let token = await StorageServices.getItem(TOKEN);
     GetFollowingChannel(token, async ({ isSuccess, response }: any) => {
@@ -177,6 +191,9 @@ const HomeScreen = () => {
     return item?.channel?.lastPostId ? (
       <FriendList
         disabled={false}
+        channelId={item?.channel?.id}
+        setCounter={setCounter}
+        counter={counter}
         onPress={() =>
           navigation.navigate("OtherUserChannel", {
             item: item,
