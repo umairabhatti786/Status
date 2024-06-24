@@ -132,11 +132,14 @@ const FriendList = ({
                 fontFam="Poppins-Bold"
                 fontWeight="800 */}
 
-            <View style={{ ...appStyles.row, gap: 8, width: scale(170) }}>
+            <View style={{ ...appStyles.row, gap: 8, width: scale(160),}}>
               <CustomText
-                text={capitalizeFirstLetter(item?.name)}
-                color={colors.white}
+text={capitalizeFirstLetter(item?.name)}
+                color={colors.gray500}
                 size={16}
+                numberOfLines={1}
+              style={{ marginTop: -5 }}
+
                 fontFam="Poppins-SemiBold"
                 fontWeight="700"
               />
@@ -144,10 +147,10 @@ const FriendList = ({
               {newPost ? (
                 <NewText
                   text={formatTimeDifference(newPost?.created_at)}
-                  color={"#999999"}
+                  color={colors.gray500}
                   size={12}
-                  style={{ marginTop: 3 }}
-                  fontFam="Poppins-Medium"
+                  // style={{ marginTop: 3 }}
+                  fontFam="Poppins-Regular"
                   fontWeight="500"
                 />
               ) : (
@@ -158,7 +161,7 @@ const FriendList = ({
             {newPost != "null" ? (
               <CustomText
                 text={newPost?.description}
-                color={colors.gray500}
+                color={ !newPost?.read_at? colors.white:colors.gray500}
                 size={15}
                 lineHeight={17}
                 fontFam="Inter-Medium"
@@ -170,7 +173,7 @@ const FriendList = ({
             ) : (
               <></>
             )}
-            <View style={{ flexDirection: "row",alignItems:"center" }}>
+            {/* <View style={{ flexDirection: "row",alignItems:"center" }}>
               <View
                 style={{
                   width: scale(7.5),
@@ -180,11 +183,9 @@ const FriendList = ({
                     ? colors.sky
                     : "transparent",
                   marginRight: verticalScale(5),
-                  // alignSelf: "le",
                 }}
               />
-              {/* <Text>unread</Text> */}
-            </View>
+            </View> */}
           </View>
         </View>
 
@@ -205,7 +206,7 @@ const FriendList = ({
             }}
           >
             <View
-              style={{ width: 50, height: 50 }}
+              style={{ width: 40, height: 40 }}
             >
               {newPost != "null" ? (
                 <FastImage
@@ -246,8 +247,8 @@ const FriendList = ({
           >
             <View
               style={{
-                width: 50,
-                height: 50,
+                width: 40,
+                height: 40,
                 borderRadius: scale(5),
                 overflow: "hidden",
               }}

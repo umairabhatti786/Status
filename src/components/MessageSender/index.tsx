@@ -480,7 +480,7 @@ const MessageSender = ({
       >
         <Image
           source={images.simplesend}
-          style={{ width: scale(25), height: scale(25), marginLeft: 8 }}
+          style={{ width: scale(25), height: scale(25), marginLeft: 9 }}
           resizeMode="contain"
         />
       </TouchableOpacity>

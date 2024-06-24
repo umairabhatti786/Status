@@ -427,7 +427,7 @@ const Channel = ({
                         // fontFam="Inter-Medium"
                         style={{
                           textAlign: "right",
-                          // marginTop: 1,
+                          marginTop: 1,
                         }}
                         text={moment(item?.created_at).format("h:mm A")}
                       />
