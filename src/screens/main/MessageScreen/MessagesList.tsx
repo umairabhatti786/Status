@@ -12,7 +12,7 @@ import { getNewMessageR, getTyper, getUserData, setNewMessageR, setNotificationA
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
 import NewText from "../../../components/NewText";
 import { useDispatch } from 'react-redux';
-import { formatMessageTime } from "../../../utils/CommonFun";
+import { formatMessageTime, formatTimeDifference } from "../../../utils/CommonFun";
 
 export const windowWidth = Dimensions.get("window").width;
 
@@ -229,7 +229,7 @@ console.log("lastMessage",lastMessage)
             alignSelf: "center",
           }} */}
           <CustomText
-          text={formatMessageTime(lastMessage?.created_at)}
+          text={formatTimeDifference(lastMessage?.created_at)}
             // text={moment(lastMessage?.created_at).format("h:mm a")}
             color={colors.gray500}
             size={14}
