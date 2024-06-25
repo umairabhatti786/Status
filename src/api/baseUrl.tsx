@@ -34,6 +34,7 @@ export const URLS = {
   UPDATE_POST: "updatePost",
   DELETE_POST: "deletePost/",
   READ_POST: "readPost/",
+  IS_POST_VIEWED: "isViewed",
   ADD_REMOVE_VIEWS: "addRemoveViews",
   ADD_REMOVE_LIKES: "addRemoveLikes",
   SEND_MESSAGE: "sendMessage",

@@ -116,6 +116,25 @@ export const ReadMessage = async (msgId:any, token: any, callback: any) => {
     return { isSuccess: false, error: error };
   }
 };
+export const isPostViewed = async (postId:any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify({post_id:postId}),
+  };
+  try {
+    fetch(URLS.BASE_URL + URLS.IS_POST_VIEWED, requestOptions)
+      .then((response) => response.text())
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+};
 export const ReadPost = async (postId:any, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",
