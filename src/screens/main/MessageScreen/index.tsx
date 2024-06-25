@@ -41,16 +41,21 @@ import {
 } from "../../../api/ApiServices";
 import { useIsFocused } from "@react-navigation/native";
 import { ScrollView } from "react-native-gesture-handler";
+import TopBar from "../../../components/TopBar";
+import NewText from "../../../components/NewText";
 
 const MessageScreen = ({ navigation }: any) => {
   const [isArchived, setIsArchived] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [activeChat, setActiveChat] = useState("Inbox");
+  const [activeChat, setActiveChat] = useState("Messages");
   const [search, setSearch] = useState("");
   const [counter, setCounter] = useState(0);
   const [messagesList, setMessagesList] = useState<any>([]);
   const [chatList, setChatList] = useState<any>([]);
   const [contacts, setContacts] = useState<any>([]);
+  const [activeBar, setActiveBar] = useState("Following");
+
+  const topBarData = ["Messages", "Starred","Archive"];
 
   const isFocused = useIsFocused();
 
@@ -146,7 +151,7 @@ const MessageScreen = ({ navigation }: any) => {
     // Alert.alert("msg",'msg')
     let token = await StorageServices.getItem(TOKEN);
     setLoading(true);
-    setActiveChat("Inbox") 
+    setActiveChat("Messages") 
     GetChatList(token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
 
@@ -177,7 +182,7 @@ const MessageScreen = ({ navigation }: any) => {
   useEffect(() => {
     // if (isFocused) {
       console.log(activeChat);
-      if (activeChat === "Inbox") {
+      if (activeChat === "Messages") {
         let actChat = chatList?.filter(
           (c: any) => !(c.archive_con.length + c.trash_con.length+c.blocked_con.length)
         );
@@ -268,7 +273,7 @@ const MessageScreen = ({ navigation }: any) => {
   return (
     <>
       <View style={appStyles.main}>
-        <View
+        {/* <View
           style={{ marginHorizontal: scale(15), marginTop: verticalScale(15) }}
         >
           <View
@@ -312,9 +317,74 @@ const MessageScreen = ({ navigation }: any) => {
               value={search}
             />
           </View>
-        </View>
+        </View> */}
 
-        <View style={{ maxHeight: 200 }}>
+
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent:"space-around",
+          borderBottomColor:colors.black200,
+          borderBottomWidth:2,
+          marginTop:20,
+          marginBottom:5,
+          
+          // justifyContent: "center",
+        }}
+      >
+        {topBarData?.map((item, index) => {
+          return (
+            <TouchableOpacity 
+            activeOpacity={0.4}
+            onPress={() => {
+              // setActiveFilter?.(item)
+              setActiveChat(item)
+
+            }}
+
+            style={{ alignItems: "center",width:"33%",}}>
+              <TouchableOpacity
+                activeOpacity={0.4}
+                style={{alignItems:"center",}}
+
+                onPress={() => {
+                  // setActiveFilter?.(item)
+                  setActiveChat(item)
+
+                }}
+              >
+                <NewText
+                  color={ colors.white}
+                  text={item}
+                  style={{textTransform:"capitalize" }}
+                  
+                  size={16}
+                  fontWeight={"500"}
+                  fontFam="Poppins-Regular"
+                />
+              </TouchableOpacity>
+              <Spacer height={verticalScale(5)} />
+
+              <View
+                style={{
+                  width: "100%",
+                  height: verticalScale(2),
+                  position:"absolute",
+                  bottom:-2,
+                  backgroundColor:
+                  activeChat == item ? colors.white : "transparent",
+                }}
+              ></View>
+            </TouchableOpacity>
+          );
+        })}
+
+      </View>
+
+
+
+        {/* <View style={{ maxHeight: 200 }}>
           <ScrollView>
             {messagesList.map((m: any) => (
               <TouchableOpacity
@@ -354,7 +424,7 @@ const MessageScreen = ({ navigation }: any) => {
             // textDecorationLine={"underline"}
             size={15}
             text={
-              activeChat == "Inbox"
+              activeChat == "Messages"
                 ? "All Messages"
                 : activeChat == "Starred"
                 ? "Starred Messages"
@@ -382,11 +452,12 @@ const MessageScreen = ({ navigation }: any) => {
               />
             </TouchableOpacity>
           )}
-        </View>
+        </View> */}
 
         <View style={{ flex: 1 }}>
           <FlatList
             data={contacts}
+            showsVerticalScrollIndicator={false}
             // data={ isArchived? messagesList.filter(it=>!it.isOnline):messagesList}
             contentContainerStyle={{
               gap: 5,
