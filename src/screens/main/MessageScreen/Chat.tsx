@@ -420,10 +420,10 @@ const Chat = () => {
   };
 
   const renderChatList = ({ item }: any) => {
-    console.log("renderChatList",item)
+    // console.log("renderChatList",item)
     return (
       <InboxComponent
-      onImagePress={()=>{
+      onImagePress={()=>{ 
         navigation.navigate("OthersProfile", {
           id: item?.sender?.id,
         })

@@ -25,6 +25,8 @@ import {
 import FastImage from "react-native-fast-image";
 export const windowWidth = Dimensions.get("window").width;
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
+import { isPostViewed } from "../../../api/ApiServices";
+import { StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
 
 const FriendList = ({
   item,
@@ -36,10 +38,27 @@ const FriendList = ({
 }: any) => {
   const [newPost, setNewPost] = useState(item?.channel?.last_post);
   const pusher = Pusher.getInstance();
+   const [isViewed, setIsViewed] = useState(false)
+
+  const checkIsViewed=async()=>{
+    let token = await StorageServices.getItem(TOKEN);
+    isPostViewed(newPost?.id,token,async ({ isSuccess, response }: any) => {
+      let result = JSON.parse(response);
+      if (result.status) {
+        setIsViewed(true)
+      }else{
+        setIsViewed(false)
+      }
+    })
+  }
 
   useEffect(()=>{
     setNewPost(item?.channel?.last_post)
+    
   },[item?.channel?.last_post])
+  useEffect(()=>{
+    checkIsViewed();    
+  },[newPost])
 
   useEffect(() => {
     pusher.init({
@@ -179,7 +198,7 @@ text={capitalizeFirstLetter(item?.name)}
                   width: scale(7.5),
                   height: scale(7.5),
                   borderRadius: 999,
-                  backgroundColor: !newPost?.read_at
+                  backgroundColor: !isViewed
                     ? colors.sky
                     : "transparent",
                   marginRight: verticalScale(5),
