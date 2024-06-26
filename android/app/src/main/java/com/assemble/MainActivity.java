@@ -1,4 +1,4 @@
-package com.assemble;
+package com.status.updates;
 import android.os.Bundle; // here
 
 import com.facebook.react.ReactActivity;

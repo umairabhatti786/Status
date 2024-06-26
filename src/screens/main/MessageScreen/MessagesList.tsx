@@ -165,6 +165,7 @@ console.log("lastMessage",lastMessage)
               text={item?.user1?.name || item?.user2?.name}
               color={colors.gray500}
               size={15}
+              numberOfLines={1}
               fontFam="Poppins-Bold"
               fontWeight="800"
             />
@@ -232,7 +233,7 @@ console.log("lastMessage",lastMessage)
           text={formatTimeDifference(lastMessage?.created_at)}
             // text={moment(lastMessage?.created_at).format("h:mm a")}
             color={colors.gray500}
-            size={14}
+            size={13}
             fontFam="Poppins-Regular"
           />
           <TouchableOpacity onPress={handleFavorite}>
