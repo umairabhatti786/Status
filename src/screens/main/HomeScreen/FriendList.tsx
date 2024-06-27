@@ -180,7 +180,7 @@ text={capitalizeFirstLetter(item?.name)}
             {newPost != "null" ? (
               <CustomText
                 text={newPost?.description}
-                color={ !newPost?.read_at? colors.white:colors.gray500}
+                color={ !isViewed? colors.white:colors.gray500}
                 size={15}
                 lineHeight={17}
                 fontFam="Inter-Medium"
@@ -192,7 +192,7 @@ text={capitalizeFirstLetter(item?.name)}
             ) : (
               <></>
             )}
-            <View style={{ flexDirection: "row",alignItems:"center" }}>
+            {/* <View style={{ flexDirection: "row",alignItems:"center" }}>
               <View
                 style={{
                   width: scale(7.5),
@@ -204,7 +204,7 @@ text={capitalizeFirstLetter(item?.name)}
                   marginRight: verticalScale(5),
                 }}
               />
-            </View>
+            </View> */}
           </View>
         </View>
 

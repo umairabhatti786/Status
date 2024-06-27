@@ -1,4 +1,4 @@
-package com.assemble;
+package com.status.updates;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
