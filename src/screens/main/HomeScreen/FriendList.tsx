@@ -76,12 +76,6 @@ const FriendList = ({
         let post = JSON.parse(event.data).post;
         setNewPost(post);
         setCounter(counter + 1);
-        // let data = [post, ...posts];
-        // setPosts(data);
-        // if(post.id){
-        //   setNewPost(post)
-        // }
-        // setNewPost(JSON.parse(event.data).post);
       },
     });
 
@@ -192,7 +186,7 @@ text={capitalizeFirstLetter(item?.name)}
             ) : (
               <></>
             )}
-            <View style={{ flexDirection: "row",alignItems:"center" }}>
+            {/* <View style={{ flexDirection: "row",alignItems:"center" }}>
               <View
                 style={{
                   width: scale(7.5),
@@ -204,7 +198,7 @@ text={capitalizeFirstLetter(item?.name)}
                   marginRight: verticalScale(5),
                 }}
               />
-            </View>
+            </View> */}
           </View>
         </View>
 
