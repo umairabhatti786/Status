@@ -32,6 +32,17 @@ const MessagesList = ({ item,handleFavorite }: any, List: boolean) => {
   const pusher = Pusher.getInstance();
 console.log("lastMessage",lastMessage)
 
+const handleFavorites=()=>{
+  handleFavorite(lastMessage?.conversationId).then(()=>setFavorite(!favorite))
+  
+}
+
+  useEffect(()=>{
+    setFavorite(item?.favorite_con?.length 
+      ? true
+      : false)
+    ; 
+  },[item?.favorite_con])
   useEffect(()=>{
     setLastMessage(item?.last_message); 
   },[item?.last_message])
@@ -235,13 +246,11 @@ console.log("lastMessage",lastMessage)
             size={14}
             fontFam="Poppins-Regular"
           />
-          <TouchableOpacity onPress={handleFavorite}>
+          <TouchableOpacity onPress={handleFavorites}>
             <Image
-              source={
-                item?.favorite_con?.length 
-                  ? images.star1
-                  : images.star
-              }
+              source={favorite
+                ? images.star1
+                : images.star}
               style={{
                 marginRight: scale(5),
                 width: scale(18),

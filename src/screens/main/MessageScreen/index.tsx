@@ -59,7 +59,7 @@ const MessageScreen = ({ navigation }: any) => {
     return (
       <MessagesList
         item={item}
-        handleFavorite={() => handleFavorite(item.id)}
+        handleFavorite={handleFavorites}
       />
     );
   };
@@ -229,7 +229,7 @@ const MessageScreen = ({ navigation }: any) => {
     }
   };
 
-  const handleFavorite = async (conId: any) => {
+  const handleFavorites = async (conId: any) => {
     let user = await StorageServices.getItem(AUTH);
     let conversationId = conId;
     let token = await StorageServices.getItem(TOKEN);
