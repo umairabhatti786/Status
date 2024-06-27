@@ -192,7 +192,7 @@ text={capitalizeFirstLetter(item?.name)}
             ) : (
               <></>
             )}
-            <View style={{ flexDirection: "row",alignItems:"center" }}>
+            {/* <View style={{ flexDirection: "row",alignItems:"center" }}>
               <View
                 style={{
                   width: scale(7.5),
@@ -204,7 +204,7 @@ text={capitalizeFirstLetter(item?.name)}
                   marginRight: verticalScale(5),
                 }}
               />
-            </View>
+            </View> */}
           </View>
         </View>
 

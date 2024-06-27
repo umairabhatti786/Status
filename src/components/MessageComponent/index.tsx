@@ -127,6 +127,16 @@ let nameData="umair abbas bhatti 719 @gmail.com"
                 fontWeight="700"
                 numberOfLines={1}
               />
+                <View
+                style={{
+                  width: scale(3.5),
+                  height: scale(3.5),
+                  backgroundColor: colors.gray500,
+                  borderRadius: 999,
+                  marginTop: verticalScale(3),
+                  marginHorizontal:2
+                }}
+              />
 
           
 
