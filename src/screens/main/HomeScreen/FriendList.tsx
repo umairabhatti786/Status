@@ -76,12 +76,6 @@ const FriendList = ({
         let post = JSON.parse(event.data).post;
         setNewPost(post);
         setCounter(counter + 1);
-        // let data = [post, ...posts];
-        // setPosts(data);
-        // if(post.id){
-        //   setNewPost(post)
-        // }
-        // setNewPost(JSON.parse(event.data).post);
       },
     });
 
