@@ -388,24 +388,26 @@ const Channel = ({
 
                   <View
                     style={{
-                      ...appStyles.row,
+                  flexDirection:"row",
                       alignSelf: "flex-end",
                       marginRight: 10,
-                      marginBottom: 5,
+                      marginBottom: 2,
                       height: 20,
+                      // backgroundColor:"red"
                     }}
                   >
                     {/* {item?.imageUrl && (
                         )} */}
-                    <View style={{...appStyles.row,}}>
+                    <View style={{flexDirection:"row"}}>
                       <Image
                         style={{
                           width: 17,
                           height: 17,
                           tintColor: colors.grey300,
-                          // marginTop:2
+                          marginTop:2
                         }}
                         source={images.eye}
+                        resizeMode="contain"
                       />
                       <Spacer width={4} />
                       <NewText
@@ -414,7 +416,9 @@ const Channel = ({
                         fontFam="Inter-Medium"
                         style={{
                           marginRight: scale(5),
-                          textAlign: "right",
+                          // textAlign: "right",
+                          alignSelf:"flex-end"
+
                           // marginTop:2
 
                         }}
@@ -426,7 +430,9 @@ const Channel = ({
                         size={13}
                         // fontFam="Inter-Medium"
                         style={{
-                          textAlign: "right",
+                          // textAlign: "right",
+                          alignSelf:"flex-end",
+
                           marginTop: 1,
                         }}
                         text={moment(item?.created_at).format("h:mm A")}
