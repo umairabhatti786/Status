@@ -27,7 +27,7 @@ const LikeButton = ({ likes_count, onPress, isLiked }: any) => {
         // paddingHorizontal: scale(10),
         // paddingVertical: verticalScale(2),
         position: "absolute",
-        bottom: verticalScale(-3),
+        bottom: verticalScale(-5),
         left: scale(25),
         backgroundColor: colors.black300,
         alignItems: "center",

@@ -51,64 +51,6 @@ const HomeScreen = () => {
 
   const topBarData = ["Following", "Favorites"];
 
-  const chatList = [
-    {
-      img: images.defimage100,
-      imgbg: images.postBg,
-      postimg: images.defimage200,
-      address: "Boston, MA United States 245 Friends",
-      name: "Carmen Electra",
-      message: "What a wonderful night I had at the Grammy Awards.",
-      time: "2 minutes ago",
-      unread: "24",
-
-      update: true,
-    },
-    {
-      img: images.defimg1,
-      imgbg: images.postBg,
-      name: "Mike O’Dea",
-      message:
-        "I will be adding more emoji reactions to updates for you. I am updating as fa",
-      address: "Boston, MA United States 245 Friends",
-      time: "Yesterday",
-      unread: "5",
-    },
-    {
-      img: images.defimg,
-      imgbg: images.backimage10,
-      status: false,
-      commentLength: 2,
-      name: "Lexi Reegan",
-      message:
-        "Wolf of Wall Street ranks #1 movie in USA for the 6th week in a row.",
-      address: "Boston, MA United States 245 Friends",
-      time: "Yesterday",
-      unread: "5",
-    },
-
-    {
-      img: images.defimg1,
-      imgbg: images.postBg,
-      name: "Lex Reynolds",
-      address: "Boston, MA United States 245 Friends",
-      message: "Wolf of Wall Street ranks #1 movie in USA for the ",
-      time: "Yesterday",
-      postimg: images.defimage300,
-
-      unread: "5",
-    },
-    {
-      img: images.defimg,
-      imgbg: images.postBg,
-      name: "Joey D",
-      address: "Boston, MA United States 245 Friends",
-      message:
-        "Wolf of Wall Street ranks #1 movie in USA for the 6th week in a row.",
-      time: "Yesterday",
-      unread: "5",
-    },
-  ];
 
   useEffect(() => {
     GetFollowingChannels();

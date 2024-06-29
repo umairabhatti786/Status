@@ -423,16 +423,14 @@ const Chat = () => {
     // console.log("renderChatList",item)
     return (
       <InboxComponent
-      onImagePress={()=>{ 
-        navigation.navigate("OthersProfile", {
-          id: item?.sender?.id,
-        })
-
-      }}
+        onImagePress={() => {
+          navigation.navigate("OthersProfile", {
+            id: item?.sender?.id,
+          });
+        }}
         name={item?.sender?.name}
         image={item?.sender?.imageUrl}
         message={item?.message}
-
         time={item?.created_at}
         // time={moment(item?.created_at).format("h:mm a")}
         chatDate={item?.chatDate}
@@ -470,7 +468,7 @@ const Chat = () => {
                   style={{
                     ...appStyles.row,
                     marginTop: verticalScale(5),
-                    marginBottom:-10,
+                    marginBottom: -10,
                     width: "65%",
                   }}
                 >
@@ -509,7 +507,7 @@ const Chat = () => {
                   />
                 </View>
                 <LottieView
-                  style={{ height: 55, width: 60}}
+                  style={{ height: 55, width: 60 }}
                   source={require("../../../assets/json/typing.json")}
                   autoPlay
                   speed={1}
@@ -528,11 +526,9 @@ const Chat = () => {
     );
   };
 
-  const HeaderComponents=()=>{
-
-    return(
-
-          <View style={styles.header}>
+  const HeaderComponents = () => {
+    return (
+      <View style={styles.header}>
         <View
           style={{
             flexDirection: "row",
@@ -614,9 +610,11 @@ const Chat = () => {
         <View style={{ ...appStyles.row }}>
           <View style={appStyles.row}>
             {loadings.archive ? (
-              <ActivityIndicator size={"small"} color={"#fff"} />
+              <View style={styles.icon}>
+                <ActivityIndicator size={"small"} color={"#fff"} />
+              </View>
             ) : (
-              <TouchableOpacity activeOpacity={0.6} onPress={handleArchive}>
+              <TouchableOpacity style={styles.icon} onPress={handleArchive}>
                 <Image
                   style={{
                     width: scale(22),
@@ -631,11 +629,13 @@ const Chat = () => {
             {/* {state.archive && (
             )} */}
 
-            <Spacer width={scale(20)} />
+            <Spacer width={scale(10)} />
             {loadings.block ? (
-              <ActivityIndicator size={"small"} color={"#fff"} />
+              <View style={styles.icon}>
+                <ActivityIndicator size={"small"} color={"#fff"} />
+              </View>
             ) : (
-              <TouchableOpacity activeOpacity={0.6} onPress={handleBlock}>
+              <TouchableOpacity style={styles.icon} onPress={handleBlock}>
                 <Image
                   style={{
                     width: scale(18),
@@ -647,12 +647,14 @@ const Chat = () => {
                 />
               </TouchableOpacity>
             )}
-            <Spacer width={scale(20)} />
+            <Spacer width={scale(10)} />
             {loadings.trash ? (
-              <ActivityIndicator size={"small"} color={"#fff"} />
+              <View style={styles.icon}>
+                <ActivityIndicator size={"small"} color={"#fff"} />
+              </View>
             ) : (
               <TouchableOpacity
-                activeOpacity={0.6}
+                style={styles.icon}
                 onPress={() => setIsDeleteVisible(true)}
               >
                 <Image
@@ -671,17 +673,13 @@ const Chat = () => {
           {/* <CustomText color={"transparent"} size={18} text={"sss"} /> */}
         </View>
       </View>
-
-    )
-  }
-
+    );
+  };
 
   return (
     <View style={appStyles.main}>
       <StatusBar backgroundColor="#1D2029" barStyle="light-content" />
-      <HeaderComponents/>
-
-  
+      <HeaderComponents />
 
       <View style={{ flex: 1 }}>
         <FlatList
@@ -689,8 +687,7 @@ const Chat = () => {
           ref={flatListRefChat}
           keyExtractor={(item, index) => item.id}
           style={{
-            marginBottom:
-              5,
+            marginBottom: 5,
           }}
           inverted={true}
           renderItem={renderChatList}
@@ -745,5 +742,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: scale(15),
+  },
+  icon: {
+    width: 35,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
