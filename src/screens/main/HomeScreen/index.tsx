@@ -189,6 +189,7 @@ const HomeScreen = () => {
 
   const renderChatList = ({ item, index }: any) => {
     return item?.channel?.lastPostId ? (
+      <>
       <FriendList
         disabled={false}
         channelId={item?.channel?.id}
@@ -205,6 +206,8 @@ const HomeScreen = () => {
         item={item}
         // id={item.id}
       />
+      <Spacer height={10}/>
+      </>
     ) : (
       <></>
     );
@@ -255,7 +258,7 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
         data={activeBar == "Favorites" ? favoritesChannels : followingChannels}
         contentContainerStyle={{
-          gap: 7,
+          // gap: 7,
         }}
         renderItem={renderChatList}
       />
