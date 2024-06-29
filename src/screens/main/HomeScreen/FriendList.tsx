@@ -85,6 +85,7 @@ const FriendList = ({
       pusher.disconnect();
     };
   }, []);
+  
 
   return (
     <>
@@ -94,7 +95,7 @@ const FriendList = ({
         style={{
           width: "100%",
           height: 79,
-          borderRadius: scale(10),
+          borderRadius: 10,
           backgroundColor: "#1D2029",
           padding: scale(6),
           flexDirection: "row",
@@ -113,7 +114,7 @@ const FriendList = ({
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius: 8,
+                borderRadius: 5,
                 overflow: "hidden",
               }}
               source={{ uri: item?.imageUrl }}
@@ -155,6 +156,17 @@ text={capitalizeFirstLetter(item?.name)}
 
                 fontFam="Poppins-SemiBold"
                 fontWeight="700"
+              />
+
+<View
+                style={{
+                  width: scale(3.5),
+                  height: scale(3.5),
+                  backgroundColor: colors.gray500,
+                  borderRadius: 999,
+                  marginBottom:2,
+                
+                }}
               />
 
               {newPost ? (
