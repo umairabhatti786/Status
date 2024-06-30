@@ -280,7 +280,7 @@ const MessagesList = ({ item, handleFavorite }: any, List: boolean) => {
             fontFam="Poppins-Regular"
           />
           <TouchableOpacity
-            style={{ flex: 1, width: 60,alignItems:"flex-end" }}
+            style={{  width: 60,alignItems:"flex-end",height:40 }}
             onPress={handleFavorites}
           >
             <Image

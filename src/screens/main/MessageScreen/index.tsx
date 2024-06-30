@@ -151,7 +151,7 @@ const MessageScreen = ({ navigation }: any) => {
     // Alert.alert("msg",'msg')
     let token = await StorageServices.getItem(TOKEN);
     setLoading(true);
-    setActiveChat("Messages") 
+    setActiveChat(activeChat);
     GetChatList(token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
 
@@ -160,10 +160,41 @@ const MessageScreen = ({ navigation }: any) => {
         console.log(result);
 
         setChatList(result?.chatList);
-        let actChat = result?.chatList?.filter(
-          (c: any) => !(c.archive_con.length + c.trash_con.length+c.blocked_con.length)
-        );
-        setContacts(actChat); 
+        // let actChat = result?.chatList?.filter(
+        //   (c: any) => !(c.archive_con.length + c.trash_con.length+c.blocked_con.length)
+        // );
+
+        if (activeChat === "Messages") {
+          let actChat = result?.chatList?.filter(
+            (c: any) =>
+              !(
+                c.archive_con.length +
+                c.trash_con.length +
+                c.blocked_con.length
+              )
+          );
+          setContacts(actChat);
+        } else if (activeChat === "Starred") {
+          let favCon = result?.chatList?.filter(
+            (c: any) => c.favorite_con.length
+          );
+          setContacts(favCon);
+
+          // getUserFavoriteConversation();
+        } else if (activeChat === "Archive") {
+          let arcCon = result?.chatList?.filter(
+            (c: any) => c.archive_con.length
+          );
+          setContacts(arcCon);
+          // getUserArchives();
+        } else if (activeChat === "Trash") {
+          let trashCon = result?.chatList?.filter(
+            (c: any) => c.trash_con.length
+          );
+          setContacts(trashCon);
+          // getUserTrashConversation();
+        }
+        // setContacts(actChat);
         setLoading(false);
         // setAuthPosts(result?.posts?.data);
       } else {
