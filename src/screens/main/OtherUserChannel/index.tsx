@@ -62,6 +62,7 @@ import {
 } from "@pusher/pusher-websocket-react-native";
 import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
 import BlockModal from "../SearchScreen/BlockModal";
+import constants from "../../../redux/constants";
 
 const OtherUserChannel = () => {
   const pusher = Pusher.getInstance();
@@ -125,8 +126,8 @@ const OtherUserChannel = () => {
     console.log("am focused");
     try {
       await pusher.init({
-        apiKey: "e8f7ca7b8515f9bfcbb0",
-        cluster: "mt1",
+        apiKey: constants.PUSHER_APP_KEY,
+      cluster: constants.PUSHER_APP_CLUSTER,
         // onConnectionStateChange,
       });
       // console.log('init')
