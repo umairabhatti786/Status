@@ -27,6 +27,7 @@ export const windowWidth = Dimensions.get("window").width;
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
 import { isPostViewed } from "../../../api/ApiServices";
 import { StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
+import constants from "../../../redux/constants";
 
 const FriendList = ({
   item,
@@ -62,8 +63,8 @@ const FriendList = ({
 
   useEffect(() => {
     pusher.init({
-      apiKey: "e8f7ca7b8515f9bfcbb0",
-      cluster: "mt1",
+      apiKey: constants.PUSHER_APP_KEY,
+      cluster: constants.PUSHER_APP_CLUSTER,
       // onConnectionStateChange,
     });
 

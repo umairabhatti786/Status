@@ -58,6 +58,7 @@ import {
   PusherEvent,
 } from "@pusher/pusher-websocket-react-native";
 import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
+import constants from "../../../redux/constants";
 
 const OthersProfile = () => {
   const pusher = Pusher.getInstance();
@@ -120,8 +121,8 @@ const OthersProfile = () => {
     console.log("am focused");
     try {
       await pusher.init({
-        apiKey: "e8f7ca7b8515f9bfcbb0",
-        cluster: "mt1",
+        apiKey: constants.PUSHER_APP_KEY,
+      cluster: constants.PUSHER_APP_CLUSTER,
         // onConnectionStateChange,
       });
       // console.log('init')

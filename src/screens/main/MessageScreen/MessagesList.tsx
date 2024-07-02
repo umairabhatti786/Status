@@ -25,6 +25,7 @@ import {
   formatMessageTime,
   formatTimeDifference,
 } from "../../../utils/CommonFun";
+import constants from "../../../redux/constants";
 
 export const windowWidth = Dimensions.get("window").width;
 
@@ -69,8 +70,8 @@ const MessagesList = ({ item, handleFavorite }: any, List: boolean) => {
 
   useEffect(() => {
     pusher.init({
-      apiKey: "e8f7ca7b8515f9bfcbb0",
-      cluster: "mt1",
+      apiKey: constants.PUSHER_APP_KEY,
+      cluster: constants.PUSHER_APP_CLUSTER,
       // onConnectionStateChange,
     });
 
