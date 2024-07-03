@@ -53,25 +53,34 @@ const HomeScreen = () => {
 
 
   useEffect(() => {
+    
     GetFollowingChannels();
-  }, [isFocused]);
+  }, [isFocused,counter]);
 
   useEffect(() => {
     GetFavoriteChannels();
-  }, [isFocused]);
+  }, [isFocused,counter]);
 
-  useEffect(() => {
-    let new1 = followingChannels?.sort(
-      (a: any, b: any) => b?.channel?.lastPostId - a?.channel?.lastPostId
-    );
-    let new2 =favoritesChannels?.sort(
-      (a: any, b: any) => b?.channel?.lastPostId - a?.channel?.lastPostId
-      );
+ 
+ 
+  // useEffect(() => {
+    
+  //   let new1 = followingChannels?.sort(
+  //     (a: any, b: any) => b?.channel?.post?.id - a?.channel?.post?.id
+  //   );
+  //   let new2 =favoritesChannels?.sort(
+  //     (a: any, b: any) => b?.channel?.post?.id - a?.channel?.post?.id
+  //     );
       
-    setFollowingChannels(new1);
-    setFavoritesChannels(new2);
-    console.log(counter)
-  }, [counter]);
+  //   setFollowingChannels(new1);
+  //   setFavoritesChannels(new2);
+  //   // console.log('counter',counter)
+  //   // return () => {
+  //   //   setTimeout(() => {
+  //   //     setCounter(counter+1)
+  //   //   }, 1000);
+  //   // }
+  // }, [counter]);
 
   const GetFollowingChannels = async () => {
     let token = await StorageServices.getItem(TOKEN);
