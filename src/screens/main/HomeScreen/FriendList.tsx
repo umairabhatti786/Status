@@ -76,7 +76,7 @@ const FriendList = ({
         // console.log("channelUpdates_", JSON.parse(event.data).post);
         let post = JSON.parse(event.data).post;
         setNewPost(post);
-        setCounter(counter + 1);
+        
       },
     });
 
@@ -86,6 +86,11 @@ const FriendList = ({
       pusher.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    setCounter(counter + 1);
+  }, [newPost])
+  
   
 
   return (
