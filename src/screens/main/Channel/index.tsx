@@ -391,7 +391,7 @@ const Channel = ({
                   flexDirection:"row",
                       alignSelf: "flex-end",
                       marginRight: 10,
-                      marginBottom: 2,
+                      marginBottom: 1,
                       height: 20,
                       // backgroundColor:"red"
                     }}
@@ -404,7 +404,7 @@ const Channel = ({
                           width: 17,
                           height: 17,
                           tintColor: colors.grey300,
-                          marginTop:2
+                          marginTop:3
                         }}
                         source={images.eye}
                         resizeMode="contain"
@@ -433,7 +433,7 @@ const Channel = ({
                           // textAlign: "right",
                           alignSelf:"flex-end",
 
-                          marginTop: 1,
+                          marginTop: 2,
                         }}
                         text={moment(item?.created_at).format("h:mm A")}
                       />

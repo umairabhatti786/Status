@@ -434,7 +434,7 @@ const MessageSender = ({
             fontSize: 17,
           }}
           placeholderTextColor={colors.gray200}
-          placeholder={placeholder || "Write a update"}
+          placeholder={placeholder || "Write an update"}
         />
         {notShow ? (
           <></>

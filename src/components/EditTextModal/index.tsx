@@ -127,7 +127,7 @@ const EditTextModal: React.FC<Props> = ({
           position: "absolute",
           width: "100%",
           height: "100%",
-          backgroundColor: `rgba(0, 0, 0, 0.9)`, // Apply opacity to the background color
+          backgroundColor: `rgba(0, 0, 0, 0.6)`, // Apply opacity to the background color
           opacity: 0.9,
         }}
       />
@@ -148,10 +148,32 @@ const EditTextModal: React.FC<Props> = ({
           borderColor: "#8A8A8A",
         }}
       >
+          <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={() => {
+            setImageForEdit("");
+            setModalVisible(false);
+          }}
+          style={{
+            width: 35,
+            height: 35,
+            backgroundColor: colors.gray200,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            margin: 20,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRadius: 999,
+            padding: 5,
+          }}
+        >
+          <Image style={{ width: 13, height: 13 }} source={images.crossicon} />
+        </TouchableOpacity>
         <View
           style={{
             // marginHorizontal: scale(15),
-            marginVertical: verticalScale(10),
+            marginVertical: verticalScale(50),
             // height:windowHeight/1.5,
             // height:"50%",
             backgroundColor: colors.black300,
@@ -241,54 +263,29 @@ const EditTextModal: React.FC<Props> = ({
           </View>
         </View>
 
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onPress={() => {
-            setImageForEdit("");
-            setModalVisible(false);
-          }}
-          style={{
-            width: 35,
-            height: 35,
-            backgroundColor: colors.gray200,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            margin: 20,
-            alignItems: "center",
-            justifyContent: "center",
-            borderRadius: 999,
-            padding: 5,
-          }}
-        >
-          <Image style={{ width: 13, height: 13 }} source={images.crossicon} />
-        </TouchableOpacity>
+      
 
         <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: "15%",
-        maxHeight:100,
-            // marginBottom: verticalScale(20),
-            paddingHorizontal: 20,
-            // position:"absolute",
-            // bottom:20
-          }}
-        >
-          <View
             style={{
               flexDirection: "row",
               alignItems: "center",
-              borderRadius: 999,
-              backgroundColor: colors.black,
-              paddingHorizontal: scale(5),
-              width: "82%",
-              alignSelf: "center",
-              maxHeight: 100,
+              justifyContent: "space-between",
+              bottom: verticalScale(40),
+              paddingHorizontal: 20,
             }}
           >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                borderRadius: scale(20),
+                backgroundColor: colors.black,
+                paddingHorizontal: scale(5),
+                maxHeight: 130,
+                width: "82%",
+                alignSelf: "center",
+              }}
+            >
             <TextInput
               value={editPostData?.description}
               multiline={true}
@@ -305,7 +302,7 @@ const EditTextModal: React.FC<Props> = ({
                 fontSize: 19,
               }}
               placeholderTextColor={colors.gray200}
-              placeholder={"(optional). Post Caption "}
+              placeholder={"Write a message"}
             />
           </View>
           {loading ? (

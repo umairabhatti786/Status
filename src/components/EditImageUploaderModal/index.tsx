@@ -118,7 +118,7 @@ const EditImageUploaderModal: React.FC<Props> = ({
       >
         <TouchableOpacity
           onPress={editPostData?.gif ? () => {} : onOpenGalleryForEdit}
-          style={{ width: "100%", height: "85%" }}
+          style={{ width: "100%", height: "60%" }}
         >
           {
             // editPostData?.imageUrl?
@@ -205,18 +205,17 @@ const EditImageUploaderModal: React.FC<Props> = ({
         </TouchableOpacity>
 
         <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            bottom: 20,
-            paddingHorizontal: 20,
-            position:"absolute"
-          }}
-        >
-          <View
             style={{
               flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              bottom: 20,
+              paddingHorizontal: 20,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
                 alignItems: "center",
                 borderRadius: scale(20),
                 backgroundColor: colors.black,
@@ -224,8 +223,8 @@ const EditImageUploaderModal: React.FC<Props> = ({
                 maxHeight: 130,
                 width: "82%",
                 alignSelf: "center",
-            }}
-          >
+              }}
+            >
             <TextInput
               value={editPostData?.description}
               multiline={true}
@@ -240,7 +239,7 @@ const EditImageUploaderModal: React.FC<Props> = ({
                 fontSize: 17,
               }}
               placeholderTextColor={colors.gray200}
-              placeholder={"(optional). Post Caption "}
+              placeholder={"Write a message"}
             />
           </View>
           {loading ? (

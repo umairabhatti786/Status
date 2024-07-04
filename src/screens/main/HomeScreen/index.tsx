@@ -157,7 +157,7 @@ const HomeScreen = () => {
         item={item}
         // id={item.id}
       />
-      <Spacer height={10}/>
+      <Spacer height={5}/>
       </>
     ) : (
       <></>

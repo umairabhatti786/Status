@@ -115,7 +115,7 @@ const EditProfile = ({ route }: any) => {
   const profileGifs = useSelector(getProfileGifs);
 
   const dispatch = useDispatch();
-
+  console.log("selectedGifs", selectedGifs);
   const userData = route?.params?.data;
 
   const [profileType, setProfileType] = useState(
@@ -141,6 +141,10 @@ const EditProfile = ({ route }: any) => {
   });
 
   const [deleteWallImage, setDeleteWallImage] = useState(0);
+
+  const nonEmptySelectedGifs = selectedGifs.filter((gif) => gif !== "");
+
+  console.log("nonEmptySelectedGifs[1]", nonEmptySelectedGifs[1]);
 
   useEffect(() => {
     console.log("profileGifs", profileGifs);
@@ -721,7 +725,7 @@ const EditProfile = ({ route }: any) => {
                 size={19}
                 text={"Your GIFS"}
               />
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() => {
                   GiphyDialog.show();
@@ -730,10 +734,31 @@ const EditProfile = ({ route }: any) => {
                 {selectedGifs.filter((gif) => gif !== "").length < 2 && (
                   <CustomText color={colors.white} size={17} text={"Add"} />
                 )}
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
 
             <View style={appStyles.rowjustify}>
+              {nonEmptySelectedGifs[0] == undefined && (
+                <TouchableOpacity 
+                activeOpacity={0.6}
+                onPress={() => {
+                  GiphyDialog.show();
+                }}
+                style={styles.gifhyContainer}>
+                  <TouchableOpacity
+                    activeOpacity={0.6}
+                    onPress={() => {
+                      GiphyDialog.show();
+                    }}
+                  >
+                    <Image
+                      style={{ width: 14, height: 14 }}
+                      source={images.add}
+                    />
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              )}
+
               {selectedGifs
                 .filter((gif) => gif !== "")
                 .map((gip, index) => {
@@ -771,6 +796,27 @@ const EditProfile = ({ route }: any) => {
                     </View>
                   );
                 })}
+
+{nonEmptySelectedGifs[1] == undefined && (
+                <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => {
+                  GiphyDialog.show();
+                }}
+                 style={styles.gifhyContainer}>
+                  <TouchableOpacity
+                    activeOpacity={0.6}
+                    onPress={() => {
+                      GiphyDialog.show();
+                    }}
+                  >
+                    <Image
+                      style={{ width: 14, height: 14 }}
+                      source={images.add}
+                    />
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              )}
 
               {/* {gif2 ? (
                 <View style={styles.gifhyContainer}>
@@ -815,13 +861,13 @@ const EditProfile = ({ route }: any) => {
                 </TouchableOpacity>
               )} */}
             </View>
-            {selectedGifs.filter((gif) => gif !== "").length > 0 && (
-              <Image
-                style={{ width: 130, height: 45, alignSelf: "flex-end" }}
-                source={images.giphy}
-                resizeMode="contain"
-              />
-            )}
+            {/* {selectedGifs.filter((gif) => gif !== "").length > 0 && ( */}
+            <Image
+              style={{ width: 130, height: 45, alignSelf: "flex-end" }}
+              source={images.giphy}
+              resizeMode="contain"
+            />
+            {/* )} */}
           </View>
 
           <View
@@ -1199,7 +1245,7 @@ const styles = StyleSheet.create({
   },
   gifhyContainer: {
     width: "48%",
-    height: windowHeight / 4.3,
+    height: windowHeight / 4.7,
     overflow: "hidden",
     borderWidth: 1,
     borderRadius: scale(5),

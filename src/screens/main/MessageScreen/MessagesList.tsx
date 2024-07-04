@@ -246,11 +246,10 @@ const MessagesList = ({ item, handleFavorite }: any, List: boolean) => {
         </View>
         <View
           style={{
-            width: 60,
+            width: 70,
             height: 68,
             paddingTop: 3,
             alignItems: "flex-end",
-            // backgroundColor: "red",
             gap: 7,
             // justifyContent: "space-between",
             marginRight: scale(5),
