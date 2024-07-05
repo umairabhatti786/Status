@@ -55,21 +55,14 @@ const MessageScreen = ({ navigation }: any) => {
   const [contacts, setContacts] = useState<any>([]);
   const [activeBar, setActiveBar] = useState("Following");
 
-  const topBarData = ["Messages", "Starred","Archive"];
+  const topBarData = ["Messages", "Starred", "Archive"];
 
   const isFocused = useIsFocused();
 
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   const renderChatList = ({ item }: any) => {
-    return (
-      <MessagesList
-        item={item}
-        handleFavorite={handleFavorites}
-      />
-    );
+    return <MessagesList item={item} handleFavorite={handleFavorites} />;
   };
-
- 
 
   const getUserFavoriteConversation = async () => {
     let token = await StorageServices.getItem(TOKEN);
@@ -151,7 +144,7 @@ const MessageScreen = ({ navigation }: any) => {
     // Alert.alert("msg",'msg')
     let token = await StorageServices.getItem(TOKEN);
     setLoading(true);
-    setActiveChat(activeChat);
+    setActiveChat("Messages");
     GetChatList(token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
 
@@ -159,42 +152,42 @@ const MessageScreen = ({ navigation }: any) => {
       if (result.status) {
         console.log(result);
 
-        setChatList(result?.chatList);
-        // let actChat = result?.chatList?.filter(
-        //   (c: any) => !(c.archive_con.length + c.trash_con.length+c.blocked_con.length)
-        // );
+        let actChat = result?.chatList?.filter(
+          (c: any) =>
+            !(c.archive_con.length + c.trash_con.length + c.blocked_con.length)
+        );
+        setContacts(actChat);
 
-        if (activeChat === "Messages") {
-          let actChat = result?.chatList?.filter(
-            (c: any) =>
-              !(
-                c.archive_con.length +
-                c.trash_con.length +
-                c.blocked_con.length
-              )
-          );
-          setContacts(actChat);
-        } else if (activeChat === "Starred") {
-          let favCon = result?.chatList?.filter(
-            (c: any) => c.favorite_con.length
-          );
-          setContacts(favCon);
+        // if (activeChat === "Messages") {
+        //   let actChat = result?.chatList?.filter(
+        //     (c: any) =>
+        //       !(
+        //         c.archive_con.length +
+        //         c.trash_con.length +
+        //         c.blocked_con.length
+        //       )
+        //   );
+        //   setContacts(actChat);
+        // } else if (activeChat === "Starred") {
+        //   let favCon = result?.chatList?.filter(
+        //     (c: any) => c.favorite_con.length
+        //   );
+        //   setContacts(favCon);
 
-          // getUserFavoriteConversation();
-        } else if (activeChat === "Archive") {
-          let arcCon = result?.chatList?.filter(
-            (c: any) => c.archive_con.length
-          );
-          setContacts(arcCon);
-          // getUserArchives();
-        } else if (activeChat === "Trash") {
-          let trashCon = result?.chatList?.filter(
-            (c: any) => c.trash_con.length
-          );
-          setContacts(trashCon);
-          // getUserTrashConversation();
-        }
-        // setContacts(actChat);
+        //   // getUserFavoriteConversation();
+        // } else if (activeChat === "Archive") {
+        //   let arcCon = result?.chatList?.filter(
+        //     (c: any) => c.archive_con.length
+        //   );
+        //   setContacts(arcCon);
+        //   // getUserArchives();
+        // } else if (activeChat === "Trash") {
+        //   let trashCon = result?.chatList?.filter(
+        //     (c: any) => c.trash_con.length
+        //   );
+        //   setContacts(trashCon);
+        //   // getUserTrashConversation();
+        // }
         setLoading(false);
         // setAuthPosts(result?.posts?.data);
       } else {
@@ -208,31 +201,32 @@ const MessageScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     if (isFocused) getChatList();
-  }, [isFocused,counter]);
+  }, [isFocused, counter]);
 
   useEffect(() => {
     // if (isFocused) {
-      console.log(activeChat);
-      if (activeChat === "Messages") {
-        let actChat = chatList?.filter(
-          (c: any) => !(c.archive_con.length + c.trash_con.length+c.blocked_con.length)
-        );
-        setContacts(actChat);
-      } else if (activeChat === "Starred") {
-        let favCon = chatList.filter((c: any) => c.favorite_con.length);
-        setContacts(favCon);
-        // getUserFavoriteConversation();
-      } else if (activeChat === "Archive") {
-        let arcCon = chatList.filter((c: any) => c.archive_con.length);
-        setContacts(arcCon);
-        // getUserArchives();
-      } else if (activeChat === "Trash") {
-        let trashCon = chatList.filter((c: any) => c.trash_con.length);
-        setContacts(trashCon);
-        // getUserTrashConversation();
-      }
+    console.log(activeChat);
+    if (activeChat === "Messages") {
+      let actChat = chatList?.filter(
+        (c: any) =>
+          !(c?.archive_con.length + c?.trash_con.length + c?.blocked_con.length)
+      );
+      setContacts(actChat);
+    } else if (activeChat === "Starred") {
+      let favCon = chatList?.filter((c: any) => c?.favorite_con.length);
+      setContacts(favCon);
+      // getUserFavoriteConversation();
+    } else if (activeChat === "Archive") {
+      let arcCon = chatList?.filter((c: any) => c?.archive_con.length);
+      setContacts(arcCon);
+      // getUserArchives();
+    } else if (activeChat === "Trash") {
+      let trashCon = chatList?.filter((c: any) => c?.trash_con.length);
+      setContacts(trashCon);
+      // getUserTrashConversation();
+    }
     // }
-  }, [ activeChat]);
+  }, [activeChat]);
 
   const handleSearch = async (text: any) => {
     setSearch(text);
@@ -280,7 +274,7 @@ const MessageScreen = ({ navigation }: any) => {
         let result = JSON.parse(response);
         if (result.status) {
           console.log(result);
-          setCounter(counter+1)
+          setCounter(counter + 1);
         } else {
           Alert.alert("Alert!", "Something went wrong");
           console.log(result);
@@ -350,70 +344,60 @@ const MessageScreen = ({ navigation }: any) => {
           </View>
         </View> */}
 
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-around",
+            borderBottomColor: colors.black200,
+            borderBottomWidth: 2,
+            marginTop: 20,
+            marginBottom: 5,
 
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent:"space-around",
-          borderBottomColor:colors.black200,
-          borderBottomWidth:2,
-          marginTop:20,
-          marginBottom:5,
-          
-          // justifyContent: "center",
-        }}
-      >
-        {topBarData?.map((item, index) => {
-          return (
-            <TouchableOpacity 
-            activeOpacity={0.4}
-            onPress={() => {
-              // setActiveFilter?.(item)
-              setActiveChat(item)
-
-            }}
-
-            style={{ alignItems: "center",width:"33%",}}>
+            // justifyContent: "center",
+          }}
+        >
+          {topBarData?.map((item, index) => {
+            return (
               <TouchableOpacity
                 activeOpacity={0.4}
-                style={{alignItems:"center",}}
-
                 onPress={() => {
-                  // setActiveFilter?.(item)
-                  setActiveChat(item)
-
+                  setActiveChat(item);
                 }}
+                style={{ alignItems: "center", width: "33%" }}
               >
-                <NewText
-                  color={ colors.white}
-                  text={item}
-                  style={{textTransform:"capitalize" }}
-                  
-                  size={16}
-                  fontWeight={"500"}
-                  fontFam="Poppins-Regular"
-                />
+                <TouchableOpacity
+                  activeOpacity={0.4}
+                  style={{ alignItems: "center" }}
+                  onPress={() => {
+                    setActiveChat(item);
+                  }}
+                >
+                  <NewText
+                    color={colors.white}
+                    text={item}
+                    style={{ textTransform: "capitalize" }}
+                    size={16}
+                    fontWeight={"500"}
+                    fontFam="Poppins-Regular"
+                  />
+                </TouchableOpacity>
+                <Spacer height={verticalScale(5)} />
+
+                <View
+                  style={{
+                    width: "100%",
+                    height: verticalScale(2),
+                    position: "absolute",
+                    bottom: -2,
+                    backgroundColor:
+                      activeChat == item ? colors.white : "transparent",
+                  }}
+                ></View>
               </TouchableOpacity>
-              <Spacer height={verticalScale(5)} />
-
-              <View
-                style={{
-                  width: "100%",
-                  height: verticalScale(2),
-                  position:"absolute",
-                  bottom:-2,
-                  backgroundColor:
-                  activeChat == item ? colors.white : "transparent",
-                }}
-              ></View>
-            </TouchableOpacity>
-          );
-        })}
-
-      </View>
-
-
+            );
+          })}
+        </View>
 
         {/* <View style={{ maxHeight: 200 }}>
           <ScrollView>
@@ -499,15 +483,11 @@ const MessageScreen = ({ navigation }: any) => {
       </View>
 
       <TouchableOpacity
-      activeOpacity={0.6}
-      onPress={()=>navigation.navigate("NewMessage")}
+        activeOpacity={0.6}
+        onPress={() => navigation.navigate("NewMessage")}
         style={styles.addChat}
       >
-        <Image
-        style={{width:27,height:27}}
-        source={images.addChat}
-        />
-
+        <Image style={{ width: 27, height: 27 }} source={images.addChat} />
       </TouchableOpacity>
 
       <CustomDrawer
@@ -542,7 +522,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   input: { color: colors.white, width: windowWidth / 3 },
-  addChat:{
+  addChat: {
     width: 55,
     height: 55,
     borderRadius: 999,
@@ -551,7 +531,7 @@ const styles = StyleSheet.create({
     margin: 30,
     bottom: 0,
     right: 0,
-    alignItems:"center",
-    justifyContent:"center"
-  }
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
