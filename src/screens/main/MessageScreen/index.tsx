@@ -157,6 +157,7 @@ const MessageScreen = ({ navigation }: any) => {
             !(c.archive_con.length + c.trash_con.length + c.blocked_con.length)
         );
         setContacts(actChat);
+        setChatList(result?.chatList);
 
         // if (activeChat === "Messages") {
         //   let actChat = result?.chatList?.filter(

@@ -305,8 +305,8 @@ const ProfileScreen = () => {
         profile={true}
         // id={item?.id}
         onDelete={() => delComment(item)}
-        name={item?.username}
-        image={item?.imageUrl}
+        name={item?.commentator?.name}
+        image={item.commentator?.imageUrl}
         message={item?.description}
         time={item?.created_at}
         chatDate={item?.chatDate}
