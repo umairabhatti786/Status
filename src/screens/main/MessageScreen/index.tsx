@@ -144,7 +144,7 @@ const MessageScreen = ({ navigation }: any) => {
     // Alert.alert("msg",'msg')
     let token = await StorageServices.getItem(TOKEN);
     setLoading(true);
-    setActiveChat("Messages");
+    // setActiveChat("Messages");
     GetChatList(token, async ({ isSuccess, response }: any) => {
       console.log("data p", isSuccess);
 

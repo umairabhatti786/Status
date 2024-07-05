@@ -46,9 +46,8 @@ const MessagesList = ({ item, handleFavorite }: any, List: boolean) => {
   console.log("lastMessage", lastMessage);
 
   const handleFavorites = () => {
-    handleFavorite(lastMessage?.conversationId).then(() =>
-      setFavorite(!favorite)
-    );
+    handleFavorite(lastMessage?.conversationId)
+    setFavorite(!favorite)
   };
 
   useEffect(() => {
