@@ -865,12 +865,15 @@ export const ChangeUserEmail = async (data: any, token: any, callback: any) => {
   }
 };
 
-export const DeleteAccount = async (token: any, callback: any) => {
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer " + token);
+export const DeleteAccount = async (data: any,token: any, callback: any) => {
   const requestOptions = {
     method: "POST",
-    headers: myHeaders,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
   };
   console.log("requestOptions", requestOptions);
   try {
@@ -882,14 +885,6 @@ export const DeleteAccount = async (token: any, callback: any) => {
     return { isSuccess: false, error: error };
   }
 
-  // fetch(getApiUrl(URLS.signup), requestOptions)
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log("created",data);
-  //   })
-  //   .catch((error) => {
-  //     console.error("createdError",error);
-  //   });
 };
 
 export const GetBlockedUser = async (token: any, callback: any) => {
