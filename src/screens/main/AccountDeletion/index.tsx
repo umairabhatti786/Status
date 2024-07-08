@@ -32,8 +32,8 @@ import CustomToast from "../../../components/CustomToast";
 import Loader from "../../../components/Loader";
 import { DeleteAccount } from "../../../api/ApiServices";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken, setToken, setUserData } from "../../../redux/reducers/authReducer";
-import { StorageServices } from "../../../utils/hooks/StorageServices";
+import { getToken, getUserData, setToken, setUserData } from "../../../redux/reducers/authReducer";
+import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
 
 const AccountDeletion = () => {
   const navigation = useNavigation();
@@ -45,11 +45,12 @@ const AccountDeletion = () => {
   const dispatch=useDispatch()
 
 
-  const _deleteAccount = (item: any) => {
+  const _deleteAccount = async(item: any) => {
 
     setLoading(true)
-
-    DeleteAccount(token, async ({ isSuccess, response }: any) => {
+    const userInfo:any = await StorageServices.getItem(AUTH);
+    DeleteAccount({id:userInfo.id},token, async ({ isSuccess, response }: any) => {
+      // console.log(response)
       if (isSuccess) {
         let result = JSON.parse(response);
         console.log("ckdnckdnc", result);
