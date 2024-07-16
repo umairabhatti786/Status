@@ -76,10 +76,11 @@ const Signup = ({ route }: any) => {
         deviceId: deviceState?.userId,
         name: values.name,
         birthday: values.birthday,
-        interestTags:values.lookingFor
+        interestTags:JSON.stringify(values.lookingFor)
       };
+
+      
       setLoading(true);
-      console.log("Pramss",data)
 
       UserSignup(data, async ({ isSuccess, response }: any) => {
         if (isSuccess) {
@@ -124,7 +125,7 @@ const Signup = ({ route }: any) => {
         }
       });
 
-      // console.log("ckbdckdbc",response)
+      console.log("ckbdckdbc",response)
     }
   };
 
@@ -268,7 +269,7 @@ const Signup = ({ route }: any) => {
                 fontWeight={"500"}
                 fontFam="Poppins-Medium"
                 size={14}
-                text={moment(values.birthday).format("MMM D, YYYY")}
+                text={moment(values.birthday, 'MM/DD/YYYY').format('MMM D, YYYY')}
                 color={"#CCCCCC"}
               />
             </View>

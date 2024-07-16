@@ -378,10 +378,15 @@ const FirstSignup = () => {
               console.log("day", day);
               const month = date.getMonth() + 1;
               const year = date.getFullYear().toString();
-              let birth = `${year}-${month.toString().padStart(2, "0")}-${day
+
+              let birth = `${month.toString().padStart(2, "0")}/${day
                 .toString()
-                .padStart(2, "0")}`;
+                .padStart(2, "0")}/${year}`;
               console.log("birth", birth);
+              // let birth = `${year}-${month.toString().padStart(2, "0")}-${day
+              //   .toString()
+              //   .padStart(2, "0")}`;
+              // console.log("birth", birth);
 
               1995-12-28
               setMonth(month.toString().padStart(2, "0"));

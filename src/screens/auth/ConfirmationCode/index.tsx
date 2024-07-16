@@ -35,6 +35,9 @@ import Loader from "../../../components/Loader";
 import { numericRegex } from "../../../utils/Regex";
 import Button from "../../../components/Button";
 import NewText from "../../../components/NewText";
+import { AUTH, StorageServices, TOKEN } from "../../../utils/hooks/StorageServices";
+import { setToken, setUserData } from "../../../redux/reducers/authReducer";
+import { useDispatch } from "react-redux";
 
 interface props {
   route: any;
@@ -48,7 +51,7 @@ const ConfirmationCode = ({ route }: props) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [toastColor, setToastColor] = useState(colors.red);
-
+const dispatch=useDispatch()
   const data = route?.params?.data;
   console.log("datkbhjba", data);
 
@@ -94,10 +97,32 @@ const ConfirmationCode = ({ route }: props) => {
             setError(result?.msg);
             setToastColor(colors.green);
             setShowError(true);
+
             setTimeout(() => {
               setShowError(false);
-              navigation.navigate("ProfileSetup", { token: result?.token });
+              setToastColor(colors.red)
+              StorageServices.setItem(AUTH,result?.user)
+              StorageServices.setItem(TOKEN,result?.token)
+              // StorageServices.setItem(REMEMBER,isRemember)z
+              dispatch(setToken(result?.token))
+              // dispatch(setRemember(isRemember))
+  
+              dispatch(setUserData(result?.user))
+              navigation.navigate("Tabs", {
+        
+              });
+  
+  
+              // navigation.navigate("ConfirmationCode", {
+              //   data: { email: values.email },
+              // });
             }, 2000);
+
+
+            // setTimeout(() => {
+            //   setShowError(false);
+            //   navigation.navigate("ProfileSetup", { token: result?.token });
+            // }, 2000);
           }
         } else {
           setLoading(false);
@@ -190,9 +215,9 @@ const ConfirmationCode = ({ route }: props) => {
             <View>
               <NewText
                 text={
-                  "To confirm your account, enter the 6-digit code we sent to your email."
+                 `Please enter the 6-digit code we just sent to your ${data?.email}`
                 }
-                color={colors.white}
+                color={"#25D366"}
                 size={16}
                 fontFam="Poppins-Medium"
                 fontWeight="500"

@@ -25,7 +25,7 @@ import { Spacer } from "../../../components/Spacer";
 import { scale, verticalScale } from "react-native-size-matters";
 import ToggleSwitch from "toggle-switch-react-native";
 import DropDown from "../../../components/DropDown";
-import { data } from "../../../utils/Data";
+import { LookingForData, data } from "../../../utils/Data";
 import NewText from "../../../components/NewText";
 import ImagePicker from "react-native-image-crop-picker";
 import { usePermissions } from "../../../utils/Permissions";
@@ -62,6 +62,7 @@ import ImageCropPicker, {
   Image as ImagePickerType,
 } from "react-native-image-crop-picker";
 import CustomBottomSheet from "../../../components/CustomBottomSheet";
+import LookingFor from "../../../components/LookingFor";
 
 GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
 GiphyDialog.configure({
@@ -121,6 +122,11 @@ const EditProfile = ({ route }: any) => {
   const [profileType, setProfileType] = useState(
     userData?.profileType ? userData?.profileType : ""
   );
+  const [orientation,setOrientation]=useState(userData?.orientation)
+  const [relationshipStatus,setRelationshipStatus]=useState(userData?.relationshipStatus)
+
+
+  console.log("orientationccccc",orientation)
 
   const [values, setValues] = useState({
     wallComments: userData?.wallComments,
@@ -138,6 +144,8 @@ const EditProfile = ({ route }: any) => {
     location: userData?.location ? userData?.location : "",
     lat: userData?.lat ? userData?.lat : "",
     lng: userData?.lng ? userData?.lng : "",
+    interestTags:JSON.parse(userData?.interestTags)
+
   });
 
   const [deleteWallImage, setDeleteWallImage] = useState(0);
@@ -269,11 +277,33 @@ const EditProfile = ({ route }: any) => {
       label: "GAY",
       value: "GAY",
     },
+    
+   
+
+  
+    
+    
+    
+  ];
+
+  const relationshipStatusData = [
     {
-      id: 4,
-      label: "Bodybuilder",
-      value: "Bodybuilder",
+      id: 1,
+      label: "STRAIGHT",
+      value: "STRAIGHT",
     },
+    {
+      id: 2,
+      label: "BISEXUAL",
+      value: "BISEXUAL",
+    },
+
+    {
+      id: 3,
+      label: "GAY",
+      value: "GAY",
+    },
+    
    
 
   
@@ -1069,8 +1099,9 @@ const EditProfile = ({ route }: any) => {
             <DropDown
               placeholder={"Make a Selection"}
               mainWidth={"60%"}
-              setValue={setProfileType}
-              value={profileType}
+              innerWidth={"53%"}
+              setValue={setOrientation}
+              value={orientation}
               //   data={data}
               data={OrientationData.map((item, _index) => {
                 return {
@@ -1080,6 +1111,92 @@ const EditProfile = ({ route }: any) => {
                 };
               })}
             />
+
+<CustomText
+              fontWeight={"500"}
+              fontFam="Poppins-Medium"
+              size={13}
+              style={{ marginBottom: verticalScale(5),marginTop:verticalScale(20) }}
+              text={"Relationship Status"}
+              color={colors.white}
+            />
+            <DropDown
+              placeholder={"Make a Selection"}
+              mainWidth={"60%"}
+              innerWidth={"53%"}
+              setValue={setRelationshipStatus}
+              value={relationshipStatus}
+              //   data={data}
+              data={relationshipStatusData.map((item, _index) => {
+                return {
+                  id: item?.id,
+                  label: item?.value,
+                  value: item?.value,
+                };
+              })}
+            />
+
+<View
+              style={{
+                marginVertical: verticalScale(30),
+              }}
+            >
+              <NewText
+                fontWeight={"500"}
+                fontFam="Poppins-Medium"
+                size={16}
+                text={"Looking For"}
+                color={colors.white}
+              />
+              <View
+                style={{
+                  ...appStyles.row,
+                  flexWrap: "wrap",
+                  marginVertical: verticalScale(10),
+                }}
+              >
+                {LookingForData.map((item, index) => {
+                  return (
+                    <View
+                      style={{ marginBottom: verticalScale(8) }}
+                      key={index}
+                    >
+                      <LookingFor
+                    
+                      lookingFor={values?.interestTags}
+                        onPress={() => {
+
+                          let findIndex = values?.interestTags?.findIndex(
+                            (i: string) => i === item
+                          );
+                          // console.log("kncdkncd", findIndex)
+
+
+                          if (findIndex === -1) {
+                            // If item is not in the array, add it
+                            setValues((prevValues) => ({
+                              ...prevValues,
+                              interestTags: [...prevValues.interestTags, item],
+                            }));
+                          } else {
+                            // If item is in the array, remove it (if needed)
+                            setValues((prevValues) => ({
+                              ...prevValues,
+                              interestTags: prevValues.interestTags.filter(
+                                (i: string) => i !== item
+                              ),
+                            }));
+                          }
+                        }}
+                        label={item}
+                      />
+                    </View>
+                  );
+                })}
+              </View>
+
+             
+            </View>
 
             <Input
               // labelSize={15}

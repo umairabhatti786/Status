@@ -18,7 +18,8 @@ const DropDown = ({
   borderWidth,
   onChangeDropDown,
   setValue,
-  mainWidth
+  mainWidth,
+  innerWidth,
 }:any) => {
   const [open, setOpen] = useState(false)
 
@@ -52,7 +53,7 @@ const DropDown = ({
           borderWidth: -1,
         
 
-          width:"88%",
+          width: innerWidth||"88%",
           borderBottomLeftRadius:scale(5),
           borderBottomRightRadius:scale(5)
         }}

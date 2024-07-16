@@ -1,6 +1,15 @@
 import { images } from "../../assets/images";
 import { colors } from "../colors";
 
+export const LookingForData = [
+  "Chat",
+  "Dates",
+  "Friends",
+  "Networking",
+  "Hookups",
+  "Relationship",
+];
+
 export const planedTaskList = [
   {
     date: "Sun, 10 Sep",
