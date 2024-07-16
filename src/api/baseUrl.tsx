@@ -1,6 +1,6 @@
 export const URLS = {
-  GIFY_API_KEY: "VKeEVWormURuEiqpoD5DTT8IpSS68x4n",
-  GOOGLE_MAP_KEY: "AIzaSyBy4aAbZ3L4UtBUWIpmyoO7M-jdom-HCBU",
+  GIFY_API_KEY: "AIzaSyAPdcIXBWUTbWk8uZJhTbhXrixAeIdwz_0",
+  GOOGLE_MAP_KEY: "AIzaSyAPdcIXBWUTbWk8uZJhTbhXrixAeIdwz_0",
   GOOGLE_PLACES_API_BASE_URL: "https://maps.googleapis.com/maps/api/place",
   BASE_URL: "https://giantcorp.us/api/",
   signup: "signup",

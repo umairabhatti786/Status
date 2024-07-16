@@ -620,7 +620,7 @@ const OthersProfile = () => {
             {isActiveProfile == "Profile" ? (
               <View style={{ flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  <View
+                  {/* <View
                     style={{
                       ...appStyles.row,
                       paddingBottom: verticalScale(5),
@@ -663,7 +663,7 @@ const OthersProfile = () => {
                         text={data?.occupation}
                       />
                     </View>
-                  </View>
+                  </View> */}
                   <View>
                     <FastImage
                       style={{
@@ -817,7 +817,7 @@ const OthersProfile = () => {
                         </View>
                       )}
 
-                      {data?.location && (
+                      {data?.distance && (
                         <View style={{ ...appStyles.row, gap: scale(10) }}>
                           <Image
                             style={{ width: scale(18), height: scale(18) }}
@@ -849,10 +849,16 @@ const OthersProfile = () => {
                     </View>
                     <View
                       style={{
-                        backgroundColor: colors.black,
-                        borderBottomRightRadius: scale(5),
-                        borderBottomLeftRadius: scale(5),
-                        paddingVertical: verticalScale(10),
+                        backgroundColor: colors.primary,
+                        borderWidth:1,
+                        borderColor:"#8A8A8A",
+                        borderTopLeftRadius:scale(15),
+                        borderTopRightRadius:scale(15),
+                        borderBottomRightRadius:scale(15),
+
+                        // borderBottomRightRadius: scale(5),
+                        // borderBottomLeftRadius: scale(5),
+                        padding: scale(15),
                       }}
                     >
                       {data?.bio && (

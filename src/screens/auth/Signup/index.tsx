@@ -42,9 +42,7 @@ const Signup = ({ route }: any) => {
     "Hookups",
     "Relationship",
   ];
-  // useEffect(() => {
-  //   getDeviceId();
-  // }, []);
+
 
   const getDeviceId = async () => {
     let deviceState = await OneSignal.getDeviceState();
@@ -204,7 +202,6 @@ const Signup = ({ route }: any) => {
             <View
               style={{
                 marginVertical: verticalScale(10),
-                // gap: verticalScale(10),
               }}
             >
               <NewText

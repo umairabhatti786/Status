@@ -51,7 +51,6 @@ const ResetPasswordConfirmation = ({ route }: props) => {
   const data = route?.params?.data;
   const [toastColor, setToastColor] = useState(colors.red);
 
-  console.log("datkbhjba", data);
 
   const OnConfirmCode = () => {
     // console.log("params",data)

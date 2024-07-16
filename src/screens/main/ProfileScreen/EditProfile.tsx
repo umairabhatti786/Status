@@ -119,17 +119,18 @@ const EditProfile = ({ route }: any) => {
   console.log("selectedGifs", selectedGifs);
   const userData = route?.params?.data;
 
-  const [profileType, setProfileType] = useState(
-    userData?.profileType ? userData?.profileType : ""
-  );
-  const [orientation,setOrientation]=useState(userData?.orientation)
-  const [relationshipStatus,setRelationshipStatus]=useState(userData?.relationshipStatus)
+  // const [profileType, setProfileType] = useState(
+  //   userData?.profileType ? userData?.profileType : ""
+  // );
+  const [orientation,setOrientation]=useState(userData?.orientation? userData?.orientation:"")
+  const [relationshipStatus,setRelationshipStatus]=useState(userData?.relationshipStatus?userData?.relationshipStatus:"")
 
 
   console.log("orientationccccc",orientation)
 
   const [values, setValues] = useState({
     wallComments: userData?.wallComments,
+    showAge:userData?.showAge,
     bio: userData?.bio ? userData?.bio : "",
     imageUrl: userData?.imageUrl ? userData?.imageUrl : "",
     wallpaperUrl: userData?.wallpaperUrl ? userData?.wallpaperUrl : "",
@@ -137,14 +138,14 @@ const EditProfile = ({ route }: any) => {
     name: userData?.name ? userData?.name : "",
     gender: userData?.gender ? userData.gender : "",
     birthday: userData?.birthday ? userData.birthday : "",
-    occupation: userData?.occupation ? userData?.occupation : "",
+    occupation: "",
     link: userData?.link ? userData?.link : "",
-    profileType: userData?.profileType ? userData?.profileType : "",
+    // profileType: userData?.profileType ? userData?.profileType : "",
     // gif2: userData?.gif2 ? userData?.gif2 : "",
     location: userData?.location ? userData?.location : "",
     lat: userData?.lat ? userData?.lat : "",
     lng: userData?.lng ? userData?.lng : "",
-    interestTags:JSON.parse(userData?.interestTags)
+    interestTags: userData?.interestTags? JSON?.parse(userData?.interestTags):[]
 
   });
 
@@ -152,7 +153,6 @@ const EditProfile = ({ route }: any) => {
 
   const nonEmptySelectedGifs = selectedGifs.filter((gif) => gif !== "");
 
-  console.log("nonEmptySelectedGifs[1]", nonEmptySelectedGifs[1]);
 
   useEffect(() => {
     console.log("profileGifs", profileGifs);
@@ -339,7 +339,7 @@ const EditProfile = ({ route }: any) => {
     setIsPredictionList(true);
     const apiUrl = `${
       URLS.GOOGLE_PLACES_API_BASE_URL
-    }/autocomplete/json?key=${"AIzaSyC3ZsD7NPYT5dL3mapSdPtHMwiTYpejlSQ"}&input=${txt}`;
+    }/autocomplete/json?key=${"AIzaSyAPdcIXBWUTbWk8uZJhTbhXrixAeIdwz_0"}&input=${txt}`;
     try {
       let result = await fetch(apiUrl);
       let data = await result.text();
@@ -469,15 +469,15 @@ const EditProfile = ({ route }: any) => {
       return;
     }
 
-    if (!values.occupation) {
-      setError("Occupation required");
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-      }, 4000);
+    // if (!values.occupation) {
+    //   setError("Occupation required");
+    //   setShowError(true);
+    //   setTimeout(() => {
+    //     setShowError(false);
+    //   }, 4000);
 
-      return;
-    }
+    //   return;
+    // }
     if (!values.bio) {
       setError("Bio required");
       setShowError(true);
@@ -516,12 +516,19 @@ const EditProfile = ({ route }: any) => {
     form.append("wallComments", values.wallComments ? 1 : 0);
     form.append("birthday", values.birthday);
     form.append("gender", values.gender);
-    form.append("occupation", values.occupation);
+    form.append("occupation", "");
     form.append("link", values.link);
     form.append("bio", values?.bio);
     form.append("isModel", 1);
-    form.append("profileType", profileType);
+    form.append("profileType", "Other");
     form.append("wallpaperUrl", values.wallpaperUrl);
+    form.append("interestTags", JSON.stringify(values.interestTags));
+    form.append("showAge", 0);
+    form.append("orientation", "BISEXUAL");
+    form.append("relationshipStatus", "BISEXUAL");
+    console.log("relationshipStatus", orientation,relationshipStatus,values.showAge);
+
+
     form.append("deleteWallImage", deleteWallImage);
     form.append(
       "gif1",
@@ -580,6 +587,12 @@ const EditProfile = ({ route }: any) => {
     console.log("Vlaurdvjdbfv", values.to);
     //
     setValues({ ...values, wallComments: !values.wallComments });
+    // setIsToggle(previousState => !previousState);
+  };
+  const toggleAgeSwitch = () => {
+    // console.log("Vlaurdvjdbfv", values.to);
+    //
+    setValues({ ...values, showAge: !values.showAge });
     // setIsToggle(previousState => !previousState);
   };
   return (
@@ -948,7 +961,7 @@ const EditProfile = ({ route }: any) => {
             />
             <Spacer height={verticalScale(20)} />
 
-            <CustomText
+            {/* <CustomText
               fontWeight={"500"}
               fontFam="Poppins-Medium"
               size={13}
@@ -969,7 +982,7 @@ const EditProfile = ({ route }: any) => {
                   value: item?.value,
                 };
               })}
-            />
+            /> */}
             {/* <Spacer height={verticalScale(10)}/> */}
             <Input
               label="Display Name"
@@ -996,7 +1009,7 @@ const EditProfile = ({ route }: any) => {
                 marginTop: "3%",
               }}
             >
-              {["Female", "Male", "N/A"].map((item, index) => {
+              {["Female", "Male", "Trans"].map((item, index) => {
                 return (
                   <TouchableOpacity
                     activeOpacity={0.6}
@@ -1031,7 +1044,7 @@ const EditProfile = ({ route }: any) => {
                 fontFam="Poppins-Medium"
                 size={15}
                 style={{ marginBottom: verticalScale(5), marginTop: "7%" }}
-                text={"Your Birthdate"}
+                text={"Birthday"}
                 color={colors.white}
               />
               <TouchableOpacity
@@ -1055,19 +1068,29 @@ const EditProfile = ({ route }: any) => {
                   color={colors.white}
                 />
               </TouchableOpacity>
-              {/* <Input
-                label="Your Birthday"
-                value={values.birthday}
-                maxLength={8}
-                onChangeText={(txt: string) => {
-                  setValues({ ...values, birthday: txt });
-                }}
-                // labelSize={15}
-                placeholder="Birthday"
-                color={colors.white}
+
+              <View style={{...appStyles.rowjustify,marginTop:verticalScale(25)}}>
+              <NewText
+                size={17}
                 fontWeight="600"
-                marginTop={"7%"}
-              /> */}
+                fontFam="Poppins-Medium"
+                color={colors.white}
+                text={"Show Age"}
+              />
+              <ToggleSwitch
+                isOn={values?.showAge}
+                onColor={colors.sky}
+                offColor={colors.grey300}
+                size="small"
+                onToggle={toggleAgeSwitch}
+                // onToggle={(isOn: boolean)=>setIsToggle}
+                thumbOnStyle={{ width: 17, height: 17, borderRadius: 9999 }}
+                thumbOffStyle={{ width: 17, height: 17, borderRadius: 9999 }}
+                trackOffStyle={{ width: 46, height: 25 }}
+                trackOnStyle={{ width: 46, height: 25 }}
+              />
+            </View>
+             
             </View>
             <View>
               {isPredictionList && (
@@ -1077,7 +1100,7 @@ const EditProfile = ({ route }: any) => {
                 />
               )}
               <Input
-                label="Your Current Location"
+                label="Your Location"
                 // labelSize={15}
                 value={values.location}
                 onChangeText={onSearch}
@@ -1152,7 +1175,7 @@ const EditProfile = ({ route }: any) => {
                 style={{
                   ...appStyles.row,
                   flexWrap: "wrap",
-                  marginVertical: verticalScale(10),
+                  marginTop: verticalScale(10),
                 }}
               >
                 {LookingForData.map((item, index) => {
@@ -1198,7 +1221,7 @@ const EditProfile = ({ route }: any) => {
              
             </View>
 
-            <Input
+            {/* <Input
               // labelSize={15}
 
               label="Occupation"
@@ -1210,15 +1233,15 @@ const EditProfile = ({ route }: any) => {
               color={colors.white}
               fontWeight="600"
               marginTop={"7%"}
-            />
-            <View style={{ marginTop: "7%" }}>
+            /> */}
+            <View >
               <View style={appStyles.rowjustify}>
                 <NewText
                   fontWeight={"500"}
                   fontFam="Poppins-Medium"
                   size={15}
                   style={{ marginBottom: verticalScale(5) }}
-                  text={"Bio"}
+                  text={"About Me"}
                   color={colors.white}
                 />
                 <NewText
@@ -1226,7 +1249,7 @@ const EditProfile = ({ route }: any) => {
                   fontFam="Poppins-Medium"
                   size={15}
                   style={{ marginBottom: verticalScale(5) }}
-                  text={`${values.bio.length}/300`}
+                  text={`${values.bio.length}/500`}
                   color={colors.white}
                 />
               </View>
@@ -1251,10 +1274,10 @@ const EditProfile = ({ route }: any) => {
                     fontWeight: "500",
                     color: colors.grey400,
                   }}
-                  placeholder={"Bio"}
+                  placeholder={""}
                   multiline={true}
                   placeholderTextColor={colors.grey400}
-                  maxLength={300}
+                  maxLength={500}
                   onChangeText={(txt: string) => {
                     setValues({ ...values, bio: txt });
                   }}
@@ -1281,7 +1304,7 @@ const EditProfile = ({ route }: any) => {
             <Input
               label="Your Link"
               value={values.link}
-              placeholder="Your Link"
+              placeholder=""
               onChangeText={(txt: string) => {
                 setValues({ ...values, link: txt });
               }}
@@ -1384,7 +1407,7 @@ const styles = StyleSheet.create({
     height: scale(18),
     borderRadius: scale(18),
     borderWidth: 2,
-    borderColor: colors.white,
+    borderColor: colors.sky,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
@@ -1393,7 +1416,7 @@ const styles = StyleSheet.create({
     width: scale(10),
     height: scale(10),
     borderRadius: scale(12),
-    backgroundColor: "white",
+    backgroundColor: colors.sky,
   },
   wallpaperContainer: {
     borderWidth: 1,
