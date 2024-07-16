@@ -3,9 +3,11 @@ import { emailRegex } from "../../../utils/Regex";
 // import { validateEmail } from "../../utils/Email_Password_Validation";
 
 interface Values {
+  name:string,
     email: string;
     confirmEmail: string;
     password: string;
+    lookingFor:[]
   }
 export const SignupForm = (
   values:Values,
@@ -13,6 +15,16 @@ export const SignupForm = (
   setError: (error: string) => void
 
 ) => {
+
+  if (!values?.name) {
+    setError("Name is required");
+    setShowError(true);
+    setTimeout(() => {
+      setShowError(false);
+    }, 4000);
+
+    return;
+  }
     if (!values?.email) {
         setError("Email is required");
         setShowError(true);
@@ -32,24 +44,7 @@ export const SignupForm = (
   
         return;
       }
-      if (!values.confirmEmail) {
-        setError("Confirm Email is required");
-        setShowError(true);
-        setTimeout(() => {
-          setShowError(false);
-        }, 4000);
-  
-        return;
-      }
-      if (values?.confirmEmail != values?.email) {
-        setError("Confirm Email not match");
-        setShowError(true);
-        setTimeout(() => {
-          setShowError(false);
-        }, 4000);
-  
-        return;
-      }
+      
       if (!values?.password) {
         setError("password is required");
         setShowError(true);
@@ -58,8 +53,17 @@ export const SignupForm = (
         }, 4000);
         return;
       }
-      if (values?.password.length < 6) {
-        setError("password At least 6 characters");
+      if (values?.password.length < 8 ||values?.password.length > 20) {
+        setError("password at least 8 - 20 characters");
+        setShowError(true);
+        setTimeout(() => {
+          setShowError(false);
+        }, 4000);
+        return;
+      }
+
+      if (values?.lookingFor.length==0) {
+        setError("Please Select at least one Looking For ");
         setShowError(true);
         setTimeout(() => {
           setShowError(false);

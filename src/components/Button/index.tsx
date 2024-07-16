@@ -25,6 +25,7 @@ type Props = {
   paddingHorizontal?:any
   fontWeight?:any
   borderWidth?:number
+  alignItems?:any
 };
 
 const Button = ({
@@ -45,7 +46,8 @@ const Button = ({
   isLoading,
   paddingHorizontal,
   fontWeight,
-  borderWidth
+  borderWidth,
+  alignItems
 }: Props) => {
   return (
     <TouchableOpacity
@@ -58,7 +60,7 @@ const Button = ({
         height:height || 46,
         backgroundColor: bgColor || colors.primary,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: alignItems|| "center",
         paddingHorizontal:paddingHorizontal,
         borderRadius: scale(borderRadius || 8),
         borderWidth:borderWidth ,

@@ -59,6 +59,7 @@ import {
 } from "@pusher/pusher-websocket-react-native";
 import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
 import constants from "../../../redux/constants";
+import { calculateAge } from "../../../utils/CommonFun";
 
 const OthersProfile = () => {
   const pusher = Pusher.getInstance();
@@ -91,6 +92,13 @@ const OthersProfile = () => {
   const [counter, setCounter] = useState(0);
   const [counter1, setCounter1] = useState(0);
   const flatListRefOtherPosts: any = useRef(null);
+  // const age = calculateAge(data?.birthday);
+  const { birthday, gender, orientation, relationshipStatus } = data || {};
+
+  const userDetail = `${birthday ? birthday + ' / ' : ''}${gender ? gender + ' / ' : ''}${orientation ? orientation + ' / ' : ''}${relationshipStatus ? relationshipStatus : ''}`.trim();
+
+
+  console.log("lcndlncd",userDetail)
 
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
 
@@ -109,7 +117,7 @@ const OthersProfile = () => {
 
   useEffect(() => {
     // if (newComment)
-    setComments([ newComment,...comments,]);
+    setComments([newComment, ...comments]);
   }, [newComment]);
 
   // useEffect(() => {
@@ -122,7 +130,7 @@ const OthersProfile = () => {
     try {
       await pusher.init({
         apiKey: constants.PUSHER_APP_KEY,
-      cluster: constants.PUSHER_APP_CLUSTER,
+        cluster: constants.PUSHER_APP_CLUSTER,
         // onConnectionStateChange,
       });
       // console.log('init')
@@ -288,7 +296,7 @@ const OthersProfile = () => {
 
       let result = JSON.parse(response);
       if (result.status) {
-        console.log("user", result);
+        console.log("userUserData", result);
         setData(result?.user);
         if (result?.user?.followers.length > 0) {
           setIsFollow(true);
@@ -386,8 +394,8 @@ const OthersProfile = () => {
           console.log("GetConversationIfExist", result);
 
           if (result?.exist) {
-            navigation.navigate("ChatScreen",{
-              item:result?.conversation
+            navigation.navigate("ChatScreen", {
+              item: result?.conversation,
             });
           } else {
             navigation.navigate("NewMessage", {
@@ -467,7 +475,7 @@ const OthersProfile = () => {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  paddingLeft:20,
+                  paddingLeft: 20,
                   // paddingHorizontal: scale(20),
                   paddingVertical: verticalScale(5),
                 }}
@@ -524,7 +532,7 @@ const OthersProfile = () => {
                   />
                 </View>
               </View>
-              <View style={{ ...appStyles.row,  }}>
+              <View style={{ ...appStyles.row }}>
                 {isFollow ? (
                   <></>
                 ) : (
@@ -578,21 +586,16 @@ const OthersProfile = () => {
                 return (
                   <CustomButton
                     width={"48.5%"}
-                    onPress={() => 
+                    onPress={() => {
+                      if (item == "Channel") {
+                        navigation.navigate("OtherUserChannel", {
+                          id: id,
+                        });
 
-                      {
-                        if(item=="Channel"){
-                          navigation.navigate("OtherUserChannel", {
-                            id: id,
-
-                          })
-
-                          return
-                        }
-                        setIsActiveProfile(item)}
-
+                        return;
                       }
-                      
+                      setIsActiveProfile(item);
+                    }}
                     text={item}
                     textColor={
                       isActiveProfile == item ? colors.black : colors.white
@@ -661,19 +664,55 @@ const OthersProfile = () => {
                       />
                     </View>
                   </View>
-                  <FastImage
-                    style={{
-                      width: "100%",
-                      height: verticalScale(350),
-                      alignSelf: "center",
-                    }}
-                    resizeMode="cover"
-                    source={{
-                      uri: data?.imageUrl,
-                      headers: { Authorization: "someAuthToken" },
-                      priority: FastImage.priority.high,
-                    }}
-                  />
+                  <View>
+                    <FastImage
+                      style={{
+                        width: "100%",
+                        height: verticalScale(350),
+                        alignSelf: "center",
+                      }}
+                      resizeMode="cover"
+                      source={{
+                        uri: data?.imageUrl,
+                        headers: { Authorization: "someAuthToken" },
+                        priority: FastImage.priority.high,
+                      }}
+                    />
+
+                    {data?.isOnline == 1 ? (
+                      <View
+                        style={{
+                          position: "absolute",
+                          bottom: verticalScale(20),
+                          left: scale(20),
+                          flexDirection: "row",
+                          gap: scale(10),
+                          alignItems: "center",
+                        }}
+                      >
+                        <View
+                          style={{
+                            width: scale(11),
+                            height: scale(11),
+                            borderRadius: 999,
+                            backgroundColor: colors.green,
+                          }}
+                        ></View>
+
+                        <CustomText
+                          color={colors.white}
+                          size={15}
+                          numberOfLines={1}
+                          fontFam="Inter-Medium"
+                          // style={{ marginLeft: scale(8), marginRight: scale(10) }}
+                          text={"Online now"}
+                        />
+                      </View>
+                    ) : (
+                      <></>
+                    )}
+                  </View>
+
                   <View style={appStyles.rowjustify}>
                     <TouchableOpacity
                       activeOpacity={0.6}
@@ -746,6 +785,68 @@ const OthersProfile = () => {
                     </TouchableOpacity>
                   </View>
                   <View style={{ paddingHorizontal: scale(10) }}>
+                    <View
+                      style={{
+                        paddingVertical: verticalScale(15),
+                        paddingHorizontal: scale(10),
+                        gap: verticalScale(10),
+                      }}
+                    >
+                      <NewText
+                        color={colors.white}
+                        lineHeight={20}
+                        fontWeight="600"
+                        fontFam="Inter-SemiBold"
+                        size={17}
+                        text={"Personal Information"}
+                      />
+                      {data?.location && (
+                        <View style={{ ...appStyles.row, gap: scale(10) }}>
+                          <Image
+                            style={{ width: scale(18), height: scale(18) }}
+                            source={images.homefill}
+                          />
+                          <NewText
+                            color={colors.grey300}
+                            fontWeight="700"
+                            style={{ marginTop: 3 }}
+                            fontFam="Inter-Medium"
+                            size={16}
+                            text={data?.location}
+                          />
+                        </View>
+                      )}
+
+                      {data?.location && (
+                        <View style={{ ...appStyles.row, gap: scale(10) }}>
+                          <Image
+                            style={{ width: scale(18), height: scale(18) }}
+                            source={images.locationicon}
+                          />
+                          <NewText
+                            color={colors.white}
+                            style={{ marginTop: 3 }}
+                            size={16}
+                            text={`${data?.distance?.toFixed(2)} miles away`}
+                          />
+                        </View>
+                      )}
+
+                      {userDetail && (
+                        <View style={{ ...appStyles.row, gap: scale(10) }}>
+                          <Image
+                            style={{ width: scale(18), height: scale(18) }}
+                            source={images.user}
+                          />
+                          <NewText
+                            color={colors.white}
+                            style={{ marginTop: 3 }}
+                            size={16}
+                            text={userDetail}
+                          />
+                        </View>
+                      )}
+                    </View>
                     <View
                       style={{
                         backgroundColor: colors.black,
@@ -873,9 +974,8 @@ const OthersProfile = () => {
                         </View>
                       )}
                     </View>
-                    {
-                       data?.wallComments&&(
-                        <View
+                    {data?.wallComments && (
+                      <View
                         style={{
                           flexDirection: "row",
                           justifyContent: "space-between",
@@ -916,11 +1016,8 @@ const OthersProfile = () => {
                           )}
                         </TouchableOpacity>
                       </View>
+                    )}
 
-                       )
-                    }
-
-                 
                     {/* public comments */}
                     <FlatList
                       data={comments}

@@ -36,7 +36,7 @@ const UserList = ({
   filterTwo,
 }: any) => {
   const navigation: any = useNavigation();
-  // console.log("item?.distance", item?.distance);
+  console.log("item?.distance", item);
   return (
     <>
       <TouchableOpacity

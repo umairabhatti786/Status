@@ -297,10 +297,13 @@ const EditProfile = ({ route }: any) => {
   };
 
   const onPressLocationAddress = async (i) => {
+    console.log("knvkdnkvd")
     const apiUrl = `${URLS.GOOGLE_PLACES_API_BASE_URL}/details/json?key=${URLS.GOOGLE_MAP_KEY}&place_id=${i.place_id}`;
     let call = await fetch(apiUrl);
     let res = await call.text();
     let result = await JSON.parse(res);
+    console.log("isPredictionList", result);
+
     if (result.result) {
       const {
         geometry: { location },
@@ -308,7 +311,6 @@ const EditProfile = ({ route }: any) => {
         name,
       } = result.result;
 
-      console.log("isPredictionList", isPredictionList, name);
       setIsPredictionList(false);
       setValues({
         ...values,

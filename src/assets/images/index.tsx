@@ -107,13 +107,17 @@ export const images = {
   search1: require("../icons/search1.png"),
   drawer: require("../icons/drawer.png"),
 
-  search100: require("../icons/search.png"),
+search100: require("../icons/search.png"),
 back100: require("../icons/back100.png"),
 recent: require("../icons/recent.png"),
 profilemessage: require("../icons/profile-message.png"),
-
 back200: require("../icons/back200.png"),
 dot: require("../icons/dot.png"),
+info: require("../icons/info.png"),
+user: require("../icons/user.png"),
+homefill: require("../icons/homefill.png"),
+
+
 link: require("../icons/link.png"),
 
 

@@ -13,7 +13,7 @@ import { colors } from "../../utils/colors";
 const CustomBottomSheet = (props: any) => {
   const { bottomSheetModalRef, snapTo, onDismiss, children, snap,handleSheetChanges } = props;
 
-  const snapPoints = useMemo(() => snapTo || ["56%"], []);
+  const snapPoints = useMemo(() => snapTo || ["60%"], []);
 
   useFocusEffect(
     useCallback(() => {

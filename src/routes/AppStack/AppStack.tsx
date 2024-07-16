@@ -51,6 +51,7 @@ import ChannelScreen from "../../screens/main/ChannelScreen";
 import OtherUserChannel from "../../screens/main/OtherUserChannel";
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
 import { Alert } from "react-native";
+import FirstSignup from "../../screens/auth/FirstSignup";
 
 const AppStack = () => {
   const Stack = createStackNavigator();
@@ -123,8 +124,10 @@ const AppStack = () => {
       {!user?.email ? (
         <>
           <Stack.Screen name={"Join"} component={JoinScreen} />
-          <Stack.Screen name={"Login"} component={Login} />
+          <Stack.Screen name={"FirstSignup"} component={FirstSignup} />
           <Stack.Screen name={"Signup"} component={Signup} />
+          <Stack.Screen name={"Login"} component={Login} />
+
           <Stack.Screen name={"ProfileSetup"} component={ProfileSetup} />
           <Stack.Screen name={"LostPassword"} component={LostPassword} />
           <Stack.Screen name={"ResetPassword"} component={ResetPassword} />

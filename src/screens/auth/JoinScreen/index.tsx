@@ -38,7 +38,7 @@ const JoinScreen = () => {
         <Button
           text="CREATE ACCOUNT"
           width={"100%"}
-          onPress={() => navigation.navigate("Signup")}
+          onPress={() => navigation.navigate("FirstSignup")}
 
           // fontWeight={"500"}
           // size={16}

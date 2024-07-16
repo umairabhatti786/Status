@@ -136,3 +136,26 @@ export function capitalizeFirstLetter(str) {
       return inputDate.format('dddd MMMM DD');
     }
   };
+
+ export const calculateAge = (birthday:any) => {
+    // Parse the birthday string into a Date object
+    console.log("AllBirthdat", typeof birthday)
+    const birthDate = new Date(birthday);
+    
+    // Get today's date
+    const today = new Date();
+  
+    // Calculate the difference in years
+    let age = today.getFullYear() - birthDate.getFullYear();
+  
+    // Adjust the age if the birthday hasn't occurred yet this year
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+    const dayDifference = today.getDate() - birthDate.getDate();
+  
+    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+      age--;
+    }
+  
+    return age;
+  };
+  

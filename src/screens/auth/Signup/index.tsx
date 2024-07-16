@@ -1,48 +1,47 @@
 import React, { useEffect, useState } from "react";
 import {
   Alert,
-  LogBox,
-  StyleSheet,
   View,
-  Text,
   SafeAreaView,
-  FlatList,
   Image,
   TouchableOpacity,
-  ImageBackground,
 } from "react-native";
 import { appStyles } from "../../../utils/AppStyles";
-
 import { useNavigation } from "@react-navigation/native";
 import { images } from "../../../assets/images";
 import { Spacer } from "../../../components/Spacer";
-import CustomButton from "../../../components/CustomButton";
 import { colors } from "../../../utils/colors";
-import CustomText from "../../../components/CustomText";
-import CustomTextInput from "../../../components/CustomTextInput";
 import { scale, verticalScale } from "react-native-size-matters";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { windowHeight, windowWidth } from "../../../utils/Dimensions";
 import NewText from "../../../components/NewText";
 import Input from "../../../components/Input";
-import ErrorToast from "../../../components/ErrorToast";
 import CustomToast from "../../../components/CustomToast";
-import { emailRegex } from "../../../utils/Regex";
 import Button from "../../../components/Button";
 import { SignupForm } from "./SignupForm";
 import Loader from "../../../components/Loader";
 import { UserSignup } from "../../../api/ApiServices";
 import OneSignal from "react-native-onesignal";
+import moment from "moment";
+import LookingFor from "../../../components/LookingFor";
 
-const Signup = () => {
+const Signup = ({ route }: any) => {
   const navigation: any = useNavigation();
-  const [showPassword, setShowPAssword] = useState(true);
+  const [showPassword, setShowPAssword] = useState(false);
   const [showError, setShowError] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [toastColor, setToastColor] = useState(colors.red);
   const [deveiceId, setDeviceId] = useState();
 
+  const LookingForData = [
+    "Chat",
+    "Dates",
+    "Friends",
+    "Networking",
+    "Hookups",
+    "Relationship",
+  ];
   // useEffect(() => {
   //   getDeviceId();
   // }, []);
@@ -50,28 +49,37 @@ const Signup = () => {
   const getDeviceId = async () => {
     let deviceState = await OneSignal.getDeviceState();
     console.log("devchc", deviceState?.userId);
-    setDeviceId(deviceState?.userId);
+    // setDeviceId(deviceState?.userId);
   };
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<any>({
     email: "",
-    confirmEmail: "",
+    name: "",
     password: "",
+    lookingFor: [],
+    birthday: route?.params?.birthday,
   });
+
+  console.log("valueslookingFor",values)
+
+  const formattedBirthday = moment("1995-12-28").format("MMM D, YYYY");
+
+  console.log("DatsValeu", route?.params?.birthday);
 
   const OnSignup = async () => {
     const viladResponse = SignupForm(values, setShowError, setError);
     let deviceState = await OneSignal.getDeviceState();
 
-
     if (viladResponse) {
-
       const data = {
         email: values.email,
         password: values.password,
         deviceId: deviceState?.userId,
+        name: values.name,
+        birthday: values.birthday,
+        interesTags:values.lookingFor
       };
       setLoading(true);
-
+      console.log("Pramss",data)
 
       UserSignup(data, async ({ isSuccess, response }: any) => {
         if (isSuccess) {
@@ -116,10 +124,7 @@ const Signup = () => {
         }
       });
 
-
       // console.log("ckbdckdbc",response)
-
-  
     }
   };
 
@@ -142,28 +147,35 @@ const Signup = () => {
       >
         <SafeAreaView style={{ flex: 1 }}>
           <View style={{ flex: 1, padding: scale(20) }}>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={images.back} />
-            </TouchableOpacity>
+            <View style={appStyles.row}>
+              <TouchableOpacity
+                style={{ width: "15%", height: 40, justifyContent: "center" }}
+                onPress={() => navigation.goBack()}
+              >
+                <Image source={images.back} />
+              </TouchableOpacity>
+
+              <NewText
+                text={"Create Account (2 of 2)"}
+                color={colors.white}
+                size={20}
+                style={{ textAlign: "center" }}
+                fontFam="Poppins-Medium"
+                fontWeight="500"
+              />
+            </View>
+
             <Spacer height={verticalScale(10)} />
-            <Image
-              style={{
-                width: windowWidth / 3.5,
-                height: windowHeight / 5.7,
-                alignSelf: "center",
+
+            <Input
+              label="Name"
+              value={values.name}
+              onChangeText={(txt: string) => {
+                setValues({ ...values, name: txt });
               }}
-              source={images.logo}
-              resizeMode="contain"
+              placeholder="Choose a display name"
             />
-            <NewText
-              text={"Create Account"}
-              color={colors.white}
-              size={25}
-              style={{ textAlign: "center" }}
-              fontFam="Poppins-Medium"
-              fontWeight="500"
-            />
-            <Spacer height={10} />
+            <Spacer height={5} />
 
             <Input
               label="Email"
@@ -171,18 +183,11 @@ const Signup = () => {
               onChangeText={(txt: string) => {
                 setValues({ ...values, email: txt });
               }}
-              placeholder="Enter your email address"
+              placeholder="Enter your email"
             />
-            <Spacer height={7} />
-            <Input
-              label="Confirm Email"
-              value={values.confirmEmail}
-              onChangeText={(txt: string) => {
-                setValues({ ...values, confirmEmail: txt });
-              }}
-              placeholder="Confirm your email address"
-            />
-            <Spacer height={7} />
+            <Spacer height={5} />
+
+            <Spacer height={5} />
             <Input
               label="Password"
               isPassword={showPassword}
@@ -191,10 +196,82 @@ const Signup = () => {
                 setValues({ ...values, password: txt });
               }}
               onShowPassword={() => setShowPAssword(!showPassword)}
-              placeholder="At least 6 characters"
+              placeholder="8-20 character password"
               source={showPassword ? images.eyeclose : images.eye}
             />
             <Spacer height={15} />
+            <View
+              style={{
+                marginVertical: verticalScale(10),
+                // gap: verticalScale(10),
+              }}
+            >
+              <NewText
+                fontWeight={"500"}
+                fontFam="Poppins-Medium"
+                size={16}
+                text={"Looking For"}
+                color={colors.white}
+              />
+              <View
+                style={{
+                  ...appStyles.row,
+                  flexWrap: "wrap",
+                  marginVertical: verticalScale(10),
+                }}
+              >
+                {LookingForData.map((item, index) => {
+                  return (
+                    <View
+                      style={{ marginBottom: verticalScale(8) }}
+                      key={index}
+                    >
+                      <LookingFor
+                    
+                      lookingFor={values?.lookingFor}
+                        onPress={() => {
+                          let findIndex = values.lookingFor.findIndex(
+                            (i: string) => i === item
+                          );
+
+                          if (findIndex === -1) {
+                            // If item is not in the array, add it
+                            setValues((prevValues) => ({
+                              ...prevValues,
+                              lookingFor: [...prevValues.lookingFor, item],
+                            }));
+                          } else {
+                            // If item is in the array, remove it (if needed)
+                            setValues((prevValues) => ({
+                              ...prevValues,
+                              lookingFor: prevValues.lookingFor.filter(
+                                (i: string) => i !== item
+                              ),
+                            }));
+                          }
+                        }}
+                        label={item}
+                      />
+                    </View>
+                  );
+                })}
+              </View>
+
+              <NewText
+                fontWeight={"500"}
+                fontFam="Poppins-Medium"
+                size={16}
+                text={"Date of Birth"}
+                color={colors.white}
+              />
+              <NewText
+                fontWeight={"500"}
+                fontFam="Poppins-Medium"
+                size={14}
+                text={moment(values.birthday).format("MMM D, YYYY")}
+                color={"#CCCCCC"}
+              />
+            </View>
 
             <View>
               <View style={{ ...appStyles.row }}>
@@ -254,7 +331,7 @@ const Signup = () => {
                 </TouchableOpacity>
               </View>
             </View>
-            <Spacer height={25} />
+            <Spacer height={10} />
 
             <Button
               text="CONTINUE"
@@ -266,43 +343,6 @@ const Signup = () => {
             />
             <Spacer height={25} />
 
-            <View style={{ height: 1, backgroundColor: colors.white }} />
-            <Spacer height={20} />
-            <TouchableOpacity
-              activeOpacity={0.6}
-              onPress={() => navigation.navigate("Login")}
-              style={{
-                ...appStyles.row,
-                justifyContent: "center",
-                paddingVertical: verticalScale(5),
-                width: "65%",
-                alignSelf: "center",
-              }}
-            >
-              <NewText
-                text={"Already a member?"}
-                color={colors.white}
-                // size={11}
-                style={{ textAlign: "center" }}
-                fontFam="Poppins-Medium"
-                fontWeight="500"
-              />
-              <Spacer width={5} />
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => navigation.navigate("Login")}
-              >
-                <NewText
-                  text={"Log In here"}
-                  color={colors.white}
-                  // size={11}
-                  textDecorationLine={"underline"}
-                  style={{ textAlign: "center" }}
-                  fontFam="Poppins-Medium"
-                  fontWeight="500"
-                />
-              </TouchableOpacity>
-            </TouchableOpacity>
             {/* <ErrorToast
           text="Invalid email address"
           /> */}
