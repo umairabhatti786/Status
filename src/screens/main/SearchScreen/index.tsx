@@ -299,7 +299,7 @@ console.log("AlluserLdnc",allUsers)
               );
             })}
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.categoryBtn}
               activeOpacity={0.6}
               onPress={() => bottomSheetModalRef?.current?.present()}
@@ -310,7 +310,7 @@ console.log("AlluserLdnc",allUsers)
                 style={{ width: 17, height: 17 }}
                 source={images.arrowdown}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/* <Button
               onPress={() => {

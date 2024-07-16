@@ -60,6 +60,7 @@ import {
 import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
 import constants from "../../../redux/constants";
 import { calculateAge } from "../../../utils/CommonFun";
+import Button from "../../../components/Button";
 
 const OthersProfile = () => {
   const pusher = Pusher.getInstance();
@@ -95,10 +96,13 @@ const OthersProfile = () => {
   // const age = calculateAge(data?.birthday);
   const { birthday, gender, orientation, relationshipStatus } = data || {};
 
-  const userDetail = `${birthday ? birthday + ' / ' : ''}${gender ? gender + ' / ' : ''}${orientation ? orientation + ' / ' : ''}${relationshipStatus ? relationshipStatus : ''}`.trim();
+  const userDetail = `${birthday ? birthday + " / " : ""}${
+    gender ? gender + " / " : ""
+  }${orientation ? orientation + " / " : ""}${
+    relationshipStatus ? relationshipStatus : ""
+  }`.trim();
 
-
-  console.log("lcndlncd",userDetail)
+  console.log("lcndlncd", userDetail);
 
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
 
@@ -788,7 +792,7 @@ const OthersProfile = () => {
                     <View
                       style={{
                         paddingVertical: verticalScale(15),
-                        paddingHorizontal: scale(10),
+                        paddingHorizontal: scale(5),
                         gap: verticalScale(10),
                       }}
                     >
@@ -847,14 +851,81 @@ const OthersProfile = () => {
                         </View>
                       )}
                     </View>
+                    {
+                      data?.interestTags&&(
+
+                        <View
+                        style={{
+                          ...appStyles.row,
+                          marginBottom: verticalScale(12),
+                          // marginLeft: scale(10),
+                        }}
+                      >
+                        <ScrollView
+                          horizontal
+                          // style={{ gap:scale(15) }}
+                          showsHorizontalScrollIndicator={false}
+                        >
+                          <NewText
+                            color={colors.white}
+                            style={{ marginRight: scale(10) }}
+                            size={16}
+                            text={"HERE FOR"}
+                          />
+                          {JSON.parse(data?.interestTags).map((item, index) => {
+                            return (
+                              <View style={{ marginHorizontal: scale(3) }}>
+                                <Button
+                                  height={25}
+                                  fontFam={"Inter-Regular"}
+                                  borderRadius={15}
+                                  paddingHorizontal={15}
+                                  size={15}
+                                  textColor={colors.white}
+                                  bgColor={"#1D2029"}
+                                  text={item}
+                                />
+                              </View>
+                            );
+                          })}
+  
+                          {/* <TouchableOpacity
+                style={styles.categoryBtn}
+                activeOpacity={0.6}
+                onPress={() => bottomSheetModalRef?.current?.present()}
+              >
+                <NewText color={colors.white} size={14} text={selectedType} />
+                <Spacer width={5} />
+                <Image
+                  style={{ width: 17, height: 17 }}
+                  source={images.arrowdown}
+                />
+              </TouchableOpacity> */}
+                        </ScrollView>
+                      </View>
+
+                      )
+                    }
+
+                  
+                    {/* <View style={{...appStyles.row,marginBottom:verticalScale(10)}}>
+                    <NewText
+                            color={colors.white}
+                            style={{ marginTop: 3 }}
+                            size={16}
+                            text={"HERE FOR"}
+                          />
+
+                    </View> */}
                     <View
                       style={{
-                        backgroundColor: colors.primary,
-                        borderWidth:1,
-                        borderColor:"#8A8A8A",
-                        borderTopLeftRadius:scale(15),
-                        borderTopRightRadius:scale(15),
-                        borderBottomRightRadius:scale(15),
+                        backgroundColor: "#1D2029",
+                        borderWidth: 1,
+                        borderColor: "#8A8A8A",
+                        borderTopLeftRadius: scale(15),
+                        borderTopRightRadius: scale(15),
+                        borderBottomRightRadius: scale(15),
+                        marginBottom:verticalScale(10),
 
                         // borderBottomRightRadius: scale(5),
                         // borderBottomLeftRadius: scale(5),
@@ -864,8 +935,9 @@ const OthersProfile = () => {
                       {data?.bio && (
                         <NewText
                           color={colors.white}
-                          lineHeight={20}
+                          lineHeight={22}
                           size={15}
+                          fontWeight="Poppins-Medium"
                           text={data?.bio}
                         />
                       )}
