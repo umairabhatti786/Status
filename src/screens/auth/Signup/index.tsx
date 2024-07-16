@@ -76,7 +76,7 @@ const Signup = ({ route }: any) => {
         deviceId: deviceState?.userId,
         name: values.name,
         birthday: values.birthday,
-        interesTags:values.lookingFor
+        interestTags:values.lookingFor
       };
       setLoading(true);
       console.log("Pramss",data)

@@ -252,6 +252,36 @@ const EditProfile = ({ route }: any) => {
     },
   ];
 
+  const OrientationData = [
+    {
+      id: 1,
+      label: "STRAIGHT",
+      value: "STRAIGHT",
+    },
+    {
+      id: 2,
+      label: "BISEXUAL",
+      value: "BISEXUAL",
+    },
+
+    {
+      id: 3,
+      label: "GAY",
+      value: "GAY",
+    },
+    {
+      id: 4,
+      label: "Bodybuilder",
+      value: "Bodybuilder",
+    },
+   
+
+  
+    
+    
+    
+  ];
+
   useEffect(() => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
       setSelectedGifs((prevSelectedGifs) => [...prevSelectedGifs, e.media.url]);
@@ -1027,6 +1057,29 @@ const EditProfile = ({ route }: any) => {
                 marginTop={"7%"}
               />
             </View>
+
+            <CustomText
+              fontWeight={"500"}
+              fontFam="Poppins-Medium"
+              size={13}
+              style={{ marginBottom: verticalScale(5),marginTop:verticalScale(20) }}
+              text={"Orientation"}
+              color={colors.white}
+            />
+            <DropDown
+              placeholder={"Make a Selection"}
+              mainWidth={"60%"}
+              setValue={setProfileType}
+              value={profileType}
+              //   data={data}
+              data={OrientationData.map((item, _index) => {
+                return {
+                  id: item?.id,
+                  label: item?.value,
+                  value: item?.value,
+                };
+              })}
+            />
 
             <Input
               // labelSize={15}

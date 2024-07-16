@@ -17,7 +17,8 @@ const DropDown = ({
   dropWidth,
   borderWidth,
   onChangeDropDown,
-  setValue
+  setValue,
+  mainWidth
 }:any) => {
   const [open, setOpen] = useState(false)
 
@@ -36,7 +37,7 @@ const DropDown = ({
   )
 
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container,width: mainWidth|| "100%"}}>
       <Dropdown
         style={{
           ...styles.dropdown,
@@ -58,6 +59,9 @@ const DropDown = ({
         placeholderStyle={{
           ...styles.placeholderStyle,
           color: placeholderColor || colors.white,
+          fontSize:15,
+
+
         }}
         // itemContainerStyle={{borderRadius:10,borderBottomWidth:1,borderColor:colors.placeholdeColor,marginVertical:5}}
 
