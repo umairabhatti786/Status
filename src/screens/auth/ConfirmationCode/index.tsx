@@ -82,7 +82,7 @@ const dispatch=useDispatch()
     VerifyOtp(data, async ({ isSuccess, response }: any) => {
       if (isSuccess) {
         let result = JSON.parse(response);
-        console.log("resultOtp", result);
+        console.log("resultOtpkvdbbvkbd", result);
         if (result.status) {
           setLoading(false);
           if (result?.errors) {
@@ -102,9 +102,9 @@ const dispatch=useDispatch()
               setShowError(false);
               setToastColor(colors.red)
               StorageServices.setItem(AUTH,result?.user)
-              StorageServices.setItem(TOKEN,result?.token)
+              StorageServices.setItem(TOKEN,result.token)
               // StorageServices.setItem(REMEMBER,isRemember)z
-              dispatch(setToken(result?.token))
+              dispatch(setToken(result.token))
               // dispatch(setRemember(isRemember))
   
               dispatch(setUserData(result?.user))

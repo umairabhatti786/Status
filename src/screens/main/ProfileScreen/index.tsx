@@ -39,7 +39,9 @@ import Channel from "../Channel";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getToken,
+  getUserData,
   setDisableBottomTab,
+  setUserData,
 } from "../../../redux/reducers/authReducer";
 import {
   CreateComment,
@@ -47,6 +49,7 @@ import {
   GetAuthUser,
   GetStatus,
   GetUserComment,
+  getUserDetail,
 } from "../../../api/ApiServices";
 import NewText from "../../../components/NewText";
 import FastImage from "react-native-fast-image";
@@ -67,6 +70,8 @@ import {
   GiphyTheme,
   GiphyThemePreset,
 } from "@giphy/react-native-sdk";
+import Button from "../../../components/Button";
+import { calculateAgeString } from "../../../utils/CommonFun";
 
 GiphySDK.configure({ apiKey: "C9JfKgGLTfcnLfvQ8O189iehEyTOq0tm" });
 GiphyDialog.configure({
@@ -95,7 +100,8 @@ const ProfileScreen = () => {
   const [comments, setComments] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
-  const [userData, setUserData] = useState<any>();
+  const [userDetails, setUserDetails] = useState<any>();
+const userData=useSelector(getUserData)
   const token = useSelector(getToken);
   const [authPosts, setAuthPosts] = useState([]);
   const [giphy, setGiphy] = useState("");
@@ -115,7 +121,13 @@ const ProfileScreen = () => {
     setIsChannelId(userInfo?.channel?.id);
   };
 
-  console.log("UserDatatype", typeof  userData?.wallComments);
+  const userDetail = `${ userDetails.showAge==1? userDetails?.birthday ?calculateAgeString(userDetails?. birthday )+ " / " : "":" "}${
+    userDetails?. gender ? userDetails?.gender + " / " : "Undisclosed"+ " / "
+  }${userDetails?.orientation ? userDetails?.orientation + " / " : "Undisclosed"+ " / "}${
+    userDetails?.relationshipStatus ?userDetails?. relationshipStatus :  "Undisclosed"
+  }`.trim();
+
+  console.log("UserDatatypeuserDetails",  userDetails);
   useEffect(() => {
     setImageForEdit(imageForEdit);
   }, [isEditView]);
@@ -252,7 +264,7 @@ const ProfileScreen = () => {
   const submitComment = async () => {
     let data = {
       description: comment,
-      userId: userData?.id,
+      userId: userDetails?.id,
     };
     // console.log(data)
     setLoading2(true);
@@ -276,14 +288,23 @@ const ProfileScreen = () => {
 
   const getAuth = () => {
     setLoading(true);
-    GetAuthUser(token, async ({ isSuccess, response }: any) => {
-      if (isSuccess) {
+
+       let params = {
+      id: userData?.id,
+    };
+    // getUserDetail(params, token, async ({ isSuccess, response }: any) => {
+    //   console.log("knckdnc", isSuccess);
+
+
+      getUserDetail(params, token, async ({ isSuccess, response }: any) => {
+        if (isSuccess) {
         let result = JSON.parse(response);
         // console.log("ckdnckdnc", result?.user);
 
         if (result.status) {
           setLoading(false);
-          setUserData(result?.user);
+          setUserDetails(result?.user);
+          dispatch(setUserData(result?.user))
           // setNextPageUrl(!result?.users?.next_page_url?true:false)
         } else {
           setLoading(false);
@@ -314,9 +335,9 @@ const ProfileScreen = () => {
     );
   };
   const shortenedText =
-    userData?.name?.length > 20
-      ? userData?.name?.substring(0, 19) + "..."
-      : userData?.name;
+  userDetails?.name?.length > 20
+      ? userDetails?.name?.substring(0, 19) + "..."
+      : userDetails?.name;
 
   return (
     <>
@@ -344,7 +365,7 @@ const ProfileScreen = () => {
                   borderRadius: 999,
                 }}
                 source={{
-                  uri: userData?.imageUrl,
+                  uri: userDetails?.imageUrl,
                   headers: { Authorization: "someAuthToken" },
                   priority: FastImage.priority.high,
                 }}
@@ -368,7 +389,7 @@ const ProfileScreen = () => {
                   color={colors.white}
                   size={14}
                   style={{ marginTop: verticalScale(-3) }}
-                  text={`${userData?.followers_count} Followers`}
+                  text={`${userDetails?.followers_count} Followers`}
                 />
               </View>
             </View>
@@ -376,7 +397,7 @@ const ProfileScreen = () => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 onPress={() =>
-                  navigation.navigate("EditProfile", { data: userData })
+                  navigation.navigate("EditProfile", { data: userDetails })
                 }
               >
                 <NewText
@@ -440,7 +461,7 @@ const ProfileScreen = () => {
           {isActiveProfile == "Profile" ? (
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                <View
+                {/* <View
                   style={{
                     ...appStyles.row,
                     paddingBottom: verticalScale(5),
@@ -483,20 +504,55 @@ const ProfileScreen = () => {
                       text={userData?.occupation}
                     />
                   </View>
-                </View>
-                <FastImage
-                  style={{
-                    width: "100%",
-                    height: verticalScale(350),
-                    alignSelf: "center",
-                  }}
-                  resizeMode="cover"
-                  source={{
-                    uri: userData?.imageUrl,
-                    headers: { Authorization: "someAuthToken" },
-                    priority: FastImage.priority.high,
-                  }}
-                />
+                </View> */}
+                 <View>
+                    <FastImage
+                      style={{
+                        width: "100%",
+                        height: verticalScale(350),
+                        alignSelf: "center",
+                      }}
+                      resizeMode="cover"
+                      source={{
+                        uri: userDetails?.imageUrl,
+                        headers: { Authorization: "someAuthToken" },
+                        priority: FastImage.priority.high,
+                      }}
+                    />
+
+                    {userDetails?.isOnline == 1 ? (
+                      <View
+                        style={{
+                          position: "absolute",
+                          bottom: verticalScale(20),
+                          left: scale(20),
+                          flexDirection: "row",
+                          gap: scale(10),
+                          alignItems: "center",
+                        }}
+                      >
+                        <View
+                          style={{
+                            width: scale(11),
+                            height: scale(11),
+                            borderRadius: 999,
+                            backgroundColor: colors.green,
+                          }}
+                        ></View>
+
+                        <CustomText
+                          color={colors.white}
+                          size={15}
+                          numberOfLines={1}
+                          fontFam="Inter-Medium"
+                          // style={{ marginLeft: scale(8), marginRight: scale(10) }}
+                          text={"Online now"}
+                        />
+                      </View>
+                    ) : (
+                      <></>
+                    )}
+                  </View>
 
                 <View style={appStyles.rowjustify}>
                   <TouchableOpacity
@@ -572,58 +628,234 @@ const ProfileScreen = () => {
                   </TouchableOpacity>
                 </View>
                 <View style={{ paddingHorizontal: scale(10) }}>
-                  <View
-                    style={{
-                      borderBottomRightRadius: scale(5),
-                      borderBottomLeftRadius: scale(5),
-                      paddingLeft: scale(10),
-                      paddingVertical: verticalScale(10),
-                    }}
-                  >
-                    {userData?.bio && (
+
+                <View
+                      style={{
+                        paddingVertical: verticalScale(15),
+                        paddingHorizontal: scale(5),
+                        gap: verticalScale(10),
+                      }}
+                    >
                       <NewText
                         color={colors.white}
                         lineHeight={20}
-                        size={15}
-                        text={userData?.bio}
+                        fontWeight="600"
+                        fontFam="Inter-SemiBold"
+                        size={17}
+                        text={"Personal Information"}
                       />
-                    )}
+                      {userDetails?.location && (
+                        <View style={{ ...appStyles.row, gap: scale(10) }}>
+                          <Image
+                            style={{ width: scale(18), height: scale(18) }}
+                            source={images.homefill}
+                          />
+                          <NewText
+                            color={colors.grey300}
+                            fontWeight="700"
+                            style={{ marginTop: 3 }}
+                            fontFam="Inter-Medium"
+                            size={16}
+                            text={userDetails?.location}
+                          />
+                        </View>
+                      )}
 
-                    {userData?.link && (
-                      <TouchableOpacity
-                        activeOpacity={0.6}
-                        onPress={() => {
-                          Linking.openURL(userData?.link);
-                        }}
+                      {userDetails?.distance >= 0 && (
+                        <View style={{ ...appStyles.row, gap: scale(10) }}>
+                          <Image
+                            style={{ width: scale(18), height: scale(18) }}
+                            source={images.locationicon}
+                          />
+                          <NewText
+                            color={colors.white}
+                            style={{ marginTop: 3 }}
+                            size={16}
+                            text={`${userDetails?.distance.toFixed(2)} miles away`}
+                          />
+                        </View>
+                      )}
+
+                      {userDetail && (
+                        <View style={{ ...appStyles.row, gap: scale(10) }}>
+                          <Image
+                            style={{ width: scale(18), height: scale(18) }}
+                            source={images.user}
+                          />
+                          <NewText
+                            color={colors.white}
+                            style={{ marginTop: 3 }}
+                            size={16}
+                            text={userDetail}
+                          />
+                        </View>
+                      )}
+                    </View>
+                    {userDetails?.interestTags && (
+                      <View
                         style={{
                           ...appStyles.row,
-                          marginTop: verticalScale(3),
+                          marginBottom: verticalScale(12),
                         }}
                       >
-                        <Image
-                          style={{
-                            width: scale(18),
-                            height: scale(18),
-                          }}
-                          resizeMode="contain"
-                          source={images.link}
-                        />
-                        <NewText
-                          color={colors.grey300}
-                          size={14}
-                          fontFam="Inter-Medium"
-                          style={{ marginLeft: scale(8) }}
-                          text={userData?.link}
-                        />
-                      </TouchableOpacity>
+                        <ScrollView
+                          horizontal
+                          showsHorizontalScrollIndicator={false}
+                        >
+                          <NewText
+                            color={colors.white}
+                            style={{ marginRight: scale(10) }}
+                            size={16}
+                            text={"HERE FOR"}
+                          />
+                          {JSON.parse(userDetails?.interestTags).map((item, index) => {
+                            return (
+                              <View style={{ marginHorizontal: scale(3) }}>
+                                <Button
+                                  height={25}
+                                  fontFam={"Inter-Regular"}
+                                  borderRadius={15}
+                                  paddingHorizontal={15}
+                                  size={15}
+                                  textColor={colors.white}
+                                  bgColor={"#1D2029"}
+                                  text={item}
+                                />
+                              </View>
+                            );
+                          })}
+
+                          {/* <TouchableOpacity
+                style={styles.categoryBtn}
+                activeOpacity={0.6}
+                onPress={() => bottomSheetModalRef?.current?.present()}
+              >
+                <NewText color={colors.white} size={14} text={selectedType} />
+                <Spacer width={5} />
+                <Image
+                  style={{ width: 17, height: 17 }}
+                  source={images.arrowdown}
+                />
+              </TouchableOpacity> */}
+                        </ScrollView>
+                      </View>
                     )}
-                  </View>
+
+{
+                      userData?.bio?(
+                        <View
+                        style={styles.bioContainer}
+                      >
+                        {userData?.bio && (
+                          <NewText
+                            color={colors.white}
+                            lineHeight={22}
+                            size={15}
+                            fontWeight="Poppins-Medium"
+                            text={userData?.bio}
+                          />
+                        )}
+  
+                        {userData?.link && (
+                          <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => {
+                              Linking.openURL(userData?.link);
+                            }}
+                            style={{
+                              flexDirection: "row",
+                              marginTop: verticalScale(3),
+                            }}
+                          >
+                            <Image
+                              style={{
+                                width: scale(18),
+                                height: scale(18),
+                              }}
+                              resizeMode="contain"
+                              source={images.link}
+                            />
+                            <NewText
+                              color={colors.white}
+                              size={14}
+                              fontFam="Inter-Medium"
+                              style={{
+                                marginRight: scale(20),
+                                marginLeft: scale(8),
+                              }}
+                              text={userData?.link}
+                            />
+                          </TouchableOpacity>
+                        )}
+                      </View>
+
+                      ):
+                      (
+                        <>
+                        {
+                          userData?.link&&(
+
+                            <View
+                            style={styles.bioContainer}
+                          >
+                            {userData?.bio && (
+                              <NewText
+                                color={colors.white}
+                                lineHeight={22}
+                                size={15}
+                                fontWeight="Poppins-Medium"
+                                text={userData?.bio}
+                              />
+                            )}
+      
+                            {userData?.link && (
+                              <TouchableOpacity
+                                activeOpacity={0.6}
+                                onPress={() => {
+                                  Linking.openURL(userData?.link);
+                                }}
+                                style={{
+                                  flexDirection: "row",
+                                  marginTop: verticalScale(3),
+                                }}
+                              >
+                                <Image
+                                  style={{
+                                    width: scale(18),
+                                    height: scale(18),
+                                  }}
+                                  resizeMode="contain"
+                                  source={images.link}
+                                />
+                                <NewText
+                                  color={colors.white}
+                                  size={14}
+                                  fontFam="Inter-Medium"
+                                  style={{
+                                    marginRight: scale(20),
+                                    marginLeft: scale(8),
+                                  }}
+                                  text={userData?.link}
+                                />
+                              </TouchableOpacity>
+                            )}
+                          </View>
+
+                          )
+                        }
+                        </>
+                      )
+
+                    }
+
+
+                
                   <View style={appStyles.rowjustify}>
-                    {userData?.gif1 && (
+                    {userDetails?.gif1 && (
                       <View style={styles.gifhyContainer}>
                         <Image
                           style={{ width: "100%", height: "100%" }}
-                          source={{ uri: userData?.gif1 }}
+                          source={{ uri: userDetails?.gif1 }}
                         />
 
                         <View
@@ -641,11 +873,11 @@ const ProfileScreen = () => {
                         </View>
                       </View>
                     )}
-                    {userData?.gif2 && (
+                    {userDetails?.gif2 && (
                       <View style={styles.gifhyContainer}>
                         <Image
                           style={{ width: "100%", height: "100%" }}
-                          source={{ uri: userData?.gif2 }}
+                          source={{ uri: userDetails?.gif2 }}
                         />
                         <View
                           style={{ position: "absolute", right: 5, bottom: 0 }}
@@ -664,7 +896,7 @@ const ProfileScreen = () => {
                     )}
                   </View>
                   {
-                    userData?.wallComments&&(
+                    userDetails?.wallComments&&(
                       <View
                       style={{
                         flexDirection: "row",
@@ -739,7 +971,7 @@ const ProfileScreen = () => {
                   }}
                 >
                   <Channel
-                    userData={userData}
+                    userData={userDetails}
                     channelId={channelId}
                     token={token}
                     authPosts={authPosts}
@@ -824,4 +1056,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.black300,
     justifyContent: "center",
   },
+  bioContainer:{
+    backgroundColor: "#1D2029",
+    borderWidth: 1,
+    borderColor: "#8A8A8A",
+    borderTopLeftRadius: scale(15),
+    borderTopRightRadius: scale(15),
+    borderBottomRightRadius: scale(15),
+    marginBottom: verticalScale(10),
+    padding: scale(15),
+  }
 });

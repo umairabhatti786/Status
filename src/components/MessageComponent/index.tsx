@@ -20,7 +20,7 @@ type Props = {
   edit?: boolean;
   onEdit?: () => void;
   onDelete: any;
-  onPress?:()=>void
+  onPress?: () => void;
 };
 
 const MessagesComponent = ({
@@ -34,13 +34,10 @@ const MessagesComponent = ({
   edit,
   onEdit,
   onDelete,
-  onPress
+  onPress,
 }: Props) => {
-let nameData="umair abbas bhatti 719 @gmail.com"
-  const shortenedName =
-  name?.length > 20
-    ? name?.substring(0, 21)
-    : name;
+  let nameData = "umair abbas bhatti 719 @gmail.com";
+  const shortenedName = name?.length > 20 ? name?.substring(0, 21) : name;
 
   return (
     <View>
@@ -88,9 +85,10 @@ let nameData="umair abbas bhatti 719 @gmail.com"
         }}
       >
         <TouchableOpacity
-        activeOpacity={0.6}
-        onPress={onPress}
-         style={{ width: 62, height: 62 }}>
+          activeOpacity={0.6}
+          onPress={onPress}
+          style={{ width: 62, height: 62 }}
+        >
           <FastImage
             style={{ width: "100%", height: "100%", borderRadius: scale(5) }}
             source={{ uri: image }}
@@ -108,13 +106,12 @@ let nameData="umair abbas bhatti 719 @gmail.com"
             <View
               style={{
                 ...appStyles.row,
-                marginTop: verticalScale(-3),
+                marginTop: verticalScale(-10),
                 width: "95%",
-                gap:7
+                gap: 7,
               }}
             >
-
-{/* const shortenedText =
+              {/* const shortenedText =
               item?.author?.name?.length > 30
                 ? item?.author?.name?.substring(0, 29)
                 : item?.author?.name; */}
@@ -139,8 +136,6 @@ let nameData="umair abbas bhatti 719 @gmail.com"
                 }}
               />
 
-          
-
               <CustomText
                 text={formatTimeDifference(time)}
                 color={colors.gray500}
@@ -152,17 +147,15 @@ let nameData="umair abbas bhatti 719 @gmail.com"
           </View>
           <CustomText
             text={message}
-            color={ colors.white}
-            size={16}
-            lineHeight={20}
+            color={colors.white}
+            size={15}
+            lineHeight={17}
             style={{ width: windowWidth / 1.8, marginTop: verticalScale(2) }}
-            // style={{               width: scale(190),              // backgroundColor:"red"
-            // marginTop:verticalScale(2) }}
-            fontFam="Poppins-Medium"
-            fontWeight={profile ? "600" : "500"}
+            fontFam="Inter-Medium"
+            fontWeight={"600"}
           />
         </View>
-         {onDelete ? (
+        {onDelete ? (
           <TouchableOpacity
             onPress={onDelete}
             style={{
@@ -172,11 +165,11 @@ let nameData="umair abbas bhatti 719 @gmail.com"
               alignItems: "flex-end",
               justifyContent: "space-between",
               marginRight: scale(5),
-              alignSelf:"flex-end",
+              alignSelf: "flex-end",
               position: "absolute",
               // backgroundColor:"red",
               right: scale(10),
-              bottom:0,
+              bottom: 0,
 
               // paddingBottom: 5,
               // backgroundColor:"red"
@@ -191,7 +184,7 @@ let nameData="umair abbas bhatti 719 @gmail.com"
           </TouchableOpacity>
         ) : (
           <></>
-        )} 
+        )}
       </View>
     </View>
   );

@@ -388,7 +388,7 @@ const FirstSignup = () => {
               //   .padStart(2, "0")}`;
               // console.log("birth", birth);
 
-              1995-12-28
+        
               setMonth(month.toString().padStart(2, "0"));
               setDay(day);
               setYear(year);

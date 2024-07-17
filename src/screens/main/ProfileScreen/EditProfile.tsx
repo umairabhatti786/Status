@@ -25,7 +25,7 @@ import { Spacer } from "../../../components/Spacer";
 import { scale, verticalScale } from "react-native-size-matters";
 import ToggleSwitch from "toggle-switch-react-native";
 import DropDown from "../../../components/DropDown";
-import { LookingForData, data } from "../../../utils/Data";
+import { LookingForData, OrientationData, RelationshipStatusData, data } from "../../../utils/Data";
 import NewText from "../../../components/NewText";
 import ImagePicker from "react-native-image-crop-picker";
 import { usePermissions } from "../../../utils/Permissions";
@@ -122,15 +122,19 @@ const EditProfile = ({ route }: any) => {
   // const [profileType, setProfileType] = useState(
   //   userData?.profileType ? userData?.profileType : ""
   // );
-  const [orientation,setOrientation]=useState(userData?.orientation? userData?.orientation:"")
-  const [relationshipStatus,setRelationshipStatus]=useState(userData?.relationshipStatus?userData?.relationshipStatus:"")
+  const [orientation, setOrientation] = useState(
+    userData?.orientation ? userData?.orientation : ""
+  );
+  const [relationshipStatus, setRelationshipStatus] = useState(
+    userData?.relationshipStatus ? userData?.relationshipStatus : ""
+  );
 
-
-  console.log("orientationccccc",orientation)
+  console.log("orientationccccc", orientation);
+  const [birthday,setIsBirthday]=useState("")
 
   const [values, setValues] = useState({
     wallComments: userData?.wallComments,
-    showAge:userData?.showAge,
+    showAge: userData?.showAge,
     bio: userData?.bio ? userData?.bio : "",
     imageUrl: userData?.imageUrl ? userData?.imageUrl : "",
     wallpaperUrl: userData?.wallpaperUrl ? userData?.wallpaperUrl : "",
@@ -145,14 +149,14 @@ const EditProfile = ({ route }: any) => {
     location: userData?.location ? userData?.location : "",
     lat: userData?.lat ? userData?.lat : "",
     lng: userData?.lng ? userData?.lng : "",
-    interestTags: userData?.interestTags? JSON?.parse(userData?.interestTags):[]
-
+    interestTags: userData?.interestTags
+      ? JSON?.parse(userData?.interestTags)
+      : [],
   });
 
   const [deleteWallImage, setDeleteWallImage] = useState(0);
 
   const nonEmptySelectedGifs = selectedGifs.filter((gif) => gif !== "");
-
 
   useEffect(() => {
     console.log("profileGifs", profileGifs);
@@ -260,57 +264,7 @@ const EditProfile = ({ route }: any) => {
     },
   ];
 
-  const OrientationData = [
-    {
-      id: 1,
-      label: "STRAIGHT",
-      value: "STRAIGHT",
-    },
-    {
-      id: 2,
-      label: "BISEXUAL",
-      value: "BISEXUAL",
-    },
 
-    {
-      id: 3,
-      label: "GAY",
-      value: "GAY",
-    },
-    
-   
-
-  
-    
-    
-    
-  ];
-
-  const relationshipStatusData = [
-    {
-      id: 1,
-      label: "STRAIGHT",
-      value: "STRAIGHT",
-    },
-    {
-      id: 2,
-      label: "BISEXUAL",
-      value: "BISEXUAL",
-    },
-
-    {
-      id: 3,
-      label: "GAY",
-      value: "GAY",
-    },
-    
-   
-
-  
-    
-    
-    
-  ];
 
   useEffect(() => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
@@ -357,7 +311,7 @@ const EditProfile = ({ route }: any) => {
   };
 
   const onPressLocationAddress = async (i) => {
-    console.log("knvkdnkvd")
+    console.log("knvkdnkvd");
     const apiUrl = `${URLS.GOOGLE_PLACES_API_BASE_URL}/details/json?key=${URLS.GOOGLE_MAP_KEY}&place_id=${i.place_id}`;
     let call = await fetch(apiUrl);
     let res = await call.text();
@@ -523,11 +477,15 @@ const EditProfile = ({ route }: any) => {
     form.append("profileType", "Other");
     form.append("wallpaperUrl", values.wallpaperUrl);
     form.append("interestTags", JSON.stringify(values.interestTags));
-    form.append("showAge", 0);
-    form.append("orientation", "BISEXUAL");
-    form.append("relationshipStatus", "BISEXUAL");
-    console.log("relationshipStatus", orientation,relationshipStatus,values.showAge);
-
+    form.append("showAge", values.showAge ? 1 : 0);
+    form.append("orientation", orientation);
+    form.append("relationshipStatus", relationshipStatus);
+    console.log(
+      "relationshipStatus",
+      orientation,
+      relationshipStatus,
+      values.showAge
+    );
 
     form.append("deleteWallImage", deleteWallImage);
     form.append(
@@ -814,12 +772,13 @@ const EditProfile = ({ route }: any) => {
 
             <View style={appStyles.rowjustify}>
               {nonEmptySelectedGifs[0] == undefined && (
-                <TouchableOpacity 
-                activeOpacity={0.6}
-                onPress={() => {
-                  GiphyDialog.show();
-                }}
-                style={styles.gifhyContainer}>
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={() => {
+                    GiphyDialog.show();
+                  }}
+                  style={styles.gifhyContainer}
+                >
                   <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={() => {
@@ -872,13 +831,14 @@ const EditProfile = ({ route }: any) => {
                   );
                 })}
 
-{nonEmptySelectedGifs[1] == undefined && (
+              {nonEmptySelectedGifs[1] == undefined && (
                 <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => {
-                  GiphyDialog.show();
-                }}
-                 style={styles.gifhyContainer}>
+                  activeOpacity={0.6}
+                  onPress={() => {
+                    GiphyDialog.show();
+                  }}
+                  style={styles.gifhyContainer}
+                >
                   <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={() => {
@@ -1051,7 +1011,7 @@ const EditProfile = ({ route }: any) => {
                 activeOpacity={0.6}
                 onPress={() => bottomSheetModalRef.current.present()}
                 style={{
-                  width: "100%",
+                  width: "40%",
                   height: 50,
                   backgroundColor: colors.primary,
                   borderRadius: 10,
@@ -1069,28 +1029,32 @@ const EditProfile = ({ route }: any) => {
                 />
               </TouchableOpacity>
 
-              <View style={{...appStyles.rowjustify,marginTop:verticalScale(25)}}>
-              <NewText
-                size={17}
-                fontWeight="600"
-                fontFam="Poppins-Medium"
-                color={colors.white}
-                text={"Show Age"}
-              />
-              <ToggleSwitch
-                isOn={values?.showAge}
-                onColor={colors.sky}
-                offColor={colors.grey300}
-                size="small"
-                onToggle={toggleAgeSwitch}
-                // onToggle={(isOn: boolean)=>setIsToggle}
-                thumbOnStyle={{ width: 17, height: 17, borderRadius: 9999 }}
-                thumbOffStyle={{ width: 17, height: 17, borderRadius: 9999 }}
-                trackOffStyle={{ width: 46, height: 25 }}
-                trackOnStyle={{ width: 46, height: 25 }}
-              />
-            </View>
-             
+              <View
+                style={{
+                  ...appStyles.rowjustify,
+                  marginTop: verticalScale(25),
+                }}
+              >
+                <NewText
+                  size={17}
+                  fontWeight="600"
+                  fontFam="Poppins-Medium"
+                  color={colors.white}
+                  text={"Show Age"}
+                />
+                <ToggleSwitch
+                  isOn={values?.showAge}
+                  onColor={colors.sky}
+                  offColor={colors.grey300}
+                  size="small"
+                  onToggle={toggleAgeSwitch}
+                  // onToggle={(isOn: boolean)=>setIsToggle}
+                  thumbOnStyle={{ width: 17, height: 17, borderRadius: 9999 }}
+                  thumbOffStyle={{ width: 17, height: 17, borderRadius: 9999 }}
+                  trackOffStyle={{ width: 46, height: 25 }}
+                  trackOnStyle={{ width: 46, height: 25 }}
+                />
+              </View>
             </View>
             <View>
               {isPredictionList && (
@@ -1115,7 +1079,10 @@ const EditProfile = ({ route }: any) => {
               fontWeight={"500"}
               fontFam="Poppins-Medium"
               size={13}
-              style={{ marginBottom: verticalScale(5),marginTop:verticalScale(20) }}
+              style={{
+                marginBottom: verticalScale(5),
+                marginTop: verticalScale(20),
+              }}
               text={"Orientation"}
               color={colors.white}
             />
@@ -1135,11 +1102,14 @@ const EditProfile = ({ route }: any) => {
               })}
             />
 
-<CustomText
+            <CustomText
               fontWeight={"500"}
               fontFam="Poppins-Medium"
               size={13}
-              style={{ marginBottom: verticalScale(5),marginTop:verticalScale(20) }}
+              style={{
+                marginBottom: verticalScale(5),
+                marginTop: verticalScale(20),
+              }}
               text={"Relationship Status"}
               color={colors.white}
             />
@@ -1150,7 +1120,7 @@ const EditProfile = ({ route }: any) => {
               setValue={setRelationshipStatus}
               value={relationshipStatus}
               //   data={data}
-              data={relationshipStatusData.map((item, _index) => {
+              data={RelationshipStatusData.map((item, _index) => {
                 return {
                   id: item?.id,
                   label: item?.value,
@@ -1159,7 +1129,7 @@ const EditProfile = ({ route }: any) => {
               })}
             />
 
-<View
+            <View
               style={{
                 marginVertical: verticalScale(30),
               }}
@@ -1185,15 +1155,12 @@ const EditProfile = ({ route }: any) => {
                       key={index}
                     >
                       <LookingFor
-                    
-                      lookingFor={values?.interestTags}
+                        lookingFor={values?.interestTags}
                         onPress={() => {
-
                           let findIndex = values?.interestTags?.findIndex(
                             (i: string) => i === item
                           );
                           // console.log("kncdkncd", findIndex)
-
 
                           if (findIndex === -1) {
                             // If item is not in the array, add it
@@ -1217,8 +1184,6 @@ const EditProfile = ({ route }: any) => {
                   );
                 })}
               </View>
-
-             
             </View>
 
             {/* <Input
@@ -1234,7 +1199,7 @@ const EditProfile = ({ route }: any) => {
               fontWeight="600"
               marginTop={"7%"}
             /> */}
-            <View >
+            <View>
               <View style={appStyles.rowjustify}>
                 <NewText
                   fontWeight={"500"}
@@ -1327,19 +1292,23 @@ const EditProfile = ({ route }: any) => {
       )}
 
       <CustomBottomSheet bottomSheetModalRef={bottomSheetModalRef}>
-        <View style={{ paddingHorizontal: scale(20), alignItems: "center" }}>
+      <View style={{ paddingHorizontal: scale(20) }}>
           <View style={{ ...appStyles.rowjustify, width: "100%" }}>
-            <NewText
-              fontWeight={"600"}
-              fontFam="Poppins-Medium"
-              size={20}
-              style={{ marginBottom: verticalScale(5) }}
-              text={"Date of Birth"}
-              color={colors.white}
-            />
+            {/* <Button
+            text="Save"
+            width={"30%"}
+            alignItems={"start"}
+            onPress={() => {
+              bottomSheetModalRef.current.dismiss();
+            }}
+            fontWeight={"500"}
+            size={18}
+            textColor={colors.white}
+            bgColor={"transparent"}
+          /> */}
 
             <TouchableOpacity
-              style={{ width: "10%", alignItems: "flex-end", height: 40 }}
+              style={{ width: "10%", alignItems: "flex-start", height: 40 }}
               onPress={() => bottomSheetModalRef.current.dismiss()}
             >
               <Image
@@ -1348,7 +1317,42 @@ const EditProfile = ({ route }: any) => {
                 source={images.cross3x}
               />
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{ width: "20%", alignItems: "flex-end", height: 40 }}
+              onPress={() => {
+                setValues({ ...values, birthday: birthday });
+
+                // setBirth({
+                //   ...birth,
+                //   month: month,
+                //   year: year,
+                //   day: day,
+                //   birthday: values.birthday,
+                // });
+
+                bottomSheetModalRef.current.dismiss();
+              }}
+            >
+              <NewText
+                text={"Save"}
+                color={colors.white}
+                size={20}
+                style={{ textAlign: "center", marginTop: -4 }}
+                fontFam="Poppins-Medium"
+                fontWeight="500"
+              />
+            </TouchableOpacity>
           </View>
+
+          <NewText
+            fontWeight={"600"}
+            fontFam="Poppins-Medium"
+            size={20}
+            style={{ marginTop: verticalScale(10) }}
+            text={"Date of Birth"}
+            color={colors.white}
+          />
 
           <DatePicker
             modal={false}
@@ -1367,31 +1371,18 @@ const EditProfile = ({ route }: any) => {
             onDateChange={(date) => {
               const day = date.getDate();
               const month = date.getMonth() + 1;
-              const year = date.getFullYear().toString().slice(-2); // Extract last two digits of the year
+              const year = date.getFullYear().toString() // Extract last two digits of the year
               let birth = `${month.toString().padStart(2, "0")}/${day
                 .toString()
                 .padStart(2, "0")}/${year}`;
               console.log("birth", birth);
-              setValues({ ...values, birthday: birth });
+              setIsBirthday(birth)
               setOpen(false);
               setDate(date);
             }}
             // onCancel={() => {
             //   setOpen(false)
             // }}
-          />
-
-          <Button
-            text="Save"
-            width={"60%"}
-            borderRadius={40}
-            onPress={() => {
-              bottomSheetModalRef.current.dismiss();
-            }}
-            fontWeight={"500"}
-            size={18}
-            textColor={colors.black}
-            bgColor={colors.white}
           />
         </View>
       </CustomBottomSheet>

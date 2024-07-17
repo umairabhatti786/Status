@@ -118,6 +118,8 @@ const Login = () => {
             dispatch(setToken(result?.token))
             dispatch(setRemember(isRemember))
 
+            console.log("ResulatTokencbcb",result?.user,result?.token)
+
             dispatch(setUserData(result?.user))
             navigation.navigate("Tabs", {
       
@@ -278,7 +280,7 @@ const Login = () => {
                 fontWeight="500"
               />
               <TouchableOpacity
-                onPress={() => navigation.navigate("Signup")}
+                onPress={() => navigation.navigate("FirstSignup")}
                 activeOpacity={0.6}
               >
                 <NewText

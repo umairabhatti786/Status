@@ -9,6 +9,87 @@ export const LookingForData = [
   "Hookups",
   "Relationship",
 ];
+export const RelationshipStatusData = [
+  {
+    id: 1,
+    label: "Undisclosed",
+    value: "Undisclosed",
+  },
+  {
+    id: 2,
+    label: "Single",
+    value: "Single",
+  },
+
+  {
+    id: 3,
+    label: "Committed",
+    value: "Committed",
+  },
+
+  {
+    id: 4,
+    label: "Dating",
+    value: "Dating",
+  },
+
+  {
+    id: 5,
+    label: "Divorced",
+    value: "Divorced",
+  },
+
+  {
+    id: 6,
+    label: "Open Relationship",
+    value: "Open Relationship",
+  },
+
+  {
+    id: 7,
+    label: "Engaged",
+    value: "Engaged",
+  },
+
+  {
+    id: 8,
+    label: "Married",
+    value: "Married",
+  },
+  {
+    id: 9,
+    label: "Widowed",
+    value: "Widowed",
+  },
+];
+export const OrientationData = [
+  {
+    id: 1,
+    label: "Undisclosed",
+    value: "Undisclosed",
+  },
+  {
+    id: 2,
+    label: "Straight",
+    value: "Straight",
+  },
+
+  {
+    id: 3,
+    label: "Bisexual",
+    value: "Bisexual",
+  },
+  {
+    id: 4,
+    label: "Lesbian",
+    value: "Lesbian",
+  },
+  {
+    id: 5,
+    label: "Gay",
+    value: "Gay",
+  },
+];
 
 export const planedTaskList = [
   {
@@ -183,8 +264,8 @@ export const messagesList = [
     name: "Todd Mason",
     message: "I will be free to talk in a few hours.",
     time: "8:34 AM",
-    isOnline:true,
-    inBox:true
+    isOnline: true,
+    inBox: true,
   },
   {
     img: images.defimage13,
@@ -192,9 +273,7 @@ export const messagesList = [
     message: "Typing...",
     time: "8:34 AM",
     favorite: true,
-    isOnline:true,
-
-
+    isOnline: true,
   },
   {
     img: images.defimage17,
@@ -202,9 +281,7 @@ export const messagesList = [
     message: "Hey everyone. Status is great. Here is my view right now.",
     time: "8:34 AM",
     favorite: true,
-    isOnline:true,
-
-
+    isOnline: true,
   },
   {
     img: images.defimage14,
@@ -234,7 +311,6 @@ export const messagesList = [
     time: "8:34 AM",
     count: "5",
   },
-  
 ];
 
 export const messages = [
@@ -291,28 +367,28 @@ export const activityData = [
     name: "Joe Rogan",
     time: "2d ago",
     comment: "Started following you.",
-    isShowFollow:true
+    isShowFollow: true,
   },
   {
     image: images.man2,
     name: "Joe Rogan",
     time: "2d ago",
     comment: "Wrote on your wall.",
-    isShowFollow:false
+    isShowFollow: false,
   },
   {
     image: images.man5,
     name: "Bobby D",
     time: "3d ago",
     comment: "Started following you.",
-    isShowFollow:true
+    isShowFollow: true,
   },
   {
     image: images.man5,
     name: "Kimmy",
     time: "3d ago",
     comment: "Wrote on your wall.",
-    isShowFollow:false
+    isShowFollow: false,
   },
 ];
 
@@ -329,8 +405,7 @@ export const comments = [
     name: "Lauren Connors",
     message: "Thanks you.it's Rio!",
     time: "8:09 AM",
-    edit:true
-
+    edit: true,
   },
   {
     img: images.man5,
@@ -360,10 +435,8 @@ export const statusComments = [
     name: "Lauren Connors",
     message: "Thanks you.it's Rio!",
     time: "8:09 AM",
-    edit:true,
+    edit: true,
     chatDate: "2 Comments",
-
-
   },
   {
     img: images.man6,
@@ -371,8 +444,6 @@ export const statusComments = [
     message: "Nice view. Where is that?",
     time: "7:33 AM",
   },
- 
- 
 ];
 
 export const profileComments = [

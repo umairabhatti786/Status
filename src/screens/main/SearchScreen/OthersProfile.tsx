@@ -59,7 +59,7 @@ import {
 } from "@pusher/pusher-websocket-react-native";
 import { AUTH, StorageServices } from "../../../utils/hooks/StorageServices";
 import constants from "../../../redux/constants";
-import { calculateAge } from "../../../utils/CommonFun";
+import { calculateAge, calculateAgeString } from "../../../utils/CommonFun";
 import Button from "../../../components/Button";
 
 const OthersProfile = () => {
@@ -94,15 +94,15 @@ const OthersProfile = () => {
   const [counter1, setCounter1] = useState(0);
   const flatListRefOtherPosts: any = useRef(null);
   // const age = calculateAge(data?.birthday);
-  const { birthday, gender, orientation, relationshipStatus } = data || {};
+  const { birthday, gender, orientation, relationshipStatus,showAge } = data || {};
 
-  const userDetail = `${birthday ? birthday + " / " : ""}${
-    gender ? gender + " / " : ""
-  }${orientation ? orientation + " / " : ""}${
-    relationshipStatus ? relationshipStatus : ""
+  const userDetail = `${showAge==1? birthday ? calculateAgeString(birthday) + " / " : "":" "}${
+    gender ? gender + " / " : "Undisclosed"+ " / "
+  }${orientation ? orientation + " / " : "Undisclosed"+ " / "}${
+    relationshipStatus ? relationshipStatus : "Undisclosed"
   }`.trim();
 
-  console.log("lcndlncd", userDetail);
+  console.log("showAgeshowAge",typeof  showAge);
 
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
 
@@ -243,7 +243,7 @@ const OthersProfile = () => {
       }
     });
   };
-
+  console.log("AllDistccccancccce", typeof data?.distance);
   const getUserComment = async () => {
     let data = {
       userId: id,
@@ -801,7 +801,7 @@ const OthersProfile = () => {
                         lineHeight={20}
                         fontWeight="600"
                         fontFam="Inter-SemiBold"
-                        size={17}
+                        size={16}
                         text={"Personal Information"}
                       />
                       {data?.location && (
@@ -815,13 +815,13 @@ const OthersProfile = () => {
                             fontWeight="700"
                             style={{ marginTop: 3 }}
                             fontFam="Inter-Medium"
-                            size={16}
+                            size={14}
                             text={data?.location}
                           />
                         </View>
                       )}
 
-                      {data?.distance && (
+                      {data?.distance >= 0 && (
                         <View style={{ ...appStyles.row, gap: scale(10) }}>
                           <Image
                             style={{ width: scale(18), height: scale(18) }}
@@ -830,8 +830,8 @@ const OthersProfile = () => {
                           <NewText
                             color={colors.white}
                             style={{ marginTop: 3 }}
-                            size={16}
-                            text={`${data?.distance?.toFixed(2)} miles away`}
+                            size={14}
+                            text={`${data?.distance.toFixed(2)} miles away`}
                           />
                         </View>
                       )}
@@ -845,25 +845,21 @@ const OthersProfile = () => {
                           <NewText
                             color={colors.white}
                             style={{ marginTop: 3 }}
-                            size={16}
+                            size={14}
                             text={userDetail}
                           />
                         </View>
                       )}
                     </View>
-                    {
-                      data?.interestTags&&(
-
-                        <View
+                    {data?.interestTags && (
+                      <View
                         style={{
                           ...appStyles.row,
                           marginBottom: verticalScale(12),
-                          // marginLeft: scale(10),
                         }}
                       >
                         <ScrollView
                           horizontal
-                          // style={{ gap:scale(15) }}
                           showsHorizontalScrollIndicator={false}
                         >
                           <NewText
@@ -888,7 +884,7 @@ const OthersProfile = () => {
                               </View>
                             );
                           })}
-  
+
                           {/* <TouchableOpacity
                 style={styles.categoryBtn}
                 activeOpacity={0.6}
@@ -903,11 +899,8 @@ const OthersProfile = () => {
               </TouchableOpacity> */}
                         </ScrollView>
                       </View>
+                    )}
 
-                      )
-                    }
-
-                  
                     {/* <View style={{...appStyles.row,marginBottom:verticalScale(10)}}>
                     <NewText
                             color={colors.white}
@@ -917,63 +910,113 @@ const OthersProfile = () => {
                           />
 
                     </View> */}
-                    <View
-                      style={{
-                        backgroundColor: "#1D2029",
-                        borderWidth: 1,
-                        borderColor: "#8A8A8A",
-                        borderTopLeftRadius: scale(15),
-                        borderTopRightRadius: scale(15),
-                        borderBottomRightRadius: scale(15),
-                        marginBottom:verticalScale(10),
-
-                        // borderBottomRightRadius: scale(5),
-                        // borderBottomLeftRadius: scale(5),
-                        padding: scale(15),
-                      }}
-                    >
-                      {data?.bio && (
-                        <NewText
-                          color={colors.white}
-                          lineHeight={22}
-                          size={15}
-                          fontWeight="Poppins-Medium"
-                          text={data?.bio}
-                        />
-                      )}
-
-                      {data?.link && (
-                        <TouchableOpacity
-                          activeOpacity={0.6}
-                          onPress={() => {
-                            Linking.openURL(data?.link);
-                          }}
-                          style={{
-                            flexDirection: "row",
-                            marginTop: verticalScale(3),
-                          }}
-                        >
-                          <Image
-                            style={{
-                              width: scale(18),
-                              height: scale(18),
-                            }}
-                            resizeMode="contain"
-                            source={images.link}
-                          />
+                    {
+                      data?.bio?(
+                        <View
+                        style={styles.bioContainer}
+                      >
+                        {data?.bio && (
                           <NewText
-                            color={colors.grey300}
-                            size={14}
-                            fontFam="Inter-Medium"
-                            style={{
-                              marginRight: scale(20),
-                              marginLeft: scale(8),
-                            }}
-                            text={data?.link}
+                            color={colors.white}
+                            lineHeight={22}
+                            size={15}
+                            fontWeight="Poppins-Medium"
+                            text={data?.bio}
                           />
-                        </TouchableOpacity>
-                      )}
-                    </View>
+                        )}
+  
+                        {data?.link && (
+                          <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => {
+                              Linking.openURL(data?.link);
+                            }}
+                            style={{
+                              flexDirection: "row",
+                              marginTop: verticalScale(3),
+                            }}
+                          >
+                            <Image
+                              style={{
+                                width: scale(18),
+                                height: scale(18),
+                              }}
+                              resizeMode="contain"
+                              source={images.link}
+                            />
+                            <NewText
+                              color={colors.white}
+                              size={14}
+                              fontFam="Inter-Medium"
+                              style={{
+                                marginRight: scale(20),
+                                marginLeft: scale(8),
+                              }}
+                              text={data?.link}
+                            />
+                          </TouchableOpacity>
+                        )}
+                      </View>
+
+                      ):
+                      (
+                        <>
+                        {
+                          data.link&&(
+
+                            <View
+                            style={styles.bioContainer}
+                          >
+                            {data?.bio && (
+                              <NewText
+                                color={colors.white}
+                                lineHeight={22}
+                                size={15}
+                                fontWeight="Poppins-Medium"
+                                text={data?.bio}
+                              />
+                            )}
+      
+                            {data?.link && (
+                              <TouchableOpacity
+                                activeOpacity={0.6}
+                                onPress={() => {
+                                  Linking.openURL(data?.link);
+                                }}
+                                style={{
+                                  flexDirection: "row",
+                                  marginTop: verticalScale(3),
+                                }}
+                              >
+                                <Image
+                                  style={{
+                                    width: scale(18),
+                                    height: scale(18),
+                                  }}
+                                  resizeMode="contain"
+                                  source={images.link}
+                                />
+                                <NewText
+                                  color={colors.white}
+                                  size={14}
+                                  fontFam="Inter-Medium"
+                                  style={{
+                                    marginRight: scale(20),
+                                    marginLeft: scale(8),
+                                  }}
+                                  text={data?.link}
+                                />
+                              </TouchableOpacity>
+                            )}
+                          </View>
+
+                          )
+                        }
+                        </>
+                      )
+
+                    }
+                   
 
                     {/* <View
              style={{
@@ -1372,4 +1415,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  bioContainer:{
+    backgroundColor: "#1D2029",
+    borderWidth: 1,
+    borderColor: "#8A8A8A",
+    borderTopLeftRadius: scale(15),
+    borderTopRightRadius: scale(15),
+    borderBottomRightRadius: scale(15),
+    marginBottom: verticalScale(10),
+    padding: scale(15),
+  }
 });

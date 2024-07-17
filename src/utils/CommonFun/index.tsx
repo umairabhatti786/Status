@@ -6,9 +6,9 @@ export const isInteger = (value: number): boolean => {
 
 
 export function capitalizeFirstLetter(str) {
-    return str.split(' ').map(word => {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    }).join(' ');
+    return str?.split(' ').map(word => {
+      return word?.charAt(0)?.toUpperCase() + word?.slice(1);
+    })?.join(' ');
   }
 
 
@@ -135,6 +135,19 @@ export function capitalizeFirstLetter(str) {
     } else {
       return inputDate.format('dddd MMMM DD');
     }
+  };
+
+ export const calculateAgeString = (dateString:any) => {
+    let birthDate;
+    if (moment(dateString, 'MM/DD/YYYY', true).isValid()) {
+      birthDate = moment(dateString, 'MM/DD/YYYY');
+    } else if (moment(dateString, 'MM/DD/YY', true).isValid()) {
+      birthDate = moment(dateString, 'MM/DD/YY');
+    } else {
+      return null; // Invalid date format
+    }
+    const currentDate = moment();
+    return currentDate.diff(birthDate, 'years');
   };
 
  export const calculateAge = (birthday:any) => {
