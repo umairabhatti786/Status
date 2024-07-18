@@ -121,7 +121,7 @@ const userData=useSelector(getUserData)
     setIsChannelId(userInfo?.channel?.id);
   };
 
-  const userDetail = `${ userDetails.showAge==1? userDetails?.birthday ?calculateAgeString(userDetails?. birthday )+ " / " : "":" "}${
+  const userDetail = `${ userDetails?.showAge==1? userDetails?.birthday ?calculateAgeString(userDetails?. birthday )+ " / " : "":" "}${
     userDetails?. gender ? userDetails?.gender + " / " : "Undisclosed"+ " / "
   }${userDetails?.orientation ? userDetails?.orientation + " / " : "Undisclosed"+ " / "}${
     userDetails?.relationshipStatus ?userDetails?. relationshipStatus :  "Undisclosed"
