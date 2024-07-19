@@ -121,7 +121,7 @@ const userData=useSelector(getUserData)
     setIsChannelId(userInfo?.channel?.id);
   };
 
-  const userDetail = `${ userDetails.showAge==1? userDetails?.birthday ?calculateAgeString(userDetails?. birthday )+ " / " : "":" "}${
+  const userDetail = `${ userDetails?.showAge==1? userDetails?.birthday ?calculateAgeString(userDetails?. birthday )+ " / " : "":" "}${
     userDetails?. gender ? userDetails?.gender + " / " : "Undisclosed"+ " / "
   }${userDetails?.orientation ? userDetails?.orientation + " / " : "Undisclosed"+ " / "}${
     userDetails?.relationshipStatus ?userDetails?. relationshipStatus :  "Undisclosed"
@@ -701,10 +701,11 @@ const userData=useSelector(getUserData)
                         <ScrollView
                           horizontal
                           showsHorizontalScrollIndicator={false}
+                          // style={{backgroundColor:"red"}}
                         >
                           <NewText
                             color={colors.white}
-                            style={{ marginRight: scale(10) }}
+                            style={{ marginRight: scale(10) ,marginTop:2}}
                             size={16}
                             text={"HERE FOR"}
                           />

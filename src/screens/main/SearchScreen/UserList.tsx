@@ -20,7 +20,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 export const windowWidth = Dimensions.get("window").width;
 import FastImage from "react-native-fast-image";
 import NewText from "../../../components/NewText";
-import { dateFormat } from "../../../utils/CommonFun";
+import { dateFormat, formatTimeDifference } from "../../../utils/CommonFun";
 import moment from "moment";
 
 const UserList = ({
@@ -172,11 +172,13 @@ const UserList = ({
 
             {filterTwo == "online" && (
               <View>
-                {profileType&&(
+                {!isOnline&&(
                     <NewText
                     fontFam="Poppins-Bold"
                     fontWeight="bold"
-                    text={profileType}
+                    text={formatTimeDifference(createdAt)}
+
+                    // text={moment(createdAt).format("MMM DD Y")}
                     numberOfLines={1}
                     size={11.5}
                     style={{ marginLeft: 10 }}
@@ -193,7 +195,7 @@ const UserList = ({
                 <NewText
                fontFam="Inter-Medium"
                fontWeight="600"
-                  text={`${distance?.toFixed(2)}mi`}
+                  text={`${distance?.toFixed(2)} mi`}
                   numberOfLines={1}
                   size={11.5}
                   style={{ marginLeft: 10 }}
@@ -215,7 +217,7 @@ const UserList = ({
               </View>
             )}
 
-{filterTwo == "new" && (
+{/* {filterTwo == "new" && (
               <View>
                 {profileType&&(
                     <NewText
@@ -231,7 +233,7 @@ const UserList = ({
                 )}
               
               </View>
-            )}
+            )} */}
             
  {filterTwo == "new" && (
               <View>

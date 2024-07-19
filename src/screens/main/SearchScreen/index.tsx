@@ -122,7 +122,20 @@ console.log("AlluserLdnc",allUsers)
         let data: any = response?.data?.result?.data;
         //check
         if (response?.data?.results) {
-          // console.log(data)
+          console.log("selectedTypefilterTwo",filterTwo)
+
+          if(filterTwo=="nearby"){
+
+            const sortedLocations = data.sort((a, b) => a.distance - b.distance);
+            console.log("sortedLocations",sortedLocations)
+
+            setAllUsers(sortedLocations);
+          setResponse(result)
+          setLoading(false);
+
+            return
+
+          }
           setAllUsers(data);
           setResponse(result);
         } else {
@@ -193,7 +206,7 @@ console.log("AlluserLdnc",allUsers)
   ];
 
   const renderUsers = ({ item, index }: any) => {
-    console.log("ckbdkname", item.name);
+    console.log("ckbdknamecdcdcdc", item);
 
     return (
       <UserList
