@@ -56,6 +56,7 @@ const RootNavigator = () => {
     let token = await StorageServices.getItem(TOKEN);
     let form = new FormData();
     form.append("isOnline", 0);
+    form.append("last_seen", 1);
     UserProfileSetup(form, token, async ({ isSuccess, response }: any) => {});
   };
 
@@ -64,6 +65,7 @@ const RootNavigator = () => {
     let token = await StorageServices.getItem(TOKEN);
     let form = new FormData();
     form.append("isOnline", 1);
+    // form.append("last_seen", 1);
     UserProfileSetup(form, token, async ({ isSuccess, response }: any) => {});
   };
 
