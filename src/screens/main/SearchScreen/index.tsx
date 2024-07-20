@@ -81,7 +81,6 @@ const SearchScreen = ({ navigation }: any) => {
   //   { value: "New", filter: "new",isActive:false },
   //   { value: "Popular", filter: "popular",isActive:false },
   // ];
-console.log("AlluserLdnc",allUsers)
   const [filterData, setFilterData] = useState([
     { value: "Online", filter: "online", isActive: true },
     { value: "Nearby", filter: "nearby", isActive: false },
@@ -206,7 +205,6 @@ console.log("AlluserLdnc",allUsers)
   ];
 
   const renderUsers = ({ item, index }: any) => {
-    console.log("ckbdknamecdcdcdc", item);
 
     return (
       <UserList

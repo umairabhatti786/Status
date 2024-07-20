@@ -53,7 +53,6 @@ const ConfirmationCode = ({ route }: props) => {
   const [toastColor, setToastColor] = useState(colors.red);
 const dispatch=useDispatch()
   const data = route?.params?.data;
-  console.log("datkbhjba", data);
 
   const OnConfirmCode = () => {
     // console.log("params",data)

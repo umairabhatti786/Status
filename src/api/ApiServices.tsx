@@ -1081,6 +1081,35 @@ export const getUserDetail = async (data: any, token: any, callback: any) => {
   //     console.error("createdError",error);
   //   });
 };
+
+export const getUserlDistance = async (data: any, token: any, callback: any) => {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(data),
+  };
+
+  try {
+    fetch(getApiUrl(URLS.GET_USER_DISTANCE), requestOptions)
+      .then((response) => console.log("DistnceResposcccnscccc",response.text()))
+      .then((result) => callback({ isSuccess: true, response: result }))
+      .catch((error) => callback({ isSuccess: false, response: error }));
+  } catch (error) {
+    return { isSuccess: false, error: error };
+  }
+
+  // fetch(getApiUrl(URLS.signup), requestOptions)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log("created",data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("createdError",error);
+  //   });
+};
 export const GetAllUsers = async (data, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",

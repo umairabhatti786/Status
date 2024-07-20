@@ -56,4 +56,5 @@ export const URLS = {
   GET_USER_TRASH_CONVERSATION: "getUserTrashConversation/",
   GET_IN_NOTIFICATION: "getInNotifications",
   CREATE_BLOCK_CONVERSATION: "createBlockConversation",
+    GET_USER_DISTANCE:"getUserDistance"
 };

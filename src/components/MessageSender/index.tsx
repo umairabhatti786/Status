@@ -247,8 +247,6 @@ const MessageSender = ({
 
     console.log(form);
     UpdatePost(form, token, async ({ isSuccess, response }: any) => {
-      console.log("data", isSuccess);
-      console.log("response", response);
 
       let result = JSON.parse(response);
       if (result.status) {
@@ -287,8 +285,6 @@ const MessageSender = ({
 
       console.log(form);
       CreatePost(form, token, async ({ isSuccess, response }: any) => {
-        console.log("data", isSuccess);
-        console.log("response", response);
 
         let result = JSON.parse(response);
         if (result.status) {
@@ -339,8 +335,6 @@ const MessageSender = ({
       setIsGifView(false);
     }
     SendMessage(form, token, async ({ isSuccess, response }: any) => {
-      console.log("data p", isSuccess);
-      console.log(response);
       let result = JSON.parse(response);
       if (result.status) {
         console.log(result);
