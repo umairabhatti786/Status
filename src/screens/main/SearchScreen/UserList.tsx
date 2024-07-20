@@ -33,6 +33,7 @@ const UserList = ({
   followersCount,
   profileType,
   createdAt,
+  lastSeen,
   filterTwo,
 }: any) => {
   const navigation: any = useNavigation();
@@ -176,7 +177,7 @@ const UserList = ({
                     <NewText
                     fontFam="Poppins-Bold"
                     fontWeight="bold"
-                    text={formatTimeDifference(createdAt)}
+                    text={formatTimeDifference(lastSeen)}
 
                     // text={moment(createdAt).format("MMM DD Y")}
                     numberOfLines={1}

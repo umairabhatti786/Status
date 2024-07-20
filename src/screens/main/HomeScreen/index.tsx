@@ -24,6 +24,7 @@ import { scale, verticalScale } from "react-native-size-matters";
 import {
   getToken,
   getUserData,
+  setCommentsNotificationAlert,
   setNotificationAlert,
 } from "../../../redux/reducers/authReducer";
 import {
@@ -39,9 +40,9 @@ const HomeScreen = () => {
   const [followingChannels, setFollowingChannels] = useState<any>([]);
   const [favoritesChannels, setFavoritesChannels] = useState<any>([]);
   const [counter, setCounter] = useState(0)
-  const notificationAlert = useSelector(
+  const commentNotificationAlert = useSelector(
     (state) => state.auth
-  )?.notificationAlert;
+  )?.commentNotificationAlert;
 
   // const token = StorageServices.getItem(TOKEN);
   const dispatch = useDispatch();
@@ -182,9 +183,9 @@ const HomeScreen = () => {
       <View>
         <View style={{ paddingHorizontal: scale(15) }}>
           <TopHeader
-            notificationAlert={notificationAlert}
+            notificationAlert={commentNotificationAlert}
             onPressNotification={() => {
-              dispatch(setNotificationAlert(false));
+              dispatch(setCommentsNotificationAlert(false));
 
               navigation.navigate("Notifications");
             }}

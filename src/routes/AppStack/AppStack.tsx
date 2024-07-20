@@ -35,6 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getRemember,
   getUserData,
+  setCommentsNotificationAlert,
   setNotificationAlert,
   setRemember,
   setToken,
@@ -84,10 +85,19 @@ const AppStack = () => {
       (notificationReceivedEvent: any) => {
         let notification = notificationReceivedEvent.getNotification();
         notificationReceivedEvent.complete(notification);
-        console.log("Notighvb",notificationReceivedEvent?.notification?.body)
+        console.log("Notighvb",notificationReceivedEvent?.notification?.title)
+        if(notificationReceivedEvent?.notification?.title.includes("Wrote on your wall"))
 
+        {
+          dispatch(setCommentsNotificationAlert(true));
 
-        dispatch(setNotificationAlert(true));
+        }
+        else {
+          dispatch(setNotificationAlert(true));
+
+        }
+
+        // message.includes("Wrote on your wall")
       }
     );
     OneSignal.setNotificationOpenedHandler((notification) => {

@@ -69,9 +69,9 @@ const SearchScreen = ({ navigation }: any) => {
   const [refreshing, setRefreshing] = useState(false);
   const snapPoints = useMemo(() => ["45%"], []);
 
-  const notificationAlert = useSelector(
+  const commentNotificationAlert = useSelector(
     (state) => state.auth
-  )?.notificationAlert;
+  )?.commentNotificationAlert;
   const dispatch = useDispatch();
   // console.log("notificationAlert", notificationAlert);
   const topBarData = ["all", "following"];
@@ -223,6 +223,7 @@ console.log("AlluserLdnc",allUsers)
         followersCount={item?.followers_count}
         profileType={item?.profileType}
         createdAt={item?.created_at}
+        lastSeen={item.last_seen}
         filterTwo={filterTwo}
       />
     );
@@ -241,7 +242,7 @@ console.log("AlluserLdnc",allUsers)
           <View style={{ paddingHorizontal: scale(15) }}>
             <TopHeader
               isSearch={true}
-              notificationAlert={notificationAlert}
+              notificationAlert={commentNotificationAlert}
               onPressNotification={() => {
                 dispatch(setNotificationAlert(false));
                 navigation.navigate("Notifications");

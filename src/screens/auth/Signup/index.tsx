@@ -109,6 +109,7 @@ const Signup = ({ route }: any) => {
           } else {
             setLoading(false);
             setToastColor(colors.red);
+            console.log("Erorr",result?.msg)
 
             setError(result?.msg);
             setShowError(true);

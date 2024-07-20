@@ -123,10 +123,10 @@ const EditProfile = ({ route }: any) => {
   //   userData?.profileType ? userData?.profileType : ""
   // );
   const [orientation, setOrientation] = useState(
-    userData?.orientation ? userData?.orientation : ""
+    userData?.orientation ? userData?.orientation : "Undisclosed"
   );
   const [relationshipStatus, setRelationshipStatus] = useState(
-    userData?.relationshipStatus ? userData?.relationshipStatus : ""
+    userData?.relationshipStatus ? userData?.relationshipStatus : "Undisclosed"
   );
 
   console.log("orientationccccc", orientation);
@@ -404,6 +404,7 @@ const EditProfile = ({ route }: any) => {
 
       return;
     }
+
     if (!values.imageUrl) {
       setError("Image is Required");
       setShowError(true);
@@ -423,15 +424,15 @@ const EditProfile = ({ route }: any) => {
       return;
     }
 
-    // if (!values.occupation) {
-    //   setError("Occupation required");
-    //   setShowError(true);
-    //   setTimeout(() => {
-    //     setShowError(false);
-    //   }, 4000);
+    if (values.interestTags.length==0) {
+      setError("Please Select at least one Looking For");
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 4000);
 
-    //   return;
-    // }
+      return;
+    }
     if (!values.bio) {
       setError("Bio required");
       setShowError(true);

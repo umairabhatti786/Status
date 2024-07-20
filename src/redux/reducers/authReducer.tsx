@@ -5,6 +5,8 @@ export interface AuthState {
   user: any;
   token: string;
   notificationAlert: boolean;
+  commentNotificationAlert: boolean;
+
   remember: boolean;
   disableBottomTab:boolean
   profileActiveBar:string
@@ -27,6 +29,7 @@ export const initialState: AuthState = {
   token: "",
   profileActiveBar:"Profile",
   notificationAlert: false,
+  commentNotificationAlert:false,
   remember: true,
   disableBottomTab:false,
   isSuccess: false,
@@ -57,6 +60,9 @@ const authSlice = createSlice({
     },
     setNotificationAlert: (state, { payload }: PayloadAction<SignupState>) => {
       state.notificationAlert = payload;
+    },
+    setCommentsNotificationAlert: (state, { payload }: PayloadAction<SignupState>) => {
+      state.commentNotificationAlert = payload;
     },
     setProfileActiveBar: (state, { payload }: PayloadAction<SignupState>) => {
       state.profileActiveBar = payload;
@@ -99,7 +105,8 @@ export const {
   setProfileGif,
   setDisableBottomTab,
   setProfileActiveBar,
-  setNotificationAlert
+  setNotificationAlert,
+  setCommentsNotificationAlert
 } = authSlice.actions;
 export default authSlice.reducer;
 export const getRemember = (state: RootState) => state?.auth.remember;
@@ -107,6 +114,8 @@ export const getProfileGifs = (state: RootState) => state?.auth.proifleGifs;
 export const getUserData = (state: RootState) => state?.auth.user;
 export const getNotificationAlert = (state: RootState) =>
   state?.auth.notificationAlert;
+  export const getCommentsNotificationAlert = (state: RootState) =>
+  state?.auth.commentNotificationAlert;
 export const getSuccessResponse = (state: RootState) =>
   state?.auth.successResponse;
 export const getIsSuccess = (state: RootState) => state?.auth.isSuccess;
