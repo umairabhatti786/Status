@@ -45,6 +45,7 @@ import {
   GetStatus,
   GetUserComment,
   getUserDetail,
+  getUserDistance,
   isFollowing,
 } from "../../../api/ApiServices";
 import { useSelector } from "react-redux";
@@ -464,9 +465,16 @@ const OthersProfile = () => {
     });
   };
 
+  useEffect(() => {
+    getUserDistance({id:1},token,async ({ isSuccess, response }: any) => {
+      console.log('responseDistacne',response)
+    })
+  }, [])
+  
+
   const shortenedText =
     data?.name?.length > 30 ? data?.name?.substring(0, 29) + "..." : data?.name;
-
+ 
   return (
     <>
       <SafeAreaView style={appStyles.main}>

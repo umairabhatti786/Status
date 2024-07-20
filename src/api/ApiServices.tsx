@@ -1082,7 +1082,7 @@ export const getUserDetail = async (data: any, token: any, callback: any) => {
   //   });
 };
 
-export const getUserlDistance = async (data: any, token: any, callback: any) => {
+export const getUserDistance = async (data: any, token: any, callback: any) => {
   const requestOptions = {
     method: "POST",
     headers: {
@@ -1094,7 +1094,7 @@ export const getUserlDistance = async (data: any, token: any, callback: any) => 
 
   try {
     fetch(getApiUrl(URLS.GET_USER_DISTANCE), requestOptions)
-      .then((response) => console.log("DistnceResposcccnscccc",response.text()))
+      .then((response) => response.text())
       .then((result) => callback({ isSuccess: true, response: result }))
       .catch((error) => callback({ isSuccess: false, response: error }));
   } catch (error) {
