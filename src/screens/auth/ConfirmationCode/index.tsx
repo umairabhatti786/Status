@@ -214,7 +214,7 @@ const dispatch=useDispatch()
             <View>
               <NewText
                 text={
-                 `Please enter the 6-digit code we just sent to your ${data?.email}`
+                 `Please enter the 6-digit code we just sent to ${data?.email}`
                 }
                 color={"#25D366"}
                 size={16}

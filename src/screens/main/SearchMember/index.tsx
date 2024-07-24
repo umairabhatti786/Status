@@ -43,54 +43,7 @@ const SearchMember = ({ navigation }:any) => {
   const [memberList, setMemberList] = useState([]);
   console.log("token", memberList);
 
-  let userData = [
-    // online
-    { name: "MIke O’Dea", img: images.defimage9, online: true },
-    { name: "Lexi Reegan", img: images.defimage10, online: true },
 
-    /// nearby
-    {
-      name: "MIke O’Dea",
-      img: images.defimage23,
-      nearby: "10mi",
-    },
-    {
-      name: "Lexi Reegan",
-      img: images.defimage22,
-      nearby: "10mi",
-    },
-    {
-      name: "Lexi Reegan",
-      img: images.defimage21,
-      nearby: "10mi",
-    },
-    { name: "MIke O’Dea", img: images.defimage9, nearby: "10mi" },
-    { name: "MIke O’Dea", img: images.defimage10, nearby: "10mi" },
-    { name: "Lexi Reegan", img: images.defimage11, nearby: "10mi" },
-
-    // new
-    { name: "T Smith", img: images.defimage18, new: true, online: true },
-    { name: "T Smith", img: images.defimage19, new: true, online: true },
-    { name: "Eric Broadway", img: images.defimage20, new: true, online: true },
-
-    // popular
-
-    {
-      name: "Eric Broadway",
-      img: images.defimage18,
-      online: true,
-      popular: "205k",
-    },
-    {
-      name: "Lexi Reegan",
-      img: images.defimage19,
-      online: true,
-      popular: "205k",
-    },
-    { name: "MIke O’Dea", img: images.defimage20, popular: "205k" },
-    { name: "Eric Broadway", img: images.defimage21, popular: "205k" },
-    { name: "MIke O’Dea", img: images.defimage22, popular: "205k" },
-  ];
 
   const onSearchMember = (txt: any) => {
     // console.log("search Text",txt,token)

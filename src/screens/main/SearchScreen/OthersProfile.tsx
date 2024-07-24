@@ -94,15 +94,16 @@ const OthersProfile = () => {
   const [counter1, setCounter1] = useState(0);
   const flatListRefOtherPosts: any = useRef(null);
   // const age = calculateAge(data?.birthday);
-  const { birthday, gender, orientation, relationshipStatus,showAge } = data || {};
+  const { birthday, gender, orientation, relationshipStatus, showAge } =
+    data || {};
 
-  const userDetail = `${showAge==1? birthday ? calculateAgeString(birthday) + " / " : "":" "}${
-    gender ? gender + " / " : "Undisclosed"+ " / "
-  }${orientation ? orientation + " / " : "Undisclosed"+ " / "}${
-    relationshipStatus ? relationshipStatus : "Undisclosed"
-  }`.trim();
+  const userDetail = `${
+    showAge == 1 ? (birthday ? calculateAgeString(birthday) + " / " : "") : " "
+  }${gender ? gender + " / " : "Undisclosed" + " / "}${
+    orientation ? orientation + " / " : "Undisclosed" + " / "
+  }${relationshipStatus ? relationshipStatus : "Undisclosed"}`.trim();
 
-  console.log("showAgeshowAge",typeof  showAge);
+  console.log("showAgeshowAge", typeof showAge);
 
   const [isUnfollowModal, setIsUnfollowModal] = useState(false);
 
@@ -792,7 +793,7 @@ const OthersProfile = () => {
                     <View
                       style={{
                         paddingVertical: verticalScale(15),
-                        paddingHorizontal: scale(5),
+                        // paddingHorizontal: scale(5),
                         gap: verticalScale(10),
                       }}
                     >
@@ -804,24 +805,25 @@ const OthersProfile = () => {
                         size={16}
                         text={"Personal Information"}
                       />
-                      {data?.location && (
-                        <View style={{ ...appStyles.row, gap: scale(10) }}>
-                          <Image
-                            style={{ width: scale(18), height: scale(18) }}
-                            source={images.homefill}
-                          />
-                          <NewText
-                            color={colors.grey300}
-                            fontWeight="700"
-                            style={{ marginTop: 3 }}
-                            fontFam="Inter-Medium"
-                            size={14}
-                            text={data?.location}
-                          />
-                        </View>
-                      )}
+                      {/* {data?.location && ( */}
+                      <View style={{ ...appStyles.row, gap: scale(10) }}>
+                        <Image
+                          style={{ width: scale(17), height: scale(17) }}
+                          source={images.homefill}
+                        />
+                        <NewText
+                          color={colors.white}
+                          fontWeight="300"
+                          style={{ marginTop: 3 }}
+                          fontFam="Inter-Regular"
+                          size={14.5}
+                          text={data?.location ? data?.location : "Undisclosed"}
+                        />
+                      </View>
+                      {/* )} */}
+                      {/* distance */}
 
-                      {data?.distance >= 0 && (
+                      {/* {data?.distance >= 0 && (
                         <View style={{ ...appStyles.row, gap: scale(10) }}>
                           <Image
                             style={{ width: scale(18), height: scale(18) }}
@@ -834,7 +836,7 @@ const OthersProfile = () => {
                             text={`${data?.distance.toFixed(2)} miles away`}
                           />
                         </View>
-                      )}
+                      )} */}
 
                       {userDetail && (
                         <View style={{ ...appStyles.row, gap: scale(10) }}>
@@ -845,7 +847,8 @@ const OthersProfile = () => {
                           <NewText
                             color={colors.white}
                             style={{ marginTop: 3 }}
-                            size={14}
+                            size={14.5}
+                            fontWeight="300"
                             text={userDetail}
                           />
                         </View>
@@ -863,22 +866,23 @@ const OthersProfile = () => {
                           showsHorizontalScrollIndicator={false}
                         >
                           <NewText
-                            color={colors.white}
-                            style={{ marginRight: scale(10) }}
-                            size={16}
-                            text={"HERE FOR"}
+                             color={colors.white}
+                             style={{ marginTop: 2, marginRight: 5 }}
+                             size={16}
+                             fontFam="Roboto-Bold"
+                             text={"Here for"}
                           />
                           {JSON.parse(data?.interestTags).map((item, index) => {
                             return (
-                              <View style={{ marginHorizontal: scale(3) }}>
-                                <Button
-                                  height={25}
-                                  fontFam={"Inter-Regular"}
+                              <View style={{ marginHorizontal: scale(5) }}>
+                               <Button
+                                  height={28}
+                                  fontFam={"Inter-Medium"}
                                   borderRadius={15}
                                   paddingHorizontal={15}
-                                  size={15}
+                                  size={14.5}
                                   textColor={colors.white}
-                                  bgColor={"#1D2029"}
+                                  bgColor={"#48B1FF"}
                                   text={item}
                                 />
                               </View>
@@ -910,11 +914,8 @@ const OthersProfile = () => {
                           />
 
                     </View> */}
-                    {
-                      data?.bio?(
-                        <View
-                        style={styles.bioContainer}
-                      >
+                    {data?.bio ? (
+                      <View style={styles.bioContainer}>
                         {data?.bio && (
                           <NewText
                             color={colors.white}
@@ -924,7 +925,7 @@ const OthersProfile = () => {
                             text={data?.bio}
                           />
                         )}
-  
+
                         {data?.link && (
                           <TouchableOpacity
                             activeOpacity={0.6}
@@ -957,16 +958,10 @@ const OthersProfile = () => {
                           </TouchableOpacity>
                         )}
                       </View>
-
-                      ):
-                      (
-                        <>
-                        {
-                          data.link&&(
-
-                            <View
-                            style={styles.bioContainer}
-                          >
+                    ) : (
+                      <>
+                        {data.link && (
+                          <View style={styles.bioContainer}>
                             {data?.bio && (
                               <NewText
                                 color={colors.white}
@@ -976,7 +971,7 @@ const OthersProfile = () => {
                                 text={data?.bio}
                               />
                             )}
-      
+
                             {data?.link && (
                               <TouchableOpacity
                                 activeOpacity={0.6}
@@ -1009,14 +1004,9 @@ const OthersProfile = () => {
                               </TouchableOpacity>
                             )}
                           </View>
-
-                          )
-                        }
-                        </>
-                      )
-
-                    }
-                   
+                        )}
+                      </>
+                    )}
 
                     {/* <View
              style={{
@@ -1052,6 +1042,16 @@ const OthersProfile = () => {
 
                           <View
                             style={{
+                              width: "100%",
+                              height: "100%",
+                              position: "absolute",
+
+                              backgroundColor: `rgba(0, 0, 0, 0.1)`, // Apply opacity to the background color
+                            }}
+                          />
+
+                          <View
+                            style={{
                               position: "absolute",
                               right: 5,
                               bottom: 0,
@@ -1074,6 +1074,15 @@ const OthersProfile = () => {
                           <Image
                             style={{ width: "100%", height: "100%" }}
                             source={{ uri: data?.gif2 }}
+                          />
+                          <View
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              position: "absolute",
+
+                              backgroundColor: `rgba(0, 0, 0, 0.1)`, // Apply opacity to the background color
+                            }}
                           />
                           <View
                             style={{
@@ -1415,7 +1424,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  bioContainer:{
+  bioContainer: {
     backgroundColor: "#1D2029",
     borderWidth: 1,
     borderColor: "#8A8A8A",
@@ -1424,5 +1433,5 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: scale(15),
     marginBottom: verticalScale(10),
     padding: scale(15),
-  }
+  },
 });

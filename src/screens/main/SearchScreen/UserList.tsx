@@ -37,6 +37,7 @@ const UserList = ({
   filterTwo,
 }: any) => {
   const navigation: any = useNavigation();
+  console.log("distance",distance)
   return (
     <>
       <TouchableOpacity
@@ -195,7 +196,7 @@ const UserList = ({
                 <NewText
                fontFam="Inter-Medium"
                fontWeight="600"
-                  text={`${distance?.toFixed(2)} mi`}
+                  text={`${parseInt(distance)} mi`}
                   numberOfLines={1}
                   size={11.5}
                   style={{ marginLeft: 10 }}
