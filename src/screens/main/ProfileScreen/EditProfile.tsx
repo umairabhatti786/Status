@@ -160,6 +160,9 @@ const EditProfile = ({ route }: any) => {
   });
 
   const [deleteWallImage, setDeleteWallImage] = useState(0);
+  const [deleteUserImage, setDeleteUserImage] = useState(0);
+  const [deleteGif1, setDeleteGif1] = useState(0);
+  const [deleteGif2, setDeleteGif2] = useState(0);
 
   const nonEmptySelectedGifs = selectedGifs.filter((gif) => gif !== "");
   console.log("profileGifs", values?.imageUrl);
@@ -492,6 +495,7 @@ const EditProfile = ({ route }: any) => {
     );
 
     form.append("deleteWallImage", deleteWallImage);
+    
     form.append(
       "gif1",
       nonEmptySelectedGifs[0] == undefined ? "" : nonEmptySelectedGifs[0]
@@ -500,9 +504,11 @@ const EditProfile = ({ route }: any) => {
       "gif2",
       nonEmptySelectedGifs[1] == undefined ? "" : nonEmptySelectedGifs[1]
     );
+    form.append("deleteGif1", deleteGif1);
+    form.append("deleteGif2", deleteGif2);
     form.append("name", values.name);
     form.append("imageUrl", values.imageUrl);
-    // form.append("deleteUserImage", true);
+    form.append("deleteUserImage", deleteUserImage);
     form.append("location", values?.location);
     form.append("lat", values?.lat);
     form.append("lng", values?.lng);
