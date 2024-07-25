@@ -210,7 +210,8 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
         data={activeBar == "Favorites" ? favoritesChannels : followingChannels}
         contentContainerStyle={{
-          // gap: 7,
+          paddingHorizontal:scale(7),
+          gap: 4,
         }}
         renderItem={renderChatList}
       />

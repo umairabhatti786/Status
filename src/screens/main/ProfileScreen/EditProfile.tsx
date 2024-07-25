@@ -25,7 +25,12 @@ import { Spacer } from "../../../components/Spacer";
 import { scale, verticalScale } from "react-native-size-matters";
 import ToggleSwitch from "toggle-switch-react-native";
 import DropDown from "../../../components/DropDown";
-import { LookingForData, OrientationData, RelationshipStatusData, data } from "../../../utils/Data";
+import {
+  LookingForData,
+  OrientationData,
+  RelationshipStatusData,
+  data,
+} from "../../../utils/Data";
 import NewText from "../../../components/NewText";
 import ImagePicker from "react-native-image-crop-picker";
 import { usePermissions } from "../../../utils/Permissions";
@@ -130,7 +135,7 @@ const EditProfile = ({ route }: any) => {
   );
 
   console.log("orientationccccc", orientation);
-  const [birthday,setIsBirthday]=useState("")
+  const [birthday, setIsBirthday] = useState("");
 
   const [values, setValues] = useState({
     wallComments: userData?.wallComments,
@@ -157,9 +162,9 @@ const EditProfile = ({ route }: any) => {
   const [deleteWallImage, setDeleteWallImage] = useState(0);
 
   const nonEmptySelectedGifs = selectedGifs.filter((gif) => gif !== "");
+  console.log("profileGifs", values?.imageUrl);
 
   useEffect(() => {
-    console.log("profileGifs", profileGifs);
     setSelectedGifs((prevSelectedGifs) => [userData.gif1, userData.gif2]);
 
     // if (userData.gif1 && userData.gif2) {
@@ -264,8 +269,6 @@ const EditProfile = ({ route }: any) => {
     },
   ];
 
-
-
   useEffect(() => {
     const handler: GiphyDialogMediaSelectEventHandler = (e) => {
       setSelectedGifs((prevSelectedGifs) => [...prevSelectedGifs, e.media.url]);
@@ -286,7 +289,7 @@ const EditProfile = ({ route }: any) => {
     // setSearch(txt);
     if (txt.length == 0) {
       setIsPredictionList(false);
-      setValues({ ...values, lat: null, long: null, location: "" });
+      setValues({ ...values, lat: null, lng: null, location: "" });
 
       return;
     }
@@ -395,25 +398,25 @@ const EditProfile = ({ route }: any) => {
 
       return;
     }
-    if (!values.imageUrl) {
-      setError("Image is Required");
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-      }, 4000);
+    // if (!values.imageUrl) {
+    //   setError("Image is Required");
+    //   setShowError(true);
+    //   setTimeout(() => {
+    //     setShowError(false);
+    //   }, 4000);
 
-      return;
-    }
+    //   return;
+    // }
 
-    if (!values.imageUrl) {
-      setError("Image is Required");
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-      }, 4000);
+    // if (!values.imageUrl) {
+    //   setError("Image is Required");
+    //   setShowError(true);
+    //   setTimeout(() => {
+    //     setShowError(false);
+    //   }, 4000);
 
-      return;
-    }
+    //   return;
+    // }
     if (!values.gender) {
       setError("Gender is required");
       setShowError(true);
@@ -424,7 +427,7 @@ const EditProfile = ({ route }: any) => {
       return;
     }
 
-    if (values.interestTags.length==0) {
+    if (values.interestTags.length == 0) {
       setError("Please Select at least one Looking For");
       setShowError(true);
       setTimeout(() => {
@@ -433,15 +436,15 @@ const EditProfile = ({ route }: any) => {
 
       return;
     }
-    if (!values.bio) {
-      setError("Bio required");
-      setShowError(true);
-      setTimeout(() => {
-        setShowError(false);
-      }, 4000);
+    // if (!values.bio) {
+    //   setError("Bio required");
+    //   setShowError(true);
+    //   setTimeout(() => {
+    //     setShowError(false);
+    //   }, 4000);
 
-      return;
-    }
+    //   return;
+    // }
     // if (!values.link) {
     //   setError("Link required");
     //   setShowError(true);
@@ -699,7 +702,7 @@ const EditProfile = ({ route }: any) => {
                 text={"Profile Pic"}
               />
               <Button
-                text={values?.imageUrl ? "Edit" : "Add"}
+                text={values?.imageUrl?.includes?.("placeholder") || !values?.imageUrl? "Add" : "Edit"}
                 onPress={() => {
                   setDeleteWallImage(1);
 
@@ -721,8 +724,9 @@ const EditProfile = ({ route }: any) => {
                     priority: FastImage.priority.high,
                   }}
                 />
-
-                <TouchableOpacity
+                {
+                 !values?.imageUrl?.includes?.("placeholder")&&(
+                  <TouchableOpacity
                   activeOpacity={0.6}
                   onPress={() => {
                     setValues({ ...values, imageUrl: "" });
@@ -735,15 +739,33 @@ const EditProfile = ({ route }: any) => {
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
+
+                 )
+                }
+
+              
               </View>
             ) : (
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => onOpenGallery(true)}
-                style={styles.picContainer}
-              >
-                <Image style={{ width: 14, height: 14 }} source={images.add} />
-              </TouchableOpacity>
+
+              <View style={{ height: scale(99), width: scale(99) }}>
+                <FastImage
+                  style={styles.picContainer}
+                  resizeMode="cover"
+                  source={images.blank_image}
+                />
+               
+
+              
+              </View>
+
+
+              // <TouchableOpacity
+              //   activeOpacity={0.6}
+              //   onPress={() => onOpenGallery(true)}
+              //   style={styles.picContainer}
+              // >
+              //   <Image style={{ width: 14, height: 14 }} source={images.add} />
+              // </TouchableOpacity>
             )}
 
             <View
@@ -1293,7 +1315,7 @@ const EditProfile = ({ route }: any) => {
       )}
 
       <CustomBottomSheet bottomSheetModalRef={bottomSheetModalRef}>
-      <View style={{ paddingHorizontal: scale(20) }}>
+        <View style={{ paddingHorizontal: scale(20) }}>
           <View style={{ ...appStyles.rowjustify, width: "100%" }}>
             {/* <Button
             text="Save"
@@ -1372,12 +1394,12 @@ const EditProfile = ({ route }: any) => {
             onDateChange={(date) => {
               const day = date.getDate();
               const month = date.getMonth() + 1;
-              const year = date.getFullYear().toString() // Extract last two digits of the year
+              const year = date.getFullYear().toString(); // Extract last two digits of the year
               let birth = `${month.toString().padStart(2, "0")}/${day
                 .toString()
                 .padStart(2, "0")}/${year}`;
               console.log("birth", birth);
-              setIsBirthday(birth)
+              setIsBirthday(birth);
               setOpen(false);
               setDate(date);
             }}
