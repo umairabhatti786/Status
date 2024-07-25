@@ -139,7 +139,7 @@ const ProfileScreen = () => {
       : "Undisclosed"
   }`.trim();
 
-  console.log("UserDatatypeuserDetails", userDetails);
+  console.log("UserDatatypeuserDetails", userDetails?.orientation);
   useEffect(() => {
     setImageForEdit(imageForEdit);
   }, [isEditView]);
@@ -655,7 +655,7 @@ const ProfileScreen = () => {
                       text={"Personal Information"}
                     />
                     {/* {userDetails?.location && ( */}
-                    <View style={{ ...appStyles.row, gap: scale(10) }}>
+                    <View style={{ ...appStyles.row, gap: scale(10),marginRight:scale(10) }}>
                       <Image
                         style={{ width: scale(17), height: scale(17) }}
                         source={images.homefill}
@@ -708,6 +708,16 @@ const ProfileScreen = () => {
                       </View>
                     )}
                   </View>
+                  <NewText
+                    color={colors.white}
+                    style={{
+                      marginTop: verticalScale(-5),
+                      marginBottom: verticalScale(10),
+                    }}
+                    size={16}
+                    fontFam="Roboto-Bold"
+                    text={"Here for"}
+                  />
                   {userDetails?.interestTags && (
                     <View
                       style={{
@@ -718,19 +728,12 @@ const ProfileScreen = () => {
                       <ScrollView
                         horizontal
                         showsHorizontalScrollIndicator={false}
-                        // style={{backgroundColor:"red"}}
+                        style={{ marginRight: scale(5) }}
                       >
-                        <NewText
-                          color={colors.white}
-                          style={{ marginTop: 2, marginRight: 5 }}
-                          size={16}
-                          fontFam="Roboto-Bold"
-                          text={"Here for"}
-                        />
                         {JSON.parse(userDetails?.interestTags).map(
                           (item, index) => {
                             return (
-                              <View style={{ marginHorizontal: scale(5) }}>
+                              <View style={{ marginRight: scale(5) }}>
                                 <Button
                                   height={28}
                                   fontFam={"Inter-Medium"}
@@ -762,163 +765,215 @@ const ProfileScreen = () => {
                     </View>
                   )}
 
-                  {userData?.bio ? (
-                    <View style={styles.bioContainer}>
-                      {userData?.bio && (
-                        <NewText
-                          color={colors.white}
-                          lineHeight={22}
-                          size={15}
-                          fontWeight="Poppins-Medium"
-                          text={userData?.bio}
-                        />
-                      )}
+                  {userData?.bio && (
+                    <>
+                      <NewText
+                        color={colors.white}
+                        style={{
+                          marginBottom: verticalScale(15),
+                          marginTop: verticalScale(-3),
+                        }}
+                        size={16}
+                        fontFam="Roboto-Bold"
+                        text={"About me"}
+                      />
 
-                      {userData?.link && (
-                        <TouchableOpacity
-                          activeOpacity={0.6}
-                          onPress={() => {
-                            Linking.openURL(userData?.link);
-                          }}
-                          style={{
-                            flexDirection: "row",
-                            marginTop: verticalScale(3),
-                          }}
-                        >
-                          <Image
-                            style={{
-                              width: scale(18),
-                              height: scale(18),
-                            }}
-                            resizeMode="contain"
-                            source={images.link}
-                          />
+                      <View style={styles.bioContainer}>
+                        {userData?.bio && (
                           <NewText
                             color={colors.white}
-                            size={14}
-                            fontFam="Inter-Medium"
-                            style={{
-                              marginRight: scale(20),
-                              marginLeft: scale(8),
-                            }}
-                            text={userData?.link}
+                            lineHeight={22}
+                            size={15}
+                            fontWeight="Poppins-Medium"
+                            text={userData?.bio}
                           />
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                  ) : (
-                    <>
-                      {userData?.link && (
-                        <View style={styles.bioContainer}>
-                          {userData?.bio && (
-                            <NewText
-                              color={colors.white}
-                              lineHeight={22}
-                              size={15}
-                              fontWeight="Poppins-Medium"
-                              text={userData?.bio}
-                            />
-                          )}
+                        )}
 
-                          {userData?.link && (
-                            <TouchableOpacity
-                              activeOpacity={0.6}
-                              onPress={() => {
-                                Linking.openURL(userData?.link);
-                              }}
+                      
+                      </View>
+                    </>
+                  )
+                  }
+                  <View>
+                    {userDetails?.gif1 ? (
+                      <>
+                        <View
+                          style={{
+                            ...appStyles.rowjustify,
+                            marginBottom: verticalScale(10),
+                          }}
+                        >
+                          <NewText
+                            color={colors.white}
+                            size={16}
+                            fontFam="Roboto-Bold"
+                            text={"My Gifs"}
+                          />
+                          <View>
+                            <Image
                               style={{
-                                flexDirection: "row",
-                                marginTop: verticalScale(3),
+                                width: 120,
+                                height: 35,
+                                alignSelf: "flex-end",
+                              }}
+                              source={images.giphy}
+                              resizeMode="contain"
+                            />
+                          </View>
+                        </View>
+                      </>
+                    ) : (
+                      <>
+                        {userDetails?.gif2 && (
+                          <>
+                            <View
+                              style={{
+                                ...appStyles.rowjustify,
+                                marginBottom: verticalScale(10),
                               }}
                             >
-                              <Image
-                                style={{
-                                  width: scale(18),
-                                  height: scale(18),
-                                }}
-                                resizeMode="contain"
-                                source={images.link}
-                              />
                               <NewText
                                 color={colors.white}
-                                size={14}
-                                fontFam="Inter-Medium"
-                                style={{
-                                  marginRight: scale(20),
-                                  marginLeft: scale(8),
-                                }}
-                                text={userData?.link}
+                                size={16}
+                                fontFam="Roboto-Bold"
+                                text={"My Gifs"}
                               />
-                            </TouchableOpacity>
-                          )}
+                              <View>
+                                <Image
+                                  style={{
+                                    width: 120,
+                                    height: 35,
+                                    alignSelf: "flex-end",
+                                  }}
+                                  source={images.giphy}
+                                  resizeMode="contain"
+                                />
+                              </View>
+                            </View>
+                          </>
+                        )}
+                      </>
+                    )}
+
+                    <View style={appStyles.rowjustify}>
+                      {userDetails?.gif1 && (
+                        <View style={styles.gifhyContainer}>
+                          <Image
+                            style={{ width: "100%", height: "100%" }}
+                            source={{ uri: userDetails?.gif1 }}
+                          />
+                          {/* <View
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            position: "absolute",
+
+                            backgroundColor: `rgba(0, 0, 0, 0.1)`, // Apply opacity to the background color
+                          }}
+                        /> */}
                         </View>
                       )}
-                    </>
-                  )}
-
-                  <View style={appStyles.rowjustify}>
-                    {userDetails?.gif1 && (
-                      <View style={styles.gifhyContainer}>
-                        <Image
-                          style={{ width: "100%", height: "100%" }}
-                          source={{ uri: userDetails?.gif1 }}
-                        />
-                        <View
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            position: "absolute",
-
-                            backgroundColor: `rgba(0, 0, 0, 0.1)`, // Apply opacity to the background color
-                          }}
-                        />
-
-                        <View
-                          style={{ position: "absolute", right: 5, bottom: 0 }}
-                        >
+                      {userDetails?.gif2 && (
+                        <View style={styles.gifhyContainer}>
                           <Image
-                            style={{
-                              width: 100,
-                              height: 30,
-                              alignSelf: "flex-end",
-                            }}
-                            source={images.giphy}
-                            resizeMode="contain"
+                            style={{ width: "100%", height: "100%" }}
+                            source={{ uri: userDetails?.gif2 }}
                           />
-                        </View>
-                      </View>
-                    )}
-                    {userDetails?.gif2 && (
-                      <View style={styles.gifhyContainer}>
-                        <Image
-                          style={{ width: "100%", height: "100%" }}
-                          source={{ uri: userDetails?.gif2 }}
-                        />
-                        <View
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            position: "absolute",
+                          {/* <View
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              position: "absolute",
 
-                            backgroundColor: `rgba(0, 0, 0, 0.1)`, // Apply opacity to the background color
-                          }}
-                        />
-                        <View
-                          style={{ position: "absolute", right: 5, bottom: 0 }}
-                        >
-                          <Image
-                            style={{
-                              width: 100,
-                              height: 30,
-                              alignSelf: "flex-end",
+                              backgroundColor: `rgba(0, 0, 0, 0.1)`, // Apply opacity to the background color
                             }}
-                            source={images.giphy}
-                            resizeMode="contain"
-                          />
+                          /> */}
+                        
                         </View>
-                      </View>
-                    )}
+                      )}
+                    </View>
                   </View>
+
+
+                  {userData?.link && (
+                    <>
+                      <NewText
+                        color={colors.white}
+                        style={{
+                          marginVertical: verticalScale(15),
+                          // marginTop: verticalScale(-3),
+                        }}
+                        size={16}
+                        fontFam="Roboto-Bold"
+                        text={"My link"}
+                      />
+
+                      <TouchableOpacity
+                       activeOpacity={0.6}
+                       onPress={() => {
+                         Linking.openURL(userData?.link);
+                       }}
+                       style={{
+                        backgroundColor: "#1D2029",
+                        borderWidth: 1,
+                        borderColor: "#8A8A8A",
+                       borderRadius:scale(30),
+                        marginBottom: verticalScale(10),
+                        paddingLeft:scale(20),
+                        padding: scale(10),
+
+                       }}>
+                    
+                          <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => {
+                              Linking.openURL(userData?.link);
+                            }}
+                            style={{
+                              flexDirection: "row",
+                              alignItems:"center"
+                              // marginTop: verticalScale(3),
+                            }}
+                          >
+                            <Image
+                              style={{
+                                width: scale(18),
+                                height: scale(18),
+                              }}
+                              resizeMode="contain"
+                              source={images.link}
+                            />
+                            <NewText
+                              color={colors.white}
+                              size={14}
+                              fontFam="Inter-Medium"
+                              style={{
+                                marginRight: scale(20),
+                                marginLeft: scale(8),
+                              }}
+                              text={userData?.link}
+                            />
+                          </TouchableOpacity>
+                  
+
+                      
+                      </TouchableOpacity>
+                    </>
+                  )
+                  }
+
+<NewText
+                        color={colors.white}
+                        style={{
+                          marginVertical: verticalScale(5),
+                        }}
+                        size={16}
+                        fontFam="Roboto-Bold"
+                        text={"My wall"}
+                      />
+
+                 
+
                   {userDetails?.wallComments && (
                     <View
                       style={{
@@ -935,11 +990,11 @@ const ProfileScreen = () => {
                     >
                       <TextInput
                         style={{
-                          color: colors.gray200,
+                          color: colors.white,
                           width: "90%",
                           fontSize: verticalScale(15),
                         }}
-                        placeholderTextColor={colors.gray200}
+                        placeholderTextColor={colors.white}
                         placeholder="Write on my wall"
                         onChangeText={(text) => setComment(text)}
                         value={comment}
@@ -956,7 +1011,7 @@ const ProfileScreen = () => {
                           />
                         ) : (
                           <Image
-                            style={{ tintColor: colors.gray200 }}
+                            style={{ tintColor: colors.white }}
                             source={images.send}
                           />
                         )}

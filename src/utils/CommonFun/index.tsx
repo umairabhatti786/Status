@@ -82,6 +82,41 @@ export function capitalizeFirstLetter(str) {
     }
   };
 
+  export const StatusUpdatesFormatTimeDifference = (date) => {
+    const now = moment();
+    const inputDate = moment(date);
+  
+    const diffInSeconds = now.diff(inputDate, 'seconds');
+    const diffInMinutes = now.diff(inputDate, 'minutes');
+    const diffInHours = now.diff(inputDate, 'hours');
+    const diffInDays = now.diff(inputDate, 'days');
+    const diffInWeeks = now.diff(inputDate, 'weeks');
+    const diffInMonths = now.diff(inputDate, 'months');
+    const diffInYears = now.diff(inputDate, 'years');
+    if (diffInSeconds == 0) {
+      return `1s`;
+    }
+  
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds}s`;
+    }
+     else if (diffInMinutes < 60) {
+      return `${diffInMinutes}m`;
+    } else if (diffInHours < 24) {
+      return `${diffInHours}h ago`;
+    } else if (diffInDays === 1) {
+      return `1d`;
+    } else if (diffInDays < 7) {
+      return `${diffInDays}d`;
+    } else if (diffInWeeks < 4) {
+      return `${diffInWeeks}w`;
+    } else if (diffInMonths < 12) {
+      return `${diffInMonths}mo`;
+    } else {
+      return `${diffInYears}y`;
+    }
+  };
+
   export const formatMessageTime = (date) => {
     const now = moment();
     const inputDate = moment(date);

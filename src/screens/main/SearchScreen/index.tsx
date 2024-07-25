@@ -37,6 +37,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getToken,
+  getUserData,
   setNotificationAlert,
 } from "../../../redux/reducers/authReducer";
 import { GetAllUsers } from "../../../api/ApiServices";
@@ -70,6 +71,7 @@ const SearchScreen = ({ navigation }: any) => {
   const [refreshing, setRefreshing] = useState(false);
   const snapPoints = useMemo(() => ["45%"], []);
   const {getLocation} = usePermissions();
+  const  userData=useSelector(getUserData)
 
 
   const commentNotificationAlert = useSelector(
@@ -94,16 +96,21 @@ const SearchScreen = ({ navigation }: any) => {
   // console.log("filterTwo", filterTwo, "filterThree", filterThree);
 
   useEffect(() => {
-    getLocation()
+    if(!userData?.lat){
+      console.log("GetLocation")
+      getLocation()
 
-    getUserData();
+
+    }
+
+    getUserDetail();
 
 
   
     // console.log(activeBar,filterTwo,selectedType)
   }, [activeBar, filterTwo, selectedType, focused]);
 
-  const getUserData = () => {
+  const getUserDetail = () => {
     setLoading(true);
     // let TwoFs= { filter1: activeBar, filter2: filterTwo, filter3: selectedType=="All"?'':selectedType }
     // let ThreeFs= { filter1: activeBar, filter2: filterTwo, }
@@ -129,8 +136,6 @@ const SearchScreen = ({ navigation }: any) => {
         let data: any = response?.data?.result?.data;
         //check
         if (response?.data?.results) {
-          console.log("selectedTypefilterTwo",filterTwo)
-
           if(filterTwo=="nearby"){
 
             const sortedLocations = data.sort((a, b) => a.distance - b.distance);

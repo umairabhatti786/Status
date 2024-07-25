@@ -18,6 +18,7 @@ import { appStyles } from "../../../utils/AppStyles";
 import moment from "moment";
 import NewText from "../../../components/NewText";
 import {
+  StatusUpdatesFormatTimeDifference,
   capitalizeFirstLetter,
   dateFormat,
   formatTimeDifference,
@@ -39,27 +40,26 @@ const FriendList = ({
 }: any) => {
   const [newPost, setNewPost] = useState(item?.channel?.last_post);
   const pusher = Pusher.getInstance();
-   const [isViewed, setIsViewed] = useState(false)
+  const [isViewed, setIsViewed] = useState(false);
 
-  const checkIsViewed=async()=>{
+  const checkIsViewed = async () => {
     let token = await StorageServices.getItem(TOKEN);
-    isPostViewed(newPost?.id,token,async ({ isSuccess, response }: any) => {
+    isPostViewed(newPost?.id, token, async ({ isSuccess, response }: any) => {
       let result = JSON.parse(response);
       if (result.status) {
-        setIsViewed(true)
-      }else{
-        setIsViewed(false)
+        setIsViewed(true);
+      } else {
+        setIsViewed(false);
       }
-    })
-  }
+    });
+  };
 
-  useEffect(()=>{
-    setNewPost(item?.channel?.last_post)
-    
-  },[item?.channel?.last_post])
-  useEffect(()=>{
-    checkIsViewed();    
-  },[newPost])
+  useEffect(() => {
+    setNewPost(item?.channel?.last_post);
+  }, [item?.channel?.last_post]);
+  useEffect(() => {
+    checkIsViewed();
+  }, [newPost]);
 
   useEffect(() => {
     pusher.init({
@@ -76,7 +76,6 @@ const FriendList = ({
         // console.log("channelUpdates_", JSON.parse(event.data).post);
         let post = JSON.parse(event.data).post;
         setNewPost(post);
-        
       },
     });
 
@@ -89,9 +88,7 @@ const FriendList = ({
 
   useEffect(() => {
     setCounter(counter + 1);
-  }, [newPost])
-  
-  
+  }, [newPost]);
 
   return (
     <>
@@ -100,10 +97,10 @@ const FriendList = ({
         onPress={onPress}
         style={{
           width: "100%",
-          height: 79,
-          borderRadius: 10,
+          height: 90,
+          borderRadius: 5,
           backgroundColor: "#1D2029",
-          padding: scale(6),
+          // padding: scale(6),
           flexDirection: "row",
           justifyContent: "space-between",
         }}
@@ -111,8 +108,8 @@ const FriendList = ({
         <View style={{ flexDirection: "row" }}>
           <View
             style={{
-              width: 65,
-              height: 68,
+              width: 90,
+              height: 90,
               // marginLeft: scale(3),
             }}
           >
@@ -120,7 +117,6 @@ const FriendList = ({
               style={{
                 width: "100%",
                 height: "100%",
-                borderRadius: 5,
                 overflow: "hidden",
               }}
               source={{ uri: item?.imageUrl }}
@@ -146,25 +142,26 @@ const FriendList = ({
               paddingLeft: scale(15),
               width:
                 newPost?.imageUrl || newPost?.gif ? scale(190) : scale(250),
+              // backgroundColor:"red",
+              paddingTop: verticalScale(13),
             }}
           >
             {/* size={15}
                 fontFam="Poppins-Bold"
                 fontWeight="800 */}
 
-            <View style={{ ...appStyles.row, gap: 8, width: scale(160),}}>
+            <View style={{ ...appStyles.row, gap: 8, width: scale(160) }}>
               <CustomText
-text={capitalizeFirstLetter(item?.name)}
-                color={colors.gray500}
+                text={capitalizeFirstLetter(item?.name)}
+                color={colors.white}
                 size={16}
                 numberOfLines={1}
-              style={{ marginTop: -5 }}
-
-                fontFam="Poppins-SemiBold"
+                style={{ marginTop: -5 }}
+                fontFam="Inter-Bold"
                 fontWeight="700"
               />
 
-<View
+              {/* <View
                 style={{
                   width: scale(3.5),
                   height: scale(3.5),
@@ -173,17 +170,30 @@ text={capitalizeFirstLetter(item?.name)}
                   marginBottom:2,
                 
                 }}
-              />
+              /> */}
 
               {newPost ? (
-                <NewText
-                  text={formatTimeDifference(newPost?.created_at)}
-                  color={colors.gray500}
-                  size={12}
-                  // style={{ marginTop: 3 }}
-                  fontFam="Poppins-Regular"
-                  fontWeight="500"
-                />
+                <View style={{ flexDirection: "row", gap: 2 }}>
+                  <NewText
+                    text={StatusUpdatesFormatTimeDifference(
+                      newPost?.created_at
+                    )}
+                    color={colors.white}
+                    size={12}
+                    style={{ marginTop: 1 }}
+                    fontFam="Inter-Medium"
+                    fontWeight="500"
+                  />
+
+                  <NewText
+                    text={"ago"}
+                    color={"#8A8A8A"}
+                    size={12}
+                    style={{ marginTop: 1 }}
+                    fontFam="Inter-Medium"
+                    fontWeight="500"
+                  />
+                </View>
               ) : (
                 <></>
               )}
@@ -192,12 +202,12 @@ text={capitalizeFirstLetter(item?.name)}
             {newPost != "null" ? (
               <CustomText
                 text={newPost?.description}
-                color={ !isViewed? colors.white:colors.gray500}
+                color={!isViewed ? colors.white : "#8A8A8A"}
                 size={15}
                 lineHeight={17}
                 fontFam="Inter-Medium"
                 numberOfLines={2}
-                style={{ marginTop: 3}}
+                style={{ marginTop: 3 }}
                 // fontFam="Poppins-Medium"
                 fontWeight="600"
               />
@@ -236,15 +246,13 @@ text={capitalizeFirstLetter(item?.name)}
               // backgroundColor:"red"
             }}
           >
-            <View
-              style={{ width: 40, height: 40 }}
-            >
+            <View style={{ width: 50, height: 50 }}>
               {newPost != "null" ? (
                 <FastImage
                   style={{
                     width: "100%",
                     height: "100%",
-                    borderRadius: scale(5),
+                    borderRadius: scale(3),
                     overflow: "hidden",
                   }}
                   source={{
