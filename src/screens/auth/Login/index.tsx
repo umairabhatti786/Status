@@ -223,7 +223,7 @@ const Login = () => {
             <Spacer height={7} />
             <Input
               label="Password"
-              placeholder="At least 6 characters"
+              placeholder="Enter your password"
               isPassword={showPassword}
               value={values.password}
               onChangeText={(txt: string) => {

@@ -47,6 +47,7 @@ import { URLS } from "../../../api/baseUrl";
 import FilterCategory from "./FilterCategory";
 import NewText from "../../../components/NewText";
 import CustomBottomSheet from "../../../components/CustomBottomSheet";
+import { usePermissions } from "../../../utils/Permissions";
 
 const SearchScreen = ({ navigation }: any) => {
   const [activeBar, setActiveBar] = useState("all");
@@ -68,6 +69,8 @@ const SearchScreen = ({ navigation }: any) => {
   const [model, setModel] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const snapPoints = useMemo(() => ["45%"], []);
+  const {getLocation} = usePermissions();
+
 
   const commentNotificationAlert = useSelector(
     (state) => state.auth
@@ -91,7 +94,12 @@ const SearchScreen = ({ navigation }: any) => {
   // console.log("filterTwo", filterTwo, "filterThree", filterThree);
 
   useEffect(() => {
+    getLocation()
+
     getUserData();
+
+
+  
     // console.log(activeBar,filterTwo,selectedType)
   }, [activeBar, filterTwo, selectedType, focused]);
 

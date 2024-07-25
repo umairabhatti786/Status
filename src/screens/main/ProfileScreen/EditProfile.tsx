@@ -1069,7 +1069,7 @@ const EditProfile = ({ route }: any) => {
                 // labelSize={15}
                 value={values.location}
                 onChangeText={onSearch}
-                placeholder="Location"
+                placeholder=""
                 color={colors.white}
                 fontWeight="600"
                 marginTop={"7%"}

@@ -533,7 +533,6 @@ const Chat = () => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            // backgroundColor:"red"
           }}
         >
           <TouchableOpacity
@@ -596,12 +595,16 @@ const Chat = () => {
                 }
               />
               <NewText
-                // fontWeight="700"
                 color={colors.white}
                 size={14}
                 style={{ marginTop: verticalScale(-4) }}
                 text={`${
-                  item?.user1?.followers_count || item?.user2?.followers_count
+                  !(
+                    item?.user1?.followers_count || item?.user2?.followers_count
+                  )
+                    ? 0
+                    : item?.user1?.followers_count ||
+                      item?.user2?.followers_count
                 } Followers`}
               />
             </View>
