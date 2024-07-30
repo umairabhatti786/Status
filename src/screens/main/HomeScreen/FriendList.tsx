@@ -180,7 +180,7 @@ const FriendList = ({
                     )}
                     color={colors.white}
                     size={12}
-                    style={{ marginTop: 1 }}
+                    // style={{ marginTop: 1 }}
                     fontFam="Inter-Medium"
                     fontWeight="500"
                   />
@@ -189,7 +189,7 @@ const FriendList = ({
                     text={"ago"}
                     color={"#8A8A8A"}
                     size={12}
-                    style={{ marginTop: 1 }}
+                    // style={{ marginTop: 1 }}
                     fontFam="Inter-Medium"
                     fontWeight="500"
                   />

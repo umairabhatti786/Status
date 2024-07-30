@@ -736,6 +736,7 @@ const EditProfile = ({ route }: any) => {
                   activeOpacity={0.6}
                   onPress={() => {
                     setValues({ ...values, imageUrl: "" });
+                    setDeleteUserImage(1)
                   }}
                   style={styles.crossContainer}
                 >
@@ -835,6 +836,12 @@ const EditProfile = ({ route }: any) => {
                       <TouchableOpacity
                         activeOpacity={0.6}
                         onPress={() => {
+                          if(index==0){
+                            setDeleteGif1(1)
+                          }
+                          else {
+                            setDeleteGif2(1)
+                          }
                           // Remove the selected GIF from the selectedGifs array
                           // const updatedSelectedGifs = [...selectedGifs];
 

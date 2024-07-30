@@ -70,13 +70,13 @@ const SearchScreen = ({ navigation }: any) => {
   const [model, setModel] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const snapPoints = useMemo(() => ["45%"], []);
-  const {getLocation} = usePermissions();
-  const  userData=useSelector(getUserData)
-
+  const { getLocation } = usePermissions();
+  const userData = useSelector(getUserData);
 
   const commentNotificationAlert = useSelector(
     (state) => state.auth
   )?.commentNotificationAlert;
+  console.log("response", response);
   const dispatch = useDispatch();
   // console.log("notificationAlert", notificationAlert);
   const topBarData = ["all", "following"];
@@ -93,27 +93,18 @@ const SearchScreen = ({ navigation }: any) => {
     { value: "Popular", filter: "popular", isActive: false },
   ]);
   console.log("activeBar", filterTwo);
-  // console.log("filterTwo", filterTwo, "filterThree", filterThree);
 
   useEffect(() => {
-    if(!userData?.lat){
-      console.log("GetLocation")
-      getLocation()
-
-
+    if (!userData?.lat) {
+      console.log("GetLocation");
+      getLocation();
     }
-
     getUserDetail();
-
-
-  
-    // console.log(activeBar,filterTwo,selectedType)
   }, [activeBar, filterTwo, selectedType, focused]);
 
   const getUserDetail = () => {
     setLoading(true);
-    // let TwoFs= { filter1: activeBar, filter2: filterTwo, filter3: selectedType=="All"?'':selectedType }
-    // let ThreeFs= { filter1: activeBar, filter2: filterTwo, }
+ 
     const options = {
       method: "POST",
       url: getApiUrl(URLS.GET_ALL_USER),
@@ -126,7 +117,6 @@ const SearchScreen = ({ navigation }: any) => {
         filter2: filterTwo,
         filter3: selectedType == "All" ? "noFilter" : selectedType,
       },
-      // data: {filter: f2+"&"+f1}
     };
 
     axios
@@ -136,17 +126,23 @@ const SearchScreen = ({ navigation }: any) => {
         let data: any = response?.data?.result?.data;
         //check
         if (response?.data?.results) {
-          if(filterTwo=="nearby"){
-
-            const sortedLocations = data.sort((a, b) => a.distance - b.distance);
-            console.log("sortedLocations",sortedLocations)
-
+          if (filterTwo == "nearby") {
+            const sortedLocations = data.sort(
+              (a, b) => a.distance - b.distance
+            );
+            console.log("sortedLocations", sortedLocations);
             setAllUsers(sortedLocations);
-          setResponse(result)
-          setLoading(false);
+            setResponse(result);
+            setLoading(false);
+            return;
+          }
+          if (filterTwo == "online") {
+            console.log("OnlineReed", result);
+            setAllUsers(response?.data?.onAndOffUsers);
+            setResponse(result);
+            setLoading(false);
 
-            return
-
+            return;
           }
           setAllUsers(data);
           setResponse(result);
@@ -163,11 +159,8 @@ const SearchScreen = ({ navigation }: any) => {
   };
 
   const refreshData = () => {
-    // console.log('nextUrl',response?.next_page_url)
-
     if (response?.next_page_url) {
       setRefreshing(true);
-
       const options = {
         method: "POST",
         url: response?.next_page_url,
@@ -180,12 +173,17 @@ const SearchScreen = ({ navigation }: any) => {
           filter2: filterTwo,
           filter3: selectedType == "All" ? "noFilter" : selectedType,
         },
-        // data: {filter: f2+"&"+f1}
       };
 
       axios
         .request(options)
         .then(function (response) {
+          if (filterTwo == "online") {
+            setAllUsers([...allUsers, ...response?.data?.onAndOffUsers]);
+            setResponse(response?.data?.result);
+            setRefreshing(false);
+            return;
+          }
           setAllUsers([...allUsers, ...response?.data?.result?.data]);
           setResponse(response?.data?.result);
           setRefreshing(false);
@@ -218,7 +216,6 @@ const SearchScreen = ({ navigation }: any) => {
   ];
 
   const renderUsers = ({ item, index }: any) => {
-
     return (
       <UserList
         name={item?.name}

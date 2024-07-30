@@ -50,6 +50,7 @@ import {
   GetStatus,
   GetUserComment,
   getUserDetail,
+  getUserDistance,
 } from "../../../api/ApiServices";
 import NewText from "../../../components/NewText";
 import FastImage from "react-native-fast-image";
@@ -112,6 +113,8 @@ const ProfileScreen = () => {
   const [imageForEdit, setImageForEdit] = useState("");
   const [postId, setPostId] = useState("");
   const flatListRefPosts: any = useRef(null);
+  const [userDistance,setUserDistance]=useState()
+  const [userDistanceString,setUserDistanceString]=useState()
 
   const dispatch = useDispatch();
 
@@ -150,8 +153,22 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     getAuth();
+    getUserDistance({id:userData?.id},token,async ({ isSuccess, response }: any) => {
+      let result = JSON.parse(response);
+
+
+      if(result?.status){
+        setUserDistance(result?.distance)
+        setUserDistanceString(result?.distance.toString())
+
+
+      }
+    })
+    
     // setIsActiveProfile(activeBar);
   }, [focused]);
+
+  
 
   useEffect(() => {
     if (focused) getUserComment();
@@ -676,7 +693,7 @@ const ProfileScreen = () => {
                     {/* )} */}
                     {/* distance */}
 
-                    {/* {userDetails?.distance >= 0 && (
+                    {userDistance >= 0 && (
                         <View style={{ ...appStyles.row, gap: scale(10) }}>
                           <Image
                             style={{ width: scale(18), height: scale(18) }}
@@ -686,10 +703,16 @@ const ProfileScreen = () => {
                             color={colors.white}
                             style={{ marginTop: 3 }}
                             size={16}
-                            text={`${userDetails?.distance.toFixed(2)} miles away`}
+                            text={
+                              userDistanceString?.startsWith("0")
+                                ? `${parseInt(userDistance).toLocaleString()} feet`
+                                : `${parseInt(userDistance).toLocaleString()} miles away`
+                            }
+                            
+                            // text={`${parseInt(userDistance)} miles away`}
                           />
                         </View>
-                      )} */}
+                      )}
 
                     {userDetail && (
                       <View style={{ ...appStyles.row, gap: scale(10) }}>
@@ -711,8 +734,8 @@ const ProfileScreen = () => {
                   <NewText
                     color={colors.white}
                     style={{
-                      marginTop: verticalScale(-5),
-                      marginBottom: verticalScale(10),
+                      // marginTop: verticalScale(-5),
+                      marginBottom: verticalScale(15),
                     }}
                     size={16}
                     fontFam="Roboto-Bold"
@@ -770,8 +793,8 @@ const ProfileScreen = () => {
                       <NewText
                         color={colors.white}
                         style={{
-                          marginBottom: verticalScale(15),
-                          marginTop: verticalScale(-3),
+                          marginBottom: verticalScale(20),
+                          marginTop: verticalScale(5),
                         }}
                         size={16}
                         fontFam="Roboto-Bold"
@@ -800,7 +823,8 @@ const ProfileScreen = () => {
                         <View
                           style={{
                             ...appStyles.rowjustify,
-                            marginBottom: verticalScale(10),
+                            marginBottom: verticalScale(15),
+                            marginTop: verticalScale(5),
                           }}
                         >
                           <NewText
@@ -900,8 +924,8 @@ const ProfileScreen = () => {
                       <NewText
                         color={colors.white}
                         style={{
-                          marginVertical: verticalScale(15),
-                          // marginTop: verticalScale(-3),
+                          marginBottom: verticalScale(20),
+                          marginTop: verticalScale(15),
                         }}
                         size={16}
                         fontFam="Roboto-Bold"
@@ -965,7 +989,9 @@ const ProfileScreen = () => {
 <NewText
                         color={colors.white}
                         style={{
-                          marginVertical: verticalScale(5),
+                          marginBottom: verticalScale(10),
+                          marginTop: verticalScale(10),
+
                         }}
                         size={16}
                         fontFam="Roboto-Bold"

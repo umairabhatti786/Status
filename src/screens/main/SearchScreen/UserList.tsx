@@ -37,7 +37,9 @@ const UserList = ({
   filterTwo,
 }: any) => {
   const navigation: any = useNavigation();
-  console.log("distance",distance)
+  let distanceString = distance?.toString();
+
+  console.log("distanceitem", item);
   return (
     <>
       <TouchableOpacity
@@ -173,30 +175,31 @@ const UserList = ({
 
             {filterTwo == "online" && (
               <View>
-                {!isOnline&&(
-                    <NewText
+                {!isOnline && (
+                  <NewText
                     fontFam="Poppins-Bold"
                     fontWeight="bold"
                     text={formatTimeDifference(lastSeen)}
-
                     // text={moment(createdAt).format("MMM DD Y")}
                     numberOfLines={1}
                     size={11.5}
                     style={{ marginLeft: 10 }}
                     color={colors.white}
                   />
-
                 )}
-              
               </View>
             )}
 
-             {filterTwo == "nearby" && (
+            {filterTwo == "nearby" && (
               <View>
                 <NewText
-               fontFam="Inter-Medium"
-               fontWeight="600"
-                  text={`${parseInt(distance)} mi`}
+                  fontFam="Inter-Medium"
+                  fontWeight="600"
+                  text={
+                    distanceString?.startsWith("0")
+                      ? `${parseInt(distance).toLocaleString()} feet`
+                      : `${parseInt(distance).toLocaleString()} mi`
+                  }
                   numberOfLines={1}
                   size={11.5}
                   style={{ marginLeft: 10 }}
@@ -218,7 +221,7 @@ const UserList = ({
               </View>
             )}
 
-{/* {filterTwo == "new" && (
+            {/* {filterTwo == "new" && (
               <View>
                 {profileType&&(
                     <NewText
@@ -235,8 +238,8 @@ const UserList = ({
               
               </View>
             )} */}
-            
- {filterTwo == "new" && (
+
+            {filterTwo == "new" && (
               <View>
                 <NewText
                   fontFam="Inter-Medium"
